@@ -1,0 +1,74 @@
+name: "Shaxriyor Jabborov"
+title: "Full-Stack Developer & Software Engineer"
+location: "Tashkent, Uzbekistan"
+email: "shaxriyor@shaxa.dev"
+website: "https://shaxa.dev"
+github: "https://github.com/shaxa"
+linkedin: "https://linkedin.com/in/shaxriyor-jabborov"
+twitter: "https://twitter.com/shaxa_dev"
+bio: |
+  I'm a passionate full-stack developer with expertise in modern web technologies. 
+  I love building scalable applications, solving complex problems, and creating 
+  user experiences that make a difference. With a strong foundation in both 
+  frontend and backend development, I enjoy working across the entire technology stack.
+
+shortBio: |
+  Full-stack developer passionate about building scalable applications and 
+  creating exceptional user experiences.
+
+skills:
+  frontend:
+    - "React/Next.js"
+    - "TypeScript"
+    - "Tailwind CSS"
+    - "Framer Motion"
+    - "Vue.js"
+    - "Svelte"
+  backend:
+    - "Node.js"
+    - "Python"
+    - "PostgreSQL"
+    - "MongoDB"
+    - "Redis"
+    - "Docker"
+  tools:
+    - "Git"
+    - "Vercel"
+    - "AWS"
+    - "Linux"
+    - "VS Code"
+    - "Figma"
+
+experience:
+  - company: "Tech Company"
+    position: "Senior Full-Stack Developer"
+    duration: "2022 - Present"
+    description: "Leading development of scalable web applications and mentoring junior developers."
+  - company: "Startup Inc"
+    position: "Full-Stack Developer"
+    duration: "2020 - 2022"
+    description: "Built and maintained multiple client projects using modern web technologies."
+
+education:
+  - institution: "Tashkent University of Information Technologies"
+    degree: "Bachelor's in Computer Science"
+    year: "2016 - 2020"
+
+certifications:
+  - name: "AWS Certified Developer"
+    issuer: "Amazon Web Services"
+    year: "2023"
+  - name: "Google Cloud Professional Developer"
+    issuer: "Google Cloud"
+    year: "2022"
+
+languages:
+  - name: "English"
+    level: "Fluent"
+  - name: "Russian"
+    level: "Native"
+  - name: "Uzbek"
+    level: "Native"
+
+cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
+sshKeyUrl: "/keys/shaxa-dev.pub"

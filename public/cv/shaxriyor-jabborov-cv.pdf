@@ -1,0 +1,91 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 200
+>>
+stream
+BT
+/F1 12 Tf
+100 700 Td
+(Shaxriyor Jabborov) Tj
+0 -20 Td
+(Full-Stack Developer & Software Engineer) Tj
+0 -20 Td
+(Tashkent, Uzbekistan) Tj
+0 -40 Td
+(Email: shaxriyor@shaxa.dev) Tj
+0 -20 Td
+(Website: https://shaxa.dev) Tj
+0 -20 Td
+(GitHub: https://github.com/shaxa) Tj
+0 -40 Td
+(EXPERIENCE) Tj
+0 -20 Td
+(Senior Full-Stack Developer - Tech Company (2022-Present)) Tj
+0 -20 Td
+(Full-Stack Developer - Startup Inc (2020-2022)) Tj
+0 -40 Td
+(SKILLS) Tj
+0 -20 Td
+(Frontend: React/Next.js, TypeScript, Tailwind CSS, Framer Motion) Tj
+0 -20 Td
+(Backend: Node.js, Python, PostgreSQL, MongoDB, Redis, Docker) Tj
+0 -20 Td
+(Tools: Git, Vercel, AWS, Linux, VS Code, Figma) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000254 00000 n 
+0000000504 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+558
+%%EOF
