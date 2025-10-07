@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
 
 const geistSans = Geist({
@@ -104,6 +106,8 @@ export default function RootLayout({
               </PageTransition>
             </main>
             <Toaster />
+            <Analytics />
+            <SpeedInsights />
           </div>
         </ThemeProvider>
       </body>
