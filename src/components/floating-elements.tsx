@@ -33,7 +33,7 @@ export function FloatingElements() {
       {floatingElements.map((element, index) => (
         <motion.div
           key={index}
-          className="absolute text-blue-500/20 dark:text-blue-400/20"
+          className="absolute text-white/30 dark:text-white/30"
           style={{
             left: `${20 + element.x}%`,
             top: `${20 + element.y}%`,

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Download, Key, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
+import { ClientOnly } from '@/components/client-only';
 import { getProfile } from '@/lib/data';
 
 export function Navigation() {
@@ -47,7 +48,7 @@ export function Navigation() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 liquid-glass dark:liquid-glass-dark border-b border-gray-200/30 dark:border-white/20 shadow-lg dark:shadow-2xl"
+      className="fixed top-0 left-0 right-0 z-50 liquid-glass dark:liquid-glass-dark border-b border-white/10 shadow-2xl"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -89,15 +90,17 @@ export function Navigation() {
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={cycleTheme}
-              className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
-              title={`Current theme: ${theme} (${actualTheme})`}
-            >
-              <ThemeIcon className="h-4 w-4" />
-            </Button>
+            <ClientOnly>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={cycleTheme}
+                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
+                title={`Current theme: ${theme} (${actualTheme})`}
+              >
+                <ThemeIcon className="h-4 w-4 text-foreground" />
+              </Button>
+            </ClientOnly>
             
             <Button
               variant="ghost"
@@ -106,7 +109,7 @@ export function Navigation() {
               className="glass-dark hover:bg-white/10"
             >
               <a href={profile.cvUrl} download>
-                <Download className="h-4 w-4 mr-2" />
+                <Download className="h-4 w-4 mr-2 text-foreground/90" />
                 CV
               </a>
             </Button>
@@ -118,7 +121,7 @@ export function Navigation() {
               className="glass-dark hover:bg-white/10"
             >
               <a href={profile.sshKeyUrl} download>
-                <Key className="h-4 w-4 mr-2" />
+                <Key className="h-4 w-4 mr-2 text-foreground/90" />
                 SSH
               </a>
             </Button>
@@ -126,15 +129,17 @@ export function Navigation() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={cycleTheme}
-              className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
-              title={`Current theme: ${theme} (${actualTheme})`}
-            >
-              <ThemeIcon className="h-4 w-4" />
-            </Button>
+            <ClientOnly>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={cycleTheme}
+                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
+                title={`Current theme: ${theme} (${actualTheme})`}
+              >
+                <ThemeIcon className="h-4 w-4 text-foreground" />
+              </Button>
+            </ClientOnly>
             
             <Button
               variant="ghost"
@@ -142,7 +147,7 @@ export function Navigation() {
               onClick={() => setIsOpen(!isOpen)}
               className="glass-dark hover:bg-white/10"
             >
-              {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
             </Button>
           </div>
         </div>

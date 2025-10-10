@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
+import { SmoothGradientBackground } from "@/components/smooth-gradient-background";
 import { PageTransition } from "@/components/page-transition";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -81,19 +82,17 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href={profile.website} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#1e3c72" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0b0b" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen transition-colors duration-300`}
       >
-        <ThemeProvider
-          defaultTheme="system"
-          storageKey="shaxa-theme"
-        >
+        <ThemeProvider>
           <div className="min-h-screen relative overflow-hidden">
-            {/* Global Animated Background */}
-            <div className="fixed inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 transition-colors duration-300" />
-            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+            {/* Smooth Gradient Background */}
+            <SmoothGradientBackground />
+            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5 dark:opacity-10" />
             <div className="fixed inset-0 pointer-events-none">
               <ParticleBackground />
               <FloatingElements />

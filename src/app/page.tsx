@@ -175,7 +175,7 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -234,7 +234,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <ParallaxSection speed={0.3} className="py-20 px-4 sm:px-6 lg:px-8 bg-black/20">
+      <ParallaxSection speed={0.3} className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 pb-32">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -291,23 +291,31 @@ export default function Home() {
       </ParallaxSection>
 
       {/* Experience Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mt-32 mb-16">
         <div className="max-w-7xl mx-auto">
-          <ScrollReveal direction="up" className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               <span className="text-gradient">Experience</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               My professional journey and key achievements
             </p>
-          </ScrollReveal>
+          </motion.div>
           
           <div className="space-y-8">
             {profile.experience.map((exp, index) => (
-              <ScrollReveal
+              <motion.div
                 key={index}
-                direction={index % 2 === 0 ? 'left' : 'right'}
-                delay={index * 0.2}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.8 }}
+                viewport={{ once: true }}
               >
                 <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300">
                   <CardHeader>
@@ -325,14 +333,14 @@ export default function Home() {
                     <p className="text-muted-foreground">{exp.description}</p>
                   </CardContent>
                 </Card>
-              </ScrollReveal>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10 dark:bg-black/20 relative z-10">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal direction="up" className="space-y-8">
             <h2 className="text-3xl sm:text-4xl font-bold">
@@ -366,6 +374,65 @@ export default function Home() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Footer Section - This will fix the overflow issue */}
+      <footer className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 border-t border-white/10">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="flex justify-center space-x-6">
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="glass-dark hover:bg-white/10"
+              >
+                <a href={profile.github} target="_blank" rel="noopener noreferrer">
+                  <Github className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="glass-dark hover:bg-white/10"
+              >
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="glass-dark hover:bg-white/10"
+              >
+                <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
+                  <Twitter className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="glass-dark hover:bg-white/10"
+              >
+                <a href={`mailto:${profile.email}`}>
+                  <Mail className="h-5 w-5" />
+                </a>
+              </Button>
+            </div>
+            <p className="text-muted-foreground">
+              © 2024 {profile.name}. Built with Next.js, TypeScript, and lots of ☕
+            </p>
+          </motion.div>
+        </div>
+      </footer>
 
       {/* AI Chatbot */}
       <Chatbot />
