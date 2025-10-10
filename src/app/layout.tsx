@@ -84,6 +84,26 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0b0b" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  try {
+    const storageKey = 'theme';
+    const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(storageKey) : null;
+    const systemDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const wantDark = stored === 'dark' || (!stored || stored === 'system') && systemDark;
+    const root = document.documentElement;
+    if (wantDark) {
+      root.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else {
+      root.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    }
+  } catch {}
+})();`,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen transition-colors duration-300`}

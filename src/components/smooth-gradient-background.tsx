@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/components/theme-provider';
 
 const colors = [
   '#ff0000', // Red
@@ -27,7 +26,6 @@ const colors = [
 ];
 
 export function SmoothGradientBackground() {
-  const { actualTheme } = useTheme();
   const [currentColor, setCurrentColor] = useState(colors[0]);
   const [nextColor, setNextColor] = useState(colors[1]);
   const [progress, setProgress] = useState(0);
@@ -84,20 +82,20 @@ export function SmoothGradientBackground() {
 
   return (
     <div className="fixed inset-0 z-0">
-      {/* Theme-aware base background */}
-      <div className={`absolute inset-0 ${actualTheme === 'dark' ? 'bg-black' : 'bg-white'}`} />
+      {/* Theme-aware base background via CSS variables to avoid hydration mismatches */}
+      <div className="absolute inset-0 bg-background" />
       
       {/* Smooth gradient overlay */}
       <div
         className="absolute inset-0 transition-all duration-1000 ease-in-out"
         style={{
-          background: `linear-gradient(135deg, ${currentGradientColor}${actualTheme === 'dark' ? '20' : '10'}, ${currentGradientColor}${actualTheme === 'dark' ? '10' : '05'}, ${currentGradientColor}${actualTheme === 'dark' ? '05' : '02'})`,
+          background: `linear-gradient(135deg, ${currentGradientColor}12, ${currentGradientColor}08, ${currentGradientColor}04)`,
           filter: 'blur(80px)',
         }}
       />
       
       {/* Subtle noise texture for depth */}
-      <div className={`absolute inset-0 bg-[url('/noise.svg')] ${actualTheme === 'dark' ? 'opacity-5' : 'opacity-2'} pointer-events-none`} />
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-5 dark:opacity-5 pointer-events-none" />
     </div>
   );
 }

@@ -17,20 +17,10 @@ export function Navigation() {
   const { theme, setTheme, actualTheme } = useTheme();
 
   const cycleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
-    } else {
-      setTheme('light');
-    }
+    setTheme(actualTheme === 'dark' ? 'light' : 'dark');
   };
 
-  const getThemeIcon = () => {
-    if (theme === 'light') return Sun;
-    if (theme === 'dark') return Moon;
-    return Monitor;
-  };
+  const getThemeIcon = () => (actualTheme === 'dark' ? Moon : Sun);
 
   const ThemeIcon = getThemeIcon();
 
@@ -95,8 +85,8 @@ export function Navigation() {
                 variant="ghost"
                 size="sm"
                 onClick={cycleTheme}
-                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
-                title={`Current theme: ${theme} (${actualTheme})`}
+                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20 text-foreground"
+                title={`Current theme: ${actualTheme}`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
               </Button>
@@ -106,7 +96,7 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               asChild
-              className="glass-dark hover:bg-white/10"
+              className="glass-dark hover:bg-white/10 text-foreground"
             >
               <a href={profile.cvUrl} download>
                 <Download className="h-4 w-4 mr-2 text-foreground/90" />
@@ -118,7 +108,7 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               asChild
-              className="glass-dark hover:bg-white/10"
+              className="glass-dark hover:bg-white/10 text-foreground"
             >
               <a href={profile.sshKeyUrl} download>
                 <Key className="h-4 w-4 mr-2 text-foreground/90" />
@@ -134,8 +124,8 @@ export function Navigation() {
                 variant="ghost"
                 size="sm"
                 onClick={cycleTheme}
-                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20"
-                title={`Current theme: ${theme} (${actualTheme})`}
+                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20 text-foreground"
+                title={`Current theme: ${actualTheme}`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
               </Button>
@@ -145,7 +135,7 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
-              className="glass-dark hover:bg-white/10"
+              className="glass-dark hover:bg-white/10 text-foreground"
             >
               {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
             </Button>
