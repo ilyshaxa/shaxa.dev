@@ -8,13 +8,14 @@ Here's information about Shaxa:
 
 PROFILE:
 - Name: Shaxriyor Jabborov
-- Title: Full-Stack Developer & Software Engineer
+- Title: DevOps Engineer
 - Location: Tashkent, Uzbekistan
 - Email: shaxriyor@shaxa.dev
 - Website: https://shaxa.dev
-- GitHub: https://github.com/shaxa
-- LinkedIn: https://linkedin.com/in/shaxriyor-jabborov
-- Twitter: https://twitter.com/shaxa_dev
+- GitHub: https://github.com/ilyshaxa
+- LinkedIn: https://linkedin.com/in/shaxriyor
+- Telegram: https://t.me/ilyshaxa
+- x.com: https://x.com/ilyshaxa
 
 BIO:
 I'm a passionate full-stack developer with expertise in modern web technologies. I love building scalable applications, solving complex problems, and creating user experiences that make a difference. With a strong foundation in both frontend and backend development, I enjoy working across the entire technology stack.

@@ -58,11 +58,11 @@ export default function Home() {
               <div className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto h-8">
                 <TypewriterEffect
                   texts={[
-                    "Full-Stack Developer & Software Engineer",
-                    "React & Next.js Specialist",
+                    "DevOps Engineer",
+                    "Observability & Monitoring Expert",
+                    "AWS Certified",
                     "AI & Machine Learning Enthusiast",
-                    "UI/UX Design Expert",
-                    "Open Source Contributor"
+                    "Cloud Engineer"
                   ]}
                   speed={100}
                   deleteSpeed={50}
@@ -421,7 +421,9 @@ export default function Home() {
               </Button>
             </div>
             <p className="text-muted-foreground">
-              © 2024 {profile.name}. Built with Next.js, TypeScript, and lots of ☕
+            © 2025 {profile.name}. Made with Next.js, TypeScript & ☕  </p>
+            <p className="text-muted-foreground">
+            Made with VibeCoding — feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
             </p>
           </motion.div>
         </div>
