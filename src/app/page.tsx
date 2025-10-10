@@ -230,7 +230,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <ParallaxSection speed={0.3} className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 pb-32">
+      <ParallaxSection speed={0.3} className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 pb-16">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -265,7 +265,7 @@ export default function Home() {
             ))}
           </div>
           
-          <ScrollReveal direction="up" delay={0.6} className="text-center mt-12">
+          <ScrollReveal direction="up" delay={0.6} className="text-center mt-12 mb-12 sm:mb-0">
             <Button
               asChild
               size="lg"
@@ -288,7 +288,7 @@ export default function Home() {
       </ParallaxSection>
 
       {/* Experience Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mt-32 mb-16">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mt-16 mb-16">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
