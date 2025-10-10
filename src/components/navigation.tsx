@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -33,6 +33,36 @@ export function Navigation() {
 
   const isActive = (href: string) => pathname === href;
 
+  // Deterministic pill animation: measure active link and animate an absolute indicator
+  const linksContainerRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = useState<{ x: number; width: number } | null>(null);
+
+  const updateIndicator = () => {
+    const container = linksContainerRef.current;
+    if (!container) return;
+    const active = linkRefs.current[pathname];
+    if (!active) {
+      setIndicator(null);
+      return;
+    }
+    const containerRect = container.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    setIndicator({ x: activeRect.left - containerRect.left, width: activeRect.width });
+  };
+
+  useLayoutEffect(() => {
+    updateIndicator();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  useEffect(() => {
+    const onResize = () => updateIndicator();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
@@ -54,11 +84,23 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 relative" ref={linksContainerRef}>
+            {indicator && (
+              <motion.div
+                className="absolute top-0 bottom-0 rounded-md bg-black/5 dark:bg-white/10"
+                initial={false}
+                animate={{ x: indicator.x, width: indicator.width }}
+                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                style={{ left: 0 }}
+              />
+            )}
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                ref={(el: HTMLAnchorElement | null) => {
+                  linkRefs.current[item.href] = el;
+                }}
                 className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                   isActive(item.href)
                     ? 'text-primary'
@@ -66,14 +108,6 @@ export function Navigation() {
                 }`}
               >
                 {item.label}
-                {isActive(item.href) && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute inset-0 bg-primary/10 rounded-md"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  />
-                )}
               </Link>
             ))}
           </div>
@@ -82,10 +116,9 @@ export function Navigation() {
           <div className="hidden md:flex items-center space-x-4">
             <ClientOnly>
               <Button
-                variant="ghost"
+                variant="glass"
                 size="sm"
                 onClick={cycleTheme}
-                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20 text-foreground"
                 title={`Current theme: ${actualTheme}`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
@@ -93,10 +126,10 @@ export function Navigation() {
             </ClientOnly>
             
             <Button
-              variant="ghost"
+              variant="glass"
               size="sm"
               asChild
-              className="glass-dark hover:bg-white/10 text-foreground"
+              className="text-foreground"
             >
               <a href={profile.cvUrl} download>
                 <Download className="h-4 w-4 mr-2 text-foreground/90" />
@@ -105,10 +138,10 @@ export function Navigation() {
             </Button>
             
             <Button
-              variant="ghost"
+              variant="glass"
               size="sm"
               asChild
-              className="glass-dark hover:bg-white/10 text-foreground"
+              className="text-foreground"
             >
               <a href={profile.sshKeyUrl} download>
                 <Key className="h-4 w-4 mr-2 text-foreground/90" />
@@ -121,10 +154,9 @@ export function Navigation() {
           <div className="md:hidden flex items-center space-x-2">
             <ClientOnly>
               <Button
-                variant="ghost"
+                variant="glass"
                 size="sm"
                 onClick={cycleTheme}
-                className="bg-gray-100/50 dark:bg-white/10 hover:bg-gray-200/50 dark:hover:bg-white/20 text-foreground"
                 title={`Current theme: ${actualTheme}`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
@@ -132,10 +164,10 @@ export function Navigation() {
             </ClientOnly>
             
             <Button
-              variant="ghost"
+              variant="glass"
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
-              className="glass-dark hover:bg-white/10 text-foreground"
+              className="text-foreground"
             >
               {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
             </Button>

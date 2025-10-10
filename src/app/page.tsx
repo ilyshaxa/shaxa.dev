@@ -99,7 +99,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="glass-dark hover:bg-white/20"
+                variant="glass"
               >
                 <a href={profile.cvUrl} download>
                   <Download className="h-5 w-5 mr-2" />
@@ -111,7 +111,7 @@ export default function Home() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="glass-dark hover:bg-white/10"
+                className="text-foreground"
               >
                 <a href={profile.sshKeyUrl} download>
                   <Key className="h-5 w-5 mr-2" />
@@ -128,9 +128,8 @@ export default function Home() {
             >
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.github} target="_blank" rel="noopener noreferrer">
                   <Github className="h-5 w-5" />
@@ -139,9 +138,8 @@ export default function Home() {
               
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
                   <Linkedin className="h-5 w-5" />
@@ -150,9 +148,8 @@ export default function Home() {
               
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
                   <Twitter className="h-5 w-5" />
@@ -161,9 +158,8 @@ export default function Home() {
               
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={`mailto:${profile.email}`}>
                   <Mail className="h-5 w-5" />
@@ -273,7 +269,8 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="glass-dark hover:bg-white/20 group"
+              variant="glass"
+              className="group"
             >
               <a href="/projects" className="flex items-center gap-2">
                 View All Projects
@@ -354,7 +351,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="glass-dark hover:bg-white/20 dark:hover:bg-white/20"
+                variant="glass"
               >
                 <a href="/contact">
                   Get In Touch
@@ -364,7 +361,7 @@ export default function Home() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="glass-dark hover:bg-white/10 dark:hover:bg-white/10"
+                className="text-foreground"
               >
                 <a href="/about">
                   Learn More
@@ -388,9 +385,8 @@ export default function Home() {
             <div className="flex justify-center space-x-6">
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.github} target="_blank" rel="noopener noreferrer">
                   <Github className="h-5 w-5" />
@@ -398,9 +394,8 @@ export default function Home() {
               </Button>
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
                   <Linkedin className="h-5 w-5" />
@@ -408,9 +403,8 @@ export default function Home() {
               </Button>
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
                   <Twitter className="h-5 w-5" />
@@ -418,9 +412,8 @@ export default function Home() {
               </Button>
               <Button
                 asChild
-                variant="ghost"
+                variant="glass"
                 size="sm"
-                className="glass-dark hover:bg-white/10"
               >
                 <a href={`mailto:${profile.email}`}>
                   <Mail className="h-5 w-5" />

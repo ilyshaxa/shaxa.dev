@@ -136,7 +136,8 @@ export default function ContactPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full glass-dark hover:bg-white/20"
+                    variant="glass"
+                    className="w-full"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
@@ -210,8 +211,8 @@ export default function ContactPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     asChild
-                    variant="outline"
-                    className="glass-dark hover:bg-white/10 justify-start"
+                    variant="glass"
+                    className="justify-start"
                   >
                     <a href={profile.github} target="_blank" rel="noopener noreferrer">
                       <Github className="h-4 w-4 mr-2" />
@@ -221,8 +222,8 @@ export default function ContactPage() {
                   
                   <Button
                     asChild
-                    variant="outline"
-                    className="glass-dark hover:bg-white/10 justify-start"
+                    variant="glass"
+                    className="justify-start"
                   >
                     <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
                       <Linkedin className="h-4 w-4 mr-2" />
@@ -232,8 +233,8 @@ export default function ContactPage() {
                   
                   <Button
                     asChild
-                    variant="outline"
-                    className="glass-dark hover:bg-white/10 justify-start"
+                    variant="glass"
+                    className="justify-start"
                   >
                     <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
                       <Twitter className="h-4 w-4 mr-2" />
@@ -243,8 +244,8 @@ export default function ContactPage() {
                   
                   <Button
                     asChild
-                    variant="outline"
-                    className="glass-dark hover:bg-white/10 justify-start"
+                    variant="glass"
+                    className="justify-start"
                   >
                     <a href={`mailto:${profile.email}`}>
                       <Mail className="h-4 w-4 mr-2" />
