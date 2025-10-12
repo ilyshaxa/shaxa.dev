@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, MapPin, Phone, Github, Linkedin, Twitter, MessageCircle, Send } from 'lucide-react';
 import { getProfile } from '@/lib/data';
-import { TelegramIcon } from '@/components/icons/telegram-icon';
 
 export default function ContactPage() {
   const profile = getProfile();
@@ -20,26 +19,50 @@ export default function ContactPage() {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const MAX_MESSAGE_LENGTH = 3000; // Telegram has a 4096 character limit, leaving some buffer
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Reset form
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
-    
-    // Show success message (you can implement toast notification here)
-    alert('Thank you for your message! I&apos;ll get back to you soon.');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Reset form on success
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        alert('Thank you for your message! I\'ll get back to you soon.');
+      } else {
+        alert(`Error: ${result.error || 'Failed to send message. Please try again.'}`);
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('Failed to send message. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    
+    // Apply character limit to message field
+    if (name === 'message' && value.length > MAX_MESSAGE_LENGTH) {
+      return; // Don't update if exceeding limit
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
@@ -69,15 +92,15 @@ export default function ContactPage() {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TelegramIcon className="h-6 w-6 text-primary" />
-                  TelegramIcon a Message
-                </CardTitle>
-                <CardDescription>
-                  Fill out the form below and I&apos;ll get back to you as soon as possible
-                </CardDescription>
-              </CardHeader>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="h-6 w-6 text-primary" />
+                    Leave me a message
+                  </CardTitle>
+                  <CardDescription>
+                    Send me a message and I&apos;ll get back to you as soon as possible.
+                  </CardDescription>
+                </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -122,7 +145,12 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
+                    <div className="flex justify-between items-center">
+                      <Label htmlFor="message">Message</Label>
+                      <span className="text-sm text-muted-foreground">
+                        {formData.message.length}/{MAX_MESSAGE_LENGTH}
+                      </span>
+                    </div>
                     <Textarea
                       id="message"
                       name="message"
@@ -130,8 +158,14 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="Tell me about your project or just say hello!"
                       className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-md min-h-[120px]"
+                      maxLength={MAX_MESSAGE_LENGTH}
                       required
                     />
+                    {formData.message.length > MAX_MESSAGE_LENGTH * 0.9 && (
+                      <p className="text-sm text-amber-500">
+                        ⚠️ Message is getting close to the character limit
+                      </p>
+                    )}
                   </div>
                   
                   <Button
@@ -140,7 +174,7 @@ export default function ContactPage() {
                     variant="glass"
                     className="w-full shadow-md backdrop-filter backdrop-blur-sm"
                   >
-                    {isSubmitting ? 'TelegramIconing...' : 'TelegramIcon Message'}
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
               </CardContent>
@@ -260,7 +294,7 @@ export default function ContactPage() {
                     className="justify-start shadow-md"
                   >
                     <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
-                      <TelegramIcon className="h-4 w-4 mr-2" />
+                      <Send className="h-4 w-4 mr-2" />
                       Telegram
                     </a>
                   </Button>
