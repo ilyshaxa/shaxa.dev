@@ -183,7 +183,7 @@ export function Navigation() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border-t border-gray-100 dark:border-white/10"
+            className="md:hidden bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm border-t border-gray-100 dark:border-white/10"
           >
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
@@ -206,7 +206,7 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="w-full justify-start bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-20 border border-gray-100 dark:border-white/10"
+                  className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
                 >
                   <a href={profile.cvUrl} download>
                     <Download className="h-4 w-4 mr-2" />
@@ -218,7 +218,7 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="w-full justify-start bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-20 border border-gray-100 dark:border-white/10"
+                  className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
                 >
                   <a href={profile.sshKeyUrl} download>
                     <Key className="h-4 w-4 mr-2" />
