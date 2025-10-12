@@ -3,7 +3,17 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ['js-yaml'],
   images: {
-    domains: ['github.com', 'vercel.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vercel.com',
+      },
+    ],
+    qualities: [25, 50, 75, 100],
   },
   async headers() {
     return [

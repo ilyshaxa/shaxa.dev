@@ -35,18 +35,20 @@ export default function Home() {
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-              className="relative w-40 h-40 mx-auto"
+              className="relative w-80 h-80 mx-auto"
             >
               <div className="absolute inset-0 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border-4 border-gray-300/30 dark:border-white/20 animate-pulse-slow" />
               <div className="absolute inset-2 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border-2 border-primary/30 animate-pulse-slow" style={{ animationDelay: '1s' }} />
               <div className="absolute inset-4 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border border-primary/50 animate-pulse-slow" style={{ animationDelay: '2s' }} />
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image
-                  src="/images/profile.svg"
+                  src="/images/profile.jpg"
                   alt="Shaxriyor Jabborov"
-                  width={120}
-                  height={120}
+                  width={270}
+                  height={270}
                   className="rounded-full object-cover"
+                  quality={100}
+                  priority
                 />
               </div>
             </motion.div>

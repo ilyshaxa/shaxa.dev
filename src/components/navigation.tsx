@@ -68,7 +68,7 @@ export function Navigation() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 liquid-glass dark:liquid-glass-dark border-b border-white/10 shadow-2xl"
+      className="fixed top-0 left-0 right-0 z-50 bg-blue-0 dark:bg-blue-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border-b border-gray-100 dark:border-white/10 shadow-2xl"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -101,10 +101,10 @@ export function Navigation() {
                 ref={(el: HTMLAnchorElement | null) => {
                   linkRefs.current[item.href] = el;
                 }}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
                     ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:scale-105'
                 }`}
               >
                 {item.label}
@@ -183,7 +183,7 @@ export function Navigation() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden glass-dark border-t border-white/10"
+            className="md:hidden bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border-t border-gray-100 dark:border-white/10"
           >
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
@@ -191,10 +191,10 @@ export function Navigation() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`block px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                  className={`block px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
                     isActive(item.href)
-                      ? 'text-primary'
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'text-primary bg-primary/10'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   {item.label}
@@ -206,7 +206,7 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="w-full justify-start glass-dark hover:bg-white/10"
+                  className="w-full justify-start bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-20 border border-gray-100 dark:border-white/10"
                 >
                   <a href={profile.cvUrl} download>
                     <Download className="h-4 w-4 mr-2" />
@@ -218,7 +218,7 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="w-full justify-start glass-dark hover:bg-white/10"
+                  className="w-full justify-start bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-20 border border-gray-100 dark:border-white/10"
                 >
                   <a href={profile.sshKeyUrl} download>
                     <Key className="h-4 w-4 mr-2" />

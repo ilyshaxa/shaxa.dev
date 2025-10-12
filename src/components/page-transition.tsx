@@ -36,24 +36,7 @@ export function PageTransition({ children }: PageTransitionProps) {
         }}
         className="relative"
       >
-        {/* Liquid Glass Overlay Effect */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ 
-            opacity: 0.1, 
-            scale: 1,
-            transition: {
-              duration: 0.8,
-              delay: 0.2,
-            }
-          }}
-          className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 dark:from-blue-400/30 dark:via-purple-400/30 dark:to-pink-400/30 rounded-3xl blur-3xl -z-10"
-        />
-        
-        {/* Content */}
-        <div className="relative z-10">
-          {children}
-        </div>
+        {children}
       </motion.div>
     </AnimatePresence>
   );

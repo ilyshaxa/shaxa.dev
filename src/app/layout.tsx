@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
-import { SmoothGradientBackground } from "@/components/smooth-gradient-background";
 import { PageTransition } from "@/components/page-transition";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -109,10 +108,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen transition-colors duration-300`}
       >
         <ThemeProvider>
-          <div className="min-h-screen relative overflow-hidden">
-            {/* Smooth Gradient Background */}
-            <SmoothGradientBackground />
-            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5 dark:opacity-10" />
+          <div className="min-h-screen relative overflow-hidden bg-background">
+            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 dark:opacity-10" />
             <div className="fixed inset-0 pointer-events-none">
               <ParticleBackground />
               <FloatingElements />

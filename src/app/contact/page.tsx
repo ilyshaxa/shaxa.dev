@@ -67,7 +67,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <Card className="glass-dark border-white/20">
+            <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Send className="h-6 w-6 text-primary" />
@@ -88,7 +88,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Your name"
-                        className="glass-dark border-white/20"
+                        className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-md"
                         required
                       />
                     </div>
@@ -101,7 +101,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="your@email.com"
-                        className="glass-dark border-white/20"
+                        className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-md"
                         required
                       />
                     </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       placeholder="What's this about?"
-                      className="glass-dark border-white/20"
+                      className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-md"
                       required
                     />
                   </div>
@@ -128,7 +128,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Tell me about your project or just say hello!"
-                      className="glass-dark border-white/20 min-h-[120px]"
+                      className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-md min-h-[120px]"
                       required
                     />
                   </div>
@@ -137,7 +137,7 @@ export default function ContactPage() {
                     type="submit"
                     disabled={isSubmitting}
                     variant="glass"
-                    className="w-full"
+                    className="w-full shadow-md backdrop-filter backdrop-blur-sm"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
@@ -154,7 +154,7 @@ export default function ContactPage() {
             className="space-y-8"
           >
             {/* Contact Details */}
-            <Card className="glass-dark border-white/20">
+            <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
               <CardHeader>
                 <CardTitle>Contact Information</CardTitle>
                 <CardDescription>
@@ -200,7 +200,7 @@ export default function ContactPage() {
             </Card>
 
             {/* Social Links */}
-            <Card className="glass-dark border-white/20">
+            <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
               <CardHeader>
                 <CardTitle>Follow Me</CardTitle>
                 <CardDescription>
@@ -212,7 +212,7 @@ export default function ContactPage() {
                   <Button
                     asChild
                     variant="glass"
-                    className="justify-start"
+                    className="justify-start shadow-md"
                   >
                     <a href={profile.github} target="_blank" rel="noopener noreferrer">
                       <Github className="h-4 w-4 mr-2" />
@@ -223,7 +223,7 @@ export default function ContactPage() {
                   <Button
                     asChild
                     variant="glass"
-                    className="justify-start"
+                    className="justify-start shadow-md"
                   >
                     <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
                       <Linkedin className="h-4 w-4 mr-2" />
@@ -234,7 +234,7 @@ export default function ContactPage() {
                   <Button
                     asChild
                     variant="glass"
-                    className="justify-start"
+                    className="justify-start shadow-md"
                   >
                     <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
                       <Twitter className="h-4 w-4 mr-2" />
@@ -245,7 +245,7 @@ export default function ContactPage() {
                   <Button
                     asChild
                     variant="glass"
-                    className="justify-start"
+                    className="justify-start shadow-md"
                   >
                     <a href={`mailto:${profile.email}`}>
                       <Mail className="h-4 w-4 mr-2" />
@@ -257,7 +257,7 @@ export default function ContactPage() {
             </Card>
 
             {/* Response Time */}
-            <Card className="glass-dark border-white/20">
+            <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
               <CardHeader>
                 <CardTitle>Response Time</CardTitle>
                 <CardDescription>

@@ -22,7 +22,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       whileHover={{ y: -5 }}
       className="group h-full"
     >
-      <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300 h-full overflow-hidden">
+      <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
         {/* Project Image */}
         <div className="relative h-48 overflow-hidden">
           <Image
