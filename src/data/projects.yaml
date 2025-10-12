@@ -1,6 +1,6 @@
 featured:
   - title: "E-Commerce Platform"
-    description: "A full-stack e-commerce solution built with Next.js, TypeScript, and PostgreSQL. Features include user authentication, payment processing, inventory management, and admin dashboard."
+    description: "A cloud-native e-commerce platform deployed on Kubernetes with CI/CD pipelines. Features include automated scaling, infrastructure as code, monitoring, and secure container orchestration."
     technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS"]
     image: "/projects/ecommerce.jpg"
     liveUrl: "https://ecommerce-demo.shaxa.dev"
@@ -19,7 +19,7 @@ featured:
     status: "In Progress"
     year: "2024"
 
-  - title: "Developer Portfolio Website"
+  - title: "DevOps Infrastructure Portfolio"
     description: "Modern, responsive portfolio website with dark mode, smooth animations, and integrated AI chatbot. Built with Next.js 14 and deployed on Vercel."
     technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API"]
     image: "/projects/portfolio.jpg"

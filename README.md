@@ -271,9 +271,9 @@ This project is open source and available under the [MIT License](LICENSE).
 If you have any questions or need help:
 
 - Email: shaxriyor@shaxa.dev
-- GitHub: [@shaxa](https://github.com/shaxa)
-- LinkedIn: [Shaxriyor Jabborov](https://linkedin.com/in/shaxriyor-jabborov)
-
+- GitHub: [@ilyshaxa](https://github.com/ilyshaxa)
+- LinkedIn: [Shaxriyor Jabborov](https://linkedin.com/in/shaxriyor)
+--Telegram: [@ilyshaxa](https://t.me/ilyshaxa)     
 ---
 
 Built with ❤️ by [Shaxriyor Jabborov](https://shaxa.dev)

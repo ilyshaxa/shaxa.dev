@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Send } from 'lucide-react';
+import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from 'lucide-react';
 import { getProfile } from '@/lib/data';
+import { TelegramIcon } from '@/components/icons/telegram-icon';
 
 export default function ContactPage() {
   const profile = getProfile();
@@ -70,8 +71,8 @@ export default function ContactPage() {
             <Card className="bg-blue-400 dark:bg-blue-600 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border border-gray-100 dark:border-white/10 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Send className="h-6 w-6 text-primary" />
-                  Send a Message
+                  <TelegramIcon className="h-6 w-6 text-primary" />
+                  TelegramIcon a Message
                 </CardTitle>
                 <CardDescription>
                   Fill out the form below and I&apos;ll get back to you as soon as possible
@@ -139,7 +140,7 @@ export default function ContactPage() {
                     variant="glass"
                     className="w-full shadow-md backdrop-filter backdrop-blur-sm"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {isSubmitting ? 'TelegramIconing...' : 'TelegramIcon Message'}
                   </Button>
                 </form>
               </CardContent>
@@ -250,6 +251,17 @@ export default function ContactPage() {
                     <a href={`mailto:${profile.email}`}>
                       <Mail className="h-4 w-4 mr-2" />
                       Email
+                    </a>
+                  </Button>
+                  
+                  <Button
+                    asChild
+                    variant="glass"
+                    className="justify-start shadow-md"
+                  >
+                    <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
+                      <TelegramIcon className="h-4 w-4 mr-2" />
+                      Telegram
                     </a>
                   </Button>
                 </div>

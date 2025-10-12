@@ -9,11 +9,15 @@ export interface Profile {
   github: string;
   linkedin: string;
   twitter: string;
+  telegram: string;
   bio: string;
   shortBio: string;
   skills: {
-    frontend: string[];
-    backend: string[];
+    cloud: string[];
+    containers: string[];
+    infrastructure: string[];
+    cicd: string[];
+    monitoring: string[];
     tools: string[];
   };
   experience: Array<{
@@ -21,6 +25,9 @@ export interface Profile {
     position: string;
     duration: string;
     description: string;
+    website?: string;
+    employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance' | 'Internship';
+    logo?: string;
   }>;
   education: Array<{
     institution: string;
@@ -60,56 +67,93 @@ export interface ProjectsData {
 // Static data - in production, you might want to load this from a CMS or API
 const profileData: Profile = {
   name: "Shaxriyor Jabborov",
-  title: "Full-Stack Developer & Software Engineer",
+  title: "DevOps Engineer",
   location: "Tashkent, Uzbekistan",
   email: "shaxriyor@shaxa.dev",
   website: "https://shaxa.dev",
-  github: "https://github.com/shaxa",
-  linkedin: "https://linkedin.com/in/shaxriyor-jabborov",
-  twitter: "https://twitter.com/shaxa_dev",
-  bio: "I'm a passionate full-stack developer with expertise in modern web technologies. I love building scalable applications, solving complex problems, and creating user experiences that make a difference. With a strong foundation in both frontend and backend development, I enjoy working across the entire technology stack.",
-  shortBio: "Full-stack developer passionate about building scalable applications and creating exceptional user experiences.",
+  github: "https://github.com/ilyshaxa",
+  linkedin: "https://linkedin.com/in/shaxriyor",
+  twitter: "https://twitter.com/ilyshaxa",
+  telegram: "https://t.me/ilyshaxa",
+  bio: "I'm a passionate DevOps engineer with expertise in cloud infrastructure and automation. I love building scalable systems, solving complex infrastructure problems, and creating reliable deployment pipelines that make a difference. With a strong foundation in both cloud platforms and containerization, I enjoy working across the entire DevOps technology stack.",
+  shortBio: "DevOps engineer passionate about building scalable infrastructure and creating reliable automation solutions.",
   skills: {
-    frontend: ["React/Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Vue.js", "Svelte"],
-    backend: ["Node.js", "Python", "PostgreSQL", "MongoDB", "Redis", "Docker"],
-    tools: ["Git", "Vercel", "AWS", "Linux", "VS Code", "Figma"]
+    cloud: ["AWS", "Azure", "Google Cloud", "DigitalOcean", "Alibaba Cloud"],
+    containers: ["Docker", "Kubernetes", "Podman", "Containerd", "Helm"],
+    infrastructure: ["Terraform", "Ansible", "Pulumi", "CloudFormation", "ARM Templates", "CDK"],
+    cicd: ["Jenkins", "GitLab CI", "GitHub Actions", "Azure DevOps", "CircleCI", "ArgoCD"],
+    monitoring: ["Prometheus", "Grafana", "Loki", "Promtail", "ELK Stack", "Datadog"],
+    tools: ["Git", "Linux", "Bash", "Python", "YAML", "JSON"]
   },
   experience: [
     {
-      company: "Tech Company",
-      position: "Senior Full-Stack Developer",
-      duration: "2022 - Present",
-      description: "Leading development of scalable web applications and mentoring junior developers."
+      company: "kpi.com",
+      position: "DevOps Engineer",
+      duration: "2023 May - Present",
+      description: "Responsible for DevOps, automation, and cloud infrastructure at kpi.com.",
+      website: "https://kpi.com",
+      employmentType: "Full-time",
+      logo: "/images/companies/kpi-logo.png"
     },
     {
-      company: "Startup Inc",
-      position: "Full-Stack Developer",
-      duration: "2020 - 2022",
-      description: "Built and maintained multiple client projects using modern web technologies."
+      company: "PraaktisGo",
+      position: "DevOps Engineer",
+      duration: "2025 January - Present",
+      description: "Responsible for DevOps, automation, and cloud infrastructure at PraaktisGo.",
+      website: "https://praaktisgo.com",
+      employmentType: "Freelance",
+      logo: "/images/companies/praaktisgo-logo.png"
+    },
+    {
+      company: "zaytra.ai",
+      position: "DevOps Engineer & Tech Lead",
+      duration: "2025 July - Present",
+      description: "Responsible for DevOps, automation, and cloud infrastructure at zaytra.ai. Also, responsible for the technical direction of the company.",
+      website: "https://zaytra.ai",
+      employmentType: "Freelance",
+      logo: "/images/companies/zaytra-logo.png"
+    },
+    {
+      company: "izish.uz",
+      position: "DevOps Engineer",
+      duration: "2024 November - 2025 July",
+      description: "Responsible for DevOps, automation, and cloud infrastructure at izish.uz.",
+      website: "https://izish.uz",
+      employmentType: "Contract",
+      logo: "/images/companies/izish-logo.png"
+    },
+    {
+      company: "RetouchGarage",
+      position: "DevOps Engineer & Tech Lead",
+      duration: "2025 June - 2025 July",
+      description: "Responsible for DevOps, automation, and cloud infrastructure at RetouchGarage. Also, responsible for the technical direction of the company.",
+      website: "https://retouchgarage.com",
+      employmentType: "Part-time",
+      logo: "/images/companies/retouch-logo.png"
     }
   ],
   education: [
     {
-      institution: "Tashkent University of Information Technologies",
-      degree: "Bachelor's in Computer Science",
-      year: "2016 - 2020"
+      institution: "Tashkent State University of Economics",
+      degree: "Bachelor's in Economics",
+      year: "2022 - 2027"
     }
   ],
   certifications: [
     {
-      name: "AWS Certified Developer",
+      name: "AWS Certified DevOps Engineer",
       issuer: "Amazon Web Services",
       year: "2023"
     },
     {
-      name: "Google Cloud Professional Developer",
+      name: "Google Cloud Professional DevOps Engineer",
       issuer: "Google Cloud",
       year: "2022"
     }
   ],
   languages: [
     { name: "English", level: "Fluent" },
-    { name: "Russian", level: "Native" },
+    { name: "Russian", level: "Basic" },
     { name: "Uzbek", level: "Native" }
   ],
   cvUrl: "/cv/shaxriyor-jabborov-cv.pdf",
@@ -120,7 +164,7 @@ const projectsData: ProjectsData = {
   featured: [
     {
       title: "E-Commerce Platform",
-      description: "A full-stack e-commerce solution built with Next.js, TypeScript, and PostgreSQL. Features include user authentication, payment processing, inventory management, and admin dashboard.",
+      description: "A cloud-native e-commerce platform deployed on Kubernetes with CI/CD pipelines. Features include automated scaling, infrastructure as code, monitoring, and secure container orchestration.",
       technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS"],
       image: "/projects/ecommerce.svg",
       liveUrl: "https://ecommerce-demo.shaxa.dev",
@@ -132,7 +176,7 @@ const projectsData: ProjectsData = {
     {
       title: "AI-Powered Analytics Dashboard",
       description: "Real-time analytics dashboard with AI insights and machine learning predictions. Built for processing large datasets and providing actionable business intelligence.",
-      technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI"],
+      technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI", "Next.js"],
       image: "/projects/analytics.svg",
       liveUrl: "https://analytics-demo.shaxa.dev",
       githubUrl: "https://github.com/shaxa/ai-analytics",
@@ -141,7 +185,7 @@ const projectsData: ProjectsData = {
       year: "2024"
     },
     {
-      title: "Developer Portfolio Website",
+      title: "DevOps Infrastructure Portfolio",
       description: "Modern, responsive portfolio website with dark mode, smooth animations, and integrated AI chatbot. Built with Next.js 14 and deployed on Vercel.",
       technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API"],
       image: "/projects/portfolio.svg",

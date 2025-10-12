@@ -23,7 +23,7 @@ export default function AboutPage() {
             <span className="text-gradient">About Me</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Get to know more about my journey, values, and what drives me as a developer
+            Get to know more about my journey, values, and what drives me as a DevOps engineer
           </p>
         </motion.div>
 
@@ -173,7 +173,7 @@ export default function AboutPage() {
                   <p className="text-muted-foreground">
                     I believe in writing clean, maintainable, and well-documented code. 
                     Good code is not just about functionality, but about readability and 
-                    maintainability for future developers.
+                    maintainability for future DevOps engineers.
                   </p>
                 </div>
                 

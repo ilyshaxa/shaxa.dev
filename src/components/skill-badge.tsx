@@ -5,14 +5,17 @@ import { cn } from '@/lib/utils';
 
 interface SkillBadgeProps {
   skill: string;
-  category: 'frontend' | 'backend' | 'tools';
+  category: 'cloud' | 'containers' | 'infrastructure' | 'cicd' | 'monitoring' | 'tools';
   index: number;
 }
 
 const categoryColors = {
-  frontend: 'from-blue-500 to-cyan-500',
-  backend: 'from-green-500 to-emerald-500',
-  tools: 'from-purple-500 to-pink-500',
+  cloud: 'from-blue-500 to-cyan-500',
+  containers: 'from-green-500 to-emerald-500',
+  infrastructure: 'from-orange-500 to-red-500',
+  cicd: 'from-purple-500 to-pink-500',
+  monitoring: 'from-yellow-500 to-orange-500',
+  tools: 'from-gray-500 to-slate-500',
 };
 
 export function SkillBadge({ skill, category, index }: SkillBadgeProps) {

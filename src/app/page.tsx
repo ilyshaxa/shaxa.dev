@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Download, Key, Github, Linkedin, Twitter, Mail, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Key, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,11 +14,15 @@ import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { getProfile, getFeaturedProjects } from '@/lib/data';
+import { TelegramIcon } from '@/components/icons/telegram-icon';
 import Image from 'next/image';
 
 export default function Home() {
   const profile = getProfile();
   const featuredProjects = getFeaturedProjects();
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
+  
+  const visibleExperiences = showAllExperiences ? profile.experience : profile.experience.slice(0, 3);
 
   return (
     <div className="min-h-screen">
@@ -167,6 +172,16 @@ export default function Home() {
                   <Mail className="h-5 w-5" />
                 </a>
               </Button>
+              
+              <Button
+                asChild
+                variant="glass"
+                size="sm"
+              >
+                <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
+                  <TelegramIcon className="h-5 w-5" />
+                </a>
+              </Button>
             </motion.div>
           </motion.div>
         </div>
@@ -180,51 +195,48 @@ export default function Home() {
               <span className="text-gradient">Skills & Technologies</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A comprehensive toolkit for building modern web applications
+              A comprehensive DevOps toolkit for modern infrastructure
             </p>
           </ScrollReveal>
           
-          <div className="space-y-16">
+          {/* Compact Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {Object.entries(profile.skills).map(([category, skills], categoryIndex) => (
               <ScrollReveal
                 key={category}
                 direction="up"
-                delay={categoryIndex * 0.2}
-                className="space-y-8"
+                delay={categoryIndex * 0.1}
+                className="group"
               >
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold capitalize mb-2 text-gradient">
-                    {category}
-                  </h3>
-                  <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full" />
-                </div>
-                <div className="flex flex-wrap justify-center gap-4">
-                  {skills.map((skill, skillIndex) => (
-                    <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ 
-                        delay: skillIndex * 0.1, 
-                        duration: 0.5,
-                        type: 'spring',
-                        stiffness: 200
-                      }}
-                      viewport={{ once: true }}
-                      whileHover={{ 
-                        scale: 1.1, 
-                        y: -5,
-                        transition: { duration: 0.2 }
-                      }}
-                    >
-                      <SkillBadge
-                        skill={skill}
-                        category={category as 'frontend' | 'backend' | 'tools'}
-                        index={skillIndex}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl h-full">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-secondary" />
+                      <CardTitle className="text-lg font-semibold capitalize text-gradient">
+                        {category.replace(/([A-Z])/g, ' $1').trim()}
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex flex-wrap gap-2">
+                      {skills.map((skill, skillIndex) => (
+                        <motion.div
+                          key={skillIndex}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ 
+                            delay: categoryIndex * 0.1 + skillIndex * 0.05, 
+                            duration: 0.3 
+                          }}
+                          whileHover={{ scale: 1.05 }}
+                          className="text-xs font-medium px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/20 hover:border-primary/40 transition-all duration-200"
+                        >
+                          {skill}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </ScrollReveal>
             ))}
           </div>
@@ -307,34 +319,94 @@ export default function Home() {
             </p>
           </motion.div>
           
-          <div className="space-y-8">
-            {profile.experience.map((exp, index) => (
+          {/* Compact Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+            {visibleExperiences.map((exp, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2, duration: 0.8 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
+                className="group"
               >
-                <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <CardTitle className="text-xl">{exp.position}</CardTitle>
-                        <CardDescription className="text-lg">{exp.company}</CardDescription>
+                <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl h-full">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start gap-4">
+                      {exp.logo && (
+                        <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0">
+                          <Image
+                            src={exp.logo}
+                            alt={`${exp.company} logo`}
+                            width={32}
+                            height={32}
+                            className="object-contain"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg font-semibold mb-1 line-clamp-2">{exp.position}</CardTitle>
+                        <div className="flex items-center gap-2 flex-wrap mb-2">
+                          <CardDescription className="text-sm font-medium">{exp.company}</CardDescription>
+                          {exp.website && (
+                            <a
+                              href={exp.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Visit
+                            </a>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="secondary" className="text-xs">
+                            {exp.employmentType}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {exp.duration}
+                          </Badge>
+                        </div>
                       </div>
-                      <Badge variant="outline" className="glass-dark mt-2 sm:mt-0">
-                        {exp.duration}
-                      </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{exp.description}</p>
+                  <CardContent className="pt-0">
+                    <p className="text-sm text-muted-foreground line-clamp-3">{exp.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
+
+          {/* Show More/Less Button */}
+          {profile.experience.length > 3 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Button
+                onClick={() => setShowAllExperiences(!showAllExperiences)}
+                variant="glass"
+                className="group"
+              >
+                {showAllExperiences ? (
+                  <>
+                    <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show All ({profile.experience.length - 3} more)
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -421,11 +493,20 @@ export default function Home() {
                   <Mail className="h-5 w-5" />
                 </a>
               </Button>
+              <Button
+                asChild
+                variant="glass"
+                size="sm"
+              >
+                <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
+                  <TelegramIcon className="h-5 w-5" />
+                </a>
+              </Button>
             </div>
             <p className="text-muted-foreground">
-            © 2025 {profile.name}. Made with Next.js, TypeScript & ☕  </p>
+            © 2025 {profile.name}. Made with Next.js, TypeScript & VibeCoding ☕  </p>
             <p className="text-muted-foreground">
-            Made with VibeCoding — feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
+            Feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
             </p>
           </motion.div>
         </div>
