@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Download, Key, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { SkillBadge } from '@/components/skill-badge';
 import { ProjectCard } from '@/components/project-card';
 import { Chatbot } from '@/components/chatbot';
 import { ScrollReveal } from '@/components/scroll-reveal';

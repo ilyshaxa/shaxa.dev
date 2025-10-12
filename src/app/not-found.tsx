@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Home, ArrowLeft, Search, AlertCircle } from 'lucide-react';
+import { Home, Search, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -45,8 +45,8 @@ export default function NotFound() {
             <span className="text-gradient">Page Not Found</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-md mx-auto">
-            Oops! The page you're looking for seems to have vanished into the digital void. 
-            Don't worry, even the best DevOps engineers encounter 404s sometimes!
+            Oops! The page you&apos;re looking for seems to have vanished into the digital void. 
+            Don&apos;t worry, even the best DevOps engineers encounter 404s sometimes!
           </p>
         </motion.div>
 

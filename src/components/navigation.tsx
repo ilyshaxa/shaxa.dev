@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Download, Key, Monitor } from 'lucide-react';
+import { Menu, X, Sun, Moon, Download, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { ClientOnly } from '@/components/client-only';
@@ -14,7 +14,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const profile = getProfile();
-  const { theme, setTheme, actualTheme } = useTheme();
+  const { setTheme, actualTheme } = useTheme();
 
   const cycleTheme = () => {
     setTheme(actualTheme === 'dark' ? 'light' : 'dark');
