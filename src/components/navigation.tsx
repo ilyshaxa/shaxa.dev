@@ -68,7 +68,7 @@ export function Navigation() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-blue-0 dark:bg-blue-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-opacity-10 border-b border-gray-100 dark:border-white/10 shadow-2xl"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm border-b border-gray-100 dark:border-white/10 shadow-2xl"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
