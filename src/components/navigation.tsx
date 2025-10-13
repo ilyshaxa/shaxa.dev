@@ -25,10 +25,10 @@ export function Navigation() {
   const ThemeIcon = getThemeIcon();
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: 'Home', title: 'Home - Shaxriyor Jabborov DevOps Engineer Portfolio', ariaLabel: 'Go to homepage' },
+    { href: '/about', label: 'About', title: 'About Me - Learn about Shaxriyor Jabborov, DevOps Engineer and Cloud Infrastructure Specialist', ariaLabel: 'Learn about my background, education, and experience' },
+    { href: '/projects', label: 'Projects', title: 'Projects - View my DevOps and cloud infrastructure projects', ariaLabel: 'View my portfolio of DevOps projects and achievements' },
+    { href: '/contact', label: 'Contact', title: 'Contact - Get in touch with Shaxriyor Jabborov', ariaLabel: 'Contact me for collaboration or opportunities' },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -101,6 +101,8 @@ export function Navigation() {
                 ref={(el: HTMLAnchorElement | null) => {
                   linkRefs.current[item.href] = el;
                 }}
+                title={item.title}
+                aria-label={item.ariaLabel}
                 className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
                     ? 'text-primary'
@@ -191,6 +193,8 @@ export function Navigation() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
+                  title={item.title}
+                  aria-label={item.ariaLabel}
                   className={`block px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
                     isActive(item.href)
                       ? 'text-primary bg-primary/10'
