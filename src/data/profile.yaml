@@ -70,7 +70,7 @@ certifications:
     issuer: "British Council"
     year: "2022"
     expired: true
-    logo: "/images/certifications/british-council.png"
+    logo: "/images/certifications/IELTS.png"
 
 languages:
   - name: "English"
@@ -87,4 +87,3 @@ languages:
     country: "Uzbekistan"
 
 cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
-sshKeyUrl: "/keys/shaxa-dev.pub"

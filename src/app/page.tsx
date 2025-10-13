@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Key, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -112,17 +112,6 @@ export default function Home() {
                 </a>
               </Button>
               
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="text-foreground"
-              >
-                <a href={profile.sshKeyUrl} download>
-                  <Key className="h-5 w-5 mr-2" />
-                  SSH Key
-                </a>
-              </Button>
             </motion.div>
             
             <motion.div

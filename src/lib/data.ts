@@ -53,7 +53,6 @@ export interface Profile {
     country?: string;
   }>;
   cvUrl: string;
-  sshKeyUrl: string;
 }
 
 export interface Project {
@@ -84,7 +83,7 @@ const profileData: Profile = {
   linkedin: "https://linkedin.com/in/shaxriyor",
   twitter: "https://twitter.com/ilyshaxa",
   instagram: "https://instagram.com/ilyshaxa",
-  bio: "I'm a passionate DevOps engineer with expertise in cloud infrastructure and automation. I love building scalable systems, solving complex infrastructure problems, and creating reliable deployment pipelines that make a difference. With a strong foundation in both cloud platforms and containerization, I enjoy working across the entire DevOps technology stack.",
+  bio: "I see technology as a tool for creating real impact. My approach blends clean engineering practices with curiosity and constant learning to design systems that are not just functional, but thoughtful and future-ready.",
   shortBio: "DevOps engineer passionate about building scalable infrastructure and creating reliable automation solutions.",
   skills: {
     cloud: ["AWS", "Azure", "Google Cloud", "DigitalOcean", "Alibaba Cloud"],
@@ -157,36 +156,36 @@ const profileData: Profile = {
       issuer: "Amazon Web Services",
       year: "2025",
       expired: false,
-      logo: "/images/certifications/aws-dark.png",
-      logoLight: "/images/certifications/aws-light.png",
-      logoDark: "/images/certifications/aws-dark.png"
+      logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
+      logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
+      logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
     },
     {
       name: "AWS Certified Solutions Architect",
       issuer: "Amazon Web Services",
       year: "2025",
       expired: false,
-      logo: "/images/certifications/aws-dark.png",
-      logoLight: "/images/certifications/aws-light.png",
-      logoDark: "/images/certifications/aws-dark.png"
+      logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
+      logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
+      logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
     },
     {
       name: "AWS Certified DevOps Engineer",
       issuer: "Amazon Web Services",
       year: "2025",
       expired: false,
-      logo: "/images/certifications/aws-dark.png",
-      logoLight: "/images/certifications/aws-light.png",
-      logoDark: "/images/certifications/aws-dark.png"
+      logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
+      logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
+      logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
     },
     {
-      name: "IELTS",
+      name: "English Language Certificate",
       issuer: "British Council",
       year: "2022",
       expired: true,
-      logo: "/images/certifications/british-council.png",
-      logoLight: "/images/certifications/british-council.png",
-      logoDark: "/images/certifications/british-council.png "
+      logo: "/images/certifications/IELTS.png",
+      logoLight: "/images/certifications/IELTS.png",
+      logoDark: "/images/certifications/IELTS.png "
     }
   ],
   languages: [
@@ -209,8 +208,7 @@ const profileData: Profile = {
       country: "Uzbekistan"
     }
   ],
-  cvUrl: "/cv/shaxriyor-jabborov-cv.pdf",
-  sshKeyUrl: "/keys/shaxa-dev.pub"
+  cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
 };
 
 const projectsData: ProjectsData = {

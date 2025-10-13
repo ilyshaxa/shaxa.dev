@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Download, Key } from 'lucide-react';
+import { Menu, X, Sun, Moon, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { ClientOnly } from '@/components/client-only';
@@ -139,17 +139,6 @@ export function Navigation() {
               </a>
             </Button>
             
-            <Button
-              variant="glass"
-              size="sm"
-              asChild
-              className="text-foreground"
-            >
-              <a href={profile.sshKeyUrl} download>
-                <Key className="h-4 w-4 mr-2 text-foreground/90" />
-                SSH
-              </a>
-            </Button>
           </div>
 
           {/* Mobile menu button */}
@@ -218,17 +207,6 @@ export function Navigation() {
                   </a>
                 </Button>
                 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  asChild
-                  className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
-                >
-                  <a href={profile.sshKeyUrl} download>
-                    <Key className="h-4 w-4 mr-2" />
-                    Download SSH Key
-                  </a>
-                </Button>
               </div>
             </div>
           </motion.div>

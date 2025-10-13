@@ -55,14 +55,11 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="prose prose-lg max-w-none text-muted-foreground">
-                <p className="text-xl leading-relaxed mb-6">
+                <p className="text-lg leading-relaxed mb-6">
                   {profile.bio}
                 </p>
                 <p className="text-lg leading-relaxed">
-                  I believe in the power of technology to solve real-world problems and create 
-                  meaningful experiences. My approach to development is rooted in clean code, 
-                  user-centered design, and continuous learning. I&apos;m passionate about building 
-                  applications that not only work well but also provide genuine value to users.
+                DevOps engineer with a love for building things that scale and work seamlessly. I focus on creating clean, automated systems that make development and deployment smoother for everyone. Whether it’s designing cloud infrastructure, fine-tuning CI/CD pipelines, or improving reliability across environments, I enjoy solving the tricky problems that keep systems running at their best. Always exploring new tools and better ways to connect code, infrastructure, and people.
                 </p>
               </div>
             </CardContent>
