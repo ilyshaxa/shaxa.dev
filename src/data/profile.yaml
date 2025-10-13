@@ -77,10 +77,16 @@ certifications:
 languages:
   - name: "English"
     level: "Fluent"
+    flag: "https://flagcdn.com/gb.svg"
+    country: "United Kingdom"
   - name: "Russian"
     level: "Native"
+    flag: "https://flagcdn.com/ru.svg"
+    country: "Russia"
   - name: "Uzbek"
     level: "Native"
+    flag: "https://flagcdn.com/uz.svg"
+    country: "Uzbekistan"
 
 cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
 sshKeyUrl: "/keys/shaxa-dev.pub"

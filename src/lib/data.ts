@@ -49,6 +49,8 @@ export interface Profile {
   languages: Array<{
     name: string;
     level: string;
+    flag?: string;
+    country?: string;
   }>;
   cvUrl: string;
   sshKeyUrl: string;
@@ -170,9 +172,24 @@ const profileData: Profile = {
     }
   ],
   languages: [
-    { name: "English", level: "Fluent" },
-    { name: "Russian", level: "Basic" },
-    { name: "Uzbek", level: "Native" }
+    { 
+      name: "English", 
+      level: "Fluent", 
+      flag: "https://flagcdn.com/gb.svg",
+      country: "United Kingdom"
+    },
+    { 
+      name: "Russian", 
+      level: "Basic", 
+      flag: "https://flagcdn.com/ru.svg",
+      country: "Russia"
+    },
+    { 
+      name: "Uzbek", 
+      level: "Native", 
+      flag: "https://flagcdn.com/uz.svg",
+      country: "Uzbekistan"
+    }
   ],
   cvUrl: "/cv/shaxriyor-jabborov-cv.pdf",
   sshKeyUrl: "/keys/shaxa-dev.pub"

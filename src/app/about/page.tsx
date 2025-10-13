@@ -232,24 +232,58 @@ export default function AboutPage() {
           className="mb-16"
         >
           <Card className="glass-dark border-white/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
                 <Globe className="h-6 w-6 text-primary" />
                 Languages
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Languages I speak and work in
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {profile.languages.map((lang, index) => (
-                  <div key={index} className="text-center space-y-2">
-                    <h4 className="font-semibold">{lang.name}</h4>
-                    <Badge variant="outline" className="glass-dark border-gray-300/50 dark:border-white/20">
-                      {lang.level}
-                    </Badge>
-                  </div>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    className="group relative"
+                  >
+                    <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col items-center text-center">
+                      <div className="w-16 h-16 relative mb-4 group-hover:scale-110 transition-transform duration-300">
+                        {lang.flag ? (
+                          <Image
+                            src={lang.flag}
+                            alt={`${lang.country} flag`}
+                            fill
+                            className="object-contain rounded-lg"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                            <Globe className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      <h4 className="font-semibold text-lg mb-4 group-hover:text-primary transition-colors duration-300">
+                        {lang.name}
+                      </h4>
+                      
+                      <div className="mt-auto">
+                        <Badge 
+                          variant="outline" 
+                          className="glass-dark border-gray-300/50 dark:border-white/20 text-xs px-3 py-1"
+                        >
+                          {lang.level}
+                        </Badge>
+                      </div>
+                      
+                      {/* Hover effect overlay */}
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </CardContent>
