@@ -7,10 +7,16 @@ import { GraduationCap, Award, Globe, Code, Heart } from 'lucide-react';
 import Image from 'next/image';
 import { getProfile } from '@/lib/data';
 import { useTheme } from '@/components/theme-provider';
+import { useState, useEffect } from 'react';
 
 export default function AboutPage() {
   const profile = getProfile();
   const { actualTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
@@ -35,10 +41,19 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-16"
+          className="mb-20"
         >
           <Card className="glass-dark border-white/20">
-            <CardContent className="pt-8">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <Heart className="h-6 w-6 text-primary" />
+                About Me
+              </CardTitle>
+              <CardDescription className="text-base">
+                My story, passion, and approach to technology
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
               <div className="prose prose-lg max-w-none text-muted-foreground">
                 <p className="text-xl leading-relaxed mb-6">
                   {profile.bio}
@@ -55,7 +70,7 @@ export default function AboutPage() {
         </motion.div>
 
         {/* Education & Certifications */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
           {/* Education */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -63,12 +78,12 @@ export default function AboutPage() {
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             <Card className="glass-dark border-white/20 h-full">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-2xl">
                   <GraduationCap className="h-6 w-6 text-primary" />
                   Education
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-base">
                   My academic background and formal education
                 </CardDescription>
               </CardHeader>
@@ -88,9 +103,9 @@ export default function AboutPage() {
                             {(edu.logo || edu.logoLight || edu.logoDark) ? (
                               <Image
                                 src={
-                                  actualTheme === 'dark' && edu.logoDark
+                                  mounted && actualTheme === 'dark' && edu.logoDark
                                     ? edu.logoDark
-                                    : actualTheme === 'light' && edu.logoLight
+                                    : mounted && actualTheme === 'light' && edu.logoLight
                                     ? edu.logoLight
                                     : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
                                 }
@@ -104,14 +119,16 @@ export default function AboutPage() {
                               </div>
                             )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                              {edu.degree}
-                            </h4>
-                            <p className="text-muted-foreground text-sm mb-3">
-                              {edu.institution}
-                            </p>
-                            <div className="flex items-center gap-2">
+                          <div className="flex-1 min-w-0 flex flex-col h-full">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                {edu.degree}
+                              </h4>
+                              <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
+                                {edu.institution}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2 mt-auto">
                               <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
                                 {edu.year}
                               </Badge>
@@ -161,9 +178,9 @@ export default function AboutPage() {
                             {(cert.logo || cert.logoLight || cert.logoDark) ? (
                               <Image
                                 src={
-                                  actualTheme === 'dark' && cert.logoDark
+                                  mounted && actualTheme === 'dark' && cert.logoDark
                                     ? cert.logoDark
-                                    : actualTheme === 'light' && cert.logoLight
+                                    : mounted && actualTheme === 'light' && cert.logoLight
                                     ? cert.logoLight
                                     : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
                                 }
@@ -186,7 +203,7 @@ export default function AboutPage() {
                                 {cert.issuer}
                               </p>
                             </div>
-                            <div className="flex items-center gap-2 mt-4">
+                            <div className="flex items-center gap-2 mt-auto">
                               <Badge 
                                 variant="outline" 
                                 className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20"
@@ -224,92 +241,140 @@ export default function AboutPage() {
           </motion.div>
         </div>
 
-        {/* Languages */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="mb-16"
-        >
-          <Card className="glass-dark border-white/20">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <Globe className="h-6 w-6 text-primary" />
-                Languages
-              </CardTitle>
-              <CardDescription className="text-base">
-                Languages I speak and work in
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {profile.languages.map((lang, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    className="group relative"
-                  >
-                    <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col items-center text-center">
-                      <div className="w-16 h-16 relative mb-4 group-hover:scale-110 transition-transform duration-300">
-                        {lang.flag ? (
-                          <Image
-                            src={lang.flag}
-                            alt={`${lang.country} flag`}
-                            fill
-                            className="object-contain rounded-lg"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                            <Globe className="h-8 w-8 text-muted-foreground" />
-                          </div>
-                        )}
-                      </div>
-                      
-                      <h4 className="font-semibold text-lg mb-4 group-hover:text-primary transition-colors duration-300">
-                        {lang.name}
+        {/* Skills & Languages */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+          {/* Skills */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+          >
+            <Card className="glass-dark border-white/20 h-full">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <Code className="h-6 w-6 text-primary" />
+                  Technical Skills
+                </CardTitle>
+                <CardDescription className="text-base">
+                  Technologies and tools I work with
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {Object.entries(profile.skills).map(([category, skills], categoryIndex) => (
+                    <div key={category} className="space-y-3">
+                      <h4 className="font-semibold text-lg capitalize text-primary">
+                        {category.replace(/([A-Z])/g, ' $1').trim()}
                       </h4>
-                      
-                      <div className="mt-auto">
+                      <div className="flex flex-wrap gap-2">
+                        {skills.map((skill, skillIndex) => (
+                          <Badge 
+                            key={skillIndex}
+                            variant="outline" 
+                            className="glass-dark border-gray-300/50 dark:border-white/20 text-xs px-3 py-1"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Languages */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
+          >
+            <Card className="glass-dark border-white/20 h-full">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <Globe className="h-6 w-6 text-primary" />
+                  Languages
+                </CardTitle>
+                <CardDescription className="text-base">
+                  Languages I speak and work in
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-4">
+                  {profile.languages.map((lang, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      className="group relative"
+                    >
+                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-4 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 flex items-center gap-4">
+                        <div className="w-12 h-12 relative flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                          {lang.flag ? (
+                            <Image
+                              src={lang.flag}
+                              alt={`${lang.country} flag`}
+                              fill
+                              className="object-contain rounded-lg"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                              <Globe className="h-6 w-6 text-muted-foreground" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-lg group-hover:text-primary transition-colors duration-300">
+                            {lang.name}
+                          </h4>
+                        </div>
+                        
                         <Badge 
                           variant="outline" 
                           className="glass-dark border-gray-300/50 dark:border-white/20 text-xs px-3 py-1"
                         >
                           {lang.level}
                         </Badge>
+                        
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                       </div>
-                      
-                      {/* Hover effect overlay */}
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
 
         {/* Values & Philosophy */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.8 }}
-          className="mb-16"
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="mb-20"
         >
           <Card className="glass-dark border-white/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
                 <Heart className="h-6 w-6 text-primary" />
                 Values & Philosophy
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 What drives me and shapes my approach to work
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-4">
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.3, duration: 0.6 }}
+                >
                   <h4 className="font-semibold text-lg flex items-center gap-2">
                     <Code className="h-5 w-5 text-primary" />
                     Code Quality
@@ -319,9 +384,14 @@ export default function AboutPage() {
                     Good code is not just about functionality, but about readability and 
                     maintainability for future DevOps engineers.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-4">
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
+                >
                   <h4 className="font-semibold text-lg flex items-center gap-2">
                     <Heart className="h-5 w-5 text-primary" />
                     User-Centric Design
@@ -331,20 +401,30 @@ export default function AboutPage() {
                     I focus on creating intuitive, accessible, and delightful experiences 
                     that solve real problems.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-4">
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.5, duration: 0.6 }}
+                >
                   <h4 className="font-semibold text-lg flex items-center gap-2">
                     <GraduationCap className="h-5 w-5 text-primary" />
                     Continuous Learning
                   </h4>
                   <p className="text-muted-foreground">
                     Technology evolves rapidly, and I&apos;m committed to staying current 
-                    with the latest trends, tools, and best practices in web development.
+                    with the latest trends, tools, and best practices in DevOps and cloud infrastructure.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-4">
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.6, duration: 0.6 }}
+                >
                   <h4 className="font-semibold text-lg flex items-center gap-2">
                     <Globe className="h-5 w-5 text-primary" />
                     Collaboration
@@ -353,7 +433,7 @@ export default function AboutPage() {
                     I believe the best solutions come from collaborative efforts. 
                     I enjoy working with diverse teams and contributing to open-source projects.
                   </p>
-                </div>
+                </motion.div>
               </div>
             </CardContent>
           </Card>
@@ -363,47 +443,67 @@ export default function AboutPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
         >
           <Card className="glass-dark border-white/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
                 <Heart className="h-6 w-6 text-primary" />
                 Fun Facts
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 A few things about me outside of coding
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Coffee Enthusiast ☕</h4>
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.9, duration: 0.6 }}
+                >
+                  <h4 className="font-semibold text-lg">Coffee Enthusiast ☕</h4>
                   <p className="text-muted-foreground">
                     I start every day with a perfect cup of coffee and often work from local cafes.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Photography 📸</h4>
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.0, duration: 0.6 }}
+                >
+                  <h4 className="font-semibold text-lg">Photography 📸</h4>
                   <p className="text-muted-foreground">
                     I love capturing moments and finding beauty in everyday scenes through photography.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Travel Lover 🌍</h4>
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.1, duration: 0.6 }}
+                >
+                  <h4 className="font-semibold text-lg">Travel Lover 🌍</h4>
                   <p className="text-muted-foreground">
                     Exploring new places and cultures is one of my greatest passions and sources of inspiration.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Music Producer 🎵</h4>
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.2, duration: 0.6 }}
+                >
+                  <h4 className="font-semibold text-lg">Music Producer 🎵</h4>
                   <p className="text-muted-foreground">
                     In my free time, I create electronic music and experiment with sound design.
                   </p>
-                </div>
+                </motion.div>
               </div>
             </CardContent>
           </Card>
