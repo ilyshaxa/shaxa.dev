@@ -281,7 +281,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {Object.entries(profile.skills).map(([category, skills], categoryIndex) => (
+                  {Object.entries(profile.skills).map(([category, skills]) => (
                     <div key={category} className="space-y-3">
                       <h4 className="font-semibold text-lg capitalize text-primary">
                         {category.replace(/([A-Z])/g, ' $1').trim()}
