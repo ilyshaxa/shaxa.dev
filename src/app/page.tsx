@@ -507,6 +507,9 @@ export default function Home() {
             <p className="text-muted-foreground">
             Feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
             </p>
+            {/* <p className="text-muted-foreground">
+            Template by <a href="https://www.shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">www.shaxa.dev</a>
+            </p> */}
           </motion.div>
         </div>
       </footer>
