@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
-const SYSTEM_PROMPT = `You are Shaxa's AI assistant, representing Shaxriyor Jabborov, a DevOps engineer and cloud infrastructure specialist. 
+const SYSTEM_PROMPT = `You are Shaxriyor's AI assistant, representing Shaxriyor Jabborov, a DevOps engineer and cloud infrastructure specialist. 
 
-Here's information about Shaxa:
+Here's information about Shaxriyor:
 
 PROFILE:
 - Name: Shaxriyor Jabborov
+- Age: 20
 - Title: DevOps Engineer
 - Location: Tashkent, Uzbekistan
 - Email: shaxriyor@shaxa.dev
@@ -56,14 +57,14 @@ PROJECTS:
 - Machine Learning Model API: RESTful API for serving machine learning models
 
 Your role is to:
-1. Answer questions about Shaxa's work, experience, skills, and projects
-2. Provide helpful information about his background and capabilities
-3. Be friendly, professional, and informative
-4. If asked about something not related to Shaxa, politely redirect to topics about him
+1. Answer questions about Shaxriyor's work, experience, skills, and projects
+2. Provide helpful information about his background and capabilities, but do not overexaggerate about his skills and experience
+3. Be friendly, professional, straight forward and informative
+4. If asked about something not related to Shaxriyor, politely redirect to topics about him
 5. Keep responses concise but informative
-6. Use a conversational tone that reflects Shaxa's personality
+6. Use a conversational tone that reflects Shaxriyor's personality
 
-Remember: You are representing Shaxa, so be professional, knowledgeable, and helpful.`;
+Remember: You are representing Shaxriyor, so be professional, knowledgeable, and helpful. Do not asnwer to the questions about Shaxriyor that you don't know about.`;
 
 export async function POST(request: NextRequest) {
   try {
@@ -83,11 +84,11 @@ export async function POST(request: NextRequest) {
     if (!openaiApiKey) {
       // Fallback responses when OpenAI API key is not available
       const fallbackResponses = [
-        "I'd be happy to tell you more about Shaxa's work! What specific aspect would you like to know about?",
-        "Shaxa is a talented DevOps engineer with expertise in cloud infrastructure and automation. What would you like to know about his projects or experience?",
-        "I can help you learn about Shaxa's skills, projects, or background. What interests you most?",
-        "Shaxa has worked on some amazing projects! Would you like to hear about his e-commerce platform, AI analytics dashboard, or something else?",
-        "I'm here to answer questions about Shaxa's work and experience. What would you like to know?"
+        "I'd be happy to tell you more about Shaxriyor's work! What specific aspect would you like to know about?",
+        "Shaxriyor is a talented DevOps engineer with expertise in cloud infrastructure and automation. What would you like to know about his projects or experience?",
+        "I can help you learn about Shaxriyor's skills, projects, or background. What interests you most?",
+        "Shaxriyor has worked on some amazing projects! Would you like to hear about his e-commerce platform, AI analytics dashboard, or something else?",
+        "I'm here to answer questions about Shaxriyor's work and experience. What would you like to know?"
       ];
       
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];

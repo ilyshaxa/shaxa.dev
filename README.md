@@ -1,4 +1,4 @@
-# Shaxa.dev - Personal Portfolio Website
+# Shaxriyor.dev - Personal Portfolio Website
 
 A modern, responsive personal portfolio website built with Next.js 14, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features a dark-mode first design with glassmorphism effects, smooth animations, and an integrated AI chatbot.
 
@@ -6,7 +6,7 @@ A modern, responsive personal portfolio website built with Next.js 14, TypeScrip
 
 - **Modern Design**: Dark-mode first with glassmorphism effects and smooth animations
 - **Responsive**: Fully responsive design that works on all devices
-- **AI Chatbot**: Integrated "Ask Shaxa" chatbot powered by OpenAI API
+- **AI Chatbot**: Integrated "Ask Shaxriyor" chatbot powered by OpenAI API
 - **Performance**: Built with Next.js 14 and optimized for speed
 - **SEO Ready**: Comprehensive SEO optimization and meta tags
 - **Accessibility**: Built with accessibility best practices
@@ -121,7 +121,7 @@ The design uses Tailwind CSS with custom glassmorphism classes defined in `src/a
 
 ## 🤖 AI Chatbot
 
-The integrated chatbot uses OpenAI's GPT API to answer questions about Shaxa's work and experience. 
+The integrated chatbot uses OpenAI's GPT API to answer questions about Shaxriyor's work and experience. 
 
 ### Setup
 
@@ -206,7 +206,7 @@ The `vercel.json` file includes:
 
 ### AI Chatbot
 - Real-time conversation
-- Knowledge about Shaxa's work
+- Knowledge about Shaxriyor's work
 - Mobile-friendly interface
 - Fallback responses when API unavailable
 

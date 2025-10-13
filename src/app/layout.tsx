@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
+import { Chatbot } from "@/components/chatbot";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
@@ -29,8 +30,8 @@ export const metadata: Metadata = {
   keywords: [
     "Shaxriyor Jabborov",
     "Shaxriyor DevOps",
-    "Shaxa DevOps",
-    "Shaxa Devops",
+    "Shaxriyor DevOps",
+    "Shaxriyor Devops",
     "Shaxriyor Devops",
     "DevOps Engineer",
     "Cloud Engineer",
@@ -134,6 +135,7 @@ export default function RootLayout({
                 {children}
               </PageTransition>
             </main>
+            <Chatbot />
             <Toaster />
             <Analytics />
             <SpeedInsights />

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ProjectCard } from '@/components/project-card';
-import { Chatbot } from '@/components/chatbot';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
@@ -514,9 +513,6 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* AI Chatbot */}
-      <Chatbot />
-      
       {/* Scroll to Top Button */}
       <ScrollToTop />
     </div>
