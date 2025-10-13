@@ -12,8 +12,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'vercel.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'flagcdn.com',
+      },
     ],
     qualities: [25, 50, 75, 100],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
   },
   async headers() {
     return [

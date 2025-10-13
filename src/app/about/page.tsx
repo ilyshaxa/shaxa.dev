@@ -202,11 +202,12 @@ export default function AboutPage() {
                                     ? cert.logoDark
                                     : mounted && actualTheme === 'light' && cert.logoLight
                                     ? cert.logoLight
-                                    : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
+                                    : cert.logo || '/images/placeholder.png'
                                 }
                                 alt={`${cert.issuer} logo`}
                                 fill
                                 className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                unoptimized={cert.logo?.includes('british-council')}
                               />
                             ) : (
                               <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">

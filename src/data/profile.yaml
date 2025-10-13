@@ -71,8 +71,6 @@ certifications:
     year: "2022"
     expired: true
     logo: "/images/certifications/british-council.png"
-    logoLight: "/images/certifications/british-council-light.png"
-    logoDark: "/images/certifications/british-council-dark.png"
 
 languages:
   - name: "English"
