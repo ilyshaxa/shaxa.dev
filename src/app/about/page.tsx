@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { GraduationCap, Award, Globe, Code, Heart } from 'lucide-react';
+import { GraduationCap, Award, Globe, Code, Heart, Lightbulb, User } from 'lucide-react';
 import Image from 'next/image';
 import { getProfile } from '@/lib/data';
 import { useTheme } from '@/components/theme-provider';
@@ -46,7 +46,7 @@ export default function AboutPage() {
           <Card className="glass-dark border-white/20">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <Heart className="h-6 w-6 text-primary" />
+                <User className="h-6 w-6 text-primary" />
                 About Me
               </CardTitle>
               <CardDescription className="text-base">
@@ -70,12 +70,17 @@ export default function AboutPage() {
         </motion.div>
 
         {/* Education & Certifications */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+        <div className={`grid grid-cols-1 gap-8 mb-20 ${
+          profile.certifications.length > 2 
+            ? 'lg:grid-cols-3' 
+            : 'lg:grid-cols-2'
+        }`}>
           {/* Education */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
+            className={profile.certifications.length > 2 ? 'lg:col-span-1' : ''}
           >
             <Card className="glass-dark border-white/20 h-full">
               <CardHeader className="pb-4">
@@ -88,17 +93,23 @@ export default function AboutPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className={`grid gap-6 items-stretch ${
+                  profile.education.length === 1 
+                    ? 'grid-cols-1' 
+                    : profile.education.length === 2 
+                    ? 'grid-cols-1 md:grid-cols-2' 
+                    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                }`}>
                   {profile.education.map((edu, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1, duration: 0.6 }}
-                      className="group relative"
+                      className="group relative h-full"
                     >
-                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10">
-                        <div className="flex items-start gap-4">
+                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                        <div className="flex items-start gap-4 flex-1">
                           <div className="w-12 h-12 relative flex-shrink-0">
                             {(edu.logo || edu.logoLight || edu.logoDark) ? (
                               <Image
@@ -121,10 +132,10 @@ export default function AboutPage() {
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col h-full">
                             <div className="flex-1">
-                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
                                 {edu.degree}
                               </h4>
-                              <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
+                              <p className="text-muted-foreground text-sm mb-3">
                                 {edu.institution}
                               </p>
                             </div>
@@ -151,6 +162,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
+            className={profile.certifications.length > 2 ? 'lg:col-span-2' : ''}
           >
             <Card className="glass-dark border-white/20 h-full">
               <CardHeader className="pb-4">
@@ -163,7 +175,15 @@ export default function AboutPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                <div className={`grid gap-6 items-stretch ${
+                  profile.certifications.length === 1 
+                    ? 'grid-cols-1' 
+                    : profile.certifications.length === 2 
+                    ? 'grid-cols-1 md:grid-cols-2' 
+                    : profile.certifications.length === 4
+                    ? 'grid-cols-1 md:grid-cols-2'
+                    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                }`}>
                   {profile.certifications.map((cert, index) => (
                     <motion.div
                       key={index}
@@ -196,7 +216,7 @@ export default function AboutPage() {
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col h-full">
                             <div className="flex-1">
-                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
                                 {cert.name}
                               </h4>
                               <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
@@ -448,7 +468,7 @@ export default function AboutPage() {
           <Card className="glass-dark border-white/20">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <Heart className="h-6 w-6 text-primary" />
+                <Lightbulb className="h-6 w-6 text-primary" />
                 Fun Facts
               </CardTitle>
               <CardDescription className="text-base">
@@ -463,9 +483,9 @@ export default function AboutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.9, duration: 0.6 }}
                 >
-                  <h4 className="font-semibold text-lg">Coffee Enthusiast ☕</h4>
+                  <h4 className="font-semibold text-lg">🐧 Linux Aficionado</h4>
                   <p className="text-muted-foreground">
-                    I start every day with a perfect cup of coffee and often work from local cafes.
+                    A passionate Linux main and open-source enthusiast who loves exploring new tools, tweaks, and optimizations.
                   </p>
                 </motion.div>
                 
@@ -475,9 +495,9 @@ export default function AboutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 2.0, duration: 0.6 }}
                 >
-                  <h4 className="font-semibold text-lg">Photography 📸</h4>
+                  <h4 className="font-semibold text-lg">🏋️ Fitness Focused</h4>
                   <p className="text-muted-foreground">
-                    I love capturing moments and finding beauty in everyday scenes through photography.
+                    Regular gym sessions keep me grounded, energized, and ready to take on new challenges both in and out of code.
                   </p>
                 </motion.div>
                 
@@ -487,9 +507,9 @@ export default function AboutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 2.1, duration: 0.6 }}
                 >
-                  <h4 className="font-semibold text-lg">Travel Lover 🌍</h4>
+                  <h4 className="font-semibold text-lg">⚔️ Clash Royale Pro</h4>
                   <p className="text-muted-foreground">
-                    Exploring new places and cultures is one of my greatest passions and sources of inspiration.
+                    A competitive Clash Royale player who enjoys strategic gameplay, quick thinking, and perfecting every move.
                   </p>
                 </motion.div>
                 
@@ -499,9 +519,9 @@ export default function AboutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 2.2, duration: 0.6 }}
                 >
-                  <h4 className="font-semibold text-lg">Music Producer 🎵</h4>
+                  <h4 className="font-semibold text-lg">🧠 Lifelong Learner</h4>
                   <p className="text-muted-foreground">
-                    In my free time, I create electronic music and experiment with sound design.
+                    Always curious about emerging technologies and new ideas. I love growing my skills one experiment at a time.
                   </p>
                 </motion.div>
               </div>

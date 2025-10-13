@@ -162,6 +162,24 @@ const profileData: Profile = {
       logoDark: "/images/certifications/aws-dark.png"
     },
     {
+      name: "AWS Certified Solutions Architect",
+      issuer: "Amazon Web Services",
+      year: "2025",
+      expired: false,
+      logo: "/images/certifications/aws-dark.png",
+      logoLight: "/images/certifications/aws-light.png",
+      logoDark: "/images/certifications/aws-dark.png"
+    },
+    {
+      name: "AWS Certified DevOps Engineer",
+      issuer: "Amazon Web Services",
+      year: "2025",
+      expired: false,
+      logo: "/images/certifications/aws-dark.png",
+      logoLight: "/images/certifications/aws-light.png",
+      logoDark: "/images/certifications/aws-dark.png"
+    },
+    {
       name: "IELTS",
       issuer: "British Council",
       year: "2022",
