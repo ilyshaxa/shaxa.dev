@@ -54,14 +54,25 @@ education:
   - institution: "Tashkent University of Information Technologies"
     degree: "Bachelor's in Computer Science"
     year: "2016 - 2020"
+    logo: "/images/education/tashkent-university.png"
+    logoLight: "/images/education/tashkent-university-light.png"
+    logoDark: "/images/education/tashkent-university-dark.png"
 
 certifications:
-  - name: "AWS Certified DevOps Engineer"
+  - name: "AWS Certified Cloud Practitioner"
     issuer: "Amazon Web Services"
-    year: "2023"
-  - name: "Google Cloud Professional DevOps Engineer"
-    issuer: "Google Cloud"
+    year: "2025"
+    expired: false
+    logo: "/images/certifications/aws-dark.png"
+    logoLight: "/images/certifications/aws-light.png"
+    logoDark: "/images/certifications/aws-dark.png"
+  - name: "IELTS"
+    issuer: "British Council"
     year: "2022"
+    expired: true
+    logo: "/images/certifications/british-council.png"
+    logoLight: "/images/certifications/british-council-light.png"
+    logoDark: "/images/certifications/british-council-dark.png"
 
 languages:
   - name: "English"

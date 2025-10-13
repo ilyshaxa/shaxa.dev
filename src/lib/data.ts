@@ -33,11 +33,18 @@ export interface Profile {
     institution: string;
     degree: string;
     year: string;
+    logo?: string;
+    logoLight?: string;
+    logoDark?: string;
   }>;
   certifications: Array<{
     name: string;
     issuer: string;
     year: string;
+    expired?: boolean;
+    logo?: string;
+    logoLight?: string;
+    logoDark?: string;
   }>;
   languages: Array<{
     name: string;
@@ -136,19 +143,30 @@ const profileData: Profile = {
     {
       institution: "Tashkent State University of Economics",
       degree: "Bachelor's in Economics",
-      year: "2022 - 2027"
+      year: "2022 - 2027",
+      logo: "/images/education/tsue-light.png",
+      logoLight: "/images/education/tsue-light.png",
+      logoDark: "/images/education/tsue-dark.png"
     }
   ],
   certifications: [
     {
-      name: "AWS Certified DevOps Engineer",
+      name: "AWS Certified Cloud Practitioner",
       issuer: "Amazon Web Services",
-      year: "2023"
+      year: "2025",
+      expired: false,
+      logo: "/images/certifications/aws-dark.png",
+      logoLight: "/images/certifications/aws-light.png",
+      logoDark: "/images/certifications/aws-dark.png"
     },
     {
-      name: "Google Cloud Professional DevOps Engineer",
-      issuer: "Google Cloud",
-      year: "2022"
+      name: "IELTS",
+      issuer: "British Council",
+      year: "2022",
+      expired: true,
+      logo: "/images/certifications/british-council.png",
+      logoLight: "/images/certifications/british-council.png",
+      logoDark: "/images/certifications/british-council.png "
     }
   ],
   languages: [

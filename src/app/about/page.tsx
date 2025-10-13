@@ -4,10 +4,13 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { GraduationCap, Award, Globe, Code, Heart } from 'lucide-react';
+import Image from 'next/image';
 import { getProfile } from '@/lib/data';
+import { useTheme } from '@/components/theme-provider';
 
 export default function AboutPage() {
   const profile = getProfile();
+  const { actualTheme } = useTheme();
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
@@ -69,16 +72,59 @@ export default function AboutPage() {
                   My academic background and formal education
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {profile.education.map((edu, index) => (
-                  <div key={index} className="space-y-2">
-                    <h4 className="font-semibold text-lg">{edu.degree}</h4>
-                    <p className="text-muted-foreground">{edu.institution}</p>
-                    <Badge variant="outline" className="glass-dark">
-                      {edu.year}
-                    </Badge>
-                  </div>
-                ))}
+              <CardContent>
+                <div className="space-y-4">
+                  {profile.education.map((edu, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      className="group relative"
+                    >
+                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 relative flex-shrink-0">
+                            {(edu.logo || edu.logoLight || edu.logoDark) ? (
+                              <Image
+                                src={
+                                  actualTheme === 'dark' && edu.logoDark
+                                    ? edu.logoDark
+                                    : actualTheme === 'light' && edu.logoLight
+                                    ? edu.logoLight
+                                    : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
+                                }
+                                alt={`${edu.institution} logo`}
+                                fill
+                                className="object-contain group-hover:scale-110 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                                <GraduationCap className="h-6 w-6 text-muted-foreground" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
+                              {edu.degree}
+                            </h4>
+                            <p className="text-muted-foreground text-sm mb-3">
+                              {edu.institution}
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
+                                {edu.year}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -90,25 +136,89 @@ export default function AboutPage() {
             transition={{ delay: 0.6, duration: 0.8 }}
           >
             <Card className="glass-dark border-white/20 h-full">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-2xl">
                   <Award className="h-6 w-6 text-primary" />
                   Certifications
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-base">
                   Professional certifications and achievements
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {profile.certifications.map((cert, index) => (
-                  <div key={index} className="space-y-2">
-                    <h4 className="font-semibold text-lg">{cert.name}</h4>
-                    <p className="text-muted-foreground">{cert.issuer}</p>
-                    <Badge variant="outline" className="glass-dark">
-                      {cert.year}
-                    </Badge>
-                  </div>
-                ))}
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                  {profile.certifications.map((cert, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      className="group relative h-full"
+                    >
+                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                        <div className="flex items-start gap-4 flex-1">
+                          <div className="w-12 h-12 relative flex-shrink-0">
+                            {(cert.logo || cert.logoLight || cert.logoDark) ? (
+                              <Image
+                                src={
+                                  actualTheme === 'dark' && cert.logoDark
+                                    ? cert.logoDark
+                                    : actualTheme === 'light' && cert.logoLight
+                                    ? cert.logoLight
+                                    : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
+                                }
+                                alt={`${cert.issuer} logo`}
+                                fill
+                                className="object-contain group-hover:scale-110 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                                <Award className="h-6 w-6 text-muted-foreground" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col h-full">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                {cert.name}
+                              </h4>
+                              <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
+                                {cert.issuer}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2 mt-4">
+                              <Badge 
+                                variant="outline" 
+                                className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20"
+                              >
+                                {cert.year}
+                              </Badge>
+                              {cert.expired && (
+                                <Badge 
+                                  variant="outline" 
+                                  className="glass-dark text-xs px-2 py-1 bg-red-500/20 text-red-400 border-red-500/30"
+                                >
+                                  Expired
+                                </Badge>
+                              )}
+                              {!cert.expired && (
+                                <Badge 
+                                  variant="outline" 
+                                  className="glass-dark text-xs px-2 py-1 bg-green-500/20 text-green-400 border-green-500/30"
+                                >
+                                  Active
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -136,7 +246,7 @@ export default function AboutPage() {
                 {profile.languages.map((lang, index) => (
                   <div key={index} className="text-center space-y-2">
                     <h4 className="font-semibold">{lang.name}</h4>
-                    <Badge variant="outline" className="glass-dark">
+                    <Badge variant="outline" className="glass-dark border-gray-300/50 dark:border-white/20">
                       {lang.level}
                     </Badge>
                   </div>
