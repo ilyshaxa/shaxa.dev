@@ -9,7 +9,7 @@ export interface Profile {
   github: string;
   linkedin: string;
   twitter: string;
-  telegram: string;
+  instagram: string;
   bio: string;
   shortBio: string;
   skills: {
@@ -74,7 +74,7 @@ const profileData: Profile = {
   github: "https://github.com/ilyshaxa",
   linkedin: "https://linkedin.com/in/shaxriyor",
   twitter: "https://twitter.com/ilyshaxa",
-  telegram: "https://t.me/ilyshaxa",
+  instagram: "https://instagram.com/ilyshaxa",
   bio: "I'm a passionate DevOps engineer with expertise in cloud infrastructure and automation. I love building scalable systems, solving complex infrastructure problems, and creating reliable deployment pipelines that make a difference. With a strong foundation in both cloud platforms and containerization, I enjoy working across the entire DevOps technology stack.",
   shortBio: "DevOps engineer passionate about building scalable infrastructure and creating reliable automation solutions.",
   skills: {

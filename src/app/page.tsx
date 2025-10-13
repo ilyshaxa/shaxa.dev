@@ -13,7 +13,7 @@ import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { getProfile, getFeaturedProjects } from '@/lib/data';
-import { TelegramIcon } from '@/components/icons/telegram-icon';
+import { Instagram } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -177,8 +177,8 @@ export default function Home() {
                 variant="glass"
                 size="sm"
               >
-                <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
-                  <TelegramIcon className="h-5 w-5" />
+                <a href={profile.instagram} target="_blank" rel="noopener noreferrer">
+                  <Instagram className="h-5 w-5" />
                 </a>
               </Button>
             </motion.div>
@@ -497,8 +497,8 @@ export default function Home() {
                 variant="glass"
                 size="sm"
               >
-                <a href={profile.telegram} target="_blank" rel="noopener noreferrer">
-                  <TelegramIcon className="h-5 w-5" />
+                <a href={profile.instagram} target="_blank" rel="noopener noreferrer">
+                  <Instagram className="h-5 w-5" />
                 </a>
               </Button>
             </div>
