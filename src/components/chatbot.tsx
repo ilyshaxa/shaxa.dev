@@ -2,12 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, ArrowUp } from 'lucide-react';
+import { MessageCircle, X, Bot, User, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useTheme } from 'next-themes';
 
 interface Message {
   id: string;
@@ -32,7 +31,6 @@ export function Chatbot() {
   const [isSending, setIsSending] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
 
   const scrollToBottom = () => {
     // Use setTimeout to ensure DOM is updated
@@ -169,7 +167,7 @@ export function Chatbot() {
                     <Bot className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Shaxriyor's AI</h3>
+                    <h3 className="font-semibold">Shaxriyor&apos;s AI</h3>
                     <p className="text-xs text-primary-foreground/70">Online</p>
                   </div>
                 </div>
@@ -294,7 +292,7 @@ export function Chatbot() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-medium text-card-foreground mb-1">
-                      Hi! I'm Shaxriyor's AI Assistant
+                      Hi! I&apos;m Shaxriyor&apos;s AI Assistant
                     </p>
                     <p className="text-xs text-muted-foreground mb-3">
                       Ask me anything about his work, experience, or projects!
