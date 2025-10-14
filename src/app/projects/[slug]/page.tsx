@@ -170,7 +170,7 @@ export default function ProjectPage() {
           {/* Interactive Project Image */}
           <div 
             data-image-container
-            className="relative h-96 lg:h-[500px] overflow-hidden rounded-lg border border-gray-300/40 dark:border-white/20 backdrop-blur-sm bg-white/5 dark:bg-black/5 shadow-lg shadow-gray-200/20 dark:shadow-black/20"
+            className="relative h-96 lg:h-[500px] overflow-hidden rounded-lg border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 backdrop-blur-sm bg-white/5 dark:bg-black/5 shadow-lg shadow-gray-200/20 dark:shadow-black/20 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-all duration-200"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onWheel={(e) => {
