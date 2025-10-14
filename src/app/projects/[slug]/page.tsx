@@ -284,39 +284,41 @@ export default function ProjectPage() {
                 </Badge>
               </div>
 
-              {/* Project Links */}
-              <div className="glass-dark p-4 rounded-lg space-y-3 border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
-                <h3 className="font-semibold">Project Links</h3>
-                <div className="space-y-2">
-                  {project.liveUrl && (
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                    >
-                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Live Demo
-                      </a>
-                    </Button>
+                  {/* Project Links - Only show if at least one link exists */}
+                  {(project.liveUrl || project.githubUrl) && (
+                    <div className="glass-dark p-4 rounded-lg space-y-3 border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
+                      <h3 className="font-semibold">Project Links</h3>
+                      <div className="space-y-2">
+                        {project.liveUrl && (
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
+                          >
+                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Live Demo
+                            </a>
+                          </Button>
+                        )}
+
+                        {project.githubUrl && (
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
+                          >
+                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                              <Github className="h-4 w-4 mr-2" />
+                              View Code
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                   )}
-                  
-                  {project.githubUrl && (
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                    >
-                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <Github className="h-4 w-4 mr-2" />
-                        View Code
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
 
