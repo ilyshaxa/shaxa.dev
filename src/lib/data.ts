@@ -209,7 +209,7 @@ const projectsData: ProjectsData = {
       "title": "Jenkins CI/CD Pipeline for Praaktisgo",
       "shortDescription": "A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments.",
       "fullDescription": "Designed and implemented a production-grade CI/CD pipeline for Praaktisgo using Jenkins and AWS. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs were built for Jenkins agents with preinstalled tools (JDK, Ant, Git, AWS CLI), and the pipeline dynamically provisions build agents to compile and deploy applications. Build artifacts are uploaded to S3 and deployed via AWS CodeDeploy, while post-build scripts send changelogs and build status updates to a Telegram group. Prometheus monitors the Jenkins controller and agents through node_exporter, providing real-time visibility into resource usage and performance metrics.",
-      "technologies": ["Jenkins", "AWS EC2", "AWS S3", "AWS CodeDeploy", "Prometheus", "Node Exporter", "Ant", "Git", "Bash", "Telegram API"],
+      "technologies": ["Jenkins", "AWS EC2", "AWS S3", "AWS CodeDeploy", "AWS IAM", "Prometheus", "Node Exporter", "Ant", "Git", "Bash", "Telegram API"],
       "coverImage": "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
       "coverImageLight": "/projects/praaktisgo-jenkins-ci-cd-light.svg",
       "expandedImage": "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
