@@ -1,6 +1,7 @@
 name: "Shaxriyor Jabborov"
 title: "DevOps Engineer & Cloud Infrastructure Specialist"
 location: "Tashkent, Uzbekistan"
+origin: "Originally from Namangan, Uzbekistan"
 email: "shaxriyor@shaxa.dev"
 website: "https://shaxa.dev"
 github: "https://github.com/ilyshaxa"
@@ -8,65 +9,100 @@ linkedin: "https://linkedin.com/in/shaxriyor-jabborov"
 twitter: "https://twitter.com/ilyshaxa"
 instagram: "https://instagram.com/ilyshaxa"
 bio: |
-  I'm a passionate DevOps engineer with expertise in cloud infrastructure and automation. 
-  I love building scalable systems, solving complex infrastructure problems, and creating 
-  reliable deployment pipelines that make a difference. With a strong foundation in both 
-  cloud platforms and containerization, I enjoy working across the entire DevOps technology stack.
+  I'm a DevOps engineer with expertise in cloud infrastructure and automation. 
+  I build scalable systems, solve infrastructure problems, and create 
+  reliable deployment pipelines. With a strong foundation in cloud platforms 
+  and containerization, I work across the entire DevOps technology stack.
 
 shortBio: |
-  DevOps engineer passionate about building scalable infrastructure and 
+  DevOps engineer focused on building scalable infrastructure and 
   creating reliable automation solutions.
 
 skills:
-  frontend:
-    - "React/Next.js"
-    - "TypeScript"
-    - "Tailwind CSS"
-    - "Framer Motion"
-    - "Vue.js"
-    - "Svelte"
-  backend:
-    - "Node.js"
-    - "Python"
-    - "PostgreSQL"
-    - "MongoDB"
-    - "Redis"
+  cloud:
+    - "AWS"
+    - "Azure"
+    - "Google Cloud"
+    - "DigitalOcean"
+    - "Alibaba Cloud"
+  containers:
     - "Docker"
+    - "Kubernetes"
+    - "Podman"
+    - "Containerd"
+    - "Helm"
+  infrastructure:
+    - "Terraform"
+    - "Ansible"
+    - "Pulumi"
+    - "CloudFormation"
+    - "ARM Templates"
+    - "CDK"
+  cicd:
+    - "Jenkins"
+    - "GitLab CI"
+    - "GitHub Actions"
+    - "Azure DevOps"
+    - "CircleCI"
+    - "ArgoCD"
+  monitoring:
+    - "Prometheus"
+    - "Grafana"
+    - "ELK Stack"
+    - "Datadog"
   tools:
     - "Git"
-    - "Vercel"
-    - "AWS"
     - "Linux"
-    - "VS Code"
-    - "Figma"
+    - "Bash"
+    - "Python"
+    - "YAML"
+    - "JSON"
 
 experience:
-  - company: "Tech Company"
+  - company: "kpi.com"
     position: "DevOps Engineer"
-    duration: "2023 May - Present"
-    description: "Responsible for DevOps, automation, and cloud infrastructure at kpi.com."
-  - company: "Startup Inc"
+    duration: "May 2023 - Present"
+    description: "1+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com."
+  - company: "PraaktisGo"
     position: "DevOps Engineer"
-    duration: "2025 January - Present"
-    description: "Responsible for DevOps, automation, and cloud infrastructure at PraaktisGo."
+    duration: "January 2025 - Present"
+    description: "DevOps, automation, and cloud infrastructure at PraaktisGo."
+  - company: "zaytra.ai"
+    position: "DevOps Engineer & Tech Lead"
+    duration: "July 2025 - Present"
+    description: "DevOps, automation, and cloud infrastructure at zaytra.ai. Also responsible for the technical direction of the company."
 
 education:
-  - institution: "Tashkent University of Information Technologies"
-    degree: "Bachelor's in Computer Science"
-    year: "2016 - 2020"
-    logo: "/images/education/tashkent-university.png"
-    logoLight: "/images/education/tashkent-university-light.png"
-    logoDark: "/images/education/tashkent-university-dark.png"
+  - institution: "Tashkent State University of Economics"
+    degree: "Bachelor's in Economics"
+    year: "2022 - 2027"
+    logo: "/images/education/tsue-light.png"
+    logoLight: "/images/education/tsue-light.png"
+    logoDark: "/images/education/tsue-dark.png"
 
 certifications:
   - name: "AWS Certified Cloud Practitioner"
     issuer: "Amazon Web Services"
     year: "2025"
     expired: false
-    logo: "/images/certifications/aws-dark.png"
-    logoLight: "/images/certifications/aws-light.png"
-    logoDark: "/images/certifications/aws-dark.png"
-  - name: "IELTS"
+    logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
+    logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
+    logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
+  - name: "AWS Certified Solutions Architect Professional"
+    issuer: "Amazon Web Services"
+    year: "2025"
+    expired: false
+    logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
+    logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
+    logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
+  - name: "AWS Certified DevOps Engineer Professional"
+    issuer: "Amazon Web Services"
+    year: "2025"
+    expired: false
+    logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
+    logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
+    logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
+  - name: "English Language Certificate"
     issuer: "British Council"
     year: "2022"
     expired: true

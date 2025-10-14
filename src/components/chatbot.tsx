@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { LinkParser } from '@/lib/link-parser';
 
 interface Message {
   id: string;
@@ -31,6 +32,7 @@ export function Chatbot() {
   const [isSending, setIsSending] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     // Use setTimeout to ensure DOM is updated
@@ -121,6 +123,12 @@ export function Chatbot() {
       setIsSending(false);
       // Ensure scroll after response
       setTimeout(() => scrollToBottom(), 200);
+      // Focus input field after response
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 300);
     }
   };
 
@@ -146,6 +154,12 @@ export function Chatbot() {
               onClick={() => {
                 setIsOpen(true);
                 setShowWelcome(false);
+                // Focus input when chat opens
+                setTimeout(() => {
+                  if (inputRef.current) {
+                    inputRef.current.focus();
+                  }
+                }, 100);
               }}
               className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group border border-border"
             >
@@ -210,7 +224,9 @@ export function Chatbot() {
                               ? 'bg-primary text-primary-foreground rounded-br-md' 
                               : 'bg-muted text-muted-foreground rounded-bl-md'
                           }`}>
-                            <p className="text-sm leading-relaxed">{message.content}</p>
+                            <div className="text-sm leading-relaxed">
+                              <LinkParser text={message.content} />
+                            </div>
                             <p className="text-xs opacity-70 mt-1">
                               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>
@@ -244,6 +260,7 @@ export function Chatbot() {
               <div className="p-4 border-t border-border bg-muted/50">
                 <div className="flex gap-2">
                   <Input
+                    ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
@@ -302,6 +319,12 @@ export function Chatbot() {
                         onClick={() => {
                           setIsOpen(true);
                           setShowWelcome(false);
+                          // Focus input when starting chat
+                          setTimeout(() => {
+                            if (inputRef.current) {
+                              inputRef.current.focus();
+                            }
+                          }, 100);
                         }}
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs hover:scale-[1.05] hover:shadow-md transition-all duration-200"

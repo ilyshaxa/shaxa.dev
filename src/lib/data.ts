@@ -83,8 +83,8 @@ const profileData: Profile = {
   linkedin: "https://linkedin.com/in/shaxriyor",
   twitter: "https://twitter.com/ilyshaxa",
   instagram: "https://instagram.com/ilyshaxa",
-  bio: "I see technology as a tool for creating real impact. My approach blends clean engineering practices with curiosity and constant learning to design systems that are not just functional, but thoughtful and future-ready.",
-  shortBio: "DevOps engineer passionate about building scalable infrastructure and creating reliable automation solutions.",
+  bio: "I'm a DevOps engineer with expertise in cloud infrastructure and automation. I build scalable systems, solve infrastructure problems, and create reliable deployment pipelines. With a strong foundation in cloud platforms and containerization, I work across the entire DevOps technology stack.",
+  shortBio: "DevOps engineer focused on building scalable infrastructure and creating reliable automation solutions.",
   skills: {
     cloud: ["AWS", "Azure", "Google Cloud", "DigitalOcean", "Alibaba Cloud"],
     containers: ["Docker", "Kubernetes", "Podman", "Containerd", "Helm"],
@@ -97,8 +97,8 @@ const profileData: Profile = {
     {
       company: "kpi.com",
       position: "DevOps Engineer",
-      duration: "2023 May - Present",
-      description: "Responsible for DevOps, automation, and cloud infrastructure at kpi.com.",
+      duration: "May 2023 - Present",
+      description: "1+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com.",
       website: "https://kpi.com",
       employmentType: "Full-time",
       logo: "/images/companies/kpi-logo.png"
@@ -106,8 +106,8 @@ const profileData: Profile = {
     {
       company: "PraaktisGo",
       position: "DevOps Engineer",
-      duration: "2025 January - Present",
-      description: "Responsible for DevOps, automation, and cloud infrastructure at PraaktisGo.",
+      duration: "January 2025 - Present",
+      description: "DevOps, automation, and cloud infrastructure at PraaktisGo.",
       website: "https://praaktisgo.com",
       employmentType: "Freelance",
       logo: "/images/companies/praaktisgo-logo.png"
@@ -115,29 +115,11 @@ const profileData: Profile = {
     {
       company: "zaytra.ai",
       position: "DevOps Engineer & Tech Lead",
-      duration: "2025 July - Present",
-      description: "Responsible for DevOps, automation, and cloud infrastructure at zaytra.ai. Also, responsible for the technical direction of the company.",
+      duration: "July 2025 - Present",
+      description: "DevOps, automation, and cloud infrastructure at zaytra.ai. Also responsible for the technical direction of the company.",
       website: "https://zaytra.ai",
       employmentType: "Freelance",
       logo: "/images/companies/zaytra-logo.png"
-    },
-    {
-      company: "izish.uz",
-      position: "DevOps Engineer",
-      duration: "2024 November - 2025 July",
-      description: "Responsible for DevOps, automation, and cloud infrastructure at izish.uz.",
-      website: "https://izish.uz",
-      employmentType: "Contract",
-      logo: "/images/companies/izish-logo.png"
-    },
-    {
-      company: "RetouchGarage",
-      position: "DevOps Engineer & Tech Lead",
-      duration: "2025 June - 2025 July",
-      description: "Responsible for DevOps, automation, and cloud infrastructure at RetouchGarage. Also, responsible for the technical direction of the company.",
-      website: "https://retouchgarage.com",
-      employmentType: "Part-time",
-      logo: "/images/companies/retouch-logo.png"
     }
   ],
   education: [
@@ -161,7 +143,7 @@ const profileData: Profile = {
       logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
     },
     {
-      name: "AWS Certified Solutions Architect",
+      name: "AWS Certified Solutions Architect Professional",
       issuer: "Amazon Web Services",
       year: "2025",
       expired: false,
@@ -170,7 +152,7 @@ const profileData: Profile = {
       logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
     },
     {
-      name: "AWS Certified DevOps Engineer",
+      name: "AWS Certified DevOps Engineer Professional",
       issuer: "Amazon Web Services",
       year: "2025",
       expired: false,
