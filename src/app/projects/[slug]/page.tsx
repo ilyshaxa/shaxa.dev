@@ -4,12 +4,13 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Github, Calendar, Building2, ZoomIn, ZoomOut, RotateCcw, Maximize, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getAllProjects } from '@/lib/data';
+import { getAllProjects, generateProjectSlug } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
 export default function ProjectPage() {
   const params = useParams();
@@ -18,12 +19,19 @@ export default function ProjectPage() {
   
   // Find project by slug
   const project = projects.find(p => 
-    p.slug === slug || p.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === slug
+    p.slug === slug || generateProjectSlug(p.title) === slug
   );
 
   if (!project) {
     notFound();
   }
+
+  const { theme } = useTheme();
+  
+  // Choose images based on theme
+  const expandedImage = theme === 'light' && project.expandedImageLight 
+    ? project.expandedImageLight 
+    : (project.expandedImage || project.coverImage);
 
   // Interactive image state
   const [scale, setScale] = useState(1);
@@ -162,7 +170,7 @@ export default function ProjectPage() {
           {/* Interactive Project Image */}
           <div 
             data-image-container
-            className="relative h-96 lg:h-[500px] overflow-hidden rounded-lg border border-gray-200/20 dark:border-white/20"
+            className="relative h-96 lg:h-[500px] overflow-hidden rounded-lg border border-gray-300/40 dark:border-white/20 backdrop-blur-sm bg-white/5 dark:bg-black/5 shadow-lg shadow-gray-200/20 dark:shadow-black/20"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onWheel={(e) => {
@@ -185,7 +193,7 @@ export default function ProjectPage() {
               }}
             >
               <Image
-                src={project.expandedImage || project.coverImage}
+                src={expandedImage}
                 alt={project.title}
                 fill
                 className="object-contain"
@@ -199,7 +207,7 @@ export default function ProjectPage() {
                 onClick={zoomOut}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <ZoomOut className="h-4 w-4" />
               </Button>
@@ -207,7 +215,7 @@ export default function ProjectPage() {
                 onClick={zoomIn}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <ZoomIn className="h-4 w-4" />
               </Button>
@@ -215,7 +223,7 @@ export default function ProjectPage() {
                 onClick={resetImage}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <RotateCcw className="h-4 w-4" />
               </Button>
@@ -223,14 +231,14 @@ export default function ProjectPage() {
                 onClick={toggleFullscreen}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <Maximize className="h-4 w-4" />
               </Button>
             </div>
             
             {/* Zoom Level Indicator */}
-            <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+            <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium border border-gray-300/50 dark:border-white/20 shadow-sm">
               {Math.round(scale * 100)}%
             </div>
           </div>
@@ -254,7 +262,7 @@ export default function ProjectPage() {
                     <Badge
                       key={index}
                       variant="outline"
-                      className="glass-dark text-sm px-3 py-1"
+                      className="glass-dark text-sm px-3 py-1 border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-all duration-200"
                     >
                       {tech}
                     </Badge>
@@ -266,18 +274,18 @@ export default function ProjectPage() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Project Status */}
-              <div className="glass-dark p-4 rounded-lg">
+              <div className="glass-dark p-4 rounded-lg border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
                 <h3 className="font-semibold mb-2">Status</h3>
                 <Badge 
                   variant={project.status === 'Completed' ? 'default' : 'secondary'}
-                  className="text-sm"
+                  className="text-sm border border-gray-300/50 dark:border-white/20 shadow-sm"
                 >
                   {project.status}
                 </Badge>
               </div>
 
               {/* Project Links */}
-              <div className="glass-dark p-4 rounded-lg space-y-3">
+              <div className="glass-dark p-4 rounded-lg space-y-3 border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
                 <h3 className="font-semibold">Project Links</h3>
                 <div className="space-y-2">
                   {project.liveUrl && (
@@ -285,7 +293,7 @@ export default function ProjectPage() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border-gray-200/50 dark:border-white/20"
+                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
                     >
                       <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="h-4 w-4 mr-2" />
@@ -299,7 +307,7 @@ export default function ProjectPage() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border-gray-200/50 dark:border-white/20"
+                      className="w-full justify-start bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
                     >
                       <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                         <Github className="h-4 w-4 mr-2" />
@@ -319,7 +327,7 @@ export default function ProjectPage() {
               asChild={!isFullscreen}
               variant="outline"
               size="sm"
-              className="bg-white/80 dark:bg-black/80 hover:bg-white dark:hover:bg-black border-gray-200/50 dark:border-white/20 shadow-sm"
+              className="bg-white/80 dark:bg-black/80 hover:bg-white dark:hover:bg-black border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
             >
               {isFullscreen ? (
                 <>
@@ -340,7 +348,11 @@ export default function ProjectPage() {
       {/* Fullscreen Modal */}
       {isFullscreen && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
+          className={`fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center ${
+            theme === 'light' 
+              ? 'bg-white/95' 
+              : 'bg-black/95'
+          }`}
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
             {/* Close Button */}
@@ -348,7 +360,7 @@ export default function ProjectPage() {
               onClick={() => setIsFullscreen(false)}
               size="sm"
               variant="outline"
-              className="absolute top-4 right-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm z-10"
+              className="absolute top-4 right-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm z-10 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -367,7 +379,7 @@ export default function ProjectPage() {
               }}
             >
               <Image
-                src={project.expandedImage || project.coverImage}
+                src={expandedImage}
                 alt={project.title}
                 fill
                 className="object-contain"
@@ -381,7 +393,7 @@ export default function ProjectPage() {
                 onClick={zoomOut}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <ZoomOut className="h-4 w-4" />
               </Button>
@@ -389,7 +401,7 @@ export default function ProjectPage() {
                 onClick={zoomIn}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <ZoomIn className="h-4 w-4" />
               </Button>
@@ -397,7 +409,7 @@ export default function ProjectPage() {
                 onClick={resetImage}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <RotateCcw className="h-4 w-4" />
               </Button>
@@ -405,7 +417,7 @@ export default function ProjectPage() {
                 onClick={() => setIsFullscreen(false)}
                 size="sm"
                 variant="outline"
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
+                className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
               >
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Exit
@@ -413,7 +425,7 @@ export default function ProjectPage() {
             </div>
             
             {/* Fullscreen Zoom Indicator */}
-            <div className="absolute top-4 left-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+            <div className="absolute top-4 left-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium border border-gray-300/50 dark:border-white/20 shadow-sm">
               {Math.round(scale * 100)}%
             </div>
           </div>

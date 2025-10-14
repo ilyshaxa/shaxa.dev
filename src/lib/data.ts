@@ -61,7 +61,9 @@ export interface Project {
   fullDescription: string;
   technologies: string[];
   coverImage: string;
+  coverImageLight?: string;
   expandedImage?: string;
+  expandedImageLight?: string;
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;
@@ -204,19 +206,21 @@ const profileData: Profile = {
 const projectsData: ProjectsData = {
   featured: [
     {
-      title: "E-Commerce Platform",
-      shortDescription: "A cloud-native e-commerce platform with automated scaling and CI/CD pipelines.",
-      fullDescription: "A comprehensive cloud-native e-commerce platform deployed on Kubernetes with advanced CI/CD pipelines. This project features automated scaling capabilities, infrastructure as code implementation, comprehensive monitoring solutions, and secure container orchestration. Built with modern DevOps practices, it includes automated testing, deployment pipelines, and real-time monitoring dashboards.",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS", "Kubernetes", "Docker"],
-      coverImage: "/projects/praaktisgo-jenkins-ci-cd.svg",
-      expandedImage: "/projects/praaktisgo-jenkins-ci-cd.svg",
-      liveUrl: "https://ecommerce-demo.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/ecommerce-platform",
-      featured: true,
-      status: "Completed",
-      year: "2024",
-      companyName: "kpi.com",
-      slug: "e-commerce-platform"
+      "title": "Jenkins CI/CD Pipeline for Praaktisgo",
+      "shortDescription": "A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments.",
+      "fullDescription": "Designed and implemented a production-grade CI/CD pipeline for Praaktisgo using Jenkins and AWS. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs were built for Jenkins agents with preinstalled tools (JDK, Ant, Git, AWS CLI), and the pipeline dynamically provisions build agents to compile and deploy applications. Build artifacts are uploaded to S3 and deployed via AWS CodeDeploy, while post-build scripts send changelogs and build status updates to a Telegram group. Prometheus monitors the Jenkins controller and agents through node_exporter, providing real-time visibility into resource usage and performance metrics.",
+      "technologies": ["Jenkins", "AWS EC2", "AWS S3", "AWS CodeDeploy", "Prometheus", "Node Exporter", "Ant", "Git", "Bash", "Telegram API"],
+      "coverImage": "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
+      "coverImageLight": "/projects/praaktisgo-jenkins-ci-cd-light.svg",
+      "expandedImage": "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
+      "expandedImageLight": "/projects/praaktisgo-jenkins-ci-cd-light.svg",
+      "liveUrl": "https://praaktisgo.shaxa.dev",
+      "githubUrl": "https://github.com/shaxa/praaktisgo-jenkins-cicd",
+      "featured": true,
+      "status": "Completed",
+      "year": "2025",
+      "companyName": "Praaktisgo",
+      "slug": "praaktisgo-jenkins-ci-cd"
     },
     {
       title: "AI-Powered Analytics Dashboard",
@@ -224,7 +228,9 @@ const projectsData: ProjectsData = {
       fullDescription: "An advanced real-time analytics dashboard powered by artificial intelligence and machine learning algorithms. This sophisticated platform processes large datasets to provide actionable business intelligence and predictive insights. Features include real-time data visualization, automated report generation, anomaly detection, and customizable dashboards for different stakeholders.",
       technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI", "Next.js", "PostgreSQL", "Redis"],
       coverImage: "/projects/analytics.svg",
+      coverImageLight: "/projects/analytics-light.svg",
       expandedImage: "/projects/analytics.svg",
+      expandedImageLight: "/projects/analytics-light.svg",
       // No liveUrl - demonstrating optional links
       githubUrl: "https://github.com/shaxa/ai-analytics",
       featured: true,
@@ -241,7 +247,9 @@ const projectsData: ProjectsData = {
       fullDescription: "A cutting-edge portfolio website built with Next.js 14, featuring modern design principles, dark mode support, smooth animations, and an integrated AI chatbot. The site showcases professional work, includes interactive elements, and provides a seamless user experience across all devices. Deployed on Vercel with optimized performance and SEO.",
       technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API", "Vercel"],
       coverImage: "/projects/portfolio.svg",
+      coverImageLight: "/projects/portfolio-light.svg",
       expandedImage: "/projects/portfolio.svg",
+      expandedImageLight: "/projects/portfolio-light.svg",
       liveUrl: "https://shaxa.dev",
       // No githubUrl - demonstrating optional links
       featured: false,

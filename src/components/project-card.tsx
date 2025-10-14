@@ -5,9 +5,10 @@ import { Calendar, ExternalLink, Github, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Project } from '@/lib/data';
+import { Project, generateProjectSlug } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 interface ProjectCardProps {
   project: Project;
@@ -15,7 +16,14 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const projectSlug = project.slug || project.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  // Use the predefined slug or generate a consistent one
+  const projectSlug = project.slug || generateProjectSlug(project.title);
+  const { theme } = useTheme();
+  
+  // Choose image based on theme
+  const coverImage = theme === 'light' && project.coverImageLight 
+    ? project.coverImageLight 
+    : project.coverImage;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,12 +32,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       whileHover={{ y: -5 }}
       className="group h-full"
     >
-      <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
+      <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden group-hover:scale-[1.02]">
         {/* Project Cover Image */}
         <div className="relative h-48 overflow-hidden">
           <Link href={`/projects/${projectSlug}`} className="block w-full h-full">
             <Image
-              src={project.coverImage}
+              src={coverImage}
               alt={project.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
@@ -39,7 +47,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="absolute top-4 right-4">
             <Badge 
               variant={project.status === 'Completed' ? 'default' : 'secondary'}
-              className="bg-white/90 dark:bg-black/90 backdrop-blur-sm text-gray-900 dark:text-white"
+              className="bg-white/95 dark:bg-black/95 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-200/50 dark:border-white/20 shadow-sm"
             >
               {project.status}
             </Badge>
@@ -78,7 +86,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               <Badge
                 key={techIndex}
                 variant="outline"
-                className="glass-dark text-xs"
+                className="glass-dark text-xs border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-all duration-200"
               >
                 {tech}
               </Badge>
@@ -91,7 +99,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             asChild
             variant="default"
             size="sm"
-            className="flex-1 bg-primary hover:bg-primary/90"
+            className="flex-1 bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200"
           >
             <Link href={`/projects/${projectSlug}`}>
               Learn More
@@ -104,7 +112,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               asChild
               variant="outline"
               size="sm"
-              className="bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border-gray-200/50 dark:border-white/20"
+              className="bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
             >
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4" />
@@ -117,7 +125,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               asChild
               variant="outline"
               size="sm"
-              className="bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border-gray-200/50 dark:border-white/20"
+              className="bg-white/50 dark:bg-black/50 hover:bg-white/70 dark:hover:bg-black/70 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-105 hover:shadow-md hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
             >
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4" />
