@@ -1,4 +1,4 @@
-# Shaxriyor.dev - Personal Portfolio Website
+# shaxa.dev - Personal Portfolio Website
 
 A modern, responsive personal portfolio website built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features a dark-mode first design with glassmorphism effects, smooth animations, and an integrated AI chatbot with Telegram notifications.
 
