@@ -47,9 +47,9 @@ EDUCATION:
 - Bachelor's in Economics, Tashkent State University of Economics (2022 - 2027, part-time): Economics degree, attends university for 2 months each year as part of the part-time program.
 
 CERTIFICATIONS:
-- AWS Certified Cloud Practitioner (Amazon Web Services, 2025)
-- AWS Certified Solutions Architect Professional (Amazon Web Services, 2025)
-- AWS Certified DevOps Engineer Professional (Amazon Web Services, 2025)
+- AWS Certified Cloud Practitioner (Amazon Web Services, 2025) - Planned for 2025
+- AWS Certified Solutions Architect Professional (Amazon Web Services, 2025) - Planned for 2026
+- AWS Certified DevOps Engineer Professional (Amazon Web Services, 2025) - Planned for 2026
 - English Language Certificate (British Council, 2022) - Expired
 
 LANGUAGES:

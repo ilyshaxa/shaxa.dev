@@ -228,22 +228,18 @@ export default function AboutPage() {
                               >
                                 {cert.year}
                               </Badge>
-                              {cert.expired && (
-                                <Badge 
-                                  variant="outline" 
-                                  className="glass-dark text-xs px-2 py-1 bg-red-500/20 text-red-400 border-red-500/30"
-                                >
-                                  Expired
-                                </Badge>
-                              )}
-                              {!cert.expired && (
-                                <Badge 
-                                  variant="outline" 
-                                  className="glass-dark text-xs px-2 py-1 bg-green-500/20 text-green-400 border-green-500/30"
-                                >
-                                  Active
-                                </Badge>
-                              )}
+                              <Badge 
+                                variant="outline" 
+                                className={`glass-dark text-xs px-2 py-1 ${
+                                  cert.status === 'Planned' 
+                                    ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                                    : cert.status === 'Expired'
+                                    ? 'bg-red-500/20 text-red-400 border-red-500/30'
+                                    : 'bg-green-500/20 text-green-400 border-green-500/30'
+                                }`}
+                              >
+                                {cert.status}
+                              </Badge>
                             </div>
                           </div>
                         </div>

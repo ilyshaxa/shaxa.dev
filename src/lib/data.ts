@@ -41,7 +41,7 @@ export interface Profile {
     name: string;
     issuer: string;
     year: string;
-    expired?: boolean;
+    status: string;
     logo?: string;
     logoLight?: string;
     logoDark?: string;
@@ -137,7 +137,7 @@ const profileData: Profile = {
       name: "AWS Certified Cloud Practitioner",
       issuer: "Amazon Web Services",
       year: "2025",
-      expired: false,
+      status: "Planned",
       logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
       logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
       logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
@@ -145,8 +145,8 @@ const profileData: Profile = {
     {
       name: "AWS Certified Solutions Architect Professional",
       issuer: "Amazon Web Services",
-      year: "2025",
-      expired: false,
+      year: "2026",
+      status: "Planned",
       logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
       logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
       logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
@@ -154,8 +154,8 @@ const profileData: Profile = {
     {
       name: "AWS Certified DevOps Engineer Professional",
       issuer: "Amazon Web Services",
-      year: "2025",
-      expired: false,
+      year: "2026",
+      status: "Planned",
       logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
       logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
       logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
@@ -164,7 +164,7 @@ const profileData: Profile = {
       name: "English Language Certificate",
       issuer: "British Council",
       year: "2022",
-      expired: true,
+      status: "Expired",
       logo: "/images/certifications/IELTS.png",
       logoLight: "/images/certifications/IELTS.png",
       logoDark: "/images/certifications/IELTS.png"
