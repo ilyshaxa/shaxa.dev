@@ -14,6 +14,7 @@ import { ScrollToTop } from '@/components/scroll-to-top';
 import { getProfile, getFeaturedProjects } from '@/lib/data';
 import { Instagram } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   const profile = getProfile();
@@ -273,7 +274,7 @@ export default function Home() {
               variant="glass"
               className="group"
             >
-              <a href="/projects" className="flex items-center gap-2">
+              <Link href="/projects" className="flex items-center gap-2">
                 View All Projects
                 <motion.span
                   className="inline-block"
@@ -282,7 +283,7 @@ export default function Home() {
                 >
                   →
                 </motion.span>
-              </a>
+              </Link>
             </Button>
           </ScrollReveal>
         </div>
