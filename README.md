@@ -1,10 +1,10 @@
 # shaxa.dev - Personal Portfolio Website
 
-A modern, responsive personal portfolio website built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features a dark-mode first design with glassmorphism effects, smooth animations, and an integrated AI chatbot with Telegram notifications.
+A modern, responsive personal portfolio website built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features a browser theme preference design with glassmorphism effects, smooth animations, and an integrated AI chatbot with Telegram notifications.
 
 ## 🚀 Features
 
-- **Modern Design**: Dark-mode first with glassmorphism effects and smooth animations
+- **Modern Design**: Browser theme preference with glassmorphism effects and smooth animations
 - **Responsive**: Fully responsive design that works on all devices
 - **AI Chatbot**: Integrated "Ask Shaxriyor" chatbot powered by OpenAI API with Telegram notifications
 - **Performance**: Built with Next.js 15 and optimized for speed
@@ -258,9 +258,10 @@ The `vercel.json` file includes:
 
 ### Colors
 - Primary: Blue gradient (#667eea to #764ba2)
-- Background: Dark gradient (slate-900 to purple-900)
+- Background: Adaptive gradient (follows system theme)
 - Glass: Semi-transparent with backdrop blur
 - Text: High contrast for accessibility
+- Theme: Follows browser/system preference (light/dark)
 
 ### Typography
 - Font: Geist Sans (primary), Geist Mono (code)
