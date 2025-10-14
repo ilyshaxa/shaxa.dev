@@ -17,22 +17,28 @@ export default function ProjectsPage() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-gradient">All Projects</span>
+            <span className="text-gradient">Projects</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A comprehensive collection of my work, from personal projects to professional applications
+            A collection of my work and projects
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              index={index}
-            />
-          ))}
-        </div>
+        {projects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                index={index}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-muted-foreground">No projects available yet</p>
+          </div>
+        )}
       </div>
     </div>
   );

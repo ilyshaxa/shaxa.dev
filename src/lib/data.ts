@@ -57,14 +57,22 @@ export interface Profile {
 
 export interface Project {
   title: string;
-  description: string;
+  shortDescription: string;
+  fullDescription: string;
   technologies: string[];
-  image: string;
+  coverImage: string;
+  expandedImage?: string;
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;
   status: string;
   year: string;
+  companyName?: string;
+  slug?: string;
+}
+
+export function generateProjectSlug(title: string): string {
+  return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
 export interface ProjectsData {
@@ -197,93 +205,49 @@ const projectsData: ProjectsData = {
   featured: [
     {
       title: "E-Commerce Platform",
-      description: "A cloud-native e-commerce platform deployed on Kubernetes with CI/CD pipelines. Features include automated scaling, infrastructure as code, monitoring, and secure container orchestration.",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS"],
-      image: "/projects/ecommerce.svg",
+      shortDescription: "A cloud-native e-commerce platform with automated scaling and CI/CD pipelines.",
+      fullDescription: "A comprehensive cloud-native e-commerce platform deployed on Kubernetes with advanced CI/CD pipelines. This project features automated scaling capabilities, infrastructure as code implementation, comprehensive monitoring solutions, and secure container orchestration. Built with modern DevOps practices, it includes automated testing, deployment pipelines, and real-time monitoring dashboards.",
+      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS", "Kubernetes", "Docker"],
+      coverImage: "/projects/praaktisgo-jenkins-ci-cd.svg",
+      expandedImage: "/projects/praaktisgo-jenkins-ci-cd.svg",
       liveUrl: "https://ecommerce-demo.shaxa.dev",
       githubUrl: "https://github.com/shaxa/ecommerce-platform",
       featured: true,
       status: "Completed",
-      year: "2024"
+      year: "2024",
+      companyName: "kpi.com",
+      slug: "e-commerce-platform"
     },
     {
       title: "AI-Powered Analytics Dashboard",
-      description: "Real-time analytics dashboard with AI insights and machine learning predictions. Built for processing large datasets and providing actionable business intelligence.",
-      technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI", "Next.js"],
-      image: "/projects/analytics.svg",
-      liveUrl: "https://analytics-demo.shaxa.dev",
+      shortDescription: "Real-time analytics dashboard with AI insights and machine learning predictions.",
+      fullDescription: "An advanced real-time analytics dashboard powered by artificial intelligence and machine learning algorithms. This sophisticated platform processes large datasets to provide actionable business intelligence and predictive insights. Features include real-time data visualization, automated report generation, anomaly detection, and customizable dashboards for different stakeholders.",
+      technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI", "Next.js", "PostgreSQL", "Redis"],
+      coverImage: "/projects/analytics.svg",
+      expandedImage: "/projects/analytics.svg",
+      // No liveUrl - demonstrating optional links
       githubUrl: "https://github.com/shaxa/ai-analytics",
       featured: true,
       status: "In Progress",
-      year: "2024"
-    },
-    {
-      title: "DevOps Infrastructure Portfolio",
-      description: "Modern, responsive portfolio website with dark mode, smooth animations, and integrated AI chatbot. Built with Next.js 14 and deployed on Vercel.",
-      technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API"],
-      image: "/projects/portfolio.svg",
-      liveUrl: "https://shaxa.dev",
-      githubUrl: "https://github.com/shaxa/shaxa.dev",
-      featured: true,
-      status: "Completed",
-      year: "2024"
+      year: "2024",
+      companyName: "zaytra.ai",
+      slug: "ai-powered-analytics-dashboard"
     }
   ],
   all: [
     {
-      title: "Task Management App",
-      description: "Collaborative task management application with real-time updates and team collaboration features.",
-      technologies: ["Vue.js", "Node.js", "Socket.io", "MongoDB"],
-      image: "/projects/taskmanager.jpg",
-      liveUrl: "https://tasks-demo.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/task-manager",
+      title: "DevOps Infrastructure Portfolio",
+      shortDescription: "Modern, responsive portfolio website with dark mode and integrated AI chatbot.",
+      fullDescription: "A cutting-edge portfolio website built with Next.js 14, featuring modern design principles, dark mode support, smooth animations, and an integrated AI chatbot. The site showcases professional work, includes interactive elements, and provides a seamless user experience across all devices. Deployed on Vercel with optimized performance and SEO.",
+      technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API", "Vercel"],
+      coverImage: "/projects/portfolio.svg",
+      expandedImage: "/projects/portfolio.svg",
+      liveUrl: "https://shaxa.dev",
+      // No githubUrl - demonstrating optional links
       featured: false,
       status: "Completed",
-      year: "2023"
-    },
-    {
-      title: "Weather API Service",
-      description: "RESTful weather API service with caching, rate limiting, and multiple data sources integration.",
-      technologies: ["Node.js", "Express", "Redis", "Jest"],
-      image: "/projects/weather-api.jpg",
-      liveUrl: "https://weather-api.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/weather-api",
-      featured: false,
-      status: "Completed",
-      year: "2023"
-    },
-    {
-      title: "Mobile Banking App",
-      description: "Cross-platform mobile banking application with secure authentication and transaction management.",
-      technologies: ["React Native", "TypeScript", "Firebase", "Redux"],
-      image: "/projects/banking.jpg",
-      liveUrl: "https://banking-demo.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/mobile-banking",
-      featured: false,
-      status: "Completed",
-      year: "2022"
-    },
-    {
-      title: "Blockchain Voting System",
-      description: "Decentralized voting system built on blockchain technology with smart contracts and transparent results.",
-      technologies: ["Solidity", "Web3.js", "React", "Ethereum"],
-      image: "/projects/voting.jpg",
-      liveUrl: "https://voting-demo.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/blockchain-voting",
-      featured: false,
-      status: "Completed",
-      year: "2022"
-    },
-    {
-      title: "Machine Learning Model API",
-      description: "RESTful API for serving machine learning models with automatic scaling and monitoring.",
-      technologies: ["Python", "Flask", "Docker", "Kubernetes", "MLflow"],
-      image: "/projects/ml-api.jpg",
-      liveUrl: "https://ml-api.shaxa.dev",
-      githubUrl: "https://github.com/shaxa/ml-model-api",
-      featured: false,
-      status: "Completed",
-      year: "2021"
+      year: "2024",
+      slug: "devops-infrastructure-portfolio"
     }
   ]
 };
