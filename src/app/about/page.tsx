@@ -199,7 +199,7 @@ export default function AboutPage() {
                                     ? cert.logoDark
                                     : mounted && actualTheme === 'light' && cert.logoLight
                                     ? cert.logoLight
-                                    : cert.logo || '/images/placeholder.png'
+                                    : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
                                 }
                                 alt={`${cert.issuer} logo`}
                                 fill

@@ -185,7 +185,7 @@ const profileData: Profile = {
       expired: true,
       logo: "/images/certifications/IELTS.png",
       logoLight: "/images/certifications/IELTS.png",
-      logoDark: "/images/certifications/IELTS.png "
+      logoDark: "/images/certifications/IELTS.png"
     }
   ],
   languages: [
