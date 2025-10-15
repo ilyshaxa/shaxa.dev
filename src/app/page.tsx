@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Github, Linkedin, Twitter, Mail, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +12,6 @@ import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { getProfile, getFeaturedProjects } from '@/lib/data';
-import { Instagram } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -115,62 +114,6 @@ export default function Home() {
               
             </motion.div>
             
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="flex justify-center gap-4 pt-4"
-            >
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.github} target="_blank" rel="noopener noreferrer">
-                  <Github className="h-5 w-5" />
-                </a>
-              </Button>
-              
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </Button>
-              
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
-                  <Twitter className="h-5 w-5" />
-                </a>
-              </Button>
-              
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={`mailto:${profile.email}`}>
-                  <Mail className="h-5 w-5" />
-                </a>
-              </Button>
-              
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.instagram} target="_blank" rel="noopener noreferrer">
-                  <Instagram className="h-5 w-5" />
-                </a>
-              </Button>
-            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -428,74 +371,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer Section - This will fix the overflow issue */}
-      <footer className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 border-t border-white/10">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="flex justify-center space-x-6">
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.github} target="_blank" rel="noopener noreferrer">
-                  <Github className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
-                  <Twitter className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={`mailto:${profile.email}`}>
-                  <Mail className="h-5 w-5" />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="glass"
-                size="sm"
-              >
-                <a href={profile.instagram} target="_blank" rel="noopener noreferrer">
-                  <Instagram className="h-5 w-5" />
-                </a>
-              </Button>
-            </div>
-            <p className="text-muted-foreground">
-            © 2025 {profile.name}. Made with Next.js, TypeScript & VibeCoding ☕  </p>
-            <p className="text-muted-foreground">
-            Feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
-            </p>
-            {/* <p className="text-muted-foreground">
-            Template by <a href="https://www.shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">www.shaxa.dev</a>
-            </p> */}
-          </motion.div>
-        </div>
-      </footer>
 
       {/* Scroll to Top Button */}
       <ScrollToTop />

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Star, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Project, generateProjectSlug } from '@/lib/data';
 import Image from 'next/image';

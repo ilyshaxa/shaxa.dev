@@ -5,6 +5,7 @@ export interface Profile {
   title: string;
   location: string;
   email: string;
+  phone: string;
   website: string;
   github: string;
   linkedin: string;
@@ -91,6 +92,7 @@ const profileData: Profile = {
   title: "DevOps Engineer",
   location: "Tashkent, Uzbekistan",
   email: "shaxriyor@shaxa.dev",
+  phone: "+998 93 766 50 10",
   website: "https://shaxa.dev",
   github: "https://github.com/ilyshaxa",
   linkedin: "https://linkedin.com/in/shaxriyor",

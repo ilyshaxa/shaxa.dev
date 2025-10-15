@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
@@ -135,6 +136,7 @@ export default function RootLayout({
                 {children}
               </PageTransition>
             </main>
+            <Footer />
             <Chatbot />
             <Toaster />
             <Analytics />
