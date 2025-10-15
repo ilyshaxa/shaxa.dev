@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Github, Calendar, Building2, ZoomIn, ZoomOut, RotateCcw, Maximize, X, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Github, Calendar, Building2, ZoomIn, ZoomOut, RotateCcw, Maximize, X, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getAllProjects, generateProjectSlug } from '@/lib/data';
@@ -45,8 +45,8 @@ export default function ProjectPage() {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [videoError, setVideoError] = useState(false);
-  const [videoLoading, setVideoLoading] = useState(true);
+  const [showCustomControls, setShowCustomControls] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Video autoplays, so start with playing state
   const imageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -119,27 +119,37 @@ export default function ProjectPage() {
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play().catch(console.error);
+        setIsPlaying(true);
       } else {
         videoRef.current.pause();
+        setIsPlaying(false);
       }
     }
   };
 
-  const handleVideoLoad = () => {
-    setVideoLoading(false);
-    setVideoError(false);
-  };
 
-  const handleVideoError = () => {
-    setVideoError(true);
-    setVideoLoading(false);
-    console.error('Video failed to load:', expandedMedia);
-  };
-
-  // Sync video muted state
+  // Sync video muted state and track playing state
   useEffect(() => {
-    if (videoRef.current && isVideo) {
-      videoRef.current.muted = isMuted;
+    const video = videoRef.current;
+    if (video && isVideo) {
+      video.muted = isMuted;
+      
+      // Sync initial playing state
+      setIsPlaying(!video.paused);
+      
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
+      const handleEnded = () => setIsPlaying(false);
+      
+      video.addEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+      video.addEventListener('ended', handleEnded);
+      
+      return () => {
+        video.removeEventListener('play', handlePlay);
+        video.removeEventListener('pause', handlePause);
+        video.removeEventListener('ended', handleEnded);
+      };
     }
   }, [isMuted, isVideo]);
 
@@ -216,63 +226,51 @@ export default function ProjectPage() {
           {isVideo ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Video Section - Expanded */}
-              <div className="relative overflow-hidden rounded-lg border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 backdrop-blur-sm bg-white/5 dark:bg-black/5 shadow-lg shadow-gray-200/20 dark:shadow-black/20 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-all duration-200" style={{ height: 'calc(100vh - 200px)' }}>
-                {!isFullscreen && (
-                  <>
-                    {videoLoading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                        <div className="text-center">
-                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                          <p className="text-sm text-muted-foreground">Loading video...</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {videoError && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                        <div className="text-center">
-                          <p className="text-red-500 mb-2">Video failed to load</p>
-                          <p className="text-sm text-muted-foreground">File may be too large or unsupported</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <video
-                      key={expandedMedia}
-                      ref={videoRef}
-                      src={expandedMedia}
-                      className="w-full h-full object-contain cursor-pointer"
-                      autoPlay
-                      muted={isMuted}
-                      loop
-                      playsInline
-                      preload="metadata"
-                      onLoadedData={handleVideoLoad}
-                      onError={handleVideoError}
-                      onClick={togglePlayPause}
-                    />
-                  </>
-                )}
+              <div 
+                className="relative w-full"
+                style={{ height: 'calc(100vh - 200px)' }}
+                onMouseEnter={() => setShowCustomControls(true)}
+                onMouseLeave={() => setShowCustomControls(false)}
+              >
+                <video
+                  key={expandedMedia}
+                  ref={videoRef}
+                  src={expandedMedia}
+                  className="w-full h-full object-contain"
+                  controls={!showCustomControls}
+                  autoPlay
+                  muted={isMuted}
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
                 
-                {/* Video Controls */}
-                <div className="absolute top-4 right-4 flex gap-2">
-                  <Button
-                    onClick={toggleMute}
-                    size="sm"
-                    variant="outline"
-                    className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                  >
-                    {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                  </Button>
-                  <Button
-                    onClick={toggleFullscreen}
-                    size="sm"
-                    variant="outline"
-                    className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                  >
-                    <Maximize className="h-4 w-4" />
-                  </Button>
-                </div>
+                 {/* Custom Controls Overlay - Center */}
+                 <div className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
+                   showCustomControls 
+                     ? 'opacity-100 scale-100' 
+                     : 'opacity-0 scale-95'
+                 }`}>
+                   <div className="flex gap-3">
+                     <Button
+                       onClick={togglePlayPause}
+                       size="sm"
+                       variant="outline"
+                       className="bg-transparent hover:bg-white/20 dark:hover:bg-black/20 backdrop-blur-none hover:backdrop-blur-md border border-white/30 dark:border-white/30 hover:border-white/50 dark:hover:border-white/50 hover:scale-110 hover:shadow-lg hover:shadow-white/20 dark:hover:shadow-black/20 transition-all duration-300 group"
+                     >
+                       {isPlaying ? <Pause className="h-4 w-4 text-white" /> : <Play className="h-4 w-4 text-white" />}
+                     </Button>
+                     
+                     <Button
+                       onClick={toggleMute}
+                       size="sm"
+                       variant="outline"
+                       className="bg-transparent hover:bg-white/20 dark:hover:bg-black/20 backdrop-blur-none hover:backdrop-blur-md border border-white/30 dark:border-white/30 hover:border-white/50 dark:hover:border-white/50 hover:scale-110 hover:shadow-lg hover:shadow-white/20 dark:hover:shadow-black/20 transition-all duration-300 group"
+                     >
+                       {isMuted ? <VolumeX className="h-4 w-4 text-white" /> : <Volume2 className="h-4 w-4 text-white" />}
+                     </Button>
+                   </div>
+                 </div>
               </div>
 
               {/* Project Details Section - Compact */}
@@ -550,41 +548,9 @@ export default function ProjectPage() {
                 {/* Fullscreen Media Container */}
                 {isVideo ? (
                   <div className="relative w-full h-full max-w-7xl max-h-[90vh] select-none">
-                    {isFullscreen && (
-                      <>
-                        {videoLoading && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                            <div className="text-center">
-                              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                              <p className="text-sm text-muted-foreground">Loading video...</p>
-                            </div>
-                          </div>
-                        )}
-                        
-                        {videoError && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                            <div className="text-center">
-                              <p className="text-red-500 mb-2">Video failed to load</p>
-                              <p className="text-sm text-muted-foreground">File may be too large or unsupported</p>
-                            </div>
-                          </div>
-                        )}
-                        
-                        <video
-                          key={expandedMedia}
-                          ref={videoRef}
-                          src={expandedMedia}
-                          className="w-full h-full object-contain"
-                          autoPlay
-                          muted={isMuted}
-                          loop
-                          playsInline
-                          preload="metadata"
-                          onLoadedData={handleVideoLoad}
-                          onError={handleVideoError}
-                        />
-                      </>
-                    )}
+                    <div className="text-center py-20">
+                      <p className="text-muted-foreground">Fullscreen not available for video projects</p>
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -609,29 +575,9 @@ export default function ProjectPage() {
                   </div>
                 )}
             
-            {/* Fullscreen Controls */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-              {isVideo ? (
-                <>
-                  <Button
-                    onClick={toggleMute}
-                    size="sm"
-                    variant="outline"
-                    className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                  >
-                    {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                  </Button>
-                  <Button
-                    onClick={() => setIsFullscreen(false)}
-                    size="sm"
-                    variant="outline"
-                    className="bg-white/95 dark:bg-black/95 backdrop-blur-sm border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-1" />
-                    Exit
-                  </Button>
-                </>
-              ) : (
+                {/* Fullscreen Controls */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                  {!isVideo && (
                 <>
                   <Button
                     onClick={zoomOut}
