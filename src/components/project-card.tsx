@@ -30,9 +30,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       whileHover={{ y: -5 }}
-      className="group h-full"
+      className="group h-full flex justify-center"
     >
-      <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden group-hover:scale-[1.02]">
+      <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden group-hover:scale-[1.02] w-full max-w-sm">
         {/* Project Cover Image */}
         <div className="relative h-48 overflow-hidden">
           <Link href={`/projects/${projectSlug}`} className="block w-full h-full">
@@ -40,7 +40,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               src={coverImage}
               alt={project.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
+              className="object-contain transition-transform duration-500 group-hover:scale-110 cursor-pointer"
+              style={{ transform: 'scale(1.1)' }}
             />
           </Link>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />

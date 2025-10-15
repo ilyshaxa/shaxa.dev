@@ -64,6 +64,9 @@ export interface Project {
   coverImageLight?: string;
   expandedImage?: string;
   expandedImageLight?: string;
+  expandedVideo?: string;
+  expandedVideoLight?: string;
+  isVideo?: boolean;
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;
@@ -225,12 +228,15 @@ const projectsData: ProjectsData = {
     {
       title: "SaveThis4Me Telegram Bot",
       shortDescription: "A Telegram bot that automatically saves Instagram content using secure account binding. No more swiching between apps and copying links.",
-      fullDescription: "SaveThis4Me is a Telegram bot developed as a personal hobby project, initially created for my own use and later extended for public access. It allows users to receive Instagram content directly in their Telegram chats without manual link copying or app switching. The bot uses user binding tokens to securely connect each user’s Instagram account ID with their Telegram account, enabling automatic forwarding of reels and posts. Built with Python, FastAPI, and the Telegram Bot API, it includes both Free and Pro subscription plans, with Telethon handling payment processing and subscription validation. A PostgreSQL database is used to manage user information, payment data, and media statistics. The media retrieval API is containerized with Docker and deployed behind an Nginx reverse proxy, ensuring scalability, reliability, and secure content delivery.",
+      fullDescription: "SaveThis4Me is a Telegram bot developed as a personal hobby project, initially created for my own use and later extended for public access. It allows users to receive Instagram content directly in their Telegram chats without manual link copying or app switching. The bot uses user binding tokens to securely connect each user's Instagram account ID with their Telegram account, enabling automatic forwarding of reels and posts. Built with Python, FastAPI, and the Telegram Bot API, it includes both Free and Pro subscription plans, with Telethon handling payment processing and subscription validation. A PostgreSQL database is used to manage user information, payment data, and media statistics. The media retrieval API is containerized with Docker and deployed behind an Nginx reverse proxy, ensuring scalability, reliability, and secure content delivery.",
       technologies: ["Python", "Telegram Bot API", "Telethon", "FastAPI", "PostgreSQL", "Docker", "Linux", "Nginx", "Git"],
       coverImage: "/projects/ST4M-Transparent-Logo.svg",
       coverImageLight: "/projects/ST4M-Transparent-Logo.svg",
       expandedImage: "/projects/ST4M-Transparent-Logo.svg",
       expandedImageLight: "/projects/ST4M-Transparent-Logo.svg",
+      expandedVideo: "/projects/savethis4me-demo.mp4",
+      expandedVideoLight: "/projects/savethis4me-demo.mp4",
+      isVideo: true,
       liveUrl: "https://t.me/SaveThis4Me_Bot",
       githubUrl: "",
       featured: true,
@@ -240,24 +246,7 @@ const projectsData: ProjectsData = {
       slug: "save-this-4-me-telegram-bot"
     }
   ],
-  all: [
-    {
-      title: "DevOps Infrastructure Portfolio",
-      shortDescription: "Modern, responsive portfolio website with dark mode and integrated AI chatbot.",
-      fullDescription: "A cutting-edge portfolio website built with Next.js 14, featuring modern design principles, dark mode support, smooth animations, and an integrated AI chatbot. The site showcases professional work, includes interactive elements, and provides a seamless user experience across all devices. Deployed on Vercel with optimized performance and SEO.",
-      technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "OpenAI API", "Vercel"],
-      coverImage: "/projects/portfolio.svg",
-      coverImageLight: "/projects/portfolio-light.svg",
-      expandedImage: "/projects/portfolio.svg",
-      expandedImageLight: "/projects/portfolio-light.svg",
-      liveUrl: "",
-      githubUrl: "",
-      featured: false,
-      status: "Completed",
-      year: "2024",
-      slug: "devops-infrastructure-portfolio"
-    }
-  ]
+  all: []
 };
 
 export function getProfile(): Profile {
