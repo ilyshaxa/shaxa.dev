@@ -251,18 +251,12 @@ export default function Home() {
                 delay={index * 0.2}
                 className="group"
               >
-                <motion.div
-                  whileHover={{ 
-                    y: -10,
-                    transition: { duration: 0.3 }
-                  }}
-                  className="h-full"
-                >
+                <div className="h-full">
                   <ProjectCard
                     project={project}
                     index={index}
                   />
-                </motion.div>
+                </div>
               </ScrollReveal>
             ))}
           </div>
