@@ -45,6 +45,8 @@ export default function ProjectPage() {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
   const imageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -116,11 +118,22 @@ export default function ProjectPage() {
   const togglePlayPause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play();
+        videoRef.current.play().catch(console.error);
       } else {
         videoRef.current.pause();
       }
     }
+  };
+
+  const handleVideoLoad = () => {
+    setVideoLoading(false);
+    setVideoError(false);
+  };
+
+  const handleVideoError = () => {
+    setVideoError(true);
+    setVideoLoading(false);
+    console.error('Video failed to load:', expandedMedia);
   };
 
   // Sync video muted state
@@ -205,17 +218,40 @@ export default function ProjectPage() {
               {/* Video Section - Expanded */}
               <div className="relative overflow-hidden rounded-lg border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 backdrop-blur-sm bg-white/5 dark:bg-black/5 shadow-lg shadow-gray-200/20 dark:shadow-black/20 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-all duration-200" style={{ height: 'calc(100vh - 200px)' }}>
                 {!isFullscreen && (
-                  <video
-                    key={expandedMedia}
-                    ref={videoRef}
-                    src={expandedMedia}
-                    className="w-full h-full object-contain cursor-pointer"
-                    autoPlay
-                    muted={isMuted}
-                    loop
-                    playsInline
-                    onClick={togglePlayPause}
-                  />
+                  <>
+                    {videoLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                        <div className="text-center">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                          <p className="text-sm text-muted-foreground">Loading video...</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {videoError && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                        <div className="text-center">
+                          <p className="text-red-500 mb-2">Video failed to load</p>
+                          <p className="text-sm text-muted-foreground">File may be too large or unsupported</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <video
+                      key={expandedMedia}
+                      ref={videoRef}
+                      src={expandedMedia}
+                      className="w-full h-full object-contain cursor-pointer"
+                      autoPlay
+                      muted={isMuted}
+                      loop
+                      playsInline
+                      preload="metadata"
+                      onLoadedData={handleVideoLoad}
+                      onError={handleVideoError}
+                      onClick={togglePlayPause}
+                    />
+                  </>
                 )}
                 
                 {/* Video Controls */}
@@ -515,16 +551,39 @@ export default function ProjectPage() {
                 {isVideo ? (
                   <div className="relative w-full h-full max-w-7xl max-h-[90vh] select-none">
                     {isFullscreen && (
-                      <video
-                        key={expandedMedia}
-                        ref={videoRef}
-                        src={expandedMedia}
-                        className="w-full h-full object-contain"
-                        autoPlay
-                        muted={isMuted}
-                        loop
-                        playsInline
-                      />
+                      <>
+                        {videoLoading && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                            <div className="text-center">
+                              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                              <p className="text-sm text-muted-foreground">Loading video...</p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {videoError && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                            <div className="text-center">
+                              <p className="text-red-500 mb-2">Video failed to load</p>
+                              <p className="text-sm text-muted-foreground">File may be too large or unsupported</p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <video
+                          key={expandedMedia}
+                          ref={videoRef}
+                          src={expandedMedia}
+                          className="w-full h-full object-contain"
+                          autoPlay
+                          muted={isMuted}
+                          loop
+                          playsInline
+                          preload="metadata"
+                          onLoadedData={handleVideoLoad}
+                          onError={handleVideoError}
+                        />
+                      </>
                     )}
                   </div>
                 ) : (
