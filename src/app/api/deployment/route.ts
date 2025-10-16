@@ -28,25 +28,39 @@ export async function GET() {
       });
     }
 
-    // For production, use Vercel's deployment timestamp
-    if (deploymentTimestamp) {
-      // Convert UNIX timestamp to ISO string
-      const deploymentDate = new Date(Number(deploymentTimestamp) * 1000);
-      const lastUpdated = deploymentDate.toISOString();
-      
-      return NextResponse.json({
-        lastUpdated,
-        deploymentId,
-        environment: 'production',
-        url: deploymentUrl,
-        timestamp: deploymentTimestamp
-      });
-    }
-
-    // Fallback: try to get build time from other Vercel env vars
+    // For production, try to get commit date from GitHub API
     if (deploymentId) {
-      // If VERCEL_DEPLOYMENT_TIMESTAMP is not available, 
-      // we'll use a fallback approach
+      try {
+        // Try to fetch commit date from GitHub API
+        const githubResponse = await fetch(
+          `https://api.github.com/repos/ilyshaxa/shaxa.dev/commits/${deploymentId}`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'User-Agent': 'shaxa.dev-portfolio'
+            }
+          }
+        );
+        
+        if (githubResponse.ok) {
+          const commitData = await githubResponse.json();
+          const commitDate = commitData.commit.committer.date;
+          
+          return NextResponse.json({
+            lastUpdated: commitDate,
+            deploymentId,
+            environment: 'production',
+            url: deploymentUrl,
+            source: 'github-api',
+            committer: commitData.commit.committer.name,
+            message: commitData.commit.message.split('\n')[0] // First line of commit message
+          });
+        }
+      } catch (githubError) {
+        console.log('GitHub API failed, using fallback:', githubError);
+      }
+      
+      // Fallback: use current time if GitHub API fails
       const lastUpdated = new Date().toISOString();
       
       return NextResponse.json({
@@ -54,7 +68,8 @@ export async function GET() {
         deploymentId,
         environment: 'production',
         url: deploymentUrl,
-        note: 'Using fallback timestamp - VERCEL_DEPLOYMENT_TIMESTAMP not available'
+        note: 'Using fallback timestamp - GitHub API unavailable',
+        source: 'fallback'
       });
     }
 
