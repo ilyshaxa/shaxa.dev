@@ -5,6 +5,7 @@ import { Github, Linkedin, Twitter, Mail, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getProfile } from '@/lib/data';
 import { useTheme } from 'next-themes';
+import { LastUpdated } from '@/components/last-updated';
 
 export function Footer() {
   const profile = getProfile();
@@ -74,6 +75,7 @@ export function Footer() {
           <p className="text-muted-foreground">
             © 2025 {profile.name}. Made with Next.js, TypeScript & VibeCoding ☕
           </p>
+          <LastUpdated />
           <p className="text-muted-foreground">
             Feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
           </p>
