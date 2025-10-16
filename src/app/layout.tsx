@@ -93,7 +93,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        {/* Favicon and Icons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        
         <link rel="canonical" href={profile.website} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
