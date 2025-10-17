@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -139,7 +139,7 @@ export default function Home() {
                 delay={categoryIndex * 0.1}
                 className="group"
               >
-                <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl h-full">
+                <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-secondary" />
@@ -171,6 +171,126 @@ export default function Home() {
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mt-16 mb-16">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Experience</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              My professional journey and key achievements
+            </p>
+          </motion.div>
+          
+          {/* Compact Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+            {visibleExperiences.map((exp, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start gap-4">
+                      {exp.logo && (
+                        <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0">
+                          <Image
+                            src={exp.logo}
+                            alt={`${exp.company} logo`}
+                            width={32}
+                            height={32}
+                            className="object-contain"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg font-semibold mb-1 line-clamp-2">{exp.position}</CardTitle>
+                        <div className="flex items-center gap-2 flex-wrap mb-2">
+                          <CardDescription className="text-sm font-medium">{exp.company}</CardDescription>
+                          {exp.website && (
+                            <a
+                              href={exp.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Visit
+                            </a>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="secondary" className="text-xs">
+                            {exp.employmentType}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {exp.duration}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-sm text-muted-foreground line-clamp-3 mb-3">{exp.description}</p>
+                    <Button
+                      asChild
+                      variant="default"
+                      size="sm"
+                      className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
+                    >
+                      <Link href={`/about/${exp.slug}`} className="flex items-center justify-center">
+                        Learn More
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Show More/Less Button */}
+          {profile.experience.length > 3 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Button
+                onClick={() => setShowAllExperiences(!showAllExperiences)}
+                variant="glass"
+                className="group"
+              >
+                {showAllExperiences ? (
+                  <>
+                    <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show All ({profile.experience.length - 3} more)
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -226,115 +346,6 @@ export default function Home() {
         </div>
       </ParallaxSection>
 
-      {/* Experience Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mt-16 mb-16">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">Experience</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              My professional journey and key achievements
-            </p>
-          </motion.div>
-          
-          {/* Compact Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-            {visibleExperiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-gray-300/40 dark:hover:border-white/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl h-full">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start gap-4">
-                      {exp.logo && (
-                        <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0">
-                          <Image
-                            src={exp.logo}
-                            alt={`${exp.company} logo`}
-                            width={32}
-                            height={32}
-                            className="object-contain"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg font-semibold mb-1 line-clamp-2">{exp.position}</CardTitle>
-                        <div className="flex items-center gap-2 flex-wrap mb-2">
-                          <CardDescription className="text-sm font-medium">{exp.company}</CardDescription>
-                          {exp.website && (
-                            <a
-                              href={exp.website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Visit
-                            </a>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <Badge variant="secondary" className="text-xs">
-                            {exp.employmentType}
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            {exp.duration}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground line-clamp-3">{exp.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Show More/Less Button */}
-          {profile.experience.length > 3 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <Button
-                onClick={() => setShowAllExperiences(!showAllExperiences)}
-                variant="glass"
-                className="group"
-              >
-                {showAllExperiences ? (
-                  <>
-                    <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show Less
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show All ({profile.experience.length - 3} more)
-                  </>
-                )}
-              </Button>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -362,9 +373,9 @@ export default function Home() {
                 variant="outline"
                 className="text-foreground"
               >
-                <a href="/about">
+                <Link href="/about">
                   Learn More
-                </a>
+                </Link>
               </Button>
             </div>
           </ScrollReveal>

@@ -1,5 +1,26 @@
 // import yaml from 'js-yaml'; // Not needed for static data
 
+export interface Experience {
+  company: string;
+  position: string;
+  duration: string;
+  description: string;
+  website?: string;
+  employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance' | 'Internship';
+  logo?: string;
+  slug: string;
+  startDate: string;
+  endDate?: string;
+  isCurrent: boolean;
+  location?: string;
+  skills: string[];
+  responsibilities: string[];
+  achievements: string[];
+  technologies: string[];
+  teamSize?: string;
+  industry?: string;
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -21,15 +42,7 @@ export interface Profile {
     monitoring: string[];
     tools: string[];
   };
-  experience: Array<{
-    company: string;
-    position: string;
-    duration: string;
-    description: string;
-    website?: string;
-    employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance' | 'Internship';
-    logo?: string;
-  }>;
+  experience: Experience[];
   education: Array<{
     institution: string;
     degree: string;
@@ -113,10 +126,31 @@ const profileData: Profile = {
       company: "kpi.com",
       position: "DevOps Engineer",
       duration: "May 2023 - Present",
-      description: "1+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com.",
+      description: "2+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com",
       website: "https://kpi.com",
       employmentType: "Full-time",
-      logo: "/images/companies/kpi-logo.png"
+      logo: "/images/companies/kpi-logo.png",
+      slug: "kpi-com-devops-engineer",
+      startDate: "2023-05-01",
+      isCurrent: true,
+      location: "Remote",
+      skills: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform", "Linux", "Bash", "Python"],
+      responsibilities: [
+        "Design and implement cloud infrastructure solutions using AWS services",
+        "Automate deployment processes and CI/CD pipelines with Jenkins",
+        "Manage containerized applications using Docker and Kubernetes",
+        "Implement Infrastructure as Code using Terraform",
+        "Monitor system performance and troubleshoot infrastructure issues",
+        "Collaborate with development teams to optimize deployment workflows"
+      ],
+      achievements: [
+        "Reduced deployment time by 60% through automation",
+        "Implemented monitoring solutions that improved system reliability",
+        "Successfully migrated legacy applications to cloud infrastructure"
+      ],
+      technologies: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform", "Linux", "Bash", "Python", "Git", "YAML"],
+      teamSize: "5-10",
+      industry: "Technology"
     },
     {
       company: "PraaktisGo",
@@ -125,16 +159,58 @@ const profileData: Profile = {
       description: "DevOps, automation, and cloud infrastructure at PraaktisGo.",
       website: "https://praaktisgo.com",
       employmentType: "Freelance",
-      logo: "/images/companies/praaktisgo-logo.png"
+      logo: "/images/companies/praaktisgo-logo.png",
+      slug: "praaktisgo-devops-engineer",
+      startDate: "2025-01-01",
+      isCurrent: true,
+      location: "Remote",
+      skills: ["Jenkins", "AWS", "Prometheus", "Docker", "Linux", "Bash", "Ant", "Git"],
+      responsibilities: [
+        "Design and implement comprehensive CI/CD pipelines using Jenkins",
+        "Build and maintain custom AMIs for Jenkins agents with preinstalled tools",
+        "Integrate AWS services (EC2, S3, CodeDeploy, IAM) for seamless deployments",
+        "Implement monitoring solutions using Prometheus and Node Exporter",
+        "Develop automation scripts for build processes and deployment workflows",
+        "Set up Telegram notifications for build status and changelogs"
+      ],
+      achievements: [
+        "Created a fully automated CI/CD pipeline reducing manual deployment effort by 80%",
+        "Implemented monitoring that provides real-time visibility into system performance",
+        "Built custom AMIs that significantly improved build agent efficiency"
+      ],
+      technologies: ["Jenkins", "AWS EC2", "AWS S3", "AWS CodeDeploy", "AWS IAM", "Prometheus", "Node Exporter", "Ant", "Git", "Bash", "Telegram API"],
+      teamSize: "3-5",
+      industry: "Technology"
     },
     {
       company: "zaytra.ai",
       position: "DevOps Engineer & Tech Lead",
       duration: "July 2025 - Present",
-      description: "DevOps, automation, and cloud infrastructure at zaytra.ai. Also responsible for the technical direction of the company.",
+      description: "DevOps, automation, cloud infrastructure and leading the development team at zaytra.ai",
       website: "https://zaytra.ai",
       employmentType: "Freelance",
-      logo: "/images/companies/zaytra-logo.png"
+      logo: "/images/companies/zaytra-logo.png",
+      slug: "zaytra-ai-devops-tech-lead",
+      startDate: "2025-07-01",
+      isCurrent: true,
+      location: "Remote",
+      skills: ["AWS", "Docker", "Kubernetes", "Terraform", "Python", "AI/ML", "Leadership", "Architecture"],
+      responsibilities: [
+        "Lead technical strategy and architecture decisions for the company",
+        "Design and implement scalable cloud infrastructure for AI/ML workloads",
+        "Manage DevOps practices and establish best practices for the team",
+        "Mentor junior developers and DevOps engineers",
+        "Oversee infrastructure security and compliance requirements",
+        "Collaborate with AI/ML teams to optimize model deployment pipelines"
+      ],
+      achievements: [
+        "Established technical direction that improved system scalability by 200%",
+        "Led successful migration to cloud-native architecture",
+        "Built a team of skilled DevOps professionals"
+      ],
+      technologies: ["AWS", "Docker", "Kubernetes", "Terraform", "Python", "AI/ML Tools", "Git", "Linux", "Monitoring Tools"],
+      teamSize: "10+",
+      industry: "Artificial Intelligence"
     }
   ],
   education: [
@@ -265,4 +341,24 @@ export function getFeaturedProjects(): Project[] {
 
 export function getAllProjects(): Project[] {
   return [...projectsData.featured, ...projectsData.all];
+}
+
+export function getExperienceBySlug(slug: string): Experience | null {
+  const profile = getProfile();
+  return profile.experience.find(exp => exp.slug === slug) || null;
+}
+
+export function getAllExperiences(): Experience[] {
+  const profile = getProfile();
+  return profile.experience;
+}
+
+export function getExperienceSlugByCompany(companyName: string): string | null {
+  const experiences = getAllExperiences();
+  const experience = experiences.find(exp => 
+    exp.company.toLowerCase() === companyName.toLowerCase() ||
+    exp.company.toLowerCase().includes(companyName.toLowerCase()) ||
+    companyName.toLowerCase().includes(exp.company.toLowerCase())
+  );
+  return experience?.slug || null;
 }

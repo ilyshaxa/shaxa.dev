@@ -3,14 +3,16 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { GraduationCap, Award, Globe, Code, Heart, Lightbulb, User } from 'lucide-react';
+import { GraduationCap, Award, Globe, Code, Heart, Lightbulb, User, ExternalLink, MapPin, Users, Building } from 'lucide-react';
 import Image from 'next/image';
-import { getProfile } from '@/lib/data';
+import { getProfile, getAllExperiences } from '@/lib/data';
 import { useTheme } from '@/components/theme-provider';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function AboutPage() {
   const profile = getProfile();
+  const experiences = getAllExperiences();
   const { actualTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -59,11 +61,142 @@ export default function AboutPage() {
                   {profile.bio}
                 </p>
                 <p className="text-lg leading-relaxed">
-                DevOps engineer with a love for building things that scale and work seamlessly. I focus on creating clean, automated systems that make development and deployment smoother for everyone. Whether it’s designing cloud infrastructure, fine-tuning CI/CD pipelines, or improving reliability across environments, I enjoy solving the tricky problems that keep systems running at their best. Always exploring new tools and better ways to connect code, infrastructure, and people.
+                DevOps engineer with a love for building things that scale and work seamlessly. I focus on creating clean, automated systems that make development and deployment smoother for everyone. Whether it&apos;s designing cloud infrastructure, fine-tuning CI/CD pipelines, or improving reliability across environments, I enjoy solving the tricky problems that keep systems running at their best. Always exploring new tools and better ways to connect code, infrastructure, and people.
                 </p>
               </div>
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Experience Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Professional Experience</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              My journey through different companies and the skills I&apos;ve gained along the way
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {experiences.map((exp, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="group"
+              >
+                <Link href={`/about/${exp.slug}`}>
+                  <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full cursor-pointer group relative">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start gap-4">
+                        {exp.logo && (
+                          <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0">
+                            <Image
+                              src={exp.logo}
+                              alt={`${exp.company} logo`}
+                              width={32}
+                              height={32}
+                              className="object-contain group-hover:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                            {exp.position}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 flex-wrap mb-2">
+                            <CardDescription className="text-sm font-medium">{exp.company}</CardDescription>
+                            {exp.website && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(exp.website, '_blank', 'noopener,noreferrer');
+                                }}
+                                className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                                Visit
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 flex-wrap mb-3">
+                            <Badge variant="secondary" className="text-xs">
+                              {exp.employmentType}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              {exp.duration}
+                            </Badge>
+                            {exp.isCurrent && (
+                              <Badge variant="default" className="text-xs bg-green-500/20 text-green-400 border-green-500/30">
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{exp.description}</p>
+                      
+                      {/* Key Skills */}
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Key Skills</h4>
+                        <div className="flex flex-wrap gap-1">
+                          {exp.skills.slice(0, 4).map((skill, skillIndex) => (
+                            <Badge 
+                              key={skillIndex}
+                              variant="outline" 
+                              className="text-xs px-2 py-0.5 bg-primary/10 border-primary/20 text-primary"
+                            >
+                              {skill}
+                            </Badge>
+                          ))}
+                          {exp.skills.length > 4 && (
+                            <Badge variant="outline" className="text-xs px-2 py-0.5">
+                              +{exp.skills.length - 4} more
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Additional Info */}
+                      <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
+                        {exp.location && (
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            <span>{exp.location}</span>
+                          </div>
+                        )}
+                        {exp.teamSize && (
+                          <div className="flex items-center gap-1">
+                            <Users className="h-3 w-3" />
+                            <span>{exp.teamSize}</span>
+                          </div>
+                        )}
+                        {exp.industry && (
+                          <div className="flex items-center gap-1">
+                            <Building className="h-3 w-3" />
+                            <span>{exp.industry}</span>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                    
+                    {/* Hover effect overlay */}
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Education & Certifications */}

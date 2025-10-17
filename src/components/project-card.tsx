@@ -5,7 +5,7 @@ import { Calendar, ArrowRight, Star, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Project, generateProjectSlug } from '@/lib/data';
+import { Project, generateProjectSlug, getExperienceSlugByCompany } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -89,12 +89,24 @@ export function ProjectCard({ project, index, featured = false }: ProjectCardPro
               {project.companyName && (
                 <div className="flex items-center gap-1">
                   <Building2 className="h-4 w-4" />
-                  <Link 
-                    href="/about#experience" 
-                    className="text-primary hover:underline font-medium"
-                  >
-                    {project.companyName}
-                  </Link>
+                  {(() => {
+                    const experienceSlug = getExperienceSlugByCompany(project.companyName);
+                    return experienceSlug ? (
+                      <Link 
+                        href={`/about/${experienceSlug}`}
+                        className="text-primary hover:underline font-medium"
+                      >
+                        {project.companyName}
+                      </Link>
+                    ) : (
+                      <Link 
+                        href="/about#experience" 
+                        className="text-primary hover:underline font-medium"
+                      >
+                        {project.companyName}
+                      </Link>
+                    );
+                  })()}
                 </div>
               )}
             </div>
