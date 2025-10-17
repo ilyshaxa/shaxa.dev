@@ -137,7 +137,7 @@ export default function AboutPage() {
                       <div className="space-y-3">
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Key Skills</h4>
                         <div className="flex flex-wrap gap-1.5">
-                          {exp.skills.slice(0, 4).map((skill, skillIndex) => (
+                          {exp.technologies.slice(0, 4).map((skill, skillIndex) => (
                             <Badge 
                               key={skillIndex}
                               variant="outline" 
@@ -146,9 +146,9 @@ export default function AboutPage() {
                               {skill}
                             </Badge>
                           ))}
-                          {exp.skills.length > 4 && (
+                          {exp.technologies.length > 4 && (
                             <Badge variant="outline" className="text-xs px-2.5 py-1 text-muted-foreground">
-                              +{exp.skills.length - 4} more
+                              +{exp.technologies.length - 4} more
                             </Badge>
                           )}
                         </div>

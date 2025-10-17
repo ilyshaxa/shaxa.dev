@@ -13,7 +13,6 @@ export interface Experience {
   endDate?: string;
   isCurrent: boolean;
   location?: string;
-  skills: string[];
   responsibilities: string[];
   achievements: string[];
   technologies: string[];
@@ -125,40 +124,43 @@ const profileData: Profile = {
   },
   experience: [
     {
-      company: "kpi.com",
+      company: "KPI",
       position: "DevOps Engineer",
       duration: "May 2023 - Present",
-      description: "2+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com",
+      description: "Design, automate, and optimize systems to ensure performance and reliability.",
       website: "https://kpi.com",
       employmentType: "Full-time",
       logo: "/images/companies/kpi-logo.png",
       slug: "kpi-com-devops-engineer",
       startDate: "2023-05-01",
       isCurrent: true,
-      location: "Remote",
-      skills: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform", "Linux", "Bash", "Python"],
+      location: "On-site",
       responsibilities: [
-        "Design and implement cloud infrastructure solutions using AWS services",
-        "Automate deployment processes and CI/CD pipelines with Jenkins",
-        "Manage containerized applications using Docker and Kubernetes",
-        "Implement Infrastructure as Code using Terraform",
-        "Monitor system performance and troubleshoot infrastructure issues",
-        "Collaborate with development teams to optimize deployment workflows"
+        "Maintained, optimized, and secured cloud infrastructure on AWS to ensure scalability and high availability",
+        "Managed and deployed containerized applications using Docker across multiple environments",
+        "Automated CI/CD pipelines with Jenkins to streamline integration, testing, and deployment processes",
+        "Monitored system performance, identified bottlenecks, and implemented solutions to improve reliability",
+        "Collaborated closely with development teams to design efficient deployment workflows and improve release velocity",
+        "Ensured infrastructure compliance with security and cost optimization best practices"
       ],
       achievements: [
-        "Reduced deployment time by 60% through automation",
-        "Implemented monitoring solutions that improved system reliability",
-        "Successfully migrated legacy applications to cloud infrastructure"
+        "Reduced monthly AWS costs by 20% through strategic adoption of Savings Plans and resource right-sizing",
+        "Implemented a modern monitoring stack with Prometheus and Grafana, improving system visibility and reliability metrics by 40%",
+        "Upgraded legacy GitLab Omnibus to the latest stable version, strengthening CI/CD security and improving performance by 30%",
+        "Cut deployment times by 50% using parallelized Jenkins builds and optimized AWS instance configurations",
+        "Developed a Python CLI tool to automate database schema synchronization across dev, staging, and production environments, reducing manual work and human error",
+        "Developed a custom Prometheus exporter to surface key business metrics in Grafana dashboards for data-driven decision-making",
+        "Improved incident response time by 60% through proactive alerting and centralized log aggregation"
       ],
-      technologies: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform", "Linux", "Bash", "Python", "Git", "YAML"],
-      teamSize: "5-10",
-      industry: "Technology"
+      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "Gitlab CI", "Git", "Python", "Bash", "Sentry", "Prometheus", "Grafana", "Loki", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
+      teamSize: "50+",
+      industry: "Software & IT Services"
     },
     {
       company: "PraaktisGo",
       position: "DevOps Engineer",
       duration: "January 2025 - Present",
-      description: "DevOps, automation, and cloud infrastructure at PraaktisGo.",
+      description: "Design, automate, and optimize cloud infrastructure and deployment workflows for scalable, reliable systems.",
       website: "https://praaktisgo.com",
       employmentType: "Freelance",
       logo: "/images/companies/praaktisgo-logo.png",
@@ -166,29 +168,32 @@ const profileData: Profile = {
       startDate: "2025-01-01",
       isCurrent: true,
       location: "Remote",
-      skills: ["Jenkins", "AWS", "Prometheus", "Docker", "Linux", "Bash", "Ant", "Git"],
       responsibilities: [
-        "Design and implement comprehensive CI/CD pipelines using Jenkins",
-        "Build and maintain custom AMIs for Jenkins agents with preinstalled tools",
-        "Integrate AWS services (EC2, S3, CodeDeploy, IAM) for seamless deployments",
-        "Implement monitoring solutions using Prometheus and Node Exporter",
-        "Develop automation scripts for build processes and deployment workflows",
-        "Set up Telegram notifications for build status and changelogs"
-      ],
+        "Led the migration of existing AWS cloud infrastructure to a new AWS account and region, ensuring scalability, security, and cost-efficiency",
+        "Designed and maintained CI/CD pipelines with Jenkins to automate testing, integration, and deployment workflows",
+        "Implemented end-to-end monitoring and alerting solutions to ensure system reliability, availability, and performance visibility",
+        "Collaborated closely with development teams to streamline build, release, and automation processes",
+        "Optimized cloud infrastructure costs and enforced security best practices across environments",
+        "Documented architecture, deployment processes, and operational guidelines to improve team efficiency and continuity"
+      ],      
       achievements: [
-        "Created a fully automated CI/CD pipeline reducing manual deployment effort by 80%",
-        "Implemented monitoring that provides real-time visibility into system performance",
-        "Built custom AMIs that significantly improved build agent efficiency"
-      ],
-      technologies: ["Jenkins", "AWS EC2", "AWS S3", "AWS CodeDeploy", "AWS IAM", "Prometheus", "Node Exporter", "Ant", "Git", "Bash", "Telegram API"],
-      teamSize: "3-5",
-      industry: "Technology"
+        "Completed AWS infrastructure migration with zero downtime and no data loss",
+        "Secured $100K in Google Cloud credits through the 2024 GFS Cloud Program, expanding multi-cloud flexibility",
+        "Received $10K in AWS Activate Portfolio credits to accelerate infrastructure growth and experimentation",
+        "Awarded a 1-year free Google Workspace Business Plan, reducing operational costs by 15%",
+        "Reduced deployment time by 50% through CI/CD pipeline automation and environment standardization",
+        "Achieved 99.9% system uptime through proactive monitoring and incident prevention measures",
+        "Implemented cross-cloud cost tracking and performance monitoring to guide future hybrid-cloud strategy"
+      ],            
+      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "Git", "Python", "Bash", "Prometheus", "Grafana", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
+      teamSize: "10+",
+      industry: "Wellness & Fitness"
     },
     {
-      company: "zaytra.ai",
+      company: "Zaytra",
       position: "DevOps Engineer & Tech Lead",
       duration: "July 2025 - Present",
-      description: "DevOps, automation, cloud infrastructure and leading the development team at zaytra.ai",
+      description: "Lead infrastructure design, automation, and team development to build and scale technical foundation.",
       website: "https://zaytra.ai",
       employmentType: "Freelance",
       logo: "/images/companies/zaytra-logo.png",
@@ -196,23 +201,115 @@ const profileData: Profile = {
       startDate: "2025-07-01",
       isCurrent: true,
       location: "Remote",
-      skills: ["AWS", "Docker", "Kubernetes", "Terraform", "Python", "AI/ML", "Leadership", "Architecture"],
       responsibilities: [
-        "Lead technical strategy and architecture decisions for the company",
-        "Design and implement scalable cloud infrastructure for AI/ML workloads",
-        "Manage DevOps practices and establish best practices for the team",
-        "Mentor junior developers and DevOps engineers",
-        "Oversee infrastructure security and compliance requirements",
-        "Collaborate with AI/ML teams to optimize model deployment pipelines"
+        "Designed and implemented the entire technical infrastructure for a new startup from the ground up",
+        "Set up and maintained production-ready cloud servers, CI/CD pipelines, and secure deployment workflows",
+        "Built containerized environments using Docker for consistent development and production parity",
+        "Configured domains, SSL certificates, and DNS to establish a professional and secure online presence",
+        "Developed monitoring, logging, and alerting systems to ensure system reliability and uptime",
+        "Established engineering best practices and technical documentation to support future scalability",
+        "Mentored interns and junior developers, fostering a strong technical culture and guiding architectural decisions"
+      ],      
+      achievements: [
+        "Built the startup's entire technical stack from zero to production within 8 weeks",
+        "Achieved 99.9% uptime through proactive monitoring, automated alerts, and containerized deployments",
+        "Optimized infrastructure to handle early user growth with minimal cost (~90% below leading cloud providers)",
+        "Delivered secure, SSL-certified web services with zero downtime during key demos and investor pitches",
+        "Established technical standards and documentation that enabled rapid onboarding of new engineers",
+        "Led cross-functional collaboration between AI researchers, product, and operations to align technical and business goals"
+      ],
+      technologies: ["Linux", "Docker", "Grafana", "Prometheus", "MongoDB", "Github actions",  "PostgreSQL"],
+      teamSize: "10+",
+      industry: "Marketing & Advertising"
+    },
+    {
+      company: "Retouch Garage",
+      position: "DevOps Engineer",
+      duration: "June 2025 - July 2025",
+      description: "Deployed and implemented CI/CD for the landing page.",
+      website: "https://retouchgarage.com/",
+      employmentType: "Freelance",
+      logo: "/images/companies/retouch-logo.png",
+      slug: "retouchgarage-com-devops-engineer",
+      startDate: "2025-06-01",
+      endDate: "2025-07-01",
+      isCurrent: false,
+      location: "Remote",
+      responsibilities: [
+        "Mentored intern developers and promoted best practices",
+        "Deployed and implemented a secure landing page to production",
+        "Implemented a lead-capture workflow"
+      ],    
+      achievements: [
+        "Successfully deployed and implemented a secure landing page to production",
+        "Successfully implemented a lead-capture workflow"
+      ],
+      technologies: ["Git", "DNS", "SSL", "Vercel"],
+      teamSize: "100-200",
+      industry: "Image Editing & Retouching"
+    },
+    {
+      company: "Izish",
+      position: "DevOps Engineer",
+      duration: "November 2024 - July 2025",
+      description: "DevOps, automation, cloud infrastructure at izish.uz",
+      website: "https://dev.izish.uz/",
+      employmentType: "Contract",
+      logo: "/images/companies/izish-logo.png",
+      slug: "izish-uz-devops-engineer",
+      startDate: "2024-11-01",
+      endDate: "2025-07-01",
+      isCurrent: false,
+      location: "Remote",
+      responsibilities: [
+        "Deployed and managed production and development environments on AWS, ensuring scalable and secure infrastructure",
+        "Implemented CI/CD pipelines using GitLab CI/CD to automate testing, integration, and deployment processes",
+        "Migrated infrastructure from AWS to a local cloud provider to comply with national data residency and government regulations",
+        "Collaborated with backend and frontend teams to streamline build and deployment workflows for faster, more reliable releases",
+        "Set up comprehensive monitoring and alerting using Prometheus and Grafana to track system health and performance metrics",
+        "Created detailed infrastructure and architecture documentation required for government API integration and compliance audits"
+      ],    
+      achievements: [
+        "Successfully migrated infrastructure from AWS to a compliant local cloud provider with zero downtime",
+        "Reduced deployment times and manual intervention through optimized GitLab CI/CD automation",
+        "Improved system observability and response time by implementing Prometheus and Grafana monitoring dashboards",
+        "Streamlined deployment workflows in collaboration with developers, improving release frequency and reducing rollback incidents",
+        "Authored infrastructure documentation which was required for the approval process of government API access",
+        "Established a secure, scalable deployment framework supporting continuous delivery across multiple environments"
+      ],
+      technologies: ["AWS", "Linux", "Docker", "GitLab CI/CD", "Prometheus", "Grafana", "PostgreSQL", "Redis", "Local Cloud Provider"],
+      teamSize: "5+",
+      industry: "Recruitment & HR"
+    },
+    {
+      company: "DataSite Technology",
+      position: "Frontend Developer",
+      duration: "September 2022 - May 2023",
+      description: "Frontend developer at DataSite Technology.",
+      website: "https://dst.uz/",
+      employmentType: "Internship",
+      logo: "/images/companies/datasite-logo.png",
+      slug: "datasite-technology-frontend-developer",
+      startDate: "2022-09-01",
+      endDate: "2023-05-01",
+      isCurrent: false,
+      location: "Remote",
+      responsibilities: [
+        "Learned and practiced core frontend technologies including HTML, CSS, and JavaScript",
+        "Gained hands-on experience with React and Next.js by building components for internal projects",
+        "Collaborated with senior developers to understand code structure, version control, and best practices using Git",
+        "Assisted in styling and layout improvements using Tailwind CSS",
+        "Participated in code reviews and team discussions to improve technical and collaboration skills"
       ],
       achievements: [
-        "Established technical direction that improved system scalability by 200%",
-        "Led successful migration to cloud-native architecture",
-        "Built a team of skilled DevOps professionals"
+        "Successfully transitioned from academic learning to practical frontend development in a professional environment",
+        "Built and deployed small-scale frontend features using React and JavaScript under mentorship",
+        "Improved understanding of modern web development workflows, version control, and team collaboration",
+        "Established a strong foundation in responsive design and clean, maintainable code practices"
       ],
-      technologies: ["AWS", "Docker", "Kubernetes", "Terraform", "Python", "AI/ML Tools", "Git", "Linux", "Monitoring Tools"],
-      teamSize: "10+",
-      industry: "Artificial Intelligence"
+      technologies: ["HTML", "CSS", "JavaScript", "React", "Git", "Figma"],
+      teamSize: "100-200",
+      industry: "IT services & digital marketing."
     }
   ],
   education: [

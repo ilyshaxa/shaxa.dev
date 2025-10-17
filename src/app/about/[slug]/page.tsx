@@ -241,7 +241,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {[...new Set([...experience.skills, ...experience.technologies])].map((item, index) => (
+                    {experience.technologies.map((item, index) => (
                       <Badge 
                         key={index}
                         variant="outline" 
@@ -262,7 +262,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="flex justify-between items-center"
+          className="flex items-center gap-4"
         >
           {prevExperience ? (
             <Button
@@ -275,9 +275,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 {prevExperience.company}
               </Link>
             </Button>
-          ) : (
-            <div />
-          )}
+          ) : null}
 
           {/* Back to About Button */}
           <Button
@@ -301,9 +299,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 <ArrowLeft className="h-4 w-4 rotate-180 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-          ) : (
-            <div />
-          )}
+          ) : null}
         </motion.div>
       </div>
     </div>
