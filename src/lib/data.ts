@@ -40,6 +40,7 @@ export interface Profile {
     infrastructure: string[];
     cicd: string[];
     monitoring: string[];
+    database: string[];
     tools: string[];
   };
   experience: Experience[];
@@ -119,6 +120,7 @@ const profileData: Profile = {
     infrastructure: ["Terraform", "Ansible", "Pulumi", "CloudFormation", "ARM Templates", "CDK"],
     cicd: ["Jenkins", "GitLab CI", "GitHub Actions", "Azure DevOps", "CircleCI", "ArgoCD"],
     monitoring: ["Prometheus", "Grafana", "Loki", "Promtail", "ELK Stack", "Datadog"],
+    database: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch", "DynamoDB"],
     tools: ["Git", "Linux", "Bash", "Python", "YAML", "JSON"]
   },
   experience: [

@@ -145,7 +145,7 @@ export function ProjectCard({ project, index, featured = false }: ProjectCardPro
             className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
           >
             <Link href={`/projects/${projectSlug}`} className="flex items-center justify-center">
-              Learn More
+              Read More
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

@@ -68,7 +68,7 @@ export default function AboutPage() {
           </Card>
         </motion.div>
 
-        {/* Experience Section */}
+        {/* Professional Experience Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,73 +94,60 @@ export default function AboutPage() {
                 className="group"
               >
                 <Link href={`/about/${exp.slug}`}>
-                  <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full cursor-pointer group relative">
-                    <CardHeader className="pb-4">
+                  <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full cursor-pointer group relative overflow-hidden">
+                    <CardHeader className="pb-3">
                       <div className="flex items-start gap-4">
                         {exp.logo && (
-                          <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0">
+                          <div className="w-14 h-14 rounded-xl bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                             <Image
                               src={exp.logo}
                               alt={`${exp.company} logo`}
-                              width={32}
-                              height={32}
-                              className="object-contain group-hover:scale-110 transition-transform duration-300"
+                              width={36}
+                              height={36}
+                              className="object-contain"
                             />
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                            {exp.position}
-                          </CardTitle>
-                          <div className="flex items-center gap-2 flex-wrap mb-2">
-                            <CardDescription className="text-sm font-medium">{exp.company}</CardDescription>
-                            {exp.website && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.open(exp.website, '_blank', 'noopener,noreferrer');
-                                }}
-                                className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
-                              >
-                                <ExternalLink className="h-3 w-3" />
-                                Visit
-                              </button>
-                            )}
+                          <div className="mb-2">
+                            <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                              {exp.position}
+                            </CardTitle>
+                            <CardDescription className="text-sm font-medium text-muted-foreground">
+                              {exp.company}
+                            </CardDescription>
                           </div>
+                          
                           <div className="flex items-center gap-2 flex-wrap mb-3">
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-xs px-2 py-1">
                               {exp.employmentType}
                             </Badge>
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className="text-xs px-2 py-1">
                               {exp.duration}
                             </Badge>
-                            {exp.isCurrent && (
-                              <Badge variant="default" className="text-xs bg-green-500/20 text-green-400 border-green-500/30">
-                                Current
-                              </Badge>
-                            )}
                           </div>
                         </div>
                       </div>
                     </CardHeader>
+                    
                     <CardContent className="pt-0">
-                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{exp.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 leading-relaxed">{exp.description}</p>
                       
                       {/* Key Skills */}
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Key Skills</h4>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-1.5">
                           {exp.skills.slice(0, 4).map((skill, skillIndex) => (
                             <Badge 
                               key={skillIndex}
                               variant="outline" 
-                              className="text-xs px-2 py-0.5 bg-primary/10 border-primary/20 text-primary"
+                              className="text-xs px-2.5 py-1 bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 transition-colors"
                             >
                               {skill}
                             </Badge>
                           ))}
                           {exp.skills.length > 4 && (
-                            <Badge variant="outline" className="text-xs px-2 py-0.5">
+                            <Badge variant="outline" className="text-xs px-2.5 py-1 text-muted-foreground">
                               +{exp.skills.length - 4} more
                             </Badge>
                           )}
@@ -168,22 +155,22 @@ export default function AboutPage() {
                       </div>
 
                       {/* Additional Info */}
-                      <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-4 mt-4 pt-3 border-t border-white/10">
                         {exp.location && (
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <MapPin className="h-3.5 w-3.5" />
                             <span>{exp.location}</span>
                           </div>
                         )}
                         {exp.teamSize && (
-                          <div className="flex items-center gap-1">
-                            <Users className="h-3 w-3" />
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Users className="h-3.5 w-3.5" />
                             <span>{exp.teamSize}</span>
                           </div>
                         )}
                         {exp.industry && (
-                          <div className="flex items-center gap-1">
-                            <Building className="h-3 w-3" />
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Building className="h-3.5 w-3.5" />
                             <span>{exp.industry}</span>
                           </div>
                         )}
@@ -199,12 +186,27 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
-        {/* Education & Certifications */}
-        <div className={`grid grid-cols-1 gap-8 mb-20 ${
-          profile.certifications.length > 2 
-            ? 'lg:grid-cols-3' 
-            : 'lg:grid-cols-2'
-        }`}>
+        {/* Education & Certifications Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Education & Certifications</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              My academic background and professional certifications
+            </p>
+          </div>
+          
+          <div className={`grid grid-cols-1 gap-8 ${
+            profile.certifications.length > 2 
+              ? 'lg:grid-cols-3' 
+              : 'lg:grid-cols-2'
+          }`}>
           {/* Education */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -212,7 +214,7 @@ export default function AboutPage() {
             transition={{ delay: 0.4, duration: 0.8 }}
             className={profile.certifications.length > 2 ? 'lg:col-span-1' : ''}
           >
-            <Card className="glass-dark border-white/20 h-full">
+            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <GraduationCap className="h-6 w-6 text-primary" />
@@ -238,7 +240,7 @@ export default function AboutPage() {
                       transition={{ delay: index * 0.1, duration: 0.6 }}
                       className="group relative h-full"
                     >
-                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
                         <div className="flex items-start gap-4 flex-1">
                           <div className="w-12 h-12 relative flex-shrink-0">
                             {(edu.logo || edu.logoLight || edu.logoDark) ? (
@@ -294,7 +296,7 @@ export default function AboutPage() {
             transition={{ delay: 0.6, duration: 0.8 }}
             className={profile.certifications.length > 2 ? 'lg:col-span-2' : ''}
           >
-            <Card className="glass-dark border-white/20 h-full">
+            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <Award className="h-6 w-6 text-primary" />
@@ -322,7 +324,7 @@ export default function AboutPage() {
                       transition={{ delay: index * 0.1, duration: 0.6 }}
                       className="group relative h-full"
                     >
-                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
                         <div className="flex items-start gap-4 flex-1">
                           <div className="w-12 h-12 relative flex-shrink-0">
                             {(cert.logo || cert.logoLight || cert.logoDark) ? (
@@ -386,17 +388,34 @@ export default function AboutPage() {
               </CardContent>
             </Card>
           </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
-        {/* Skills & Languages */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+        {/* Skills & Languages Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Skills & Languages</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              My technical expertise and language proficiency
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-8">
           {/* Skills */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
+            className="group"
           >
-            <Card className="glass-dark border-white/20 h-full">
+            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <Code className="h-6 w-6 text-primary" />
@@ -407,25 +426,65 @@ export default function AboutPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
-                  {Object.entries(profile.skills).map(([category, skills]) => (
-                    <div key={category} className="space-y-3">
-                      <h4 className="font-semibold text-lg capitalize text-primary">
-                        {category.replace(/([A-Z])/g, ' $1').trim()}
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {skills.map((skill, skillIndex) => (
-                          <Badge 
-                            key={skillIndex}
-                            variant="outline" 
-                            className="glass-dark border-gray-300/50 dark:border-white/20 text-xs px-3 py-1"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                <div className="space-y-8">
+                  {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
+                    // Define unique colors for each category
+                    const categoryColors = {
+                      cloud: 'bg-blue-500',
+                      containers: 'bg-green-500', 
+                      infrastructure: 'bg-purple-500',
+                      cicd: 'bg-orange-500',
+                      monitoring: 'bg-red-500',
+                      database: 'bg-pink-500',
+                      tools: 'bg-cyan-500'
+                    };
+                    
+                    const categoryColor = categoryColors[category as keyof typeof categoryColors] || 'bg-primary';
+                    
+                    return (
+                      <motion.div 
+                        key={category} 
+                        className="space-y-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: categoryIndex * 0.1, duration: 0.6 }}
+                      >
+                        {/* Simple Category Header */}
+                        <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+                          <div className={`w-3 h-3 rounded-full ${categoryColor}`} />
+                          <h4 className="font-semibold text-lg capitalize text-primary">
+                            {category.replace(/([A-Z])/g, ' $1').trim()}
+                          </h4>
+                          <span className="text-sm text-muted-foreground">
+                            ({skills.length})
+                          </span>
+                        </div>
+                        
+                        {/* Simple Skills Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                          {skills.map((skill, skillIndex) => (
+                            <motion.div
+                              key={skillIndex}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ 
+                                delay: categoryIndex * 0.1 + skillIndex * 0.05, 
+                                duration: 0.4 
+                              }}
+                              whileHover={{}}
+                              className="group"
+                            >
+                              <div className="p-3 rounded-lg bg-white/5 dark:bg-black/5 border border-gray-200/40 dark:border-white/10 hover:border-primary/30 dark:hover:border-primary/30 transition-all duration-200 text-center">
+                                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200">
+                                  {skill}
+                                </span>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
@@ -436,11 +495,14 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.0, duration: 0.8 }}
+            className="group"
           >
-            <Card className="glass-dark border-white/20 h-full">
+            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-3 text-2xl">
-                  <Globe className="h-6 w-6 text-primary" />
+                  <div className="p-2 rounded-lg bg-secondary/10">
+                    <Globe className="h-6 w-6 text-primary" />
+                  </div>
                   Languages
                 </CardTitle>
                 <CardDescription className="text-base">
@@ -455,39 +517,39 @@ export default function AboutPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1, duration: 0.6 }}
-                      className="group relative"
+                      className="group/language relative"
                     >
-                      <div className="glass-dark border-white/20 dark:border-white/20 border-gray-200/20 rounded-xl p-4 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 flex items-center gap-4">
-                        <div className="w-12 h-12 relative flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-4 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 flex items-center gap-4 group-hover/language:bg-primary/5">
+                        <div className="w-14 h-14 relative flex-shrink-0 group-hover/language:scale-110 transition-transform duration-300 rounded-lg overflow-hidden border border-white/10">
                           {lang.flag ? (
                             <Image
                               src={lang.flag}
                               alt={`${lang.country} flag`}
                               fill
-                              className="object-contain rounded-lg"
+                              className="object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                              <Globe className="h-6 w-6 text-muted-foreground" />
+                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
+                              <Globe className="h-6 w-6 text-primary" />
                             </div>
                           )}
                         </div>
                         
                         <div className="flex-1">
-                          <h4 className="font-semibold text-lg group-hover:text-primary transition-colors duration-300">
+                          <h4 className="font-semibold text-lg group-hover/language:text-primary transition-colors duration-300">
                             {lang.name}
                           </h4>
                         </div>
                         
                         <Badge 
                           variant="outline" 
-                          className="glass-dark border-gray-300/50 dark:border-white/20 text-xs px-3 py-1"
+                          className="glass-dark border-primary/30 dark:border-primary/30 text-xs px-3 py-1.5 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all duration-200"
                         >
                           {lang.level}
                         </Badge>
                         
                         {/* Hover effect overlay */}
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover/language:opacity-100 transition-opacity duration-300 pointer-events-none" />
                       </div>
                     </motion.div>
                   ))}
@@ -495,26 +557,26 @@ export default function AboutPage() {
               </CardContent>
             </Card>
           </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
-        {/* Values & Philosophy */}
+        {/* Values & Philosophy Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
           className="mb-20"
         >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Values & Philosophy</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              What drives me and shapes my approach to work
+            </p>
+          </div>
           <Card className="glass-dark border-white/20">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <Heart className="h-6 w-6 text-primary" />
-                Values & Philosophy
-              </CardTitle>
-              <CardDescription className="text-base">
-                What drives me and shapes my approach to work
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <motion.div 
                   className="space-y-4"
@@ -586,23 +648,24 @@ export default function AboutPage() {
           </Card>
         </motion.div>
 
-        {/* Fun Facts */}
+        {/* Fun Facts Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+          className="mb-20"
         >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="text-gradient">Fun Facts</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A few things about me outside of coding
+            </p>
+          </div>
+          
           <Card className="glass-dark border-white/20">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <Lightbulb className="h-6 w-6 text-primary" />
-                Fun Facts
-              </CardTitle>
-              <CardDescription className="text-base">
-                A few things about me outside of coding
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <motion.div 
                   className="space-y-2"

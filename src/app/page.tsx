@@ -35,9 +35,9 @@ export default function Home() {
             className="space-y-8"
           >
             <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
               className="relative w-80 h-80 mx-auto"
             >
               <div className="absolute inset-0 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border-4 border-gray-300/30 dark:border-white/20 animate-pulse-slow" />
@@ -131,23 +131,37 @@ export default function Home() {
           </ScrollReveal>
           
           {/* Compact Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {Object.entries(profile.skills).map(([category, skills], categoryIndex) => (
-              <ScrollReveal
-                key={category}
-                direction="up"
-                delay={categoryIndex * 0.1}
-                className="group"
-              >
-                <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary to-secondary" />
-                      <CardTitle className="text-lg font-semibold capitalize text-gradient">
-                        {category.replace(/([A-Z])/g, ' $1').trim()}
-                      </CardTitle>
-                    </div>
-                  </CardHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
+              // Define unique colors for each category
+              const categoryColors = {
+                cloud: 'bg-blue-500',
+                containers: 'bg-green-500', 
+                infrastructure: 'bg-purple-500',
+                cicd: 'bg-orange-500',
+                monitoring: 'bg-red-500',
+                database: 'bg-pink-500',
+                tools: 'bg-cyan-500'
+              };
+              
+              const categoryColor = categoryColors[category as keyof typeof categoryColors] || 'bg-primary';
+              
+              return (
+                <ScrollReveal
+                  key={category}
+                  direction="up"
+                  delay={categoryIndex * 0.1}
+                  className="group"
+                >
+                  <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full ${categoryColor}`} />
+                        <CardTitle className="text-lg font-semibold capitalize text-foreground">
+                          {category.replace(/([A-Z])/g, ' $1').trim()}
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
                   <CardContent className="pt-0">
                     <div className="flex flex-wrap gap-2">
                       {skills.map((skill, skillIndex) => (
@@ -169,7 +183,8 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </ScrollReveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -245,7 +260,6 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground line-clamp-3 mb-3">{exp.description}</p>
                     <Button
                       asChild
                       variant="default"
@@ -253,7 +267,7 @@ export default function Home() {
                       className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
                     >
                       <Link href={`/about/${exp.slug}`} className="flex items-center justify-center">
-                        Learn More
+                        Read More
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>
                     </Button>

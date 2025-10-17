@@ -18,6 +18,7 @@ interface Message {
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -69,6 +70,23 @@ export function Chatbot() {
       return () => clearTimeout(timer);
     }
   }, [showWelcome, isHovering]);
+
+  // Handle ESC key to close chat
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -139,43 +157,76 @@ export function Chatbot() {
     }
   };
 
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for animation to complete before actually closing
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+      setShowWelcome(false);
+    }, 300); // Match the exit animation duration
+  };
+
   return (
     <>
       {/* Chat Widget - Bottom Right Corner */}
       <div className="fixed bottom-6 right-6 z-50">
-        <AnimatePresence>
-          {!isOpen ? (
-            // Chat Toggle Button
-            <motion.button
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0, rotate: 180 }}
-              transition={{ delay: 2, type: 'spring', stiffness: 200 }}
-              onClick={() => {
-                setIsOpen(true);
-                setShowWelcome(false);
-                // Focus input when chat opens
-                setTimeout(() => {
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }, 100);
-              }}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group border border-border"
+        {/* Chat Toggle Button - Always Visible */}
+        <motion.button
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 2, type: 'spring', stiffness: 200 }}
+          onClick={() => {
+            if (isOpen) {
+              handleClose();
+            } else {
+              setIsOpen(true);
+              setShowWelcome(false);
+              // Focus input when chat opens
+              setTimeout(() => {
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                }
+              }, 100);
+            }
+          }}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group border border-border"
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isOpen ? 'close' : 'message'}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.1 }}
+              className="flex items-center justify-center"
             >
-              <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
-            </motion.button>
-          ) : (
-            // Chat Interface
+              {isOpen ? (
+                <X className="h-6 w-6 group-hover:scale-110 transition-transform" />
+              ) : (
+                <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform" />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </motion.button>
+
+        {/* Chat Interface - Conditionally Visible */}
+        <AnimatePresence>
+          {isOpen && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+              animate={isClosing ? { opacity: 0, scale: 0.8, y: 20 } : { opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="bg-card text-card-foreground rounded-2xl shadow-2xl border border-border w-80 h-[500px] flex flex-col overflow-hidden"
+              transition={{ 
+                type: isClosing ? 'tween' : 'spring', 
+                stiffness: 300, 
+                damping: 30,
+                duration: isClosing ? 0.3 : undefined
+              }}
+              className="absolute bottom-16 right-0 bg-card text-card-foreground rounded-2xl shadow-2xl border border-border w-80 h-[500px] flex flex-col overflow-hidden"
             >
               {/* Header */}
-              <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
+              <div className="bg-primary text-primary-foreground p-4 flex items-center">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-primary-foreground/20 rounded-full flex items-center justify-center">
                     <Bot className="h-4 w-4" />
@@ -185,15 +236,6 @@ export function Chatbot() {
                     <p className="text-xs text-primary-foreground/70">Online</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    setShowWelcome(false);
-                  }}
-                  className="w-8 h-8 rounded-full bg-primary-foreground/20 hover:bg-primary-foreground/30 flex items-center justify-center transition-colors"
-                >
-                  <X className="h-4 w-4" />
-                </button>
               </div>
 
               {/* Messages Area */}
