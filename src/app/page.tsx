@@ -384,8 +384,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="text-foreground"
+                variant="glass"
               >
                 <Link href="/about">
                   Learn More
