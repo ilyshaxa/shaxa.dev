@@ -12,6 +12,7 @@ PROFILE:
 - Title: DevOps Engineer
 - Location: Tashkent, Uzbekistan
 - Origin: Originally from Namangan, Uzbekistan
+- Phone: +998 93 766 50 10
 - Email: shaxriyor@shaxa.dev
 - Website: https://shaxa.dev
 - GitHub: https://github.com/ilyshaxa
