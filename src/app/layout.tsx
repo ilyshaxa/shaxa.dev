@@ -12,6 +12,7 @@ import { Chatbot } from "@/components/chatbot";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
+import { StructuredData } from "@/components/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -150,6 +151,7 @@ export default function RootLayout({
             <Toaster />
             <Analytics />
             <SpeedInsights />
+            <StructuredData />
           </div>
         </ThemeProvider>
       </body>
