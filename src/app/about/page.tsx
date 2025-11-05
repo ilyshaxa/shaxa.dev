@@ -16,6 +16,11 @@ export default function AboutPage() {
   const { actualTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // Filter out Planned and Expired certifications
+  const activeCertifications = profile.certifications.filter(
+    cert => cert.status !== 'Planned' && cert.status !== 'Expired'
+  );
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -203,7 +208,7 @@ export default function AboutPage() {
           </div>
           
           <div className={`grid grid-cols-1 gap-8 ${
-            profile.certifications.length > 2 
+            activeCertifications.length > 2 
               ? 'lg:grid-cols-3' 
               : 'lg:grid-cols-2'
           }`}>
@@ -212,7 +217,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className={profile.certifications.length > 2 ? 'lg:col-span-1' : ''}
+            className={activeCertifications.length > 2 ? 'lg:col-span-1' : ''}
           >
             <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
@@ -294,7 +299,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className={profile.certifications.length > 2 ? 'lg:col-span-2' : ''}
+            className={activeCertifications.length > 2 ? 'lg:col-span-2' : ''}
           >
             <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
@@ -307,84 +312,104 @@ export default function AboutPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className={`grid gap-6 items-stretch ${
-                  profile.certifications.length === 1 
-                    ? 'grid-cols-1' 
-                    : profile.certifications.length === 2 
-                    ? 'grid-cols-1 md:grid-cols-2' 
-                    : profile.certifications.length === 4
-                    ? 'grid-cols-1 md:grid-cols-2'
-                    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                }`}>
-                  {profile.certifications.map((cert, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
-                      className="group relative h-full"
-                    >
-                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="w-12 h-12 relative flex-shrink-0">
-                            {(cert.logo || cert.logoLight || cert.logoDark) ? (
-                              <Image
-                                src={
-                                  mounted && actualTheme === 'dark' && cert.logoDark
-                                    ? cert.logoDark
-                                    : mounted && actualTheme === 'light' && cert.logoLight
-                                    ? cert.logoLight
-                                    : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
-                                }
-                                alt={`${cert.issuer} logo`}
-                                fill
-                                className="object-contain group-hover:scale-110 transition-transform duration-300"
-                                unoptimized={cert.logo?.includes('british-council')}
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                                <Award className="h-6 w-6 text-muted-foreground" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col h-full">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                                {cert.name}
-                              </h4>
-                              <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
-                                {cert.issuer}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2 mt-auto">
-                              <Badge 
-                                variant="outline" 
-                                className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20"
-                              >
-                                {cert.year}
-                              </Badge>
-                              <Badge 
-                                variant="outline" 
-                                className={`glass-dark text-xs px-2 py-1 ${
-                                  cert.status === 'Planned' 
-                                    ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                                    : cert.status === 'Expired'
-                                    ? 'bg-red-500/20 text-red-400 border-red-500/30'
-                                    : 'bg-green-500/20 text-green-400 border-green-500/30'
-                                }`}
-                              >
-                                {cert.status}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Hover effect overlay */}
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                {(() => {
+                  // If no active certifications, show a message
+                  if (activeCertifications.length === 0) {
+                    return (
+                      <div className="flex flex-col items-center justify-center py-12 px-4">
+                        <Award className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
+                        <p className="text-muted-foreground text-center text-lg">
+                          Certifications coming soon
+                        </p>
+                        <p className="text-muted-foreground/70 text-center text-sm mt-2">
+                          Professional certifications will be displayed here once obtained
+                        </p>
                       </div>
-                    </motion.div>
-                  ))}
-                </div>
+                    );
+                  }
+
+                  // Display active certifications
+                  return (
+                    <div className={`grid gap-6 items-stretch ${
+                      activeCertifications.length === 1 
+                        ? 'grid-cols-1' 
+                        : activeCertifications.length === 2 
+                        ? 'grid-cols-1 md:grid-cols-2' 
+                        : activeCertifications.length === 4
+                        ? 'grid-cols-1 md:grid-cols-2'
+                        : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                    }`}>
+                      {activeCertifications.map((cert, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1, duration: 0.6 }}
+                          className="group relative h-full"
+                        >
+                          <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                            <div className="flex items-start gap-4 flex-1">
+                              <div className="w-12 h-12 relative flex-shrink-0">
+                                {(cert.logo || cert.logoLight || cert.logoDark) ? (
+                                  <Image
+                                    src={
+                                      mounted && actualTheme === 'dark' && cert.logoDark
+                                        ? cert.logoDark
+                                        : mounted && actualTheme === 'light' && cert.logoLight
+                                        ? cert.logoLight
+                                        : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
+                                    }
+                                    alt={`${cert.issuer} logo`}
+                                    fill
+                                    className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                    unoptimized={cert.logo?.includes('british-council')}
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                                    <Award className="h-6 w-6 text-muted-foreground" />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0 flex flex-col h-full">
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
+                                    {cert.name}
+                                  </h4>
+                                  <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
+                                    {cert.issuer}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-2 mt-auto">
+                                  <Badge 
+                                    variant="outline" 
+                                    className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20"
+                                  >
+                                    {cert.year}
+                                  </Badge>
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`glass-dark text-xs px-2 py-1 ${
+                                      cert.status === 'Planned' 
+                                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                                        : cert.status === 'Expired'
+                                        ? 'bg-red-500/20 text-red-400 border-red-500/30'
+                                        : 'bg-green-500/20 text-green-400 border-green-500/30'
+                                    }`}
+                                  >
+                                    {cert.status}
+                                  </Badge>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Hover effect overlay */}
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
           </motion.div>

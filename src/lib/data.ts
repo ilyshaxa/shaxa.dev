@@ -323,42 +323,44 @@ const profileData: Profile = {
     }
   ],
   certifications: [
-    {
-      name: "AWS Certified Cloud Practitioner",
-      issuer: "Amazon Web Services",
-      year: "2025",
-      status: "Planned",
-      logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
-      logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
-      logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
-    },
-    {
-      name: "AWS Certified Solutions Architect Professional",
-      issuer: "Amazon Web Services",
-      year: "2026",
-      status: "Planned",
-      logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
-      logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
-      logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
-    },
-    {
-      name: "AWS Certified DevOps Engineer Professional",
-      issuer: "Amazon Web Services",
-      year: "2026",
-      status: "Planned",
-      logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
-      logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
-      logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
-    },
-    {
-      name: "English Language Certificate",
-      issuer: "British Council",
-      year: "2022",
-      status: "Expired",
-      logo: "/images/certifications/IELTS.png",
-      logoLight: "/images/certifications/IELTS.png",
-      logoDark: "/images/certifications/IELTS.png"
-    }
+    // Temporarily hidden - Planned certifications (will be available in the future)
+    // {
+    //   name: "AWS Certified Cloud Practitioner",
+    //   issuer: "Amazon Web Services",
+    //   year: "2025",
+    //   status: "Planned",
+    //   logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
+    //   logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
+    //   logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
+    // },
+    // {
+    //   name: "AWS Certified Solutions Architect Professional",
+    //   issuer: "Amazon Web Services",
+    //   year: "2026",
+    //   status: "Planned",
+    //   logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
+    //   logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
+    //   logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
+    // },
+    // {
+    //   name: "AWS Certified DevOps Engineer Professional",
+    //   issuer: "Amazon Web Services",
+    //   year: "2026",
+    //   status: "Planned",
+    //   logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
+    //   logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
+    //   logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
+    // },
+    // Temporarily hidden - Expired certification
+    // {
+    //   name: "English Language Certificate",
+    //   issuer: "British Council",
+    //   year: "2022",
+    //   status: "Expired",
+    //   logo: "/images/certifications/IELTS.png",
+    //   logoLight: "/images/certifications/IELTS.png",
+    //   logoDark: "/images/certifications/IELTS.png"
+    // }
   ],
   languages: [
     { 
