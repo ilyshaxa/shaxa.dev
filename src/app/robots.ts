@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
-import { getPrimaryDomain } from '@/lib/seo';
+import { getBaseUrl } from '@/lib/seo';
 
-export default function robots(): MetadataRoute.Robots {
-  const baseUrl = getPrimaryDomain();
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const baseUrl = await getBaseUrl();
   
   return {
     rules: [

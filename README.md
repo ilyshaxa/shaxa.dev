@@ -321,8 +321,13 @@ The portfolio supports multiple domains with proper SEO configuration:
 
 - **Primary Domain**: `shaxa.dev` (default canonical)
 - **Secondary Domain**: `shaxriyor.com`
-- **Dynamic Sitemap**: Automatically generated for current domain
-- **Canonical URLs**: All pages point to primary domain
+- **Dynamic Sitemap**: Automatically generated with URLs matching the current domain
+  - Accessing `https://shaxriyor.com/sitemap.xml` returns sitemap with `shaxriyor.com` URLs
+  - Accessing `https://shaxa.dev/sitemap.xml` returns sitemap with `shaxa.dev` URLs
+- **Dynamic Robots.txt**: Automatically generated with sitemap reference matching current domain
+  - Accessing `https://shaxriyor.com/robots.txt` references `https://shaxriyor.com/sitemap.xml`
+  - Accessing `https://shaxa.dev/robots.txt` references `https://shaxa.dev/sitemap.xml`
+- **Canonical URLs**: All pages point to primary domain (prevents duplicate content)
 - **Structured Data**: Schema.org JSON-LD with correct domain URLs
 - **Open Graph Tags**: Dynamic based on current domain
 
@@ -542,7 +547,12 @@ The `vercel.json` file includes:
 ## 🔍 SEO Features
 
 - **Dynamic Sitemap**: Automatically generated sitemap (`/sitemap.xml`)
+  - URLs in the sitemap match the domain being accessed
+  - Each domain has its own sitemap with domain-specific URLs
+  - Includes all pages, projects, and experience routes
 - **Dynamic Robots.txt**: Automatically generated robots.txt (`/robots.txt`)
+  - Sitemap reference matches the current domain
+  - Blocks `/keys` and `/api/` routes from indexing
 - **Structured Data**: Comprehensive Schema.org JSON-LD:
   - Person schema
   - ProfessionalService schema
@@ -551,7 +561,10 @@ The `vercel.json` file includes:
   - CreativeWork schemas for projects
 - **Meta Tags**: Comprehensive Open Graph and Twitter Card tags
 - **Canonical URLs**: Proper canonical URL handling for multi-domain
+  - All pages use primary domain (`shaxa.dev`) as canonical to prevent duplicate content
 - **Multi-Domain Support**: Works with both shaxa.dev and shaxriyor.com
+  - Each domain can be indexed independently
+  - Sitemap and robots.txt adapt to the current domain
 - **Mobile-Friendly**: Responsive design for mobile search
 
 ## 🤝 Contributing

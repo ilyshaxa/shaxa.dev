@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
 import { getAllProjects, getAllExperiences } from '@/lib/data';
-import { getPrimaryDomain } from '@/lib/seo';
+import { getBaseUrl } from '@/lib/seo';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = getPrimaryDomain();
+  const baseUrl = await getBaseUrl();
   const projects = getAllProjects();
   const experiences = getAllExperiences();
   const currentDate = new Date().toISOString().split('T')[0];
