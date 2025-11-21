@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,13 +30,8 @@ export default function KeysPage() {
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [countdownMinutes, setCountdownMinutes] = useState<number | null>(null);
 
-  useEffect(() => {
-    checkAuth();
-    checkRateLimitCookie();
-  }, []);
-
   // Check for rate limit cookie on page load
-  const checkRateLimitCookie = () => {
+  const checkRateLimitCookie = useCallback(() => {
     const cookies = document.cookie.split(';');
     const rateLimitCookie = cookies.find(c => c.trim().startsWith('keys_rate_limit='));
     
@@ -53,7 +48,54 @@ export default function KeysPage() {
         document.cookie = 'keys_rate_limit=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       }
     }
-  };
+  }, []);
+
+  const fetchKeys = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch('/api/keys');
+      const data = await response.json();
+      
+      if (!response.ok) {
+        if (response.status === 401) {
+          setIsAuthenticated(false);
+          return;
+        }
+        throw new Error(data.error || 'Failed to fetch keys');
+      }
+      
+      setKeys(data.keys || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load SSH keys');
+      console.error('Error fetching keys:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const response = await fetch('/api/auth/check');
+      const data = await response.json();
+      setIsAuthenticated(data.authenticated || false);
+      
+      if (data.authenticated) {
+        fetchKeys();
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Auth check error:', err);
+      setIsAuthenticated(false);
+      setLoading(false);
+    }
+  }, [fetchKeys]);
+
+  useEffect(() => {
+    checkAuth();
+    checkRateLimitCookie();
+  }, [checkAuth, checkRateLimitCookie]);
 
   // Countdown timer for rate limit
   useEffect(() => {
@@ -88,48 +130,6 @@ export default function KeysPage() {
 
     return () => clearInterval(interval);
   }, [isRateLimited, rateLimitResetAt]);
-
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/auth/check');
-      const data = await response.json();
-      setIsAuthenticated(data.authenticated || false);
-      
-      if (data.authenticated) {
-        fetchKeys();
-      } else {
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error('Auth check error:', err);
-      setIsAuthenticated(false);
-      setLoading(false);
-    }
-  };
-
-  const fetchKeys = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await fetch('/api/keys');
-      const data = await response.json();
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          setIsAuthenticated(false);
-          return;
-        }
-        throw new Error(data.error || 'Failed to fetch keys');
-      }
-      
-      setKeys(data.keys || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load SSH keys');
-      console.error('Error fetching keys:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

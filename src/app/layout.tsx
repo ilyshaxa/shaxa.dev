@@ -13,6 +13,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
 import { StructuredData } from "@/components/structured-data";
+import { getBaseUrl, getPrimaryDomain } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,72 +26,83 @@ const geistMono = Geist_Mono({
 });
 
 const profile = getProfile();
+const primaryDomain = getPrimaryDomain();
 
-export const metadata: Metadata = {
-  title: `${profile.name} - ${profile.title}`,
-  description: profile.shortBio,
-  keywords: [
-    "Shaxriyor Jabborov",
-    "Shaxriyor DevOps",
-    "Shaxriyor DevOps",
-    "Shaxriyor Devops",
-    "Shaxriyor Devops",
-    "DevOps Engineer",
-    "Cloud Engineer",
-    "Infrastructure Engineer",
-    "Docker",
-    "Kubernetes",
-    "AWS",
-    "Azure",
-    "Terraform",
-    "CI/CD",
-    "Jenkins",
-    "GitLab",
-    "Ansible",
-    "Linux",
-    "Monitoring",
-    "DevOps",
-    "Cloud Infrastructure",
-    "Automation",
-    "Portfolio"
-  ],
-  authors: [{ name: profile.name, url: profile.website }],
-  creator: profile.name,
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: profile.website,
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getBaseUrl();
+  const siteName = baseUrl.includes('shaxriyor.com') ? 'shaxriyor.com' : 'shaxa.dev';
+  
+  return {
     title: `${profile.name} - ${profile.title}`,
     description: profile.shortBio,
-    siteName: "shaxa.dev",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${profile.name} - ${profile.title}`,
-    description: profile.shortBio,
-    creator: "@shaxa_dev",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    keywords: [
+      "Shaxriyor Jabborov",
+      "Shaxriyor DevOps",
+      "Shaxriyor DevOps",
+      "Shaxriyor Devops",
+      "Shaxriyor Devops",
+      "DevOps Engineer",
+      "Cloud Engineer",
+      "Infrastructure Engineer",
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Azure",
+      "Terraform",
+      "CI/CD",
+      "Jenkins",
+      "GitLab",
+      "Ansible",
+      "Linux",
+      "Monitoring",
+      "DevOps",
+      "Cloud Infrastructure",
+      "Automation",
+      "Portfolio"
+    ],
+    authors: [{ name: profile.name, url: primaryDomain }],
+    creator: profile.name,
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: primaryDomain,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: baseUrl,
+      title: `${profile.name} - ${profile.title}`,
+      description: profile.shortBio,
+      siteName: siteName,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${profile.name} - ${profile.title}`,
+      description: profile.shortBio,
+      creator: "@shaxa_dev",
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  verification: {
-    google: "your-google-verification-code",
-  },
-};
+    verification: {
+      google: "your-google-verification-code",
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const canonicalUrl = getPrimaryDomain();
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
@@ -103,8 +115,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        
-        <link rel="canonical" href={profile.website} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0b0b" />

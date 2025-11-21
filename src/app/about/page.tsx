@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { GraduationCap, Award, Globe, Code, Heart, Lightbulb, User, ExternalLink, MapPin, Users, Building } from 'lucide-react';
+import { GraduationCap, Award, Globe, Code, Heart, User, MapPin, Users, Building } from 'lucide-react';
 import Image from 'next/image';
 import { getProfile, getAllExperiences } from '@/lib/data';
 import { useTheme } from '@/components/theme-provider';

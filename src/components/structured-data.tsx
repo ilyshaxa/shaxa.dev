@@ -11,6 +11,10 @@ export function StructuredData() {
     const profile = getProfile();
     const projects = getAllProjects();
     const experiences = getAllExperiences();
+    
+    // Get current domain
+    const currentDomain = window.location.origin;
+    const primaryDomain = process.env.NEXT_PUBLIC_PRIMARY_DOMAIN || 'https://shaxa.dev';
 
     // Person Schema - Main profile information
     const personSchema = {
@@ -19,8 +23,8 @@ export function StructuredData() {
       "name": profile.name,
       "jobTitle": profile.title,
       "description": profile.bio,
-      "url": profile.website,
-      "image": `${profile.website}/images/profile.jpg`,
+      "url": primaryDomain,
+      "image": `${primaryDomain}/images/profile.jpg`,
       "email": profile.email,
       "telephone": profile.phone,
       "address": {
@@ -83,7 +87,7 @@ export function StructuredData() {
       "@type": "ProfessionalService",
       "name": `${profile.name} - ${profile.title}`,
       "description": profile.bio,
-      "url": profile.website,
+      "url": primaryDomain,
       "provider": {
         "@type": "Person",
         "name": profile.name,
@@ -111,11 +115,12 @@ export function StructuredData() {
     };
 
     // WebSite Schema - For the portfolio website
+    const siteName = currentDomain.includes('shaxriyor.com') ? 'shaxriyor.com' : 'shaxa.dev';
     const websiteSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "shaxa.dev",
-      "url": profile.website,
+      "name": siteName,
+      "url": primaryDomain,
       "description": `Portfolio website of ${profile.name}, ${profile.title}`,
       "author": {
         "@type": "Person",
@@ -125,7 +130,7 @@ export function StructuredData() {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": `${profile.website}/?q={search_term_string}`
+          "urlTemplate": `${primaryDomain}/?q={search_term_string}`
         },
         "query-input": "required name=search_term_string"
       }
@@ -140,44 +145,44 @@ export function StructuredData() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": profile.website
+          "item": primaryDomain
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "About",
-          "item": `${profile.website}/about`
+          "item": `${primaryDomain}/about`
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "Projects",
-          "item": `${profile.website}/projects`
+          "item": `${primaryDomain}/projects`
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "Contact",
-          "item": `${profile.website}/contact`
+          "item": `${primaryDomain}/contact`
         }
       ]
     };
 
     // PortfolioItem Schema for projects
-    const portfolioItemsSchema = projects.map((project, index) => ({
+    const portfolioItemsSchema = projects.map((project) => ({
       "@context": "https://schema.org",
       "@type": "CreativeWork",
-      "@id": `${profile.website}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
+      "@id": `${primaryDomain}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
       "name": project.title,
       "description": project.fullDescription || project.shortDescription,
-      "url": `${profile.website}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
+      "url": `${primaryDomain}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
       "creator": {
         "@type": "Person",
         "name": profile.name
       },
       "dateCreated": project.year,
       "keywords": project.technologies.join(", "),
-      "image": project.coverImage ? `${profile.website}${project.coverImage}` : undefined
+      "image": project.coverImage ? `${primaryDomain}${project.coverImage}` : undefined
     }));
 
     // Combine all schemas
