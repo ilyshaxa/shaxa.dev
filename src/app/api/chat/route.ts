@@ -59,14 +59,9 @@ LANGUAGES:
 - Uzbek: Native
 
 PROJECTS:
-- E-Commerce Platform: A cloud-native e-commerce platform deployed on Kubernetes with CI/CD pipelines. Features include automated scaling, infrastructure as code, monitoring, and secure container orchestration.
-- AI-Powered Analytics Dashboard: Real-time analytics dashboard with AI insights and machine learning predictions
-- DevOps Infrastructure Portfolio: Modern, responsive portfolio website with dark mode, smooth animations, and integrated AI chatbot
-- Task Management App: Collaborative task management application with real-time updates
-- Weather API Service: RESTful weather API service with caching and rate limiting
-- Mobile Banking App: Cross-platform mobile banking application with secure authentication
-- Blockchain Voting System: Decentralized voting system built on blockchain technology
-- Machine Learning Model API: RESTful API for serving machine learning models
+- Jenkins CI/CD Pipeline for Praaktisgo: A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration.
+- SaveThis4Me Telegram Bot: A Telegram bot that automatically saves Instagram content using secure account binding. Allows users to receive Instagram content directly in their Telegram chats without manual link copying or app switching.
+- HikCentral Integration for KPI: A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP communication. The system establishes encrypted connections from devices to a HikCentral Professional instance hosted on Google Cloud Platform, enabling reliable registration and data transfer without inbound exposure at client sites. Technologies include Hikvision Devices, ISUP 5.0 Protocol, GCP Compute Engine, Windows Server VM, HikCentral Professional, TLS encryption, and REST API integration.
 
 Your role is to:
 1. Answer questions about Shaxriyor's work, experience, skills, and projects
