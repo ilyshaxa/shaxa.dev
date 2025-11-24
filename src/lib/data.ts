@@ -111,7 +111,7 @@ const profileData: Profile = {
   linkedin: "https://linkedin.com/in/shaxriyor",
   twitter: "https://twitter.com/ilyshaxa",
   instagram: "https://instagram.com/ilyshaxa",
-  bio: "I'm a DevOps engineer with expertise in cloud infrastructure and automation. I build scalable systems, solve infrastructure problems, and create reliable deployment pipelines. With a strong foundation in cloud platforms and containerization, I work across the entire DevOps technology stack.",
+  bio: "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps technology stack.",
   shortBio: "DevOps engineer focused on building scalable infrastructure and creating reliable automation solutions.",
   skills: {
     cloud: ["AWS", "Azure", "Google Cloud", "DigitalOcean", "Alibaba Cloud"],
