@@ -65,8 +65,8 @@ export function ProjectCard({ project, index, featured = false }: ProjectCardPro
               </Badge>
             )}
             
-            {/* Status Badge */}
-            <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white border-0 shadow-lg backdrop-blur-sm">
+            {/* Status Badge - Always positioned on the right */}
+            <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white border-0 shadow-lg backdrop-blur-sm ml-auto">
               {project.status}
             </Badge>
           </div>
