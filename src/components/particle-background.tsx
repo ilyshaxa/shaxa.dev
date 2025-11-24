@@ -29,7 +29,7 @@ const darkThemeColors = [
   'rgba(251, 191, 36, 0.5)', // yellow
 ];
 
-const techIcons = ['</>', '{}', '[]', '()', '=>', '++', 'grep', '&&', '||', '==', 'ls', 'cd', 'pwd', 'mkdir', 'cp', 'mv', 'rm'];
+const techIcons = ['</>', '{}', '[]', '()', 'grep', '&&', '||', '==', 'ls', 'cd', 'pwd', 'cp', 'mv', 'rm'];
 
 export function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
