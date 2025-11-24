@@ -418,7 +418,7 @@ const projectsData: ProjectsData = {
       isVideo: true,
       liveUrl: "https://t.me/SaveThis4Me_Bot",
       githubUrl: "",
-      featured: true,
+      featured: false,
       status: "Completed",
       year: "2024",
       companyName: "Personal Project",
@@ -427,7 +427,7 @@ const projectsData: ProjectsData = {
     {
       title: "HikCentral Integration",
       shortDescription: "A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP communication.",
-      fullDescription: "Developed a secure, scalable remote device integration platform allowing Hikvision face recognition devices to connect to cloud infrastructure through ISUP 5.x outbound communication. Each device establishes an encrypted connection to a HikCentral Professional instance hosted on a Google Cloud Windows Server VM, enabling reliable registration and data transfer without any inbound exposure at client sites. The architecture spans device firmware, network transport (ISUP over TCP with TLS), cloud infrastructure (GCP Compute Engine), and application services (HikCentral ISUP Gateway, Web Client, and OpenAPI). Security controls include TLS encryption, outbound-only device traffic, firewall allowlists, RBAC enforcement, and token-based API authentication. The system exposes a REST-based OpenAPI interface for seamless third-party integration over HTTPS, supporting external applications built with technologies such as Node.js, Python, and .NET.",
+      fullDescription: "Developed a secure, scalable remote device integration platform allowing Hikvision face recognition devices to connect to cloud infrastructure through ISUP 5.0 outbound communication. Each device establishes an encrypted connection to a HikCentral Professional instance hosted on a Google Cloud Windows Server VM, enabling reliable registration and data transfer without any inbound exposure at client sites. The architecture spans device firmware, network transport (ISUP over TCP with TLS), cloud infrastructure (GCP Compute Engine), and application services (HikCentral ISUP Gateway, Web Client, and OpenAPI). Security controls include TLS encryption, outbound-only device traffic, firewall allowlists, RBAC enforcement, and token-based API authentication. The system exposes a REST-based OpenAPI interface for seamless third-party integration over HTTPS, supporting external applications built with technologies such as Node.js, Python, and .NET.",
       technologies: [
         "Hikvision Devices",
         "ISUP 5.0 Protocol",
@@ -469,6 +469,42 @@ const projectsData: ProjectsData = {
       year: "2025",
       companyName: "KPI",
       slug: "hikcentral-remote-device-integration-system-for-kpi"
+    },
+    {
+      title: "Comprehensive Monitoring Stack",
+      shortDescription: "A complete observability solution with Grafana, Prometheus, Loki, and Alertmanager providing full-stack monitoring, logging, and alerting for infrastructure and applications.",
+      fullDescription: "Designed and implemented a production-grade monitoring and observability stack for KPI's infrastructure and applications. The solution provides comprehensive visibility across the entire technology stack through multiple specialized exporters and collectors. Prometheus serves as the central metrics collection and storage system, scraping metrics from node_exporter (system metrics), jmx_exporter (Java application metrics), cAdvisor (container metrics), and a custom exporter for application-specific metrics. Grafana provides rich visualization dashboards for infrastructure health, application performance, and business metrics. Loki aggregates logs from all services, with Promtail collecting and forwarding log data from various sources. Alertmanager handles alert routing and deduplication, sending critical notifications directly to Telegram for real-time incident response. The entire stack is containerized and orchestrated for high availability and scalability, ensuring reliable monitoring even during infrastructure incidents.",
+      technologies: [
+        "Grafana",
+        "Prometheus",
+        "Node Exporter",
+        "JMX Exporter",
+        "Custom Exporter",
+        "cAdvisor",
+        "Loki",
+        "Promtail",
+        "Alertmanager",
+        "Telegram API",
+        "PostgreSQL",
+        "Docker",
+        "Linux",
+        "Monitoring",
+        "Observability",
+        "Log Aggregation",
+        "Alerting",
+        "Metrics Collection"
+      ],
+      coverImage: "/projects/kpi-monitoring-stack-dark.svg",
+      coverImageLight: "/projects/kpi-monitoring-stack-light.svg",
+      expandedImage: "/projects/kpi-monitoring-stack-dark.svg",
+      expandedImageLight: "/projects/kpi-monitoring-stack-light.svg",
+      liveUrl: "",
+      githubUrl: "",
+      featured: true,
+      status: "Completed",
+      year: "2023",
+      companyName: "KPI",
+      slug: "kpi-comprehensive-monitoring-stack"
     }
   ],
   all: []
