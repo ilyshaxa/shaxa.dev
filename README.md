@@ -622,7 +622,7 @@ If you have any questions or need help:
 - **Website**: [shaxa.dev](https://shaxa.dev) / [shaxriyor.com](https://shaxriyor.com)
 - **GitHub**: [@ilyshaxa](https://github.com/ilyshaxa)
 - **LinkedIn**: [Shaxriyor Jabborov](https://linkedin.com/in/shaxriyor)
-- **Telegram**: [@ilyshaxa](https://t.me/ilyshaxa)
+- **Telegram**: [@shaxadev](https://t.me/shaxadev)
 - **Twitter/X**: [@ilyshaxa](https://x.com/ilyshaxa)
 
 ---

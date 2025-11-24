@@ -11,16 +11,20 @@ import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
 import { ScrollToTop } from '@/components/scroll-to-top';
-import { getProfile, getFeaturedProjects } from '@/lib/data';
+import { getProfile, getFeaturedProjects, getAllProjects } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
   const profile = getProfile();
-  const featuredProjects = getFeaturedProjects();
+  const allProjects = getAllProjects();
+  const featuredProjects = allProjects.filter(p => p.featured);
+  const nonFeaturedProjects = allProjects.filter(p => !p.featured);
   const [showAllExperiences, setShowAllExperiences] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
   
   const visibleExperiences = showAllExperiences ? profile.experience : profile.experience.slice(0, 3);
+  const visibleProjects = showAllProjects ? allProjects : featuredProjects;
 
   return (
     <div className="min-h-screen">
@@ -321,7 +325,7 @@ export default function Home() {
           </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <ScrollReveal
                 key={project.title}
                 direction="up"
@@ -337,26 +341,35 @@ export default function Home() {
               </ScrollReveal>
             ))}
           </div>
-          
-          <ScrollReveal direction="up" delay={0.6} className="text-center mt-12 mb-12 sm:mb-0">
-            <Button
-              asChild
-              size="lg"
-              variant="glass"
-              className="group"
+
+          {/* Show All Projects Button */}
+          {nonFeaturedProjects.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mt-8"
             >
-              <Link href="/projects" className="flex items-center gap-2">
-                View All Projects
-                <motion.span
-                  className="inline-block"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  →
-                </motion.span>
-              </Link>
-            </Button>
-          </ScrollReveal>
+              <Button
+                onClick={() => setShowAllProjects(!showAllProjects)}
+                variant="glass"
+                className="group"
+              >
+                {showAllProjects ? (
+                  <>
+                    <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Show All ({nonFeaturedProjects.length} more)
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          )}
         </div>
       </ParallaxSection>
 

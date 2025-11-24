@@ -17,7 +17,7 @@ PROFILE:
 - Website: https://shaxa.dev
 - GitHub: https://github.com/ilyshaxa
 - LinkedIn: https://linkedin.com/in/shaxriyor
-- Telegram: https://t.me/ilyshaxa
+- Telegram: https://t.me/shaxadev
 - x.com: https://x.com/ilyshaxa
 
 BIO:
