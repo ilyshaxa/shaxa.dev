@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getAllProjects, getAllExperiences } from '@/lib/data';
-import { getBaseUrl } from '@/lib/seo';
+import { getPrimaryDomain } from '@/lib/seo';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = await getBaseUrl();
+  // Always use primary domain for sitemap URLs (canonical)
+  const primaryDomain = getPrimaryDomain();
   const projects = getAllProjects();
   const experiences = getAllExperiences();
   const currentDate = new Date().toISOString().split('T')[0];
@@ -11,25 +12,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Main pages
   const mainPages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
+      url: primaryDomain,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${primaryDomain}/about`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/projects`,
+      url: `${primaryDomain}/projects`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${primaryDomain}/contact`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -38,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Experience pages
   const experiencePages: MetadataRoute.Sitemap = experiences.map((exp) => ({
-    url: `${baseUrl}/about/${exp.slug}`,
+    url: `${primaryDomain}/about/${exp.slug}`,
     lastModified: currentDate,
     changeFrequency: 'monthly',
     priority: 0.8,
@@ -46,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Project pages
   const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
+    url: `${primaryDomain}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
     lastModified: currentDate,
     changeFrequency: 'monthly',
     priority: 0.8,

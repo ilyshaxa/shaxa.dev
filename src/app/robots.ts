@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
-import { getBaseUrl } from '@/lib/seo';
+import { getPrimaryDomain } from '@/lib/seo';
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  const baseUrl = await getBaseUrl();
+  // Use primary domain for sitemap reference (canonical)
+  const primaryDomain = getPrimaryDomain();
   
   return {
     rules: [
@@ -12,7 +13,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
         disallow: ['/keys', '/api/'],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${primaryDomain}/sitemap.xml`,
   };
 }
 

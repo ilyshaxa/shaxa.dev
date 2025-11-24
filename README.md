@@ -321,15 +321,25 @@ The portfolio supports multiple domains with proper SEO configuration:
 
 - **Primary Domain**: `shaxa.dev` (default canonical)
 - **Secondary Domain**: `shaxriyor.com`
-- **Dynamic Sitemap**: Automatically generated with URLs matching the current domain
-  - Accessing `https://shaxriyor.com/sitemap.xml` returns sitemap with `shaxriyor.com` URLs
+- **Dynamic Sitemap**: Automatically generated sitemap (`/sitemap.xml`)
+  - Always uses primary domain URLs (canonical) regardless of which domain is accessed
+  - Accessing `https://shaxriyor.com/sitemap.xml` returns sitemap with `shaxa.dev` URLs (canonical)
   - Accessing `https://shaxa.dev/sitemap.xml` returns sitemap with `shaxa.dev` URLs
-- **Dynamic Robots.txt**: Automatically generated with sitemap reference matching current domain
-  - Accessing `https://shaxriyor.com/robots.txt` references `https://shaxriyor.com/sitemap.xml`
-  - Accessing `https://shaxa.dev/robots.txt` references `https://shaxa.dev/sitemap.xml`
+  - Includes all pages, projects, and experience routes
+  - Prevents duplicate content issues in search engines
+- **Dynamic Robots.txt**: Automatically generated robots.txt (`/robots.txt`)
+  - Always references primary domain sitemap (`https://shaxa.dev/sitemap.xml`)
+  - Blocks `/keys` and `/api/` routes from indexing
+  - Accessible from both domains but points to canonical sitemap
 - **Canonical URLs**: All pages point to primary domain (prevents duplicate content)
-- **Structured Data**: Schema.org JSON-LD with correct domain URLs
-- **Open Graph Tags**: Dynamic based on current domain
+  - HTML canonical tags use primary domain
+  - Meta tags use primary domain for canonical URLs
+  - Ensures search engines index only the primary domain
+- **Structured Data**: Schema.org JSON-LD with primary domain URLs
+  - Person, ProfessionalService, WebSite, BreadcrumbList, and CreativeWork schemas
+  - All URLs in structured data use primary domain
+- **Open Graph Tags**: Dynamic based on current domain (for social sharing)
+  - Site name adapts to current domain for better social media previews
 
 ### Configuration
 
@@ -547,24 +557,34 @@ The `vercel.json` file includes:
 ## 🔍 SEO Features
 
 - **Dynamic Sitemap**: Automatically generated sitemap (`/sitemap.xml`)
-  - URLs in the sitemap match the domain being accessed
-  - Each domain has its own sitemap with domain-specific URLs
+  - Always uses primary domain URLs (canonical) for all entries
+  - Accessible from both domains but contains canonical URLs only
   - Includes all pages, projects, and experience routes
+  - Prevents duplicate content issues by using consistent canonical URLs
 - **Dynamic Robots.txt**: Automatically generated robots.txt (`/robots.txt`)
-  - Sitemap reference matches the current domain
+  - Always references primary domain sitemap (`https://shaxa.dev/sitemap.xml`)
   - Blocks `/keys` and `/api/` routes from indexing
+  - Accessible from both domains but points to canonical sitemap
 - **Structured Data**: Comprehensive Schema.org JSON-LD:
-  - Person schema
-  - ProfessionalService schema
-  - WebSite schema
-  - BreadcrumbList schema
+  - Person schema (profile, skills, experience, contact info)
+  - ProfessionalService schema (services as DevOps engineer)
+  - WebSite schema (portfolio website structure)
+  - BreadcrumbList schema (site navigation)
   - CreativeWork schemas for projects
+  - All URLs use primary domain for consistency
 - **Meta Tags**: Comprehensive Open Graph and Twitter Card tags
+  - Dynamic site name based on current domain (for social sharing)
+  - Canonical URLs always point to primary domain
 - **Canonical URLs**: Proper canonical URL handling for multi-domain
   - All pages use primary domain (`shaxa.dev`) as canonical to prevent duplicate content
+  - HTML `<link rel="canonical">` tags on all pages
+  - Metadata canonical URLs in Next.js metadata API
+  - Ensures search engines index only the primary domain version
 - **Multi-Domain Support**: Works with both shaxa.dev and shaxriyor.com
-  - Each domain can be indexed independently
-  - Sitemap and robots.txt adapt to the current domain
+  - Secondary domain (`shaxriyor.com`) properly canonicalizes to primary domain
+  - Search engines recognize canonical relationship between domains
+  - Prevents duplicate content penalties
+  - Both domains accessible but only primary domain is indexed
 - **Mobile-Friendly**: Responsive design for mobile search
 
 ## 🤝 Contributing
