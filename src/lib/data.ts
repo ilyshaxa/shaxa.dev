@@ -415,7 +415,7 @@ const projectsData: ProjectsData = {
       status: "Completed",
       year: "2025",
       companyName: "Praaktisgo",
-      slug: "praaktisgo-jenkins-ci-cd"
+      slug: "jenkins-cicd-pipeline"
     },
     {
       title: "HikCentral Integration",
@@ -461,7 +461,7 @@ const projectsData: ProjectsData = {
       status: "Completed",
       year: "2025",
       companyName: "KPI",
-      slug: "hikcentral-remote-device-integration-system-for-kpi"
+      slug: "hikcentral-remote-device-integration"
     },
     {
       title: "Comprehensive Monitoring Stack",
@@ -497,7 +497,7 @@ const projectsData: ProjectsData = {
       status: "Completed",
       year: "2023",
       companyName: "KPI",
-      slug: "kpi-comprehensive-monitoring-stack"
+      slug: "comprehensive-monitoring-stack"
     },
     {
       title: "SaveThis4Me Telegram Bot",
@@ -528,7 +528,7 @@ const projectsData: ProjectsData = {
       status: "Completed",
       year: "2024",
       companyName: "Personal Project",
-      slug: "save-this-4-me-telegram-bot"
+      slug: "savethis4me-telegram-bot"
     }
   ],
   all: []
