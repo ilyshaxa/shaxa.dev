@@ -9,6 +9,7 @@ import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
 import { Chatbot } from "@/components/chatbot";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
@@ -159,6 +160,7 @@ export default async function RootLayout({
             </main>
             <Footer />
             <Chatbot />
+            <ScrollToTop />
             <Toaster />
             <Analytics />
             <SpeedInsights />

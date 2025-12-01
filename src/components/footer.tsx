@@ -31,7 +31,12 @@ export function Footer() {
               variant="glass"
               size="sm"
             >
-              <a href={profile.github} target="_blank" rel="noopener noreferrer">
+              <a 
+                href={profile.github} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Visit Shaxriyor's GitHub profile"
+              >
                 <Github className="h-5 w-5" />
               </a>
             </Button>
@@ -40,7 +45,12 @@ export function Footer() {
               variant="glass"
               size="sm"
             >
-              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+              <a 
+                href={profile.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Connect with Shaxriyor on LinkedIn"
+              >
                 <Linkedin className="h-5 w-5" />
               </a>
             </Button>
@@ -49,7 +59,12 @@ export function Footer() {
               variant="glass"
               size="sm"
             >
-              <a href={profile.twitter} target="_blank" rel="noopener noreferrer">
+              <a 
+                href={profile.twitter} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow Shaxriyor on Twitter"
+              >
                 <Twitter className="h-5 w-5" />
               </a>
             </Button>
@@ -58,7 +73,10 @@ export function Footer() {
               variant="glass"
               size="sm"
             >
-              <a href={`mailto:${profile.email}`}>
+              <a 
+                href={`mailto:${profile.email}`}
+                aria-label="Send email to Shaxriyor"
+              >
                 <Mail className="h-5 w-5" />
               </a>
             </Button>
@@ -67,7 +85,12 @@ export function Footer() {
               variant="glass"
               size="sm"
             >
-              <a href={profile.instagram} target="_blank" rel="noopener noreferrer">
+              <a 
+                href={profile.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow Shaxriyor on Instagram"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
             </Button>

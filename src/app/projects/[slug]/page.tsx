@@ -170,21 +170,50 @@ export default function ProjectPage() {
       }
     };
 
+    // Prevent scrolling on wheel events when fullscreen
+    const handleWheelFullscreen = (e: WheelEvent) => {
+      if (isFullscreen) {
+        e.preventDefault();
+      }
+    };
+
     if (isFullscreen) {
       document.addEventListener('keydown', handleKeyDown);
       window.addEventListener('popstate', handlePopState);
-      // Prevent body scroll when in fullscreen
+      window.addEventListener('wheel', handleWheelFullscreen, { passive: false });
+      
+      // Prevent body scroll when in fullscreen - use both overflow and position
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+      
       // Push a state to intercept back navigation
       window.history.pushState({ fullscreen: true }, '', window.location.href);
     } else {
-      document.body.style.overflow = 'unset';
+      // Restore scroll position
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('popstate', handlePopState);
-      document.body.style.overflow = 'unset';
+      window.removeEventListener('wheel', handleWheelFullscreen);
+      
+      // Cleanup on unmount
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     };
   }, [isFullscreen]);
 
@@ -528,11 +557,15 @@ export default function ProjectPage() {
       {/* Fullscreen Modal */}
       {isFullscreen && (
         <div 
-          className={`fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center ${
+          className={`fixed inset-0 z-[100] backdrop-blur-sm flex items-center justify-center ${
             theme === 'light' 
               ? 'bg-white/95' 
               : 'bg-black/95'
           }`}
+          onWheel={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
             {/* Close Button */}
@@ -540,7 +573,8 @@ export default function ProjectPage() {
               onClick={() => setIsFullscreen(false)}
               size="sm"
               variant="outline"
-              className="absolute top-4 right-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm z-10 border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
+              className="absolute top-4 right-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm z-[110] border border-gray-300/50 dark:border-white/20 hover:border-gray-400/70 dark:hover:border-white/40 hover:scale-110 hover:shadow-lg hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-200"
+              aria-label="Close fullscreen view"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -576,7 +610,7 @@ export default function ProjectPage() {
                 )}
             
                 {/* Fullscreen Controls */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-[110]">
                   {!isVideo && (
                 <>
                   <Button
@@ -618,7 +652,7 @@ export default function ProjectPage() {
 
             {/* Fullscreen Zoom Indicator - Only for non-video images */}
             {!isVideo && (
-              <div className="absolute top-4 left-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium border border-gray-300/50 dark:border-white/20 shadow-sm">
+              <div className="absolute top-4 left-4 bg-white/95 dark:bg-black/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium border border-gray-300/50 dark:border-white/20 shadow-sm z-[110]">
                 {Math.round(scale * 100)}%
               </div>
             )}

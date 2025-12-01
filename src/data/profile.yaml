@@ -79,6 +79,7 @@ education:
     logo: "/images/education/tsue-light.png"
     logoLight: "/images/education/tsue-light.png"
     logoDark: "/images/education/tsue-dark.png"
+    website: "https://tsue.uz"
 
 certifications:
   - name: "AWS Certified Cloud Practitioner"

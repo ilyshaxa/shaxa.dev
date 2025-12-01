@@ -245,48 +245,101 @@ export default function AboutPage() {
                       transition={{ delay: index * 0.1, duration: 0.6 }}
                       className="group relative h-full"
                     >
-                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="w-12 h-12 relative flex-shrink-0">
-                            {(edu.logo || edu.logoLight || edu.logoDark) ? (
-                              <Image
-                                src={
-                                  mounted && actualTheme === 'dark' && edu.logoDark
-                                    ? edu.logoDark
-                                    : mounted && actualTheme === 'light' && edu.logoLight
-                                    ? edu.logoLight
-                                    : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
-                                }
-                                alt={`${edu.institution} logo`}
-                                fill
-                                className="object-contain group-hover:scale-110 transition-transform duration-300"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                                <GraduationCap className="h-6 w-6 text-muted-foreground" />
+                      {edu.website ? (
+                        <a
+                          href={edu.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block h-full"
+                          aria-label={`Visit ${edu.institution} website`}
+                        >
+                          <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col cursor-pointer">
+                            <div className="flex items-start gap-4 flex-1">
+                              <div className="w-12 h-12 relative flex-shrink-0">
+                                {(edu.logo || edu.logoLight || edu.logoDark) ? (
+                                  <Image
+                                    src={
+                                      mounted && actualTheme === 'dark' && edu.logoDark
+                                        ? edu.logoDark
+                                        : mounted && actualTheme === 'light' && edu.logoLight
+                                        ? edu.logoLight
+                                        : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
+                                    }
+                                    alt={`${edu.institution} logo`}
+                                    fill
+                                    className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                                    <GraduationCap className="h-6 w-6 text-muted-foreground" />
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col h-full">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                                {edu.degree}
-                              </h4>
-                              <p className="text-muted-foreground text-sm mb-3">
-                                {edu.institution}
-                              </p>
+                              <div className="flex-1 min-w-0 flex flex-col h-full">
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
+                                    {edu.degree}
+                                  </h4>
+                                  <p className="text-muted-foreground text-sm mb-3">
+                                    {edu.institution}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-2 mt-auto">
+                                  <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
+                                    {edu.year}
+                                  </Badge>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2 mt-auto">
-                              <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
-                                {edu.year}
-                              </Badge>
+                            
+                            {/* Hover effect overlay */}
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                          </div>
+                        </a>
+                      ) : (
+                        <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="w-12 h-12 relative flex-shrink-0">
+                              {(edu.logo || edu.logoLight || edu.logoDark) ? (
+                                <Image
+                                  src={
+                                    mounted && actualTheme === 'dark' && edu.logoDark
+                                      ? edu.logoDark
+                                      : mounted && actualTheme === 'light' && edu.logoLight
+                                      ? edu.logoLight
+                                      : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
+                                  }
+                                  alt={`${edu.institution} logo`}
+                                  fill
+                                  className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
+                                  <GraduationCap className="h-6 w-6 text-muted-foreground" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0 flex flex-col h-full">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
+                                  {edu.degree}
+                                </h4>
+                                <p className="text-muted-foreground text-sm mb-3">
+                                  {edu.institution}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2 mt-auto">
+                                <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
+                                  {edu.year}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
+                          
+                          {/* Hover effect overlay */}
+                          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                         </div>
-                        
-                        {/* Hover effect overlay */}
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      </div>
+                      )}
                     </motion.div>
                   ))}
                 </div>

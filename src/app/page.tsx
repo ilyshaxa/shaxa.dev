@@ -10,7 +10,6 @@ import { ProjectCard } from '@/components/project-card';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
-import { ScrollToTop } from '@/components/scroll-to-top';
 import { getProfile, getAllProjects } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -394,8 +393,6 @@ export default function Home() {
       </section>
 
 
-      {/* Scroll to Top Button */}
-      <ScrollToTop />
     </div>
   );
 }

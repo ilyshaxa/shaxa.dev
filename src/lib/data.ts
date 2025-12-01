@@ -50,6 +50,7 @@ export interface Profile {
     logo?: string;
     logoLight?: string;
     logoDark?: string;
+    website?: string;
   }>;
   certifications: Array<{
     name: string;
@@ -319,7 +320,8 @@ const profileData: Profile = {
       year: "2022 - 2027",
       logo: "/images/education/tsue-light.png",
       logoLight: "/images/education/tsue-light.png",
-      logoDark: "/images/education/tsue-dark.png"
+      logoDark: "/images/education/tsue-dark.png",
+      website: "https://tsue.uz"
     }
   ],
   certifications: [

@@ -35,12 +35,13 @@ export function ScrollToTop() {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0 }}
-          className="fixed bottom-24 right-6 z-40"
+          className="fixed bottom-24 right-6 z-50"
         >
           <Button
             onClick={scrollToTop}
             size="lg"
             className="bg-white/80 dark:bg-black/80 hover:bg-white dark:hover:bg-black/90 backdrop-blur-md border border-gray-200/30 dark:border-white/20 rounded-full w-14 h-14 p-0 shadow-lg group"
+            aria-label="Scroll to top of page"
           >
             <ArrowUp className="h-6 w-6 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
           </Button>

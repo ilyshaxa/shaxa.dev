@@ -122,6 +122,7 @@ export function Navigation() {
                 size="sm"
                 onClick={cycleTheme}
                 title={`Current theme: ${actualTheme}`}
+                aria-label={`Switch to ${actualTheme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
               </Button>
@@ -149,6 +150,7 @@ export function Navigation() {
                 size="sm"
                 onClick={cycleTheme}
                 title={`Current theme: ${actualTheme}`}
+                aria-label={`Switch to ${actualTheme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 <ThemeIcon className="h-4 w-4 text-foreground" />
               </Button>
@@ -159,6 +161,8 @@ export function Navigation() {
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
               className="text-foreground"
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
             </Button>
