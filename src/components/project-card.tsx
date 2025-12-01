@@ -130,7 +130,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           </div>
         </div>
         
-        {/* Footer - Learn More Button Only */}
+        {/* Footer - Project Details Button */}
         <CardFooter className="p-6 pt-0">
           <Button
             asChild
@@ -139,7 +139,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
           >
             <Link href={`/projects/${projectSlug}`} className="flex items-center justify-center">
-              Read More
+              View Project Details
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

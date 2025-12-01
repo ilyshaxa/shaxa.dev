@@ -249,17 +249,17 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <Button
-                      asChild
-                      variant="default"
-                      size="sm"
-                      className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
-                    >
-                      <Link href={`/about/${exp.slug}`} className="flex items-center justify-center">
-                        Read More
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Link>
-                    </Button>
+                  <Button
+                    asChild
+                    variant="default"
+                    size="sm"
+                    className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
+                  >
+                    <Link href={`/about/${exp.slug}`} className="flex items-center justify-center">
+                      View {exp.position} Details
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Link>
+                  </Button>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -385,7 +385,7 @@ export default function Home() {
                 variant="glass"
               >
                 <Link href="/about">
-                  Learn More
+                  View Full Profile
                 </Link>
               </Button>
             </div>
