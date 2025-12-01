@@ -45,6 +45,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               fill
               className="object-contain transition-transform duration-500 group-hover/image:scale-110 cursor-pointer"
               style={{ transform: 'scale(1.1)' }}
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </Link>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />

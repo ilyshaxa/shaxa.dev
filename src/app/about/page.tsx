@@ -110,6 +110,7 @@ export default function AboutPage() {
                               width={36}
                               height={36}
                               className="object-contain"
+                              loading="lazy"
                             />
                           </div>
                         )}
@@ -268,6 +269,7 @@ export default function AboutPage() {
                                     alt={`${edu.institution} logo`}
                                     fill
                                     className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                    loading="lazy"
                                   />
                                 ) : (
                                   <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
@@ -312,6 +314,7 @@ export default function AboutPage() {
                                   alt={`${edu.institution} logo`}
                                   fill
                                   className="object-contain group-hover:scale-110 transition-transform duration-300"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
@@ -416,6 +419,7 @@ export default function AboutPage() {
                                     fill
                                     className="object-contain group-hover:scale-110 transition-transform duration-300"
                                     unoptimized={cert.logo?.includes('british-council')}
+                                    loading="lazy"
                                   />
                                 ) : (
                                   <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
@@ -605,6 +609,7 @@ export default function AboutPage() {
                               alt={`${lang.country} flag`}
                               fill
                               className="object-cover"
+                              loading="lazy"
                             />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">

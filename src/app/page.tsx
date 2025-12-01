@@ -52,6 +52,7 @@ export default function Home() {
                   className="rounded-full object-cover border-4 border-gray-300/30 dark:border-white/20"
                   quality={75}
                   priority
+                  fetchPriority="high"
                 />
               </div>
             </motion.div>

@@ -191,6 +191,7 @@ export function Chatbot() {
             }
           }}
           className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group border border-border"
+          aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -314,6 +315,7 @@ export function Chatbot() {
                     onClick={sendMessage}
                     disabled={!input.trim() || isLoading}
                     className="bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+                    aria-label="Send message"
                   >
                     <motion.div
                       animate={isSending ? { y: -2, scale: 1.1 } : { y: 0, scale: 1 }}
@@ -388,6 +390,7 @@ export function Chatbot() {
                     variant="ghost"
                     size="sm"
                     className="p-1 h-6 w-6 text-muted-foreground hover:text-foreground"
+                    aria-label="Close welcome message"
                   >
                     <X className="h-3 w-3" />
                   </Button>

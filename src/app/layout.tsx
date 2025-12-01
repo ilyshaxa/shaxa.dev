@@ -19,11 +19,17 @@ import { getBaseUrl, getPrimaryDomain } from "@/lib/seo";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  fallback: ['ui-monospace', 'monospace'],
 });
 
 const profile = getProfile();
@@ -107,6 +113,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        {/* DNS Prefetch & Preconnect for external resources */}
+        <link rel="preconnect" href="https://vercel.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://vercel.com" />
+        
         {/* Favicon and Icons - Google Search requires multiples of 48x48 */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
