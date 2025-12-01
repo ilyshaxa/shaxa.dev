@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Star, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
@@ -12,11 +11,11 @@ import { useTheme } from 'next-themes';
 
 interface ProjectCardProps {
   project: Project;
-  index: number;
+  index?: number;
   featured?: boolean;
 }
 
-export function ProjectCard({ project, index, featured = false }: ProjectCardProps) {
+export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   // Use the predefined slug or generate a consistent one
   const projectSlug = project.slug || generateProjectSlug(project.title);
   const { theme } = useTheme();
@@ -28,12 +27,7 @@ export function ProjectCard({ project, index, featured = false }: ProjectCardPro
 
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group h-full"
-    >
+    <div className="group h-full">
       <Card className={`
         glass-dark border border-gray-300/40 dark:border-white/20 
         hover:border-gray-400/60 dark:hover:border-white/40 
@@ -151,6 +145,6 @@ export function ProjectCard({ project, index, featured = false }: ProjectCardPro
           </Button>
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 }

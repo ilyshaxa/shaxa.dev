@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -16,12 +16,36 @@ export function ScrollReveal({
   children,
   direction = 'up',
   delay = 0,
-  duration = 0.6,
-  distance = 50,
+  duration = 0.5,
+  distance = 30,
   className = '',
 }: ScrollRevealProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  // More aggressive viewport detection to reduce unnecessary animations
+  const isInView = useInView(ref, { 
+    once: true, 
+    margin: '-50px',
+    amount: 0.2 // Trigger when 20% of element is visible
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Skip animations if user prefers reduced motion
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
 
   const directionVariants = {
     up: { y: distance, opacity: 0 },

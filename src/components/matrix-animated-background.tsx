@@ -1,16 +1,31 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function MatrixAnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
+  const lastFrameTimeRef = useRef<number>(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || prefersReducedMotion) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     canvas.width = window.innerWidth;
@@ -46,12 +61,24 @@ export function MatrixAnimatedBackground() {
       }
     };
 
-    const animate = () => {
+    // Target 24 FPS for matrix effect (more than enough for this effect)
+    const FPS = 24;
+    const frameDelay = 1000 / FPS;
+
+    const animate = (currentTime: number) => {
+      // Throttle to target FPS
+      if (currentTime - lastFrameTimeRef.current < frameDelay) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastFrameTimeRef.current = currentTime;
+      
       draw();
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
     const handleResize = () => {
       if (canvas) {
@@ -73,7 +100,7 @@ export function MatrixAnimatedBackground() {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <div className="fixed inset-0 z-0">

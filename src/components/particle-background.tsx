@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/theme-provider';
 
 interface Particle {
@@ -29,19 +29,34 @@ const darkThemeColors = [
   'rgba(251, 191, 36, 0.5)', // yellow
 ];
 
-const techIcons = ['</>', '{}', '[]', '()', 'grep', '&&', '||', '==', 'ls', 'cd', 'pwd', 'cp', 'mv', 'rm'];
+const techIcons = ['</>', '{}', '[]', '()', 'grep', '&&', '||', '=='];
 
 export function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationRef = useRef<number | null>(null);
+  const lastFrameTimeRef = useRef<number>(0);
   const { actualTheme } = useTheme();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || prefersReducedMotion) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -54,19 +69,33 @@ export function ParticleBackground() {
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 3 + 1,
-        opacity: Math.random() * 0.5 + 0.2,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 2.5 + 1,
+        opacity: Math.random() * 0.4 + 0.2,
         color: colors[Math.floor(Math.random() * colors.length)],
       };
     };
 
     const initParticles = () => {
-      particlesRef.current = Array.from({ length: 50 }, createParticle);
+      // Reduced from 50 to 25 particles
+      const particleCount = window.innerWidth < 768 ? 15 : 25;
+      particlesRef.current = Array.from({ length: particleCount }, createParticle);
     };
 
-    const animate = () => {
+    // Target 30 FPS for smoother performance
+    const FPS = 30;
+    const frameDelay = 1000 / FPS;
+
+    const animate = (currentTime: number) => {
+      // Throttle to target FPS
+      if (currentTime - lastFrameTimeRef.current < frameDelay) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastFrameTimeRef.current = currentTime;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particlesRef.current.forEach((particle, index) => {
@@ -99,17 +128,26 @@ export function ParticleBackground() {
 
     resizeCanvas();
     initParticles();
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
-    window.addEventListener('resize', resizeCanvas);
+    const handleResize = () => {
+      resizeCanvas();
+      initParticles();
+    };
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleResize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [actualTheme]);
+  }, [actualTheme, prefersReducedMotion]);
+
+  if (prefersReducedMotion) {
+    return null;
+  }
 
   return (
     <canvas

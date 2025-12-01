@@ -1,22 +1,37 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function ModernAnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
+  const lastFrameTimeRef = useRef<number>(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || prefersReducedMotion) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Animated particles with connections
+    // Animated particles with connections - reduced from 80 to 40 for better performance
     const particles: Array<{
       x: number;
       y: number;
@@ -27,20 +42,33 @@ export function ModernAnimatedBackground() {
       opacity: number;
     }> = [];
 
-    // Create particles
-    for (let i = 0; i < 80; i++) {
+    // Create fewer particles for better performance
+    const particleCount = window.innerWidth < 768 ? 20 : 40;
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 1,
         color: `hsl(${Math.random() * 360}, 70%, 60%)`,
-        opacity: Math.random() * 0.5 + 0.2,
+        opacity: Math.random() * 0.4 + 0.2,
       });
     }
 
-    const animate = () => {
+    // Target 30 FPS for better performance
+    const FPS = 30;
+    const frameDelay = 1000 / FPS;
+
+    const animate = (currentTime: number) => {
+      // Throttle to target FPS
+      if (currentTime - lastFrameTimeRef.current < frameDelay) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastFrameTimeRef.current = currentTime;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
@@ -67,9 +95,10 @@ export function ModernAnimatedBackground() {
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 120) {
+          // Increased threshold from 120 to 150 to reduce connection calculations
+          if (distance < 150) {
             ctx.save();
-            ctx.globalAlpha = (120 - distance) / 120 * 0.1;
+            ctx.globalAlpha = (150 - distance) / 150 * 0.08;
             ctx.strokeStyle = particle.color;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
@@ -84,7 +113,7 @@ export function ModernAnimatedBackground() {
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
     const handleResize = () => {
       if (canvas) {
@@ -101,7 +130,7 @@ export function ModernAnimatedBackground() {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <div className="fixed inset-0 z-0">

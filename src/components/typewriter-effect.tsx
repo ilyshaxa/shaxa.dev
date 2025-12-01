@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 interface TypewriterEffectProps {
   texts: string[];
@@ -21,8 +20,27 @@ export function TypewriterEffect({
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    // If user prefers reduced motion, just show the first text
+    if (prefersReducedMotion) {
+      setCurrentText(texts[0]);
+      return;
+    }
+
     const current = texts[currentIndex];
     
     const timeout = setTimeout(() => {
@@ -43,23 +61,14 @@ export function TypewriterEffect({
     }, isDeleting ? deleteSpeed : speed);
 
     return () => clearTimeout(timeout);
-  }, [currentText, currentIndex, isDeleting, texts, speed, deleteSpeed, pauseTime]);
+  }, [currentText, currentIndex, isDeleting, texts, speed, deleteSpeed, pauseTime, prefersReducedMotion]);
 
   return (
-    <motion.span
-      className={className}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <span className={className}>
       {currentText}
-      <motion.span
-        animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-        className="text-primary"
-      >
-        |
-      </motion.span>
-    </motion.span>
+      {!prefersReducedMotion && (
+        <span className="text-primary animate-pulse">|</span>
+      )}
+    </span>
   );
 }

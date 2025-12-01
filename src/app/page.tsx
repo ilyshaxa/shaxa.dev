@@ -11,7 +11,7 @@ import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
 import { ScrollToTop } from '@/components/scroll-to-top';
-import { getProfile, getFeaturedProjects, getAllProjects } from '@/lib/data';
+import { getProfile, getAllProjects } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -35,26 +35,23 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="space-y-8"
           >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
               className="relative w-80 h-80 mx-auto"
             >
-              <div className="absolute inset-0 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border-4 border-gray-300/30 dark:border-white/20 animate-pulse-slow" />
-              <div className="absolute inset-2 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border-2 border-primary/30 animate-pulse-slow" style={{ animationDelay: '1s' }} />
-              <div className="absolute inset-4 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md border border-primary/50 animate-pulse-slow" style={{ animationDelay: '2s' }} />
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image
                   src="/images/profile.jpg"
                   alt="Shaxriyor Jabborov"
                   width={270}
                   height={270}
-                  className="rounded-full object-cover"
-                  quality={100}
+                  className="rounded-full object-cover border-4 border-gray-300/30 dark:border-white/20"
+                  quality={75}
                   priority
                 />
               </div>
@@ -79,21 +76,16 @@ export default function Home() {
                   className="text-center"
                 />
               </div>
-              <motion.div 
-                className="flex items-center justify-center gap-2 text-muted-foreground"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 0.8 }}
-              >
+              <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span>{profile.location}</span>
-              </motion.div>
+              </div>
             </div>
             
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
               className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed"
             >
               {profile.bio}
@@ -102,7 +94,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
               className="flex flex-wrap justify-center gap-4"
             >
               <Button
@@ -169,19 +161,12 @@ export default function Home() {
                   <CardContent className="pt-0">
                     <div className="flex flex-wrap gap-2">
                       {skills.map((skill, skillIndex) => (
-                        <motion.div
+                        <div
                           key={skillIndex}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ 
-                            delay: categoryIndex * 0.1 + skillIndex * 0.05, 
-                            duration: 0.3 
-                          }}
-                          whileHover={{ scale: 1.05 }}
-                          className="text-xs font-medium px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/20 hover:border-primary/40 transition-all duration-200"
+                          className="text-xs font-medium px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/20 hover:border-primary/40 hover:scale-105 transition-all duration-200"
                         >
                           {skill}
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </CardContent>
@@ -199,8 +184,8 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: '-50px' }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -218,8 +203,8 @@ export default function Home() {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
+                transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
+                viewport={{ once: true, margin: '-50px' }}
                 className="group"
               >
                 <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
@@ -286,8 +271,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true, margin: '-50px' }}
               className="text-center"
             >
               <Button
@@ -347,8 +332,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true, margin: '-50px' }}
               className="text-center mt-8"
             >
               <Button
