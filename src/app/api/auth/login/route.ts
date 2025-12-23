@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import crypto from 'crypto';
+import speakeasy from 'speakeasy';
 import { addValidSession } from '@/lib/session-store';
 
 // In-memory rate limiting store
@@ -134,7 +135,7 @@ ${passwordInfo}
 
 export async function POST(request: NextRequest) {
   try {
-    const { password } = await request.json();
+    const { password, totpCode, backupCode } = await request.json();
 
     if (!password) {
       return NextResponse.json(
@@ -190,10 +191,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Compare passwords
+    // Check if MFA is enabled
+    const totpSecret = process.env.TOTP_SECRET;
+    const backupCodesEnv = process.env.BACKUP_CODES;
+    const mfaEnabled = !!totpSecret;
+
+    // If MFA is enabled, require both password AND MFA code
+    if (mfaEnabled && !totpCode && !backupCode) {
+      return NextResponse.json(
+        {
+          error: 'Authentication code required',
+          remainingAttempts: rateLimit.remaining,
+          mfaRequired: true,
+        },
+        { status: 401 }
+      );
+    }
+
+    // Validate password
     const passwordMatch = password === correctPassword;
 
-    if (!passwordMatch) {
+    // Validate MFA (if enabled)
+    let mfaValid = !mfaEnabled; // If MFA not enabled, consider it valid
+
+    if (mfaEnabled) {
+      // Try TOTP code first
+      if (totpCode) {
+        mfaValid = speakeasy.totp.verify({
+          secret: totpSecret,
+          encoding: 'base32',
+          token: totpCode,
+          window: 2, // Allow 2 time steps before and after (±60 seconds)
+        });
+      }
+
+      // If TOTP failed, try backup code
+      if (!mfaValid && backupCode && backupCodesEnv) {
+        try {
+          const backupCodes = JSON.parse(backupCodesEnv);
+          if (Array.isArray(backupCodes) && backupCodes.includes(backupCode)) {
+            mfaValid = true;
+            // Note: In production, you should remove the used backup code
+            // This would require a database or file system to persist changes
+            console.warn('Backup code used:', backupCode);
+            // TODO: Implement backup code removal in production
+          }
+        } catch (error) {
+          console.error('Error parsing backup codes:', error);
+        }
+      }
+    }
+
+    // Check both credentials together - don't reveal which one failed
+    if (!passwordMatch || !mfaValid) {
       // Send notification for failed attempt
       await sendLoginAttemptNotification(
         clientIP,
@@ -204,8 +254,9 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: 'Invalid password',
+          error: 'Invalid credentials',
           remainingAttempts: rateLimit.remaining,
+          mfaRequired: mfaEnabled,
         },
         { status: 401 }
       );

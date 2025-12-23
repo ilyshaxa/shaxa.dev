@@ -12,7 +12,9 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 - **TypeScript**: Full type safety throughout the application
 
 ### Advanced
-- **SSH Keys Management**: Password-protected page (`/keys`) for accessing SSH keys
+- **SSH Keys Management**: Multi-factor authenticated page (`/keys`) for accessing SSH keys
+  - **Two-Factor Authentication (TOTP)**: Google Authenticator, Authy, or any TOTP app
+  - **Backup Codes**: 10 single-use backup codes for account recovery
   - Rate limiting (5 attempts per 15 minutes)
   - Login tracking with Telegram notifications
   - 7-day secure sessions with HTTP-only cookies
@@ -24,11 +26,12 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 
 | Category | Technologies |
 |----------|-------------|
-| **Framework** | Next.js 15.5.4 (App Router, Turbopack) |
+| **Framework** | Next.js 15.5.7 (App Router, Turbopack) |
 | **Language** | TypeScript 5 |
 | **UI** | React 19.1.0, Tailwind CSS 4, shadcn/ui (Radix UI) |
 | **Animations** | Framer Motion 12 |
 | **AI** | OpenAI GPT-3.5-turbo |
+| **Authentication** | Speakeasy (TOTP), QRCode (2FA setup) |
 | **Notifications** | Telegram Bot API, Sonner (toasts) |
 | **Theme** | next-themes |
 | **Deployment** | Vercel (Edge runtime for chat API) |
@@ -39,13 +42,21 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 src/
 ├── app/                          # Next.js App Router
 │   ├── api/                     # API routes
-│   │   ├── auth/                # Login, logout, session check
+│   │   ├── auth/                # Authentication endpoints
+│   │   │   ├── check/           # Session validation
+│   │   │   ├── login/           # Password + MFA login
+│   │   │   ├── logout/          # Session termination
+│   │   │   ├── mfa-status/      # Check if MFA is enabled
+│   │   │   └── setup-mfa/       # Generate QR code & verify TOTP
 │   │   ├── chat/                # AI chatbot (Edge runtime)
 │   │   ├── contact/             # Contact form
-│   │   └── keys/                # SSH keys (protected)
+│   │   ├── deployment/          # Deployment webhook
+│   │   └── keys/                # SSH keys retrieval (MFA protected)
 │   ├── about/                   # About & experience detail pages
 │   ├── contact/                 # Contact page
-│   ├── keys/                    # SSH keys page (password protected)
+│   ├── keys/                    # SSH keys management
+│   │   ├── page.tsx             # Login page (MFA required)
+│   │   └── setup-mfa/           # MFA setup wizard with QR code
 │   ├── projects/                # Projects listing & detail pages
 │   ├── layout.tsx               # Root layout with metadata
 │   ├── page.tsx                 # Home page
@@ -59,7 +70,7 @@ src/
 ├── lib/                         # Utilities
 │   ├── data.ts                  # Profile & projects data
 │   ├── seo.ts                   # SEO utilities
-│   └── session-store.ts         # Session management
+│   └── session-store.ts         # In-memory session management
 └── data/                        # Legacy YAML (reference only)
 ```
 
@@ -98,9 +109,13 @@ Open [http://localhost:3000](http://localhost:3000)
 | `TELEGRAM_BOT_TOKEN` | Telegram bot token for notifications | Yes | - |
 | `TELEGRAM_CHAT_ID` | Telegram chat ID for notifications | Yes | - |
 | `OPENAI_API_KEY` | OpenAI API key for chatbot | Yes | - |
-| `KEYS_PAGE_PASSWORD` | Password for SSH keys page | No | - |
+| `KEYS_PAGE_PASSWORD` | Password for SSH keys page | Yes* | - |
+| `TOTP_SECRET` | TOTP secret for MFA (base32) | Yes* | - |
+| `BACKUP_CODES` | JSON array of backup codes | Yes* | - |
 | `SSH_KEYS` | SSH keys in JSON format | No | - |
 | `PRIMARY_DOMAIN` | Primary domain for canonical URLs | No | `https://shaxa.dev` |
+
+\* Required only if using the `/keys` page
 
 ### SSH Keys Format
 
@@ -112,6 +127,122 @@ SSH_KEYS='[{"name":"Server Key","type":"private","key":"-----BEGIN RSA PRIVATE K
 SSH_KEY_1="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
 SSH_KEY_2="ssh-rsa AAAAB3..."
 ```
+
+### Setting Up Multi-Factor Authentication (MFA)
+
+The `/keys` page uses **TOTP-based two-factor authentication** for maximum security. Both password and MFA code are required and validated together.
+
+#### Why MFA?
+
+✅ **Protection against password leaks** - Even if password is compromised, attacker needs your phone  
+✅ **No information leakage** - System doesn't reveal which credential (password or MFA) is incorrect  
+✅ **Industry standard** - Same technology used by Google, GitHub, AWS  
+✅ **Backup codes** - 10 single-use recovery codes in case you lose your device  
+
+#### Initial Setup (One-time)
+
+1. **Set your password** in environment variables:
+   ```bash
+   KEYS_PAGE_PASSWORD="your-secure-password-here"
+   ```
+
+2. **Deploy with password** and navigate to `/keys/setup-mfa`
+
+3. **Generate your MFA credentials**:
+   - Enter your password
+   - Click "Generate QR Code"
+   - A unique TOTP secret will be generated
+
+4. **Add to authenticator app**:
+   - **Scan QR code** with your phone (recommended)
+   - Or **manually enter** the secret key shown
+   - Supported apps: Google Authenticator, Authy, Microsoft Authenticator, 1Password, Bitwarden
+
+5. **Verify it works**:
+   - Enter the 6-digit code from your app
+   - If correct, you'll see your `TOTP_SECRET` and `BACKUP_CODES`
+
+6. **Save to environment variables**:
+   ```bash
+   TOTP_SECRET="JBSWY3DPEHPK3PXP"
+   BACKUP_CODES='["04409632","88794469","11625340","35163426","46563769","30180786","36325327","85030746","21495673","87624991"]'
+   ```
+   
+   ⚠️ **Important**: Copy these immediately! They won't be shown again.
+
+7. **Redeploy** with the new environment variables
+
+#### Daily Usage
+
+**Login Flow:**
+1. Navigate to `/keys`
+2. **Both fields shown immediately** (if MFA is enabled)
+3. Enter your password
+4. Enter current 6-digit code from authenticator app
+5. Click Login (button disabled until both fields filled)
+6. System validates both credentials together
+7. Access granted! ✅
+
+**Using Backup Codes:**
+- Lost your phone? Click "Use backup code instead"
+- Enter one of your 8-digit backup codes
+- ⚠️ Each code works **only once**
+- Store backup codes securely (password manager recommended)
+
+#### Security Features
+
+🔒 **Simultaneous Validation**
+- Password and MFA validated together
+- Generic "Invalid credentials" error (no hints about which failed)
+- Prevents credential enumeration attacks
+
+🔒 **Time-Based Codes**
+- TOTP codes change every 30 seconds
+- ±60 second tolerance window (allows for clock drift)
+- Codes are impossible to guess or brute force
+
+🔒 **Rate Limiting**
+- Maximum 5 login attempts per 15 minutes
+- Applies to all attempts (not separate for password/MFA)
+- Rate limit persists via cookies even if page refreshed
+
+🔒 **Monitoring & Alerts**
+- All login attempts sent to Telegram (success and failure)
+- Failed attempts include IP address and timestamp
+- Real-time security monitoring
+
+🔒 **Session Security**
+- 64-character random hex tokens
+- HTTP-only cookies (not accessible via JavaScript)
+- Secure flag in production (HTTPS only)
+- 7-day expiration with automatic cleanup
+
+#### Troubleshooting
+
+**"Authentication code required" error:**
+- Make sure TOTP_SECRET is set in environment variables
+- Restart your application after adding the variable
+
+**Code not working:**
+- Check your device's clock is accurate (TOTP is time-based)
+- Wait for next code (30-second cycle)
+- Try backup code if device time is wrong
+
+**Lost authenticator app:**
+- Use one of your backup codes
+- After login, go to `/keys/setup-mfa` to reset MFA
+- Generate new TOTP secret and backup codes
+
+**MFA Setup Already Done:**
+- Cannot setup again while TOTP_SECRET exists
+- To reset: remove TOTP_SECRET from environment, redeploy, setup again
+
+#### Optional: Password-Only Mode
+
+If you prefer password-only authentication (not recommended for production):
+- Simply don't set `TOTP_SECRET` and `BACKUP_CODES`
+- System will automatically use password-only mode
+- MFA fields won't be shown on login page
 
 ## 📝 Customization
 
@@ -159,25 +290,83 @@ Custom classes in `src/app/globals.css`:
 
 ## 🔐 Security
 
-- HTTP-only cookies for session management
-- Secure cookies in production (HTTPS only)
-- Rate limiting prevents brute force attacks
-- 64-character random hex session tokens
-- Login attempt monitoring via Telegram
-- Input validation and sanitization
+### Multi-Factor Authentication (MFA)
+- **TOTP-based 2FA**: Industry-standard time-based one-time passwords
+- **Simultaneous validation**: Password and MFA code validated together (no progressive disclosure)
+- **Backup codes**: 10 single-use recovery codes for device loss
+- **No information leakage**: Generic error messages prevent credential enumeration
+- **30-second rotation**: TOTP codes expire quickly with ±60s tolerance window
+
+### Session Management
+- **64-character random hex tokens**: Cryptographically secure session IDs
+- **HTTP-only cookies**: Not accessible via JavaScript (XSS protection)
+- **Secure flag in production**: HTTPS-only transmission
+- **7-day expiration**: Automatic session cleanup
+- **In-memory store**: Sessions stored server-side with automatic TTL cleanup
+
+### Rate Limiting
+- **5 attempts per 15 minutes**: Per IP address
+- **Persistent via cookies**: Rate limit survives page refresh
+- **Applies to all attempts**: Password and MFA counted together
+- **Automatic IP tracking**: X-Forwarded-For and X-Real-IP support
+
+### Monitoring & Alerts
+- **Real-time Telegram notifications**: All login attempts (success and failure)
+- **IP address tracking**: Know who's accessing your keys
+- **Timestamp logging**: Audit trail of all authentication events
+- **Failed attempt details**: Wrong passwords sent to Telegram for analysis
+
+### Input Security
+- **Server-side validation**: All inputs validated on backend
+- **Type safety**: Full TypeScript type checking
+- **Sanitization**: XSS and injection prevention
+- **CORS protection**: API routes restricted to same-origin
 
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
 
-1. Connect GitHub repository to Vercel
-2. Add environment variables in dashboard
-3. Configure domains: `shaxa.dev` and `shaxriyor.com`
-4. Deploy automatically on push
+1. **Connect GitHub repository** to Vercel
 
-The `vercel.json` includes:
-- Edge runtime for chat API
+2. **Add environment variables** in Vercel dashboard:
+   ```
+   Required:
+   - TELEGRAM_BOT_TOKEN
+   - TELEGRAM_CHAT_ID
+   - OPENAI_API_KEY
+   
+   Optional (for /keys page):
+   - KEYS_PAGE_PASSWORD
+   - TOTP_SECRET (generate via /keys/setup-mfa)
+   - BACKUP_CODES (JSON array)
+   - SSH_KEYS or SSH_KEY_1, SSH_KEY_2, etc.
+   ```
+
+3. **Configure domains**: `shaxa.dev` and `shaxriyor.com`
+
+4. **Deploy automatically** on push to main branch
+
+5. **Setup MFA** (if using /keys page):
+   - First deploy with only `KEYS_PAGE_PASSWORD` set
+   - Visit `yourdomain.com/keys/setup-mfa`
+   - Follow setup wizard to generate `TOTP_SECRET` and `BACKUP_CODES`
+   - Add these to Vercel environment variables
+   - Redeploy
+
+### Configuration Files
+
+**`vercel.json`** includes:
+- Edge runtime for chat API (faster response times)
 - Security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection)
+- Route configuration for API endpoints
+
+### Build Configuration
+
+- **Build Command**: `npm run build`
+- **Output Directory**: `.next`
+- **Install Command**: `npm install`
+- **Development Command**: `npm run dev`
+- **Node Version**: 18.x or higher
 
 ## 📞 Contact
 

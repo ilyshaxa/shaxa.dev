@@ -23,6 +23,10 @@ export default function KeysPage() {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [password, setPassword] = useState('');
+  const [totpCode, setTotpCode] = useState('');
+  const [backupCode, setBackupCode] = useState('');
+  const [useBackupCode, setUseBackupCode] = useState(false);
+  const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null); // null = loading, true/false = loaded
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -74,6 +78,19 @@ export default function KeysPage() {
     }
   }, []);
 
+  const checkMfaStatus = useCallback(async () => {
+    try {
+      const response = await fetch('/api/auth/mfa-status');
+      const data = await response.json();
+      console.log('MFA Status Response:', data);
+      setMfaEnabled(data.mfaEnabled || false);
+      console.log('MFA Enabled State:', data.mfaEnabled || false);
+    } catch (err) {
+      console.error('MFA status check error:', err);
+      setMfaEnabled(false);
+    }
+  }, []);
+
   const checkAuth = useCallback(async () => {
     try {
       const response = await fetch('/api/auth/check');
@@ -95,7 +112,8 @@ export default function KeysPage() {
   useEffect(() => {
     checkAuth();
     checkRateLimitCookie();
-  }, [checkAuth, checkRateLimitCookie]);
+    checkMfaStatus();
+  }, [checkAuth, checkRateLimitCookie, checkMfaStatus]);
 
   // Countdown timer for rate limit
   useEffect(() => {
@@ -133,16 +151,43 @@ export default function KeysPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Don't allow submission until we know MFA status
+    if (mfaEnabled === null) {
+      return;
+    }
+    
+    // Validate all required fields are filled
+    if (!password) {
+      setError('Password is required');
+      return;
+    }
+    
+    // If MFA is enabled, require MFA code before submission
+    if (mfaEnabled === true && !totpCode && !backupCode) {
+      setError('Please enter your authentication code');
+      return;
+    }
+
     setIsLoggingIn(true);
     setError(null);
 
     try {
+      const body: { password: string; totpCode?: string; backupCode?: string } = { password };
+      
+      // Add TOTP or backup code if provided
+      if (useBackupCode && backupCode) {
+        body.backupCode = backupCode;
+      } else if (totpCode) {
+        body.totpCode = totpCode;
+      }
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
@@ -159,7 +204,7 @@ export default function KeysPage() {
           const resetIn = Math.ceil((resetAt - Date.now()) / 1000 / 60);
           throw new Error(data.error || `Too many attempts. Try again in ${resetIn} minute(s).`);
         } else if (response.status === 401) {
-          // Invalid password
+          // Invalid credentials
           if (data.remainingAttempts !== undefined) {
             setRemainingAttempts(data.remainingAttempts);
             if (data.remainingAttempts === 0) {
@@ -175,7 +220,7 @@ export default function KeysPage() {
           const remaining = data.remainingAttempts !== undefined 
             ? ` (${data.remainingAttempts} attempts remaining)`
             : '';
-          throw new Error(data.error + remaining || 'Invalid password');
+          throw new Error(data.error + remaining || 'Invalid credentials');
         } else {
           throw new Error(data.error || 'Login failed');
         }
@@ -188,6 +233,8 @@ export default function KeysPage() {
 
       setIsAuthenticated(true);
       setPassword('');
+      setTotpCode('');
+      setBackupCode('');
       toast.success('Authentication successful!');
       fetchKeys();
     } catch (err) {
@@ -195,8 +242,10 @@ export default function KeysPage() {
       setError(errorMessage);
       if (errorMessage.includes('Too many attempts')) {
         toast.error(errorMessage);
+      } else if (errorMessage.includes('Authentication code required')) {
+        // Don't show toast for this - it's shown in the form
       } else {
-        toast.error('Invalid password');
+        toast.error(errorMessage);
       }
     } finally {
       setIsLoggingIn(false);
@@ -209,6 +258,9 @@ export default function KeysPage() {
       setIsAuthenticated(false);
       setKeys([]);
       setPassword('');
+      setTotpCode('');
+      setBackupCode('');
+      setUseBackupCode(false);
       toast.success('Logged out successfully');
     } catch (err) {
       console.error('Logout error:', err);
@@ -268,7 +320,7 @@ export default function KeysPage() {
               <CardHeader>
                 <CardTitle>Authentication Required</CardTitle>
                 <CardDescription>
-                  Please enter your password to view SSH keys
+                  {mfaEnabled ? 'Please enter your password and authentication code' : 'Please enter your password to view SSH keys'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -293,6 +345,7 @@ export default function KeysPage() {
                         className="absolute right-0 top-0 h-full px-3"
                         onClick={() => setShowPassword(!showPassword)}
                         disabled={isLoggingIn || isRateLimited}
+                        tabIndex={-1}
                       >
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
@@ -302,6 +355,77 @@ export default function KeysPage() {
                       </Button>
                     </div>
                   </div>
+
+                  {mfaEnabled === true && (
+                    <div className="space-y-4 pt-2 border-t">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Shield className="h-4 w-4 text-primary" />
+                        <span className="font-medium">Two-Factor Authentication</span>
+                      </div>
+
+                      {!useBackupCode ? (
+                        <>
+                          <div className="space-y-2">
+                            <Label htmlFor="totpCode">Authentication Code</Label>
+                            <Input
+                              id="totpCode"
+                              type="text"
+                              value={totpCode}
+                              onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                              placeholder="XXXXXX"
+                              maxLength={6}
+                              className="text-left text-lg tracking-widest font-mono"
+                              disabled={isLoggingIn || isRateLimited}
+                              autoComplete="off"
+                              required
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Enter the 6-digit code from your authenticator app
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="link"
+                            size="sm"
+                            className="h-auto p-0 text-xs"
+                            onClick={() => setUseBackupCode(true)}
+                          >
+                            Use backup code instead
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <div className="space-y-2">
+                            <Label htmlFor="backupCode">Backup Code</Label>
+                            <Input
+                              id="backupCode"
+                              type="text"
+                              value={backupCode}
+                              onChange={(e) => setBackupCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                              placeholder="XXXXXXXX"
+                              maxLength={8}
+                              className="text-left text-lg tracking-widest font-mono"
+                              disabled={isLoggingIn || isRateLimited}
+                              autoComplete="off"
+                              required
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Enter one of your 8-digit backup codes
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="link"
+                            size="sm"
+                            className="h-auto p-0 text-xs"
+                            onClick={() => setUseBackupCode(false)}
+                          >
+                            Use authenticator code instead
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  )}
 
                   {error && (
                     <div className="flex items-center gap-2 text-sm text-destructive">
@@ -333,7 +457,13 @@ export default function KeysPage() {
                   <Button
                     type="submit"
                     className="w-full"
-                    disabled={isLoggingIn || !password || isRateLimited}
+                    disabled={
+                      mfaEnabled === null || // Still loading MFA status
+                      isLoggingIn || 
+                      !password || 
+                      isRateLimited || 
+                      (mfaEnabled === true && !totpCode && !backupCode) // MFA enabled but no code
+                    }
                   >
                     {isLoggingIn ? (
                       <>
