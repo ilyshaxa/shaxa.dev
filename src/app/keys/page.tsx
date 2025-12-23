@@ -24,8 +24,6 @@ export default function KeysPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [password, setPassword] = useState('');
   const [totpCode, setTotpCode] = useState('');
-  const [backupCode, setBackupCode] = useState('');
-  const [useBackupCode, setUseBackupCode] = useState(false);
   const [mfaEnabled, setMfaEnabled] = useState<boolean | null>(null); // null = loading, true/false = loaded
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -164,7 +162,7 @@ export default function KeysPage() {
     }
     
     // If MFA is enabled, require MFA code before submission
-    if (mfaEnabled === true && !totpCode && !backupCode) {
+    if (mfaEnabled === true && !totpCode) {
       setError('Please enter your authentication code');
       return;
     }
@@ -173,12 +171,10 @@ export default function KeysPage() {
     setError(null);
 
     try {
-      const body: { password: string; totpCode?: string; backupCode?: string } = { password };
+      const body: { password: string; totpCode?: string } = { password };
       
-      // Add TOTP or backup code if provided
-      if (useBackupCode && backupCode) {
-        body.backupCode = backupCode;
-      } else if (totpCode) {
+      // Add TOTP code if provided
+      if (totpCode) {
         body.totpCode = totpCode;
       }
 
@@ -234,7 +230,6 @@ export default function KeysPage() {
       setIsAuthenticated(true);
       setPassword('');
       setTotpCode('');
-      setBackupCode('');
       toast.success('Authentication successful!');
       fetchKeys();
     } catch (err) {
@@ -259,8 +254,6 @@ export default function KeysPage() {
       setKeys([]);
       setPassword('');
       setTotpCode('');
-      setBackupCode('');
-      setUseBackupCode(false);
       toast.success('Logged out successfully');
     } catch (err) {
       console.error('Logout error:', err);
@@ -363,67 +356,24 @@ export default function KeysPage() {
                         <span className="font-medium">Two-Factor Authentication</span>
                       </div>
 
-                      {!useBackupCode ? (
-                        <>
-                          <div className="space-y-2">
-                            <Label htmlFor="totpCode">Authentication Code</Label>
-                            <Input
-                              id="totpCode"
-                              type="text"
-                              value={totpCode}
-                              onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                              placeholder="XXXXXX"
-                              maxLength={6}
-                              className="text-left text-lg tracking-widest font-mono"
-                              disabled={isLoggingIn || isRateLimited}
-                              autoComplete="off"
-                              required
-                            />
-                            <p className="text-xs text-muted-foreground">
-                              Enter the 6-digit code from your authenticator app
-                            </p>
-                          </div>
-                          <Button
-                            type="button"
-                            variant="link"
-                            size="sm"
-                            className="h-auto p-0 text-xs"
-                            onClick={() => setUseBackupCode(true)}
-                          >
-                            Use backup code instead
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <div className="space-y-2">
-                            <Label htmlFor="backupCode">Backup Code</Label>
-                            <Input
-                              id="backupCode"
-                              type="text"
-                              value={backupCode}
-                              onChange={(e) => setBackupCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
-                              placeholder="XXXXXXXX"
-                              maxLength={8}
-                              className="text-left text-lg tracking-widest font-mono"
-                              disabled={isLoggingIn || isRateLimited}
-                              autoComplete="off"
-                              required
-                            />
-                            <p className="text-xs text-muted-foreground">
-                              Enter one of your 8-digit backup codes
-                            </p>
-                          </div>
-                          <Button
-                            type="button"
-                            variant="link"
-                            size="sm"
-                            className="h-auto p-0 text-xs"
-                            onClick={() => setUseBackupCode(false)}
-                          >
-                            Use authenticator code instead
-                          </Button>
-                        </>
-                      )}
+                      <div className="space-y-2">
+                        <Label htmlFor="totpCode">Authentication Code</Label>
+                        <Input
+                          id="totpCode"
+                          type="text"
+                          value={totpCode}
+                          onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                          placeholder="XXXXXX"
+                          maxLength={6}
+                          className="text-left text-lg tracking-widest font-mono"
+                          disabled={isLoggingIn || isRateLimited}
+                          autoComplete="off"
+                          required
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Enter the 6-digit code from your authenticator app
+                        </p>
+                      </div>
                     </div>
                   )}
 
@@ -462,7 +412,7 @@ export default function KeysPage() {
                       isLoggingIn || 
                       !password || 
                       isRateLimited || 
-                      (mfaEnabled === true && !totpCode && !backupCode) // MFA enabled but no code
+                      (mfaEnabled === true && !totpCode) // MFA enabled but no code
                     }
                   >
                     {isLoggingIn ? (

@@ -34,17 +34,9 @@ export async function POST(request: NextRequest) {
     // Generate QR code
     const qrCodeDataUrl = await QRCode.toDataURL(secret.otpauth_url!);
 
-    // Generate backup codes (10 codes)
-    const backupCodes = Array.from({ length: 10 }, () => {
-      return Array.from({ length: 8 }, () => 
-        Math.floor(Math.random() * 10)
-      ).join('');
-    });
-
     return NextResponse.json({
       secret: secret.base32,
       qrCode: qrCodeDataUrl,
-      backupCodes: backupCodes,
       manual: {
         issuer: 'shaxa.dev',
         account: 'SSH Keys',

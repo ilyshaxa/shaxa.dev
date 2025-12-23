@@ -135,7 +135,7 @@ ${passwordInfo}
 
 export async function POST(request: NextRequest) {
   try {
-    const { password, totpCode, backupCode } = await request.json();
+    const { password, totpCode } = await request.json();
 
     if (!password) {
       return NextResponse.json(
@@ -193,11 +193,10 @@ export async function POST(request: NextRequest) {
 
     // Check if MFA is enabled
     const totpSecret = process.env.TOTP_SECRET;
-    const backupCodesEnv = process.env.BACKUP_CODES;
     const mfaEnabled = !!totpSecret;
 
     // If MFA is enabled, require both password AND MFA code
-    if (mfaEnabled && !totpCode && !backupCode) {
+    if (mfaEnabled && !totpCode) {
       return NextResponse.json(
         {
           error: 'Authentication code required',
@@ -214,32 +213,13 @@ export async function POST(request: NextRequest) {
     // Validate MFA (if enabled)
     let mfaValid = !mfaEnabled; // If MFA not enabled, consider it valid
 
-    if (mfaEnabled) {
-      // Try TOTP code first
-      if (totpCode) {
-        mfaValid = speakeasy.totp.verify({
-          secret: totpSecret,
-          encoding: 'base32',
-          token: totpCode,
-          window: 2, // Allow 2 time steps before and after (±60 seconds)
-        });
-      }
-
-      // If TOTP failed, try backup code
-      if (!mfaValid && backupCode && backupCodesEnv) {
-        try {
-          const backupCodes = JSON.parse(backupCodesEnv);
-          if (Array.isArray(backupCodes) && backupCodes.includes(backupCode)) {
-            mfaValid = true;
-            // Note: In production, you should remove the used backup code
-            // This would require a database or file system to persist changes
-            console.warn('Backup code used:', backupCode);
-            // TODO: Implement backup code removal in production
-          }
-        } catch (error) {
-          console.error('Error parsing backup codes:', error);
-        }
-      }
+    if (mfaEnabled && totpCode) {
+      mfaValid = speakeasy.totp.verify({
+        secret: totpSecret,
+        encoding: 'base32',
+        token: totpCode,
+        window: 2, // Allow 2 time steps before and after (±60 seconds)
+      });
     }
 
     // Check both credentials together - don't reveal which one failed

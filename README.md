@@ -14,7 +14,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 ### Advanced
 - **SSH Keys Management**: Multi-factor authenticated page (`/keys`) for accessing SSH keys
   - **Two-Factor Authentication (TOTP)**: Google Authenticator, Authy, or any TOTP app
-  - **Backup Codes**: 10 single-use backup codes for account recovery
+  - **Simple Recovery**: Remove TOTP_SECRET to reset MFA (no backup codes needed)
   - Rate limiting (5 attempts per 15 minutes)
   - Login tracking with Telegram notifications
   - 7-day secure sessions with HTTP-only cookies
@@ -111,7 +111,6 @@ Open [http://localhost:3000](http://localhost:3000)
 | `OPENAI_API_KEY` | OpenAI API key for chatbot | Yes | - |
 | `KEYS_PAGE_PASSWORD` | Password for SSH keys page | Yes* | - |
 | `TOTP_SECRET` | TOTP secret for MFA (base32) | Yes* | - |
-| `BACKUP_CODES` | JSON array of backup codes | Yes* | - |
 | `SSH_KEYS` | SSH keys in JSON format | No | - |
 | `PRIMARY_DOMAIN` | Primary domain for canonical URLs | No | `https://shaxa.dev` |
 
@@ -137,7 +136,7 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 ✅ **Protection against password leaks** - Even if password is compromised, attacker needs your phone  
 ✅ **No information leakage** - System doesn't reveal which credential (password or MFA) is incorrect  
 ✅ **Industry standard** - Same technology used by Google, GitHub, AWS  
-✅ **Backup codes** - 10 single-use recovery codes in case you lose your device  
+✅ **Simple recovery** - Just remove TOTP_SECRET to reset (no backup codes to manage)  
 
 #### Initial Setup (One-time)
 
@@ -160,17 +159,16 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 
 5. **Verify it works**:
    - Enter the 6-digit code from your app
-   - If correct, you'll see your `TOTP_SECRET` and `BACKUP_CODES`
+   - If correct, you'll see your `TOTP_SECRET`
 
 6. **Save to environment variables**:
    ```bash
    TOTP_SECRET="JBSWY3DPEHPK3PXP"
-   BACKUP_CODES='["04409632","88794469","11625340","35163426","46563769","30180786","36325327","85030746","21495673","87624991"]'
    ```
    
-   ⚠️ **Important**: Copy these immediately! They won't be shown again.
+   ⚠️ **Important**: Copy this immediately! It won't be shown again.
 
-7. **Redeploy** with the new environment variables
+7. **Redeploy** with the new environment variable
 
 #### Daily Usage
 
@@ -183,11 +181,11 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 6. System validates both credentials together
 7. Access granted! ✅
 
-**Using Backup Codes:**
-- Lost your phone? Click "Use backup code instead"
-- Enter one of your 8-digit backup codes
-- ⚠️ Each code works **only once**
-- Store backup codes securely (password manager recommended)
+**Lost Your Device?**
+- Remove `TOTP_SECRET` from environment variables
+- Redeploy your application
+- Visit `/keys/setup-mfa` again to generate new credentials
+- No backup codes to manage or track!
 
 #### Security Features
 
@@ -226,12 +224,13 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 **Code not working:**
 - Check your device's clock is accurate (TOTP is time-based)
 - Wait for next code (30-second cycle)
-- Try backup code if device time is wrong
+- If still failing, consider resetting MFA (see below)
 
 **Lost authenticator app:**
-- Use one of your backup codes
-- After login, go to `/keys/setup-mfa` to reset MFA
-- Generate new TOTP secret and backup codes
+- Remove `TOTP_SECRET` from environment variables
+- Redeploy your application  
+- Visit `/keys/setup-mfa` to generate new MFA
+- Scan new QR code with your authenticator app
 
 **MFA Setup Already Done:**
 - Cannot setup again while TOTP_SECRET exists
@@ -293,7 +292,7 @@ Custom classes in `src/app/globals.css`:
 ### Multi-Factor Authentication (MFA)
 - **TOTP-based 2FA**: Industry-standard time-based one-time passwords
 - **Simultaneous validation**: Password and MFA code validated together (no progressive disclosure)
-- **Backup codes**: 10 single-use recovery codes for device loss
+- **Simple recovery**: Remove TOTP_SECRET to reset (no backup codes to manage)
 - **No information leakage**: Generic error messages prevent credential enumeration
 - **30-second rotation**: TOTP codes expire quickly with ±60s tolerance window
 
@@ -338,7 +337,6 @@ Custom classes in `src/app/globals.css`:
    Optional (for /keys page):
    - KEYS_PAGE_PASSWORD
    - TOTP_SECRET (generate via /keys/setup-mfa)
-   - BACKUP_CODES (JSON array)
    - SSH_KEYS or SSH_KEY_1, SSH_KEY_2, etc.
    ```
 
@@ -349,8 +347,8 @@ Custom classes in `src/app/globals.css`:
 5. **Setup MFA** (if using /keys page):
    - First deploy with only `KEYS_PAGE_PASSWORD` set
    - Visit `yourdomain.com/keys/setup-mfa`
-   - Follow setup wizard to generate `TOTP_SECRET` and `BACKUP_CODES`
-   - Add these to Vercel environment variables
+   - Follow setup wizard to generate `TOTP_SECRET`
+   - Add this to Vercel environment variables
    - Redeploy
 
 ### Configuration Files

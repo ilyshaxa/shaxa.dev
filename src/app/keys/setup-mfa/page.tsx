@@ -13,7 +13,6 @@ import Image from 'next/image';
 interface SetupData {
   secret: string;
   qrCode: string;
-  backupCodes: string[];
   manual: {
     issuer: string;
     account: string;
@@ -31,7 +30,6 @@ export default function SetupMFAPage() {
   const [setupData, setSetupData] = useState<SetupData | null>(null);
   const [isVerified, setIsVerified] = useState(false);
   const [copiedSecret, setCopiedSecret] = useState(false);
-  const [copiedBackupCodes, setCopiedBackupCodes] = useState<number[]>([]);
 
   const handleGenerateQR = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,33 +99,15 @@ export default function SetupMFAPage() {
     }
   };
 
-  const copyToClipboard = async (text: string, type: 'secret' | number) => {
+  const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      if (type === 'secret') {
-        setCopiedSecret(true);
-        setTimeout(() => setCopiedSecret(false), 2000);
-      } else {
-        setCopiedBackupCodes([...copiedBackupCodes, type]);
-        setTimeout(() => {
-          setCopiedBackupCodes(copiedBackupCodes.filter(i => i !== type));
-        }, 2000);
-      }
+      setCopiedSecret(true);
+      setTimeout(() => setCopiedSecret(false), 2000);
       toast.success('Copied to clipboard!');
     } catch (err) {
       toast.error('Failed to copy to clipboard');
       console.error('Copy error:', err);
-    }
-  };
-
-  const copyAllBackupCodes = async () => {
-    if (!setupData) return;
-    const allCodes = setupData.backupCodes.join('\n');
-    try {
-      await navigator.clipboard.writeText(allCodes);
-      toast.success('All backup codes copied to clipboard!');
-    } catch {
-      toast.error('Failed to copy backup codes');
     }
   };
 
@@ -249,7 +229,7 @@ export default function SetupMFAPage() {
                         {setupData.manual.secret}
                       </code>
                       <Button
-                        onClick={() => copyToClipboard(setupData.manual.secret, 'secret')}
+                        onClick={() => copyToClipboard(setupData.manual.secret)}
                         variant="outline"
                         size="sm"
                         className="gap-2"
@@ -324,7 +304,7 @@ export default function SetupMFAPage() {
             </>
           )}
 
-          {/* Step 4: Backup Codes */}
+          {/* Step 4: Complete Setup */}
           {setupData && isVerified && (
             <Card className="glass-dark border border-green-500/40 dark:border-green-400/40">
               <CardHeader>
@@ -333,7 +313,7 @@ export default function SetupMFAPage() {
                   <CardTitle>MFA Verified Successfully!</CardTitle>
                 </div>
                 <CardDescription>
-                  Save your backup codes in a secure location
+                  Add the TOTP secret to your environment variables to enable MFA
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -341,82 +321,29 @@ export default function SetupMFAPage() {
                 <div className="space-y-2 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
                   <p className="text-sm font-medium flex items-center gap-2">
                     <AlertCircle className="h-4 w-4 text-blue-500" />
-                    Important: Add these to your environment variables
+                    Important: Add this to your environment variables
                   </p>
-                  <div className="space-y-2 text-sm font-mono">
-                    <div className="flex items-start gap-2">
-                      <code className="flex-1 p-2 rounded bg-muted/50 dark:bg-muted/30 text-xs break-all">
-                        TOTP_SECRET={setupData.secret}
-                      </code>
-                      <Button
-                        onClick={() => copyToClipboard(`TOTP_SECRET=${setupData.secret}`, 'secret')}
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                      >
-                        {copiedSecret ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <code className="flex-1 p-2 rounded bg-muted/50 dark:bg-muted/30 text-xs break-all">
-                        BACKUP_CODES={JSON.stringify(setupData.backupCodes)}
-                      </code>
-                      <Button
-                        onClick={() => copyToClipboard(`BACKUP_CODES=${JSON.stringify(setupData.backupCodes)}`, 'secret')}
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                      >
-                        <Copy className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Backup Codes */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-medium">Backup Codes</Label>
+                  <div className="flex items-start gap-2">
+                    <code className="flex-1 p-2 rounded bg-muted/50 dark:bg-muted/30 text-xs break-all font-mono">
+                      TOTP_SECRET={setupData.secret}
+                    </code>
                     <Button
-                      onClick={copyAllBackupCodes}
+                      onClick={() => copyToClipboard(`TOTP_SECRET=${setupData.secret}`)}
                       variant="outline"
                       size="sm"
                       className="gap-2"
                     >
-                      <Copy className="h-4 w-4" />
-                      Copy All
+                      {copiedSecret ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                     </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Each code can be used once if you lose access to your authenticator
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {setupData.backupCodes.map((code, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 p-3 rounded-lg bg-muted/50 dark:bg-muted/30 border border-gray-300/20 dark:border-white/10"
-                      >
-                        <code className="flex-1 font-mono text-sm">{code}</code>
-                        <Button
-                          onClick={() => copyToClipboard(code, index)}
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          {copiedBackupCodes.includes(index) ? (
-                            <Check className="h-3 w-3" />
-                          ) : (
-                            <Copy className="h-3 w-3" />
-                          )}
-                        </Button>
-                      </div>
-                    ))}
                   </div>
                 </div>
 
-                <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg space-y-2">
+                  <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
+                    ⚠️ Lost Your Device?
+                  </p>
                   <p className="text-sm text-yellow-700 dark:text-yellow-400">
-                    <strong>⚠️ Warning:</strong> Store these backup codes securely. They provide access to your SSH keys if you lose your authenticator device.
+                    If you lose access to your authenticator app, simply remove the <code className="px-1 py-0.5 rounded bg-yellow-500/20">TOTP_SECRET</code> environment variable, redeploy, and generate a new QR code.
                   </p>
                 </div>
 
