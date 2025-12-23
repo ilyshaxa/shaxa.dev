@@ -263,7 +263,7 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 #### Optional: Password-Only Mode
 
 If you prefer password-only authentication (not recommended for production):
-- Simply don't set `TOTP_SECRET` and `BACKUP_CODES`
+- Simply don't set `TOTP_SECRET`
 - System will automatically use password-only mode
 - MFA fields won't be shown on login page
 
