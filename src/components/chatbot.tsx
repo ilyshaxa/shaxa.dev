@@ -120,15 +120,52 @@ export function Chatbot() {
 
       const data = await response.json();
       
+      // Handle rate limit error (429)
+      if (response.status === 429) {
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: data.error || "You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov.",
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsLoading(false);
+        setIsSending(false);
+        setTimeout(() => scrollToBottom(), 200);
+        return;
+      }
+
+      // Handle other error status codes
+      if (!response.ok) {
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: data.error || 'Sorry, I encountered an error. Please try again.',
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsLoading(false);
+        setIsSending(false);
+        setTimeout(() => scrollToBottom(), 200);
+        return;
+      }
+
+      // Add remaining attempts info for off-topic questions
+      let messageContent = data.response || 'Sorry, I encountered an error. Please try again.';
+      if (data.isOffTopic && data.remainingAttempts !== undefined) {
+        messageContent += `\n\n💡 Note: You have ${data.remainingAttempts} off-topic question${data.remainingAttempts !== 1 ? 's' : ''} remaining before rate limiting.`;
+      }
+      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response || 'Sorry, I encountered an error. Please try again.',
+        content: messageContent,
         isUser: false,
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, botMessage]);
-    } catch {
+    } catch (error) {
+      console.error('Chatbot error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: 'Sorry, I encountered an error. Please try again.',

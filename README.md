@@ -1,6 +1,6 @@
 # shaxa.dev - Personal Portfolio Website
 
-A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features an AI chatbot with Telegram notifications, multi-domain SEO support, and a secure SSH keys management system.
+A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion. Features an AI chatbot, multi-domain SEO support, and a secure SSH keys management system.
 
 ## 🚀 Features
 
@@ -8,7 +8,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 - **Modern Design**: Light/dark theme with glassmorphism effects and smooth animations
 - **Responsive**: Fully responsive design for all devices
 - **Multi-Domain**: Supports both `shaxa.dev` and `shaxriyor.com` with proper SEO
-- **AI Chatbot**: GPT-powered "Ask Shaxriyor" assistant with Telegram notifications
+- **AI Chatbot**: GPT-powered "Ask Shaxriyor" assistant
 - **TypeScript**: Full type safety throughout the application
 
 ### Advanced
@@ -16,10 +16,9 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
   - **Two-Factor Authentication (TOTP)**: Google Authenticator, Authy, or any TOTP app
   - **Simple Recovery**: Remove TOTP_SECRET to reset MFA (no backup codes needed)
   - Rate limiting (5 attempts per 15 minutes)
-  - Login tracking with Telegram notifications
   - 7-day secure sessions with HTTP-only cookies
 - **Interactive Projects**: Zoom, pan, fullscreen for images; video support with custom controls
-- **Contact Form**: Server-side validation with Telegram notifications
+- **Contact Form**: Server-side validation with Telegram delivery
 - **SEO**: Dynamic sitemap, robots.txt, Schema.org structured data, canonical URLs
 
 ## 🛠️ Tech Stack
@@ -32,7 +31,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 | **Animations** | Framer Motion 12 |
 | **AI** | OpenAI GPT-3.5-turbo |
 | **Authentication** | Speakeasy (TOTP), QRCode (2FA setup) |
-| **Notifications** | Telegram Bot API, Sonner (toasts) |
+| **Notifications** | Telegram Bot API (contact form), Sonner (toasts) |
 | **Theme** | next-themes |
 | **Deployment** | Vercel (Edge runtime for chat API) |
 
@@ -78,8 +77,8 @@ src/
 
 ### Prerequisites
 - Node.js 18+
-- OpenAI API key
-- Telegram Bot Token & Chat ID
+- Telegram Bot Token & Chat ID (for contact form)
+- OpenAI API key (optional, for chatbot functionality)
 
 ### Installation
 
@@ -106,15 +105,16 @@ Open [http://localhost:3000](http://localhost:3000)
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token for notifications | Yes | - |
-| `TELEGRAM_CHAT_ID` | Telegram chat ID for notifications | Yes | - |
-| `OPENAI_API_KEY` | OpenAI API key for chatbot | Yes | - |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token for contact form | Yes** | - |
+| `TELEGRAM_CHAT_ID` | Telegram chat ID for contact form | Yes** | - |
+| `OPENAI_API_KEY` | OpenAI API key for chatbot | No | - |
 | `KEYS_PAGE_PASSWORD` | Password for SSH keys page | Yes* | - |
 | `TOTP_SECRET` | TOTP secret for MFA (base32) | Yes* | - |
 | `SSH_KEYS` | SSH keys in JSON format | No | - |
 | `PRIMARY_DOMAIN` | Primary domain for canonical URLs | No | `https://shaxa.dev` |
 
-\* Required only if using the `/keys` page
+\* Required only if using the `/keys` page  
+\*\* Required for contact form to deliver messages
 
 ### SSH Keys Format
 
@@ -126,6 +126,35 @@ SSH_KEYS='[{"name":"Server Key","type":"private","key":"-----BEGIN RSA PRIVATE K
 SSH_KEY_1="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
 SSH_KEY_2="ssh-rsa AAAAB3..."
 ```
+
+### Setting Up Telegram Bot (Contact Form)
+
+The contact form uses Telegram Bot API to deliver messages directly to you.
+
+#### Create a Telegram Bot
+
+1. **Open Telegram** and search for [@BotFather](https://t.me/botfather)
+
+2. **Create a new bot**:
+   ```
+   /newbot
+   ```
+   - Follow prompts to name your bot
+   - You'll receive a token like: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`
+
+3. **Get your Chat ID**:
+   - Start a chat with [@userinfobot](https://t.me/userinfobot)
+   - It will display your Chat ID (e.g., `123456789`)
+
+4. **Add to environment variables**:
+   ```bash
+   TELEGRAM_BOT_TOKEN="123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+   TELEGRAM_CHAT_ID="123456789"
+   ```
+
+5. **Start your bot**:
+   - Send `/start` to your new bot on Telegram
+   - Test the contact form - you should receive messages!
 
 ### Setting Up Multi-Factor Authentication (MFA)
 
@@ -204,11 +233,6 @@ The `/keys` page uses **TOTP-based two-factor authentication** for maximum secur
 - Applies to all attempts (not separate for password/MFA)
 - Rate limit persists via cookies even if page refreshed
 
-🔒 **Monitoring & Alerts**
-- All login attempts sent to Telegram (success and failure)
-- Failed attempts include IP address and timestamp
-- Real-time security monitoring
-
 🔒 **Session Security**
 - 64-character random hex tokens
 - HTTP-only cookies (not accessible via JavaScript)
@@ -273,6 +297,13 @@ Edit `src/lib/data.ts` to update:
 
 Customize the chatbot's knowledge by editing `SYSTEM_PROMPT` in `src/app/api/chat/route.ts`.
 
+**Rate Limiting for Off-Topic Questions:**
+- Users can ask unlimited questions about Shaxriyor Jabborov
+- Off-topic questions are limited to 5 per IP address per 15-minute window
+- Rate limit only applies to non-Shaxriyor related questions
+- Users are notified of remaining off-topic attempts
+- After exceeding the limit, users must wait 15 minutes before asking more off-topic questions
+
 ### Styling
 
 Custom classes in `src/app/globals.css`:
@@ -309,12 +340,6 @@ Custom classes in `src/app/globals.css`:
 - **Applies to all attempts**: Password and MFA counted together
 - **Automatic IP tracking**: X-Forwarded-For and X-Real-IP support
 
-### Monitoring & Alerts
-- **Real-time Telegram notifications**: All login attempts (success and failure)
-- **IP address tracking**: Know who's accessing your keys
-- **Timestamp logging**: Audit trail of all authentication events
-- **Failed attempt details**: Wrong passwords sent to Telegram for analysis
-
 ### Input Security
 - **Server-side validation**: All inputs validated on backend
 - **Type safety**: Full TypeScript type checking
@@ -329,12 +354,14 @@ Custom classes in `src/app/globals.css`:
 
 2. **Add environment variables** in Vercel dashboard:
    ```
-   Required:
+   Required for contact form:
    - TELEGRAM_BOT_TOKEN
    - TELEGRAM_CHAT_ID
-   - OPENAI_API_KEY
    
-   Optional (for /keys page):
+   Optional:
+   - OPENAI_API_KEY (for chatbot functionality)
+   
+   For /keys page:
    - KEYS_PAGE_PASSWORD
    - TOTP_SECRET (generate via /keys/setup-mfa)
    - SSH_KEYS or SSH_KEY_1, SSH_KEY_2, etc.

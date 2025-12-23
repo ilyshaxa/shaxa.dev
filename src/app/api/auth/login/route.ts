@@ -77,8 +77,8 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number; rese
   };
 }
 
-// Send Telegram notification for login attempts
-async function sendLoginAttemptNotification(
+// Log login attempts
+async function logLoginAttempt(
   ip: string,
   success: boolean,
   timestamp: string,
@@ -89,7 +89,6 @@ async function sendLoginAttemptNotification(
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (!botToken || !chatId) {
-      console.error('Telegram bot configuration missing');
       return;
     }
 
@@ -99,7 +98,7 @@ async function sendLoginAttemptNotification(
       ? `\n🔑 *Attempted Password:* \`${wrongPassword.replace(/`/g, '\\`')}\``
       : '';
 
-    const telegramMessage = `
+    const message = `
 ${emoji} *SSH Keys Page ${status}*
 
 🌐 *IP Address:* ${ip}
@@ -109,7 +108,7 @@ ${passwordInfo}
 *From shaxa.dev SSH Keys page*
     `.trim();
 
-    const telegramResponse = await fetch(
+    const response = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
       {
         method: 'POST',
@@ -118,18 +117,18 @@ ${passwordInfo}
         },
         body: JSON.stringify({
           chat_id: chatId,
-          text: telegramMessage,
+          text: message,
           parse_mode: 'Markdown',
         }),
       }
     );
 
-    if (!telegramResponse.ok) {
-      const errorData = await telegramResponse.json();
-      console.error('Telegram API error:', errorData);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Logging error:', errorData);
     }
   } catch (error) {
-    console.error('Telegram notification error:', error);
+    console.error('Logging error:', error);
   }
 }
 
@@ -153,8 +152,7 @@ export async function POST(request: NextRequest) {
     if (!rateLimit.allowed) {
       const resetIn = Math.ceil((rateLimit.resetAt - Date.now()) / 1000 / 60);
       
-      // Send notification for rate limit exceeded
-      await sendLoginAttemptNotification(
+      await logLoginAttempt(
         clientIP,
         false,
         timestamp,
@@ -224,8 +222,7 @@ export async function POST(request: NextRequest) {
 
     // Check both credentials together - don't reveal which one failed
     if (!passwordMatch || !mfaValid) {
-      // Send notification for failed attempt
-      await sendLoginAttemptNotification(
+      await logLoginAttempt(
         clientIP,
         false,
         timestamp,
@@ -242,8 +239,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Successful login - send notification
-    await sendLoginAttemptNotification(clientIP, true, timestamp);
+    await logLoginAttempt(clientIP, true, timestamp);
 
     // Generate secure session token
     const sessionToken = crypto.randomBytes(32).toString('hex');

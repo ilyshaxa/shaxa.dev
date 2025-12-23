@@ -2,6 +2,96 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
+// In-memory rate limiting store for off-topic questions
+// Only counts non-Shaxriyor related questions
+interface RateLimitEntry {
+  attempts: number;
+  firstAttempt: number;
+  lastAttempt: number;
+}
+
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+// Rate limiting configuration for off-topic questions
+const MAX_OFF_TOPIC_ATTEMPTS = 5;
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+// Clean up old entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitStore.entries()) {
+    if (now - entry.lastAttempt > WINDOW_MS) {
+      rateLimitStore.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// Get client IP address
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+  return forwarded?.split(',')[0]?.trim() || realIP || 'unknown';
+}
+
+// Check rate limit for off-topic questions
+function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetAt: number } {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+
+  if (!entry) {
+    return { allowed: true, remaining: MAX_OFF_TOPIC_ATTEMPTS, resetAt: now + WINDOW_MS };
+  }
+
+  // Reset if window has passed
+  if (now - entry.firstAttempt > WINDOW_MS) {
+    rateLimitStore.delete(ip);
+    return { allowed: true, remaining: MAX_OFF_TOPIC_ATTEMPTS, resetAt: now + WINDOW_MS };
+  }
+
+  // Check if exceeded
+  if (entry.attempts >= MAX_OFF_TOPIC_ATTEMPTS) {
+    const resetAt = entry.firstAttempt + WINDOW_MS;
+    return { allowed: false, remaining: 0, resetAt };
+  }
+
+  return {
+    allowed: true,
+    remaining: MAX_OFF_TOPIC_ATTEMPTS - entry.attempts,
+    resetAt: entry.firstAttempt + WINDOW_MS,
+  };
+}
+
+// Increment rate limit counter for off-topic questions
+function incrementRateLimit(ip: string): void {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+
+  if (!entry) {
+    rateLimitStore.set(ip, {
+      attempts: 1,
+      firstAttempt: now,
+      lastAttempt: now,
+    });
+  } else {
+    entry.attempts++;
+    entry.lastAttempt = now;
+    rateLimitStore.set(ip, entry);
+  }
+}
+
+// Check if response is a refusal (off-topic question)
+function isOffTopicResponse(response: string): boolean {
+  const refusalIndicators = [
+    "I'm Shaxriyor's AI assistant, and I can only answer questions about Shaxriyor Jabborov",
+    "can only answer questions about Shaxriyor",
+    "only answer questions about Shaxriyor Jabborov",
+  ];
+  
+  return refusalIndicators.some(indicator => 
+    response.toLowerCase().includes(indicator.toLowerCase())
+  );
+}
+
 const SYSTEM_PROMPT = `You are Shaxriyor's AI assistant, representing Shaxriyor Jabborov, a DevOps engineer and cloud infrastructure specialist. 
 
 Here's information about Shaxriyor:
@@ -90,18 +180,17 @@ Your role is to:
 
 Remember: You are representing Shaxriyor, so be professional, knowledgeable, and helpful. Do not answer questions about Shaxriyor that you don't know about. If asked about personal details not in the training data, politely say you don't have that information. MOST IMPORTANTLY: You are strictly limited to Shaxriyor-related topics only. Always refuse any off-topic questions clearly and redirect to Shaxriyor-related topics.`;
 
-// Function to send Telegram notification
-async function sendTelegramNotification(userMessage: string, aiResponse: string, userIP: string) {
+// Log chatbot interactions
+async function logChatInteraction(userMessage: string, aiResponse: string, userIP: string) {
   try {
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (!botToken || !chatId) {
-      console.error('Telegram bot configuration missing');
       return;
     }
 
-    const telegramMessage = `
+    const message = `
 🤖 *Chatbot Interaction*
 
 👤 *User Question:*
@@ -116,7 +205,7 @@ ${aiResponse}
 *From shaxa.dev chatbot*
     `.trim();
 
-    const telegramResponse = await fetch(
+    const response = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
       {
         method: 'POST',
@@ -125,18 +214,18 @@ ${aiResponse}
         },
         body: JSON.stringify({
           chat_id: chatId,
-          text: telegramMessage,
+          text: message,
           parse_mode: 'Markdown',
         }),
       }
     );
 
-    if (!telegramResponse.ok) {
-      const errorData = await telegramResponse.json();
-      console.error('Telegram API error:', errorData);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Logging error:', errorData);
     }
   } catch (error) {
-    console.error('Telegram notification error:', error);
+    console.error('Logging error:', error);
   }
 }
 
@@ -156,9 +245,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user IP address
-    userIP = request.headers.get('x-forwarded-for') || 
-             request.headers.get('x-real-ip') || 
-             'Unknown';
+    userIP = getClientIP(request);
+
+    // Check rate limit for off-topic questions
+    const rateLimit = checkRateLimit(userIP);
+    if (!rateLimit.allowed) {
+      const resetIn = Math.ceil((rateLimit.resetAt - Date.now()) / 1000 / 60);
+      return NextResponse.json(
+        {
+          error: `You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov. Try again in ${resetIn} minute(s).`,
+          resetAt: rateLimit.resetAt,
+          isRateLimited: true,
+        },
+        { status: 429 }
+      );
+    }
 
     // For now, we'll use a simple response system
     // In production, you would integrate with OpenAI API here
@@ -166,6 +267,7 @@ export async function POST(request: NextRequest) {
     
     if (!openaiApiKey) {
       // Fallback responses when OpenAI API key is not available
+      // These are generic responses so we don't count them against rate limit
       const fallbackResponses = [
         "I'd be happy to tell you more about Shaxriyor's work! What specific aspect would you like to know about?",
         "Shaxriyor is a talented DevOps engineer with expertise in cloud infrastructure and automation. What would you like to know about his projects or experience?",
@@ -176,12 +278,13 @@ export async function POST(request: NextRequest) {
       
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
       
-      // Send Telegram notification for fallback response
-      await sendTelegramNotification(userMessage, randomResponse, userIP);
+      // Log fallback response
+      await logChatInteraction(userMessage, `${randomResponse}\n\n⚠️ Using fallback response (OpenAI API key not configured)`, userIP);
       
       return NextResponse.json({
         response: randomResponse,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        isFallback: true,
       });
     }
 
@@ -210,12 +313,33 @@ export async function POST(request: NextRequest) {
     const data = await openaiResponse.json();
     const response = data.choices[0]?.message?.content || 'Sorry, I encountered an error. Please try again.';
 
-    // Send Telegram notification for OpenAI response
-    await sendTelegramNotification(userMessage, response, userIP);
+    // Check if response is off-topic and increment rate limit counter
+    if (isOffTopicResponse(response)) {
+      incrementRateLimit(userIP);
+      const updatedRateLimit = checkRateLimit(userIP);
+      
+      // Log off-topic question
+      await logChatInteraction(
+        userMessage, 
+        `${response}\n\n⚠️ Off-topic question detected. Remaining attempts: ${updatedRateLimit.remaining}/${MAX_OFF_TOPIC_ATTEMPTS}`, 
+        userIP
+      );
+
+      return NextResponse.json({
+        response,
+        timestamp: new Date().toISOString(),
+        remainingAttempts: updatedRateLimit.remaining,
+        isOffTopic: true,
+      });
+    }
+
+    // Log valid response
+    await logChatInteraction(userMessage, response, userIP);
 
     return NextResponse.json({
       response,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      isOffTopic: false,
     });
 
   } catch (error) {
@@ -223,8 +347,8 @@ export async function POST(request: NextRequest) {
     
     const errorResponse = 'Sorry, I encountered an error. Please try again later.';
     
-    // Send Telegram notification for error case
-    await sendTelegramNotification(userMessage, errorResponse, userIP);
+    // Log error case
+    await logChatInteraction(userMessage, errorResponse, userIP);
     
     return NextResponse.json(
       { 
