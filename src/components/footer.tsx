@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, Instagram } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { getProfile } from '@/lib/data';
 import { useTheme } from 'next-themes';
@@ -9,6 +10,7 @@ import { LastUpdated } from '@/components/last-updated';
 
 export function Footer() {
   const profile = getProfile();
+  const t = useTranslations('footer');
   const { theme } = useTheme();
 
   return (
@@ -96,11 +98,11 @@ export function Footer() {
             </Button>
           </div>
           <p className="text-muted-foreground">
-            © 2025 {profile.name}. Made with Next.js, TypeScript & VibeCoding ☕
+            {t('copyright', { name: profile.name })}
           </p>
           <LastUpdated />
           <p className="text-muted-foreground">
-            Feel free to use this template from my <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
+            {t('template')} <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">{t('github')}</a>
           </p>
         </motion.div>
       </div>

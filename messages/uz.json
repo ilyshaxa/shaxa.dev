@@ -1,0 +1,546 @@
+{
+  "navigation": {
+    "home": "Bosh sahifa",
+    "about": "Men haqimda",
+    "projects": "Loyihalar",
+    "contact": "Aloqa",
+    "downloadCV": "CV yuklab olish",
+    "cv": "CV",
+    "selectLanguage": "CV Tilini Tanlash",
+    "downloadInEnglish": "Ingliz tilida yuklab olish",
+    "downloadInUzbek": "O'zbek tilida yuklab olish",
+    "downloadInRussian": "Rus tilida yuklab olish"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Salom, men",
+      "roles": {
+        "devops": "DevOps Muhandis",
+        "observability": "Monitoring va Kuzatish Mutaxassisi",
+        "awsCertified": "AWS Sertifikatlangan",
+        "aiEnthusiast": "AI va Machine Learning Ishqibozi",
+        "cloudEngineer": "Cloud Muhandis"
+      },
+      "downloadCV": "CV yuklab olish"
+    },
+    "skills": {
+      "title": "Ko'nikmalar va Texnologiyalar",
+      "subtitle": "Zamonaviy infratuzilma uchun keng qamrovli DevOps vositalari",
+      "categories": {
+        "cloud": "Bulut",
+        "containers": "Konteynerlar",
+        "infrastructure": "Infratuzilma",
+        "cicd": "CI/CD",
+        "monitoring": "Monitoring",
+        "database": "Ma'lumotlar Bazasi",
+        "tools": "Vositalar"
+      }
+    },
+    "experience": {
+      "title": "Tajriba",
+      "subtitle": "Mening professional sayohatim va asosiy yutuqlarim",
+      "viewDetails": "Tafsilotlarini ko'rish",
+      "showAll": "Barchasini ko'rsatish (yana {count})",
+      "showLess": "Kamroq ko'rsatish",
+      "visit": "Tashrif buyurish"
+    },
+    "projects": {
+      "title": "Tanlangan Loyihalar",
+      "subtitle": "Mening so'nggi ishlarim va shaxsiy loyihalarim namunasi",
+      "showAll": "Barchasini ko'rsatish (yana {count})",
+      "showLess": "Kamroq ko'rsatish"
+    },
+    "cta": {
+      "title": "Keling, Birga Ishlaylik",
+      "subtitle": "Men har doim yangi imkoniyatlar va qiziqarli loyihalardan manfaatdorman. Keling, qanday hamkorlik qilishimiz mumkinligini muhokama qilaylik!",
+      "getInTouch": "Bog'lanish",
+      "viewFullProfile": "To'liq Profilni Ko'rish"
+    }
+  },
+  "about": {
+    "title": "Men Haqimda",
+    "subtitle": "Mening sayohatim, qadriyatlarim va DevOps muhandis sifatida meni nima harakatlantirishi haqida ko'proq bilib oling",
+    "sections": {
+      "bio": {
+        "title": "Men Haqimda",
+        "subtitle": "Mening hikoyam, ishtiyoqim va texnologiyaga yondashuvim",
+        "additionalText": "Men miqyoslanuvchi va muammosiz ishlaydigan narsalarni yaratishni yaxshi ko'radigan DevOps muhandisiman. Men hamma uchun ishlab chiqish va joylashtirishni osonlashtiradigan toza, avtomatlashtirilgan tizimlarni yaratishga e'tibor qarataman. Bulut infratuzilmasini loyihalash, CI/CD quvurlarini sozlash yoki turli muhitlarda ishonchlilikni oshirish bo'ladimi, men tizimlarni eng yaxshi holatda ishlashini ta'minlaydigan murakkab muammolarni hal qilishdan zavqlanaman. Har doim yangi vositalarni va kod, infratuzilma va odamlarni bog'lashning yanada yaxshi usullarini o'rganaman."
+      },
+      "experience": {
+        "title": "Professional Tajriba",
+        "subtitle": "Turli kompaniyalardagi sayohatim va erishgan ko'nikmalarim",
+        "keySkills": "Asosiy Ko'nikmalar",
+        "more": "+yana {count}"
+      },
+      "education": {
+        "title": "Ta'lim va Sertifikatlar",
+        "subtitle": "Mening akademik ma'lumotim va professional sertifikatlarim",
+        "educationTab": "Ta'lim",
+        "educationSubtitle": "Mening akademik ma'lumotim va rasmiy ta'limim",
+        "certificationsTab": "Sertifikatlar",
+        "certificationsSubtitle": "Professional sertifikatlar va yutuqlar",
+        "comingSoon": "Sertifikatlar tez orada",
+        "comingSoonDesc": "Professional sertifikatlar olingandan keyin bu yerda ko'rsatiladi"
+      },
+      "skills": {
+        "title": "Ko'nikmalar va Tillar",
+        "subtitle": "Mening texnik tajribam va til bilimim",
+        "technicalSkills": "Texnik Ko'nikmalar",
+        "technicalSkillsSubtitle": "Men ishlaydigan texnologiyalar va vositalar",
+        "languages": "Tillar",
+        "languagesSubtitle": "Men gapiradignan va ishlaydigan tillar"
+      },
+      "values": {
+        "title": "Qadriyatlar va Falsafa",
+        "subtitle": "Meni nima harakatlantiradi va ishga yondashuvimni shakllantiradi",
+        "codeQuality": {
+          "title": "Kod Sifati",
+          "description": "Men toza, saqlash oson va yaxshi hujjatlashtirilgan kod yozishga ishonaman. Yaxshi kod faqat funksionallik haqida emas, balki kelajakdagi DevOps muhandislari uchun o'qish va saqlash mumkinligi haqida."
+        },
+        "userCentric": {
+          "title": "Foydalanuvchiga Qaratilgan Dizayn",
+          "description": "Men ustida ishlaydigan har bir loyiha oxirgi foydalanuvchini hisobga olgan holda ishlab chiqilgan. Men haqiqiy muammolarni hal qiladigan intuitiv, qulay va yoqimli tajribalarni yaratishga e'tibor qarataman."
+        },
+        "continuousLearning": {
+          "title": "Doimiy O'rganish",
+          "description": "Texnologiya tez rivojlanadi va men DevOps va bulut infratuzilmasidagi eng so'nggi tendentsiyalar, vositalar va eng yaxshi amaliyotlardan xabardor bo'lishga sodiqman."
+        },
+        "collaboration": {
+          "title": "Hamkorlik",
+          "description": "Men eng yaxshi yechimlar hamkorlik sa'y-harakatlaridan kelib chiqishiga ishonaman. Men turli jamoalar bilan ishlashni va ochiq manbali loyihalarga hissa qo'shishni yaxshi ko'raman."
+        }
+      },
+      "funFacts": {
+        "title": "Qiziqarli Faktlar",
+        "subtitle": "Kodlashdan tashqari men haqimda bir necha narsa",
+        "linux": {
+          "title": "🐧 Linux Ishqibozi",
+          "description": "Yangi vositalar, sozlamalar va optimallashtirishlarni o'rganishni yaxshi ko'radigan ishtiyoqli Linux foydalanuvchisi va ochiq manbali enthusiast."
+        },
+        "fitness": {
+          "title": "🏋️ Fitnesga E'tibor",
+          "description": "Muntazam sport mashg'ulotlari meni o'rnatilgan, energiya bilan to'ldirilgan va kod ichida ham, tashqarida ham yangi qiyinchiliklarga tayyor qiladi."
+        },
+        "gaming": {
+          "title": "⚔️ Clash Royale Professional",
+          "description": "Strategik o'yinni, tez fikrlashni va har bir harakatni mukammallashtirish uchun zavqlangan raqobatbardosh Clash Royale o'yinchisi."
+        },
+        "learner": {
+          "title": "🧠 Umrbod O'rganuvchi",
+          "description": "Har doim yangi texnologiyalar va g'oyalarga qiziqaman. Men ko'nikmalarimni bir tajriba bilan o'stirishni yaxshi ko'raman."
+        }
+      }
+    },
+    "employmentTypes": {
+      "fullTime": "To'liq vaqt",
+      "partTime": "Qisman vaqt",
+      "contract": "Shartnoma",
+      "freelance": "Frilanser",
+      "internship": "Amaliyot"
+    }
+  },
+  "projects": {
+    "title": "Loyihalar",
+    "subtitle": "Innovatsiya va texnik mukammallikni namoyish etuvchi ishlarim va loyihalarimning tanlangan to'plami",
+    "featured": "Tanlangan Loyihalar",
+    "all": "Barcha Loyihalar",
+    "viewProject": "Loyihani Ko'rish",
+    "viewProjectDetails": "Loyiha Tafsilotlarini Ko'rish",
+    "viewCode": "Kodni Ko'rish",
+    "liveDemo": "Jonli Demo",
+    "backToProjects": "Loyihalarga Qaytish",
+    "aboutProject": "Loyiha Haqida",
+    "projectLinks": "Loyiha Havolalari",
+    "exitFullscreen": "To'liq Ekrandan Chiqish",
+    "fullscreenNotAvailable": "Video loyihalar uchun to'liq ekran mavjud emas",
+    "status": {
+      "title": "Holati",
+      "completed": "Tugallangan",
+      "inProgress": "Jarayonda",
+      "planned": "Rejalashtirilgan"
+    },
+    "technologies": "Ishlatilgan Texnologiyalar",
+    "year": "Yil",
+    "empty": {
+      "title": "Hozircha loyihalar mavjud emas",
+      "description": "Tez orada qiziqarli yangi loyihalar uchun qaytib keling!"
+    }
+  },
+  "contact": {
+    "header": {
+      "title": "Bog'laning",
+      "subtitle": "Savolingiz bormi yoki birga ishlashni xohlaysizmi? Bemalol bog'laning!"
+    },
+    "form": {
+      "title": "Xabar Yuborish",
+      "description": "Quyidagi formani to'ldiring va men imkon qadar tezroq javob beraman",
+      "nameLabel": "Ism",
+      "namePlaceholder": "Sizning ismingiz",
+      "emailLabel": "Email",
+      "emailPlaceholder": "sizning.email@example.com",
+      "subjectLabel": "Mavzu",
+      "subjectPlaceholder": "Bu nima haqida?",
+      "messageLabel": "Xabar",
+      "messagePlaceholder": "Sizning xabaringiz...",
+      "send": "Xabar Yuborish",
+      "sending": "Yuborilmoqda...",
+      "success": "Xabar muvaffaqiyatli yuborildi!",
+      "error": "Xabarni yuborib bo'lmadi. Iltimos, qayta urinib ko'ring.",
+      "charLimitWarning": "Siz belgilar chegarasiga yaqinlashyapsiz!"
+    },
+    "info": {
+      "title": "Aloqa Ma'lumotlari",
+      "description": "Boshqa aloqa kanallarini afzal ko'rasizmi? Ushbu usullardan birortasi orqali bog'laning",
+      "email": "Email",
+      "phone": "Telefon",
+      "location": "Joylashuv"
+    },
+    "responseTimes": {
+      "title": "O'rtacha Javob Vaqtlari",
+      "description": "Men imkon qadar tezroq javob berishga harakat qilaman",
+      "email": "Email",
+      "emailTime": "24-48 soat",
+      "phone": "Telefon",
+      "phoneTime": "Bir kun ichida",
+      "socialMedia": "Ijtimoiy Tarmoqlar",
+      "socialMediaTime": "1-2 kun"
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 {name}. Next.js, TypeScript va VibeCoding bilan yaratilgan ☕",
+    "template": "Bu shablonni mening",
+    "github": "GitHub"
+  },
+  "keys": {
+    "title": "SSH Kalitlari",
+    "subtitle": "SSH kalitlaringizga istalgan joydan kiring",
+    "auth": {
+      "title": "Autentifikatsiya Talab Qilinadi",
+      "subtitle": "SSH kalitlariga kirish uchun parolni kiriting",
+      "description": "SSH kalitlarini ko'rish uchun parolingizni kiriting",
+      "descriptionWithMFA": "Parolingiz va autentifikatsiya kodini kiriting",
+      "password": "Parol",
+      "passwordPlaceholder": "Parolni kiriting",
+      "mfaTitle": "Ikki Faktorli Autentifikatsiya",
+      "authCode": "Autentifikatsiya Kodi",
+      "authCodePlaceholder": "XXXXXX",
+      "authCodeHint": "Autentifikator ilovasidan 6 raqamli kodni kiriting",
+      "authenticating": "Tekshirilmoqda...",
+      "rateLimited": "Cheklangan",
+      "login": "Kirish",
+      "logout": "Chiqish",
+      "rateLimitExceeded": "Cheklov oshib ketdi",
+      "tryAgainIn": "{minutes} daqiqada qayta urinib ko'ring",
+      "attemptsRemaining": "{count} urinish qoldi"
+    },
+    "list": {
+      "copyAll": "Barcha Kalitlarni Nusxalash",
+      "copy": "Nusxalash",
+      "copied": "Nusxalandi",
+      "clickToCopy": "Butun kalitni nusxalash uchun nusxalash tugmasini bosing",
+      "private": "Shaxsiy",
+      "public": "Ommaviy",
+      "empty": {
+        "title": "SSH kalitlari topilmadi",
+        "description": "Atrof-muhit o'zgaruvchilarida SSH kalitlarini sozlang"
+      },
+      "error": "Xatolik"
+    }
+  },
+  "chatbot": {
+    "welcome": "Salom! Men Shaxriyorning AI yordamchisiman. Uning ishi, tajribasi yoki loyihalari haqida biror narsa so'rang!",
+    "title": "Shaxriyorning AI",
+    "status": "Onlayn",
+    "placeholder": "Shaxriyorning ishi haqida so'rang...",
+    "errors": {
+      "generic": "Kechirasiz, xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.",
+      "tooManyOffTopic": "Siz juda ko'p mavzudan tashqari savollar berdingiz. Iltimos, Shaxriyor Jabborov haqida so'rang.",
+      "offTopicNote": "Eslatma: Cheklovga qadar sizda {remaining} ta mavzudan tashqari savol{plural} qoldi."
+    },
+    "popup": {
+      "title": "Salom! Men Shaxriyorning AI Yordamchisiman",
+      "subtitle": "Uning ishi, tajribasi yoki loyihalari haqida biror narsa so'rang!",
+      "startChat": "Suhbatni Boshlash",
+      "maybeLater": "Keyinroq"
+    },
+    "aria": {
+      "openChat": "Chat yordamchisini ochish",
+      "closeChat": "Chat yordamchisini yopish",
+      "closeWelcome": "Xush kelibsiz xabarini yopish",
+      "sendMessage": "Xabar yuborish"
+    }
+  },
+  "experienceDetail": {
+    "current": "Hozirgi",
+    "visitWebsite": "Kompaniya Veb-saytiga Tashrif Buyurish",
+    "responsibilities": {
+      "title": "Asosiy Mas'uliyatlar",
+      "subtitle": "Ushbu lavozimda asosiy vazifalar va mas'uliyatlar"
+    },
+    "achievements": {
+      "title": "Asosiy Yutuqlar",
+      "subtitle": "Muhim muvaffaqiyatlar va ta'sir qilgan ishlar"
+    },
+    "companyInfo": {
+      "title": "Kompaniya Ma'lumotlari",
+      "teamSize": "Jamoa Hajmi: {size}"
+    },
+    "skillsAndTech": "Ko'nikmalar va Texnologiyalar",
+    "backToAbout": "Men Haqimda Sahifasiga Qaytish"
+  },
+  "ariaLabels": {
+    "scrollToTop": "Sahifaning yuqori qismiga o'tish",
+    "visitGitHub": "Shaxriyorning GitHub profiliga tashrif buyurish",
+    "connectLinkedIn": "Shaxriyor bilan LinkedIn'da bog'lanish",
+    "followTwitter": "Shaxriyorni Twitter'da kuzatish",
+    "sendEmail": "Shaxriyorga email yuborish",
+    "followInstagram": "Shaxriyorni Instagram'da kuzatish",
+    "closeFullscreen": "To'liq ekran ko'rinishini yopish"
+  },
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "notFound": "Sahifa topilmadi",
+    "backToHome": "Bosh Sahifaga Qaytish",
+    "readMore": "Batafsil O'qish",
+    "learnMore": "Ko'proq Bilish",
+    "viewAll": "Barchasini Ko'rish",
+    "showMore": "Ko'proq Ko'rsatish",
+    "showLess": "Kamroq Ko'rsatish",
+    "more": "ko'proq",
+    "and": "va",
+    "justNow": "hozir",
+    "minutesAgo": "{minutes} daqiqa oldin",
+    "hoursAgo": "{hours} soat oldin",
+    "daysAgo": "{days} kun oldin"
+  },
+  "profile": {
+    "location": "Toshkent, O'zbekiston",
+    "lastUpdated": "Oxirgi yangilanish: {time}",
+    "bio": "Bulut infratuzilmasi, avtomatlashtirish va miqyoslanadigan tizim dizayniga ixtisoslashgan DevOps muhandis. Infratuzilma muammolarini hal qilish va to'liq DevOps hayot sikli bo'ylab ishonchli joylashish quvurlarini qurish bo'yicha ekspert.",
+    "shortBio": "Bulut infratuzilmasi, avtomatlashtirish va miqyoslanadigan tizim dizayniga ixtisoslashgan DevOps muhandis. Infratuzilma muammolarini hal qilish va to'liq DevOps texnologiya stacki bo'ylab ishonchli deployment pipelinelarni qurish bo'yicha ekspert.",
+    "languages": {
+      "English": "Ingliz",
+      "Russian": "Rus",
+      "Uzbek": "O'zbek",
+      "Turkish": "Turk"
+    },
+    "industries": {
+      "Software & IT Services": "Dasturiy ta'minot va IT xizmatlari",
+      "E-commerce": "Elektron tijorat",
+      "Cloud Infrastructure": "Bulut infratuzilmasi",
+      "Technology": "Texnologiya",
+      "Wellness & Fitness": "Salomatlik va Fitnes",
+      "Marketing & Advertising": "Marketing va Reklama",
+      "Image Editing & Retouching": "Rasm tahrirlash va Retuš",
+      "Recruitment & HR": "Kadrlar tanlash va HR",
+      "IT services & digital marketing": "IT xizmatlari va Raqamli marketing"
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "{name} - {title}",
+      "description": "{bio}"
+    },
+    "about": {
+      "title": "Men Haqimda - {name}",
+      "description": "{name} haqida ko'proq bilib oling, DevOps Muhandis va Bulut Infratuzilmasi Mutaxassisi"
+    },
+    "projects": {
+      "title": "Loyihalar - {name}",
+      "description": "Mening DevOps va bulut infratuzilma loyihalarimni ko'ring"
+    },
+    "contact": {
+      "title": "Aloqa - {name}",
+      "description": "Hamkorlik yoki imkoniyatlar uchun {name} bilan bog'laning"
+    }
+  },
+  "data": {
+    "projects": {
+      "jenkins-cicd-pipeline": {
+        "title": "Jenkins CI/CD Pipeline",
+        "shortDescription": "Jenkins, AWS va Prometheus yordamida to'liq avtomatlashtirilgan CI/CD va monitoring pipeline, muhitlar bo'ylab muammosiz deploymentlar uchun.",
+        "fullDescription": "Praaktisgo uchun Jenkins va AWS yordamida ishlab chiqarishga tayyor CI/CD pipeline loyihalashtirdim va amalga oshirdim. Tizim dev va prod muhitlarida CodeDeploy integratsiyasi bilan buildlarni, testlarni va deploymentlarni avtomatlashtiradi. Jenkins agentlari uchun oldindan o'rnatilgan toollar (JDK, Ant, Git, AWS CLI) bilan maxsus AMIlar yaratildi va pipeline dinamik ravishda build agentlarini provision qiladi va ilovalarni compile qiladi. Build artifactlari S3ga yuklanadi va AWS CodeDeploy orqali deploy qilinadi, post-build scriptlar esa changeloglar va build status yangilanishlarini Telegram guruhiga yuboradi. Prometheus node_exporter orqali Jenkins controller va agentlarni monitoring qiladi, resurs foydalanish va performance metrikalariga real-time ko'rinish beradi.",
+        "status": "Bajarildi",
+        "companyName": "Praaktisgo"
+      },
+      "hikcentral-remote-device-integration": {
+        "title": "HikCentral Integratsiyasi",
+        "shortDescription": "Hikvision yuzni tanish qurilmalari va markazlashtirilgan HikCentral Professional server o'rtasida xavfsiz outbound ISUP aloqa orqali remote ulanish platformasi.",
+        "fullDescription": "Hikvision yuzni tanish qurilmalarini ISUP 5.0 outbound aloqa orqali bulut infratuzilmasiga ulash imkonini beruvchi xavfsiz, kengaytiriladigan remote qurilma integratsiya platformasini ishlab chiqdim. Har bir qurilma Google Cloud Windows Server VM da joylashgan HikCentral Professional instancega shifrlangan ulanish o'rnatadi, bu esa mijoz saytlarida hech qanday inbound exposuresiz ishonchli registratsiya va ma'lumot o'tkazishni ta'minlaydi. Arxitektura qurilma firmware, tarmoq transporti (TLS bilan ISUP over TCP), bulut infratuzilmasi (GCP Compute Engine) va ilova servislari (HikCentral ISUP Gateway, Web Client va OpenAPI)ni o'z ichiga oladi. Xavfsizlik nazorati TLS shifrlash, faqat outbound qurilma trafigi, firewall allowlistlari, RBAC enforcement va token-based API autentifikatsiyasini o'z ichiga oladi. Tizim Node.js, Python va .NET kabi texnologiyalar bilan qurilgan tashqi ilovalarni qo'llab-quvvatlab, HTTPS orqali seamless third-party integratsiya uchun REST-based OpenAPI interfaceini expose qiladi.",
+        "status": "Bajarildi",
+        "companyName": "KPI"
+      },
+      "comprehensive-monitoring-stack": {
+        "title": "Keng Qamrovli Monitoring Stack",
+        "shortDescription": "Grafana, Prometheus, Loki va Alertmanager bilan to'liq observability yechimi, infratuzilma va ilovalar uchun full-stack monitoring, logging va alerting.",
+        "fullDescription": "KPI ning infratuzilmasi va ilovalar uchun ishlab chiqarishga tayyor monitoring va observability stackni loyihalashtirdim va amalga oshirdim. Yechim bir nechta maxsus exporterlar va collectorlar orqali butun texnologiya stackda to'liq ko'rinish beradi. Prometheus node_exporter (tizim metrikalari), jmx_exporter (Java ilova metrikalari), cAdvisor (konteyner metrikalari) va ilova-specifik metrikalar uchun maxsus exporterdan metrikalarni yig'ib, markaziy metrik to'plash va saqlash tizimi sifatida xizmat qiladi. Grafana infratuzilma salomatligi, ilova ishlashi va biznes metrikalari uchun boy visualization dashboardlarni taqdim etadi. Loki barcha servislardan loglarni jamlaydi, Promtail turli manbalardan log ma'lumotlarini yig'ib forwarding qiladi. Alertmanager alert routingi va deduplikatsiyasini boshqaradi, kritik notifikatsiyalarni real-time incident responsega Telegramga to'g'ridan-to'g'ri yuboradi. Butun stack konteynerlashtrilgan va yuqori availability va scalability uchun orkestrlangan, hatto infratuzilma incidentlari paytida ham ishonchli monitoringni ta'minlaydi.",
+        "status": "Bajarildi",
+        "companyName": "KPI"
+      },
+      "savethis4me-telegram-bot": {
+        "title": "SaveThis4Me Telegram Bot",
+        "shortDescription": "Xavfsiz akkaunt bog'lash orqali Instagram kontentini avtomatik saqlaydigan Telegram bot. Endi ilovalar o'rtasida o'tish va havolalarni nusxalash kerak emas.",
+        "fullDescription": "SaveThis4Me - bu dastlab o'zim uchun yaratilgan va keyinchalik ommaviy foydalanish uchun kengaytirilgan shaxsiy hobby loyiha sifatida ishlab chiqilgan Telegram bot. U foydalanuvchilarga qo'lda havola nusxalash yoki ilovalar o'rtasida o'tishsiz Instagram kontentini to'g'ridan-to'g'ri Telegram chatlarida olish imkonini beradi. Bot har bir foydalanuvchining Instagram akkaunt IDsini Telegram akkaunti bilan xavfsiz bog'lash uchun user binding tokenlardan foydalanadi, bu esa reellar, postlar va storylarni avtomatik forwardingni ta'minlaydi. Python, FastAPI va Telegram Bot API bilan qurilgan, u Free va Pro obuna rejalarini o'z ichiga oladi, Telethon to'lov processini va obuna validatsiyasini boshqaradi. PostgreSQL ma'lumotlar bazasi foydalanuvchi ma'lumotlari, to'lov ma'lumotlari va media statistikasini boshqarish uchun ishlatiladi. Media retrieval API Docker bilan konteynerlashtrilgan va Nginx reverse proxy orqasida deploy qilingan, scalability, reliability va xavfsiz kontent yetkazib berishni ta'minlaydi.",
+        "status": "Bajarildi",
+        "companyName": "Shaxsiy Loyiha"
+      }
+    },
+    "experiences": {
+      "kpi-com-devops-engineer": {
+        "company": "KPI",
+        "position": "DevOps Muhandis",
+        "duration": "May 2023 - Hozir",
+        "description": "Performance va ishonchlilikni ta'minlash uchun tizimlarni loyihalash, avtomatlashtirish va optimallashtirish.",
+        "location": "Ofisda",
+        "responsibilities": [
+          "Scalability va yuqori availabilityni ta'minlash uchun AWS da bulut infratuzilmasini ta'minladim, optimallashtirdim va himoya qildim",
+          "Bir nechta muhitlarda Docker yordamida konteynerlashtrilgan ilovalarni boshqardim va deploy qildim",
+          "Integratsiya, test va deployment processlarini tartibga solish uchun Jenkins bilan CI/CD pipelinelarni avtomatlashtirdim",
+          "Tizim ishlashini monitoring qildim, bottlenecklarni aniqladim va ishonchlilikni yaxshilash uchun yechimlarni amalga oshirdim",
+          "Samarali deployment workflowlarini loyihalash va release tezligini yaxshilash uchun development jamoalari bilan yaqindan hamkorlik qildim",
+          "Xavfsizlik va xarajatlarni optimallashtirish eng yaxshi amaliyotlari bilan infratuzilma muvofiqligini ta'minladim"
+        ],
+        "achievements": [
+          "Savings Plans va resurslarni to'g'ri o'lcham tanlash orqali oylik AWS xarajatlarini 20% ga qisqartirdim",
+          "Prometheus va Grafana bilan zamonaviy monitoring stackni amalga oshirdim, tizim ko'rinishi va ishonchlilik metrikalarini 40% ga yaxshiladim",
+          "Legacy GitLab Omnibusni eng so'nggi barqaror versiyaga yangiladim, CI/CD xavfsizligini mustahkamladim va ishlashni 30% ga yaxshiladim",
+          "Parallel Jenkins buildlar va optimallashtirilgan AWS instance konfiguratsiyalaridan foydalanib deployment vaqtlarini 50% ga qisqartirdim",
+          "Dev, staging va production muhitlarida ma'lumotlar bazasi sxema sinxronizatsiyasini avtomatlashtirish uchun Python CLI tool ishlab chiqdim, qo'lda ish va inson xatolarini kamaytirib",
+          "Ma'lumotlarga asoslangan qarorlar qabul qilish uchun Grafana dashboardlarida asosiy biznes metrikalarini ko'rsatish uchun maxsus Prometheus exporter ishlab chiqdim",
+          "Proaktiv alerting va markazlashtirilgan log agregatsiya orqali incident response vaqtini 60% ga yaxshiladim"
+        ],
+        "teamSize": "50+",
+        "industry": "Dasturiy ta'minot va IT xizmatlari"
+      },
+      "praaktisgo-devops-engineer": {
+        "company": "PraaktisGo",
+        "position": "DevOps Muhandis",
+        "duration": "Yanvar 2025 - Hozir",
+        "description": "Scalable va ishonchli tizimlar uchun bulut infratuzilmasi va deployment workflowlarini loyihalash, avtomatlashtirish va optimallashtirish.",
+        "location": "Masofaviy",
+        "responsibilities": [
+          "Scalability, xavfsizlik va xarajat samaradorligini ta'minlab, mavjud AWS bulut infratuzilmasini yangi AWS akkaunt va regionga migratsiyasini boshqardim",
+          "Test, integratsiya va deployment workflowlarini avtomatlashtirish uchun Jenkins bilan CI/CD pipelinelarni loyihalashtirdim va ta'minladim",
+          "Tizim ishonchliligi, availabilityi va performance ko'rinishini ta'minlash uchun end-to-end monitoring va alerting yechimlarini amalga oshirdim",
+          "Build, release va avtomatlashtirish processlarini tartibga solish uchun development jamoalari bilan yaqindan hamkorlik qildim",
+          "Muhitlar bo'ylab bulut infratuzilmasi xarajatlarini optimallashtirdim va xavfsizlik eng yaxshi amaliyotlarini amalga oshirdim",
+          "Jamoa samaradorligi va davomiyligini yaxshilash uchun arxitektura, deployment processlar va operatsion yo'riqnomalarni hujjatlashtirdim"
+        ],
+        "achievements": [
+          "AWS infratuzilmasi migratsiyasini nol downtime va ma'lumot yo'qotishsiz yakunladim",
+          "2024 GFS Cloud Program orqali $100K Google Cloud kreditlarini oldim, multi-cloud moslashuvchanligini kengaytirib",
+          "Infratuzilma o'sishi va eksperimentni tezlashtirish uchun $10K AWS Activate Portfolio kreditlarini oldim",
+          "1 yillik bepul Google Workspace Business Planga ega bo'ldim, operatsion xarajatlarni 15% ga qisqartirib",
+          "CI/CD pipeline avtomatlashtirish va muhit standartlashtirish orqali deployment vaqtini 50% ga qisqartirdim",
+          "Proaktiv monitoring va incident oldini olish choralari orqali 99.9% tizim uptimeni erishib oldim",
+          "Kelajakdagi hybrid-cloud strategiyasini yo'naltirish uchun cross-cloud xarajatlarni tracking va performance monitoringni amalga oshirdim"
+        ],
+        "teamSize": "10+",
+        "industry": "Wellness va Fitness"
+      },
+      "zaytra-ai-devops-tech-lead": {
+        "company": "Zaytra",
+        "position": "DevOps Muhandis va Tech Lead",
+        "duration": "Iyul 2025 - Hozir",
+        "description": "Texnik asosni qurish va o'lchash uchun infratuzilma dizayni, avtomatlashtirish va jamoa rivojlanishini boshqarish.",
+        "location": "Masofaviy",
+        "responsibilities": [
+          "Yangi startup uchun butun texnik infratuzilmani noldan loyihalashtirdim va amalga oshirdim",
+          "Ishlab chiqarishga tayyor bulut serverlar, CI/CD pipelinelar va xavfsiz deployment workflowlarni sozladim va ta'minladim",
+          "Izchil rivojlanish va ishlab chiqarish parity uchun Docker yordamida konteynerlashtrilgan muhitlar qurdim",
+          "Professional va xavfsiz onlayn mavjudlikni o'rnatish uchun domenlar, SSL sertifikatlari va DNSni sozladim",
+          "Tizim ishonchliligi va uptimeni ta'minlash uchun monitoring, logging va alerting tizimlarini ishlab chiqdim",
+          "Kelajakdagi scalabilityni qo'llab-quvvatlash uchun muhandislik eng yaxshi amaliyotlari va texnik hujjatlarni o'rnatdim",
+          "Internlar va junior developerlarni mentor qildim, kuchli texnik madaniyatni rivojlantirib va arxitektura qarorlarini yo'naltirdim"
+        ],
+        "achievements": [
+          "Startupning butun texnik stackini 8 hafta ichida noldan ishlab chiqarishga qurdim",
+          "Proaktiv monitoring, avtomatlashtirilgan alertlar va konteynerlashtrilgan deploymentlar orqali 99.9% uptimni erishib oldim",
+          "Erta foydalanuvchi o'sishini minimal xarajat bilan (~90% etakchi bulut providerlardan past) qo'llab-quvvatlash uchun infratuzilmani optimallashtirdim",
+          "Asosiy demolarda va investor pitchlarda nol downtime bilan xavfsiz, SSL-sertifikatlangan veb xizmatlarni yetkazib berdim",
+          "Yangi muhandislarning tez onboarding olishini ta'minlovchi texnik standartlar va hujjatlarni o'rnatdim",
+          "Texnik va biznes maqsadlarini moslashtirish uchun AI tadqiqotchilari, product va operatsiyalar o'rtasida cross-functional hamkorlikni boshqardim"
+        ],
+        "teamSize": "10+",
+        "industry": "Marketing va Reklama"
+      },
+      "retouchgarage-com-devops-engineer": {
+        "company": "Retouch Garage",
+        "position": "DevOps Muhandis",
+        "duration": "Iyun 2025 - Iyul 2025",
+        "description": "Rasm qayta ishlash xizmatlari uchun bulut infratuzilmasi, CI/CD va deployment avtomatizatsiyasini boshqarish.",
+        "location": "Masofaviy",
+        "responsibilities": [
+          "Yuqori-trafik rasm qayta ishlash workflowlarini qo'llab-quvvatlash uchun Azure da bulut infratuzilmasini boshqardim va optimallashtirdim",
+          "Test va deployment tsikllarini tartibga solish uchun CI/CD pipelinelarni sozladim va ta'minladim",
+          "Bir nechta muhitlarda xavfsiz, kengaytiriladigan va xarajat-samarali operatsiyalarni ta'minladim",
+          "Deployment processlarini optimallashtirish va release bottlenecklarni kamaytirish uchun development jamoalari bilan hamkorlik qildim",
+          "Ishonchlilik va uptime uchun yaxshilashlarni amalga oshirish uchun tizim ishlashini monitoring qildim"
+        ],
+        "achievements": [
+          "Avtomatlashtirilgan test va davomli integratsiya amaliyotlari orqali deployment ishonchliligini yaxshiladim",
+          "Performance standartlarini saqlab, Azure resurs taqsimotini optimallashtirdim va infratuzilma xarajatlarini qisqartirdim",
+          "Tezroq incident aniqlash va hal qilish uchun monitoring va logging imkoniyatlarini yaxshiladim",
+          "Tezroq feature releaselari va bug tuzatishlarini ta'minlab, hamkorlik workflowlarini tartibga soldim"
+        ],
+        "teamSize": "10+",
+        "industry": "Elektron tijorat"
+      },
+      "izish-uz-devops-engineer": {
+        "company": "Izish",
+        "position": "DevOps Muhandis",
+        "duration": "May 2024 - Dekabr 2024",
+        "description": "Scalable bulut infratuzilmasi va CI/CD pipelinelarni loyihalash, deploy qilish va ta'minlash.",
+        "location": "Masofaviy",
+        "responsibilities": [
+          "Scalable, yuqori-availability veb ilovalarni qo'llab-quvvatlash uchun Google Cloud Platform da bulut infratuzilmasini arxitektura qildim va deploy qildim",
+          "Test, build va deployment workflowlarini avtomatlashtirish uchun CI/CD pipelinelarni loyihalashtirdim va ta'minladim",
+          "Muhitlar bo'ylab izchil deploymentlar uchun Docker bilan ilovalarni konteynerlashtirdim",
+          "Xavfsiz, performant service delivery uchun veb serverlarni (Nginx), SSL sertifikatlarini va DNSni sozladim",
+          "Proaktiv tizim salomatligi boshqaruvi uchun monitoring, logging va alerting yechimlarini amalga oshirdim",
+          "Build processlarini optimallashtirish va eng yaxshi amaliyotlarni amalga oshirish uchun development jamoalari bilan hamkorlik qildim"
+        ],
+        "achievements": [
+          "6 hafta ichida noldan butun texnik infratuzilmani qurdim va ishga tushdim",
+          "Proaktiv monitoring va avtomatlashtirilgan alerting orqali 99.9% uptimni saqlab qoldim",
+          "Avtomatlashtirilgan CI/CD pipelinelar va Docker konteynerizatsiyasi orqali deployment vaqtlarini 60% ga qisqartirdim",
+          "Resurslarni to'g'ri o'lcham tanlash va GCP chegirmalaridan foydalanish orqali infratuzilma xarajatlarini 25% ga optimallashtirdim",
+          "Jamoa samaradorligini va onboarding tezligini yaxshilagan texnik standartlar va hujjatlarni o'rnatdim"
+        ],
+        "teamSize": "5+",
+        "industry": "Elektron tijorat"
+      },
+      "datasite-technology-frontend-developer": {
+        "company": "Datasite",
+        "position": "Frontend Developer",
+        "duration": "Oktyabr 2021 - Aprel 2023",
+        "description": "Mijozlarga mo'ljallangan ilovalar uchun zamonaviy, responsive veb interfeyslari ishlab chiqish.",
+        "location": "Ofisda",
+        "responsibilities": [
+          "HTML, CSS, JavaScript va React yordamida responsive, foydalanuvchiga qulay veb interfeyslari ishlab chiqdim",
+          "Seamless foydalanuvchi tajribasini yetkazib berish uchun dizaynerlar va backend developerlar bilan hamkorlik qildim",
+          "Tezroq yuklash vaqtlari va yaxshilangan foydalanuvchi jalb qilish uchun frontend performanceni optimallashtirdim",
+          "Kod sifatini review, test va eng yaxshi amaliyotlarga rioya qilish orqali saqlab qoldim",
+          "Agile rivojlanish tsikllarida ishtirok etdim, sprint planlash va retrospectivlarga hissa qo'shdim"
+        ],
+        "achievements": [
+          "Bir nechta yuqori sifatli loyihalarni o'z vaqtida yetkazib berdim, mijoz qoniqish reytinglarini yaxshiladim",
+          "Kod optimallashtirish va asset compressiya orqali sahifa yuklash performanceni 30% ga yaxshiladim",
+          "Bir nechta ichki loyihalarda ishlatilgan komponent kutubxonasini ishlab chiqishga hissa qo'shdim",
+          "Junior developerlarga frontend eng yaxshi amaliyotlari va zamonaviy JavaScript frameworklari bo'yicha mentor bo'ldim"
+        ],
+        "teamSize": "20+",
+        "industry": "Texnologiya"
+      }
+    },
+    "education": {
+      "tsue-economics": {
+        "institution": "Toshkent Davlat Iqtisodiyot Universiteti",
+        "degree": "Iqtisodiyot bo'yicha Bakalavr"
+      }
+    }
+  }
+}
+
+

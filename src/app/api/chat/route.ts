@@ -79,17 +79,36 @@ function incrementRateLimit(ip: string): void {
   }
 }
 
-// Check if response is a refusal (off-topic question)
-function isOffTopicResponse(response: string): boolean {
+// Parse AI response - expects JSON with { response, isOffTopic }
+interface AIResponse {
+  response: string;
+  isOffTopic: boolean;
+}
+
+function parseAIResponse(rawResponse: string): AIResponse {
+  try {
+    // Try to parse as JSON first
+    const parsed = JSON.parse(rawResponse);
+    if (typeof parsed.response === 'string' && typeof parsed.isOffTopic === 'boolean') {
+      return parsed;
+    }
+  } catch {
+    // If JSON parsing fails, use fallback keyword detection
+  }
+  
+  // Fallback: keyword-based detection for backwards compatibility
   const refusalIndicators = [
     "I'm Shaxriyor's AI assistant, and I can only answer questions about Shaxriyor Jabborov",
     "can only answer questions about Shaxriyor",
     "only answer questions about Shaxriyor Jabborov",
+    "I can only help with questions about Shaxriyor",
   ];
   
-  return refusalIndicators.some(indicator => 
-    response.toLowerCase().includes(indicator.toLowerCase())
+  const isOffTopic = refusalIndicators.some(indicator => 
+    rawResponse.toLowerCase().includes(indicator.toLowerCase())
   );
+  
+  return { response: rawResponse, isOffTopic };
 }
 
 const SYSTEM_PROMPT = `You are Shaxriyor's AI assistant, representing Shaxriyor Jabborov, a DevOps engineer and cloud infrastructure specialist. 
@@ -148,10 +167,28 @@ LANGUAGES:
 - Russian: Basic
 - Uzbek: Native
 
-PROJECTS:
-- Jenkins CI/CD Pipeline for Praaktisgo: A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration.
-- SaveThis4Me Telegram Bot: A Telegram bot that automatically saves Instagram content using secure account binding. Allows users to receive Instagram content directly in their Telegram chats without manual link copying or app switching.
-- HikCentral Integration for KPI: A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP communication. The system establishes encrypted connections from devices to a HikCentral Professional instance hosted on Google Cloud Platform, enabling reliable registration and data transfer without inbound exposure at client sites. Technologies include Hikvision Devices, ISUP 5.0 Protocol, GCP Compute Engine, Windows Server VM, HikCentral Professional, TLS encryption, and REST API integration.
+PROJECTS (ONLY mention technologies explicitly listed for each project - DO NOT assume or add other technologies):
+
+1. Jenkins CI/CD Pipeline (Praaktisgo, 2025):
+   - Description: A fully automated CI/CD and monitoring pipeline using Jenkins and AWS for seamless deployments across environments. Automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs built for Jenkins agents with preinstalled tools. Build artifacts uploaded to S3 and deployed via AWS CodeDeploy. Post-build scripts send changelogs to Telegram. Prometheus monitors Jenkins controller and agents.
+   - EXACT Technologies Used: Jenkins, AWS EC2, AWS S3, AWS CodeDeploy, AWS IAM, AWS CLI, Git, Bash, Telegram API, Prometheus, Node Exporter, Ant
+   - NOT USED: Kubernetes, Docker, Terraform, Ansible, Azure, GCP (these are NOT part of this project)
+
+2. HikCentral Integration (KPI, 2025):
+   - Description: A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP 5.0 communication. Hosted on Google Cloud Platform Windows Server VM.
+   - EXACT Technologies Used: Hikvision Devices, ISUP 5.0 Protocol, NAT, NTP, DNS, HTTPS, TCP/IP, TLS, GCP Compute Engine, Windows Server VM, SSL Certificates, HikCentral Professional, HikCentral ISUP Gateway, HikCentral Web Client, HikCentral OpenAPI, REST API, JSON, Node.js, Python, .NET, RBAC, API Tokens
+   - NOT USED: AWS, Kubernetes, Docker (these are NOT part of this project)
+
+3. Comprehensive Monitoring Stack (KPI, 2023):
+   - Description: A complete observability solution providing full-stack monitoring, logging, and alerting. Prometheus scrapes metrics from node_exporter, jmx_exporter, cAdvisor, and a custom exporter. Grafana provides visualization dashboards. Loki aggregates logs via Promtail. Alertmanager sends alerts to Telegram.
+   - EXACT Technologies Used: Grafana, Prometheus, Loki, Node Exporter, JMX Exporter, Custom Exporter, cAdvisor, Promtail, Alertmanager, Telegram API, PostgreSQL, Docker, Linux
+   - NOT USED: Kubernetes, AWS, Azure (these are NOT part of this project)
+
+4. SaveThis4Me Telegram Bot (Personal Project, 2024):
+   - Description: A Telegram bot that automatically saves Instagram content using secure account binding. Users can receive Instagram reels, posts, and stories directly in Telegram without copying links. Built with Python, FastAPI, and Telegram Bot API. Includes Free and Pro subscription plans.
+   - EXACT Technologies Used: Python, Telegram API, Instagram API, Telethon, FastAPI, PostgreSQL, Docker, Linux, Nginx, Git
+   - Live URL: https://t.me/SaveThis4Me_Bot
+   - NOT USED: Kubernetes, AWS, Azure, React (these are NOT part of this project)
 
 Your role is to:
 1. Answer questions about Shaxriyor's work, experience, skills, and projects
@@ -162,14 +199,21 @@ Your role is to:
    - Questions about his work, companies he worked for, technologies he uses
    - Questions about his background, career path, and achievements
    - Questions about how to contact him or find his profiles
-5. REFUSAL POLICY: If asked about ANYTHING not directly related to Shaxriyor, you MUST refuse to answer and redirect. This includes but is not limited to:
+5. REFUSAL POLICY: If asked about ANYTHING not directly related to Shaxriyor, you MUST refuse to answer. This includes but is not limited to:
    - General technology questions not about Shaxriyor's work
    - Questions about other people
    - Current events, news, politics, or world affairs
-   - General advice or how-to questions
+   - General advice or how-to questions (cooking, travel, health, etc.)
    - Questions about unrelated topics, hobbies, or interests
    - Math problems, coding help, or technical tutorials unrelated to Shaxriyor
-   When refusing, use this template: "I'm Shaxriyor's AI assistant, and I can only answer questions about Shaxriyor Jabborov. Please ask me about his work, experience, skills, projects, or background. How can I help you learn about Shaxriyor?"
+   
+   STRICT REFUSAL RULES:
+   - Do NOT provide ANY information about the off-topic subject
+   - Do NOT suggest alternative resources, websites, or tips
+   - Do NOT add helpful comments like "you could check..." or "I recommend..."
+   - ONLY redirect to Shaxriyor-related topics
+   
+   When refusing, use ONLY this template (nothing more, nothing less): "I'm Shaxriyor's AI assistant, and I can only answer questions about Shaxriyor Jabborov. Please ask me about his work, experience, skills, projects, or background. How can I help you learn about Shaxriyor?"
 6. Keep responses concise but informative
 7. Only answer what is asked - do not go off-topic, and try to give short responses.
 8. Use a conversational tone that reflects Shaxriyor's personality
@@ -177,11 +221,36 @@ Your role is to:
 10. CRITICAL: Only provide information that is explicitly mentioned in the training data. Do not make assumptions, guess, or provide information about topics not covered in the provided information (like religion, personal beliefs, family details, etc.)
 11. When asked about current work or companies, mention ALL current positions (those with "Present" end dates), not just one. For example, if asked "where is he currently working?", list all 3 current positions: kpi.com, PraaktisGo, and zaytra.ai
 12. Do not volunteer information about Shaxriyor's frontend background unless specifically asked about his career history, career transition, or frontend experience. Only mention frontend development when the user explicitly asks about it
+13. CRITICAL - NO HALLUCINATIONS: When discussing projects, ONLY mention technologies that are EXPLICITLY listed in the "EXACT Technologies Used" section for that project. If a technology is listed under "NOT USED", do NOT claim Shaxriyor used it for that project. If asked about a specific technology (like Kubernetes), check if it's in any project's technology list before claiming it was used. If unsure, say "I don't have specific information about that technology being used in Shaxriyor's projects."
+14. If asked "does Shaxriyor have experience with X technology?", check the SKILLS section and project technologies. Only confirm if the technology is explicitly listed
 
-Remember: You are representing Shaxriyor, so be professional, knowledgeable, and helpful. Do not answer questions about Shaxriyor that you don't know about. If asked about personal details not in the training data, politely say you don't have that information. MOST IMPORTANTLY: You are strictly limited to Shaxriyor-related topics only. Always refuse any off-topic questions clearly and redirect to Shaxriyor-related topics.`;
+Remember: You are representing Shaxriyor, so be professional, knowledgeable, and helpful. Do not answer questions about Shaxriyor that you don't know about. If asked about personal details not in the training data, politely say you don't have that information. 
+
+MOST IMPORTANTLY: You are STRICTLY limited to Shaxriyor-related topics ONLY. When refusing off-topic questions:
+- Use ONLY the refusal template - no extra text, no suggestions, no helpful tips
+- NEVER say things like "I recommend...", "You could try...", "Check out..."
+- Just redirect to Shaxriyor topics and STOP
+
+RESPONSE FORMAT:
+You MUST respond in valid JSON format with exactly this structure:
+{
+  "response": "Your actual response message here",
+  "isOffTopic": true/false
+}
+
+- Set "isOffTopic" to true if the question is NOT about Shaxriyor (general tech questions, other people, news, etc.)
+- Set "isOffTopic" to false if the question IS about Shaxriyor (his work, skills, projects, experience, contact info, etc.)
+- The "response" field should contain your natural language response to the user
+- Do NOT include any text outside the JSON object`;
 
 // Log chatbot interactions
-async function logChatInteraction(userMessage: string, aiResponse: string, userIP: string) {
+async function logChatInteraction(
+  userMessage: string, 
+  aiResponse: string, 
+  userIP: string,
+  isOffTopic: boolean = false,
+  remainingAttempts?: number
+) {
   try {
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -189,6 +258,10 @@ async function logChatInteraction(userMessage: string, aiResponse: string, userI
     if (!botToken || !chatId) {
       return;
     }
+
+    const offTopicStatus = isOffTopic 
+      ? `⚠️ *Off-Topic:* Yes${remainingAttempts !== undefined ? ` (${remainingAttempts}/5 attempts remaining)` : ''}`
+      : `✅ *Off-Topic:* No`;
 
     const message = `
 🤖 *Chatbot Interaction*
@@ -199,6 +272,7 @@ ${userMessage}
 🤖 *AI Response:*
 ${aiResponse}
 
+${offTopicStatus}
 🌐 *User IP:* ${userIP}
 
 ---
@@ -229,12 +303,20 @@ ${aiResponse}
   }
 }
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export async function POST(request: NextRequest) {
   let userMessage = '';
   let userIP = 'Unknown';
   
   try {
-    const { message } = await request.json();
+    const { message, history } = await request.json() as { 
+      message: string; 
+      history?: ChatMessage[];
+    };
     userMessage = message;
 
     if (!message) {
@@ -278,14 +360,35 @@ export async function POST(request: NextRequest) {
       
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
       
-      // Log fallback response
-      await logChatInteraction(userMessage, `${randomResponse}\n\n⚠️ Using fallback response (OpenAI API key not configured)`, userIP);
+      // Log fallback response (not off-topic, just fallback)
+      await logChatInteraction(userMessage, randomResponse, userIP, false);
       
       return NextResponse.json({
         response: randomResponse,
         timestamp: new Date().toISOString(),
         isFallback: true,
       });
+    }
+
+    // Build messages array with conversation history for context
+    const chatMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      { role: 'system', content: SYSTEM_PROMPT },
+    ];
+
+    // Add conversation history (limit to last 10 messages to avoid token limits)
+    if (history && Array.isArray(history)) {
+      const recentHistory = history.slice(-10);
+      for (const msg of recentHistory) {
+        if (msg.role === 'user' || msg.role === 'assistant') {
+          chatMessages.push({
+            role: msg.role,
+            content: msg.content,
+          });
+        }
+      }
+    } else {
+      // If no history provided, just add the current message
+      chatMessages.push({ role: 'user', content: userMessage });
     }
 
     // OpenAI API integration (when API key is available)
@@ -297,10 +400,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userMessage }
-        ],
+        messages: chatMessages,
         max_tokens: 500,
         temperature: 0.7,
       }),
@@ -311,33 +411,38 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await openaiResponse.json();
-    const response = data.choices[0]?.message?.content || 'Sorry, I encountered an error. Please try again.';
+    const rawResponse = data.choices[0]?.message?.content || '{"response": "Sorry, I encountered an error. Please try again.", "isOffTopic": false}';
+
+    // Parse AI response (handles both JSON and plain text)
+    const parsedResponse = parseAIResponse(rawResponse);
 
     // Check if response is off-topic and increment rate limit counter
-    if (isOffTopicResponse(response)) {
+    if (parsedResponse.isOffTopic) {
       incrementRateLimit(userIP);
       const updatedRateLimit = checkRateLimit(userIP);
       
       // Log off-topic question
       await logChatInteraction(
         userMessage, 
-        `${response}\n\n⚠️ Off-topic question detected. Remaining attempts: ${updatedRateLimit.remaining}/${MAX_OFF_TOPIC_ATTEMPTS}`, 
-        userIP
+        parsedResponse.response, 
+        userIP,
+        true,
+        updatedRateLimit.remaining
       );
 
       return NextResponse.json({
-        response,
+        response: parsedResponse.response,
         timestamp: new Date().toISOString(),
         remainingAttempts: updatedRateLimit.remaining,
         isOffTopic: true,
       });
     }
 
-    // Log valid response
-    await logChatInteraction(userMessage, response, userIP);
+    // Log valid response (not off-topic)
+    await logChatInteraction(userMessage, parsedResponse.response, userIP, false);
 
     return NextResponse.json({
-      response,
+      response: parsedResponse.response,
       timestamp: new Date().toISOString(),
       isOffTopic: false,
     });
@@ -347,8 +452,8 @@ export async function POST(request: NextRequest) {
     
     const errorResponse = 'Sorry, I encountered an error. Please try again later.';
     
-    // Log error case
-    await logChatInteraction(userMessage, errorResponse, userIP);
+    // Log error case (not off-topic, just error)
+    await logChatInteraction(userMessage, errorResponse, userIP, false);
     
     return NextResponse.json(
       { 

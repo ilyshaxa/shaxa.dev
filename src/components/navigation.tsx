@@ -1,19 +1,35 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Download } from 'lucide-react';
+import { Menu, X, Sun, Moon, Download, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { ClientOnly } from '@/components/client-only';
-import { getProfile } from '@/lib/data';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { toast } from 'sonner';
+
+const languages = [
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'uz', name: "O'zbekcha", flag: '🇺🇿' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+];
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [, startTransition] = useTransition();
   const pathname = usePathname();
-  const profile = getProfile();
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('navigation');
   const { setTheme, actualTheme } = useTheme();
 
   const cycleTheme = () => {
@@ -24,14 +40,64 @@ export function Navigation() {
 
   const ThemeIcon = getThemeIcon();
 
+  // Remove locale prefix from pathname for comparison
+  const getPathWithoutLocale = (path: string) => {
+    return path.replace(/^\/(en|uz|ru)/, '') || '/';
+  };
+
+  const currentPath = getPathWithoutLocale(pathname);
+
   const navItems = [
-    { href: '/', label: 'Home', title: 'Home - Shaxriyor Jabborov DevOps Engineer Portfolio', ariaLabel: 'Go to homepage' },
-    { href: '/about', label: 'About', title: 'About Me - Learn about Shaxriyor Jabborov, DevOps Engineer and Cloud Infrastructure Specialist', ariaLabel: 'Learn about my background, education, and experience' },
-    { href: '/projects', label: 'Projects', title: 'Projects - View my DevOps and cloud infrastructure projects', ariaLabel: 'View my portfolio of DevOps projects and achievements' },
-    { href: '/contact', label: 'Contact', title: 'Contact - Get in touch with Shaxriyor Jabborov', ariaLabel: 'Contact me for collaboration or opportunities' },
+    { href: `/${locale}`, label: t('home'), path: '/' },
+    { href: `/${locale}/about`, label: t('about'), path: '/about' },
+    { href: `/${locale}/projects`, label: t('projects'), path: '/projects' },
+    { href: `/${locale}/contact`, label: t('contact'), path: '/contact' },
   ];
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return currentPath === '/';
+    }
+    return currentPath.startsWith(path);
+  };
+
+  // CV download handler
+  const handleCvDownload = () => {
+    const cvUrls: Record<string, string> = {
+      en: '/cv/shaxriyor-jabborov-cv-en.pdf',
+      uz: '/cv/shaxriyor-jabborov-cv-uz.pdf',
+      ru: '/cv/shaxriyor-jabborov-cv-ru.pdf',
+    };
+    
+    const cvUrl = cvUrls[locale] || cvUrls.en;
+    
+    // Show toast notification
+    const languageNames: Record<string, string> = {
+      en: 'English',
+      uz: 'Uzbek',
+      ru: 'Russian',
+    };
+    
+    toast.success(`Downloading CV in ${languageNames[locale]} language...`);
+    
+    // Wait 2 seconds before downloading to let user read the notification
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = cvUrl;
+      link.download = `shaxriyor-jabborov-cv-${locale}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 2000);
+  };
+
+  const switchLanguage = (newLocale: string) => {
+    const pathWithoutLocale = getPathWithoutLocale(pathname);
+    startTransition(() => {
+      router.replace(`/${newLocale}${pathWithoutLocale}`);
+      router.refresh();
+    });
+  };
 
   // Deterministic pill animation: measure active link and animate an absolute indicator
   const linksContainerRef = useRef<HTMLDivElement>(null);
@@ -41,7 +107,12 @@ export function Navigation() {
   const updateIndicator = () => {
     const container = linksContainerRef.current;
     if (!container) return;
-    const active = linkRefs.current[pathname];
+    const activeItem = navItems.find(item => isActive(item.path));
+    if (!activeItem) {
+      setIndicator(null);
+      return;
+    }
+    const active = linkRefs.current[activeItem.href];
     if (!active) {
       setIndicator(null);
       return;
@@ -54,7 +125,7 @@ export function Navigation() {
   useLayoutEffect(() => {
     updateIndicator();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, locale]);
 
   useEffect(() => {
     const onResize = () => updateIndicator();
@@ -73,7 +144,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href={`/${locale}`} className="flex items-center space-x-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -101,10 +172,8 @@ export function Navigation() {
                 ref={(el: HTMLAnchorElement | null) => {
                   linkRefs.current[item.href] = el;
                 }}
-                title={item.title}
-                aria-label={item.ariaLabel}
                 className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
-                  isActive(item.href)
+                  isActive(item.path)
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground hover:scale-105'
                 }`}
@@ -116,6 +185,42 @@ export function Navigation() {
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Language Switcher */}
+            <ClientOnly>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="glass"
+                    size="sm"
+                    title="Change language"
+                    aria-label="Change language"
+                    className="gap-1.5"
+                  >
+                    <span className="text-base leading-none">
+                      {languages.find(lang => lang.code === locale)?.flag || '🌐'}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  {languages.map((lang) => (
+                    <DropdownMenuItem
+                      key={lang.code}
+                      onClick={() => switchLanguage(lang.code)}
+                      className="flex items-center justify-between cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </span>
+                      {locale === lang.code && (
+                        <Check className="h-4 w-4 text-primary" />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ClientOnly>
+
             <ClientOnly>
               <Button
                 variant="glass"
@@ -131,19 +236,55 @@ export function Navigation() {
             <Button
               variant="glass"
               size="sm"
-              asChild
+              onClick={handleCvDownload}
               className="text-foreground"
+              title={t('downloadCV')}
+              aria-label={t('downloadCV')}
             >
-              <a href={profile.cvUrl} download>
-                <Download className="h-4 w-4 mr-2 text-foreground/90" />
-                CV
-              </a>
+              <Download className="h-4 w-4 mr-2 text-foreground/90" />
+              {t('cv')}
             </Button>
             
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
+            {/* Language Switcher Mobile */}
+            <ClientOnly>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="glass"
+                    size="sm"
+                    title="Change language"
+                    aria-label="Change language"
+                    className="gap-1.5"
+                  >
+                    <span className="text-base leading-none">
+                      {languages.find(lang => lang.code === locale)?.flag || '🌐'}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  {languages.map((lang) => (
+                    <DropdownMenuItem
+                      key={lang.code}
+                      onClick={() => switchLanguage(lang.code)}
+                      className="flex items-center justify-between cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </span>
+                      {locale === lang.code && (
+                        <Check className="h-4 w-4 text-primary" />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ClientOnly>
+
             <ClientOnly>
               <Button
                 variant="glass"
@@ -186,10 +327,8 @@ export function Navigation() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  title={item.title}
-                  aria-label={item.ariaLabel}
                   className={`block px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
-                    isActive(item.href)
+                    isActive(item.path)
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
@@ -202,15 +341,12 @@ export function Navigation() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  asChild
+                  onClick={handleCvDownload}
                   className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
                 >
-                  <a href={profile.cvUrl} download>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download CV
-                  </a>
+                  <Download className="h-4 w-4 mr-2" />
+                  {t('downloadCV')}
                 </Button>
-                
               </div>
             </div>
           </motion.div>

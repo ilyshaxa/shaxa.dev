@@ -19,9 +19,10 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getExperienceBySlug, getAllExperiences } from '@/lib/data';
+import { getAllExperiences, localizeExperiences } from '@/lib/data';
 import { notFound } from 'next/navigation';
-import { use } from 'react';
+import { use, useMemo } from 'react';
+import { useTranslations, useMessages } from 'next-intl';
 
 interface ExperienceDetailPageProps {
   params: Promise<{
@@ -30,9 +31,12 @@ interface ExperienceDetailPageProps {
 }
 
 export default function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {
+  const t = useTranslations('experienceDetail');
   const resolvedParams = use(params);
-  const experience = getExperienceBySlug(resolvedParams.slug);
-  const allExperiences = getAllExperiences();
+  const baseExperiences = getAllExperiences();
+  const messages = useMessages();
+  const allExperiences = useMemo(() => localizeExperiences(baseExperiences, messages), [baseExperiences, messages]);
+  const experience = allExperiences.find(exp => exp.slug === resolvedParams.slug);
 
   if (!experience) {
     notFound();
@@ -83,7 +87,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             {experience.isCurrent && (
               <Badge variant="default" className="text-sm px-4 py-2 bg-green-500/20 text-green-400 border-green-500/30">
                 <Clock className="h-3 w-3 mr-1" />
-                Current
+                {t('current')}
               </Badge>
             )}
           </div>
@@ -106,7 +110,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 className="flex items-center gap-2"
               >
                 <ExternalLink className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                Visit Company Website
+                {t('visitWebsite')}
               </a>
             </Button>
           )}
@@ -126,10 +130,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 text-xl">
                     <Briefcase className="h-5 w-5 text-primary" />
-                    Key Responsibilities
+                    {t('responsibilities.title')}
                   </CardTitle>
                   <CardDescription>
-                    Main duties and responsibilities in this role
+                    {t('responsibilities.subtitle')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -161,10 +165,10 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 text-xl">
                     <Award className="h-5 w-5 text-primary" />
-                    Key Achievements
+                    {t('achievements.title')}
                   </CardTitle>
                   <CardDescription>
-                    Notable accomplishments and impact made
+                    {t('achievements.subtitle')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -197,7 +201,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             >
               <Card className="glass-dark border-white/20">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg">Company Information</CardTitle>
+                  <CardTitle className="text-lg">{t('companyInfo.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {experience.location && (
@@ -209,7 +213,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                   {experience.teamSize && (
                     <div className="flex items-center gap-3">
                       <Users className="h-4 w-4 text-primary" />
-                      <span className="text-sm text-muted-foreground">Team Size: {experience.teamSize}</span>
+                      <span className="text-sm text-muted-foreground">{t('companyInfo.teamSize', { size: experience.teamSize })}</span>
                     </div>
                   )}
                   {experience.industry && (
@@ -236,7 +240,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 text-lg">
                     <Code className="h-5 w-5 text-primary" />
-                    Skills & Technologies
+                    {t('skillsAndTech')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -284,7 +288,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             className="group"
           >
             <Link href="/about">
-              Back to About
+              {t('backToAbout')}
             </Link>
           </Button>
 

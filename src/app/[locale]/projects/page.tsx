@@ -1,11 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { ProjectCard } from '@/components/project-card';
-import { getAllProjects } from '@/lib/data';
+import { getAllProjects, localizeProjects } from '@/lib/data';
+import { useTranslations, useMessages } from 'next-intl';
 
 export default function ProjectsPage() {
-  const projects = getAllProjects();
+  const baseProjects = getAllProjects();
+  const messages = useMessages();
+  const projects = useMemo(() => localizeProjects(baseProjects, messages), [baseProjects, messages]);
+  const t = useTranslations('projects');
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
@@ -18,10 +23,10 @@ export default function ProjectsPage() {
           className="text-center mb-20"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">
-            <span className="text-gradient">Projects</span>
+            <span className="text-gradient">{t('title')}</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            A curated collection of my work and projects, showcasing innovation and technical excellence
+            {t('subtitle')}
           </p>
         </motion.div>
         
@@ -39,6 +44,7 @@ export default function ProjectsPage() {
                 project={project}
                 index={index}
                 featured={project.featured}
+                viewDetailsText={t('viewProjectDetails')}
               />
             ))}
           </motion.div>
@@ -50,8 +56,8 @@ export default function ProjectsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">No projects available yet</h3>
-              <p className="text-muted-foreground">Check back soon for exciting new projects!</p>
+              <h3 className="text-xl font-semibold mb-2">{t('empty.title')}</h3>
+              <p className="text-muted-foreground">{t('empty.description')}</p>
             </div>
           </div>
         )}

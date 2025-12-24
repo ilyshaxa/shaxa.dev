@@ -8,17 +8,23 @@ import { Project, generateProjectSlug, getExperienceSlugByCompany } from '@/lib/
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 
 interface ProjectCardProps {
   project: Project;
   index?: number;
   featured?: boolean;
+  viewDetailsText?: string;
 }
 
-export function ProjectCard({ project, featured = false }: ProjectCardProps) {
+export function ProjectCard({ project, featured = false, viewDetailsText }: ProjectCardProps) {
+  const t = useTranslations('projects');
   // Use the predefined slug or generate a consistent one
   const projectSlug = project.slug || generateProjectSlug(project.title);
   const { theme } = useTheme();
+  
+  // Use provided text or fallback to translation
+  const detailsText = viewDetailsText || t('viewProjectDetails');
   
   // Choose image based on theme
   const coverImage = theme === 'light' && project.coverImageLight 
@@ -141,7 +147,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
           >
             <Link href={`/projects/${projectSlug}`} className="flex items-center justify-center">
-              View Project Details
+              {detailsText}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

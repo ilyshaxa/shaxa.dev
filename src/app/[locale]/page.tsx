@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations, useLocale, useMessages } from 'next-intl';
 import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,20 +11,71 @@ import { ProjectCard } from '@/components/project-card';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
 import { TypewriterEffect } from '@/components/typewriter-effect';
-import { getProfile, getAllProjects } from '@/lib/data';
+import { getProfile, getAllProjects, localizeProjects, localizeExperiences } from '@/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export default function Home() {
   const profile = getProfile();
-  const allProjects = getAllProjects();
+  const baseProjects = getAllProjects();
+  const locale = useLocale();
+  const messages = useMessages();
+  const t = useTranslations('home');
+  const tProfile = useTranslations('profile');
+  const tProjects = useTranslations('projects');
+  const tAbout = useTranslations('about');
+  
+  // Localize projects and experiences
+  const allProjects = useMemo(() => localizeProjects(baseProjects, messages), [baseProjects, messages]);
+  const localizedExperiences = useMemo(() => localizeExperiences(profile.experience, messages), [profile.experience, messages]);
+  
   const featuredProjects = allProjects.filter(p => p.featured);
   const nonFeaturedProjects = allProjects.filter(p => !p.featured);
   const [showAllExperiences, setShowAllExperiences] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
   
-  const visibleExperiences = showAllExperiences ? profile.experience : profile.experience.slice(0, 3);
+  const visibleExperiences = showAllExperiences ? localizedExperiences : localizedExperiences.slice(0, 3);
   const visibleProjects = showAllProjects ? allProjects : featuredProjects;
+
+  // Get translated role texts
+  const roleTexts = [
+    t('hero.roles.devops'),
+    t('hero.roles.observability'),
+    t('hero.roles.awsCertified'),
+    t('hero.roles.aiEnthusiast'),
+    t('hero.roles.cloudEngineer')
+  ];
+
+  // CV download handler
+  const handleCvDownload = () => {
+    const cvUrls: Record<string, string> = {
+      en: '/cv/shaxriyor-jabborov-cv-en.pdf',
+      uz: '/cv/shaxriyor-jabborov-cv-uz.pdf',
+      ru: '/cv/shaxriyor-jabborov-cv-ru.pdf',
+    };
+    
+    const cvUrl = cvUrls[locale] || cvUrls.en;
+    
+    // Show toast notification
+    const languageNames: Record<string, string> = {
+      en: 'English',
+      uz: 'Uzbek',
+      ru: 'Russian',
+    };
+    
+    toast.success(`Downloading CV in ${languageNames[locale]} language...`);
+    
+    // Wait 2 seconds before downloading to let user read the notification
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = cvUrl;
+      link.download = `shaxriyor-jabborov-cv-${locale}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen">
@@ -63,13 +115,7 @@ export default function Home() {
               </h1>
               <div className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto h-8">
                 <TypewriterEffect
-                  texts={[
-                    "DevOps Engineer",
-                    "Observability & Monitoring Expert",
-                    "AWS Certified",
-                    "AI & Machine Learning Enthusiast",
-                    "Cloud Engineer"
-                  ]}
+                  texts={roleTexts}
                   speed={100}
                   deleteSpeed={50}
                   pauseTime={2000}
@@ -78,7 +124,7 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                <span>{profile.location}</span>
+                <span>{tProfile('location')}</span>
               </div>
             </div>
             
@@ -88,7 +134,7 @@ export default function Home() {
               transition={{ delay: 0.3, duration: 0.5 }}
               className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed"
             >
-              {profile.bio}
+              {tProfile('shortBio')}
             </motion.p>
             
             <motion.div
@@ -98,14 +144,12 @@ export default function Home() {
               className="flex flex-wrap justify-center gap-4"
             >
               <Button
-                asChild
                 size="lg"
                 variant="glass"
+                onClick={handleCvDownload}
               >
-                <a href={profile.cvUrl} download>
-                  <Download className="h-5 w-5 mr-2" />
-                  Download CV
-                </a>
+                <Download className="h-5 w-5 mr-2" />
+                {t('hero.downloadCV')}
               </Button>
               
             </motion.div>
@@ -119,10 +163,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">Skills & Technologies</span>
+              <span className="text-gradient">{t('skills.title')}</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A comprehensive DevOps toolkit for modern infrastructure
+              {t('skills.subtitle')}
             </p>
           </ScrollReveal>
           
@@ -154,7 +198,7 @@ export default function Home() {
                       <div className="flex items-center gap-3">
                         <div className={`w-3 h-3 rounded-full ${categoryColor}`} />
                         <CardTitle className="text-lg font-semibold capitalize text-foreground">
-                          {category.replace(/([A-Z])/g, ' $1').trim()}
+                          {t(`skills.categories.${category}`)}
                         </CardTitle>
                       </div>
                     </CardHeader>
@@ -189,10 +233,10 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">Experience</span>
+              <span className="text-gradient">{t('experience.title')}</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              My professional journey and key achievements
+              {t('experience.subtitle')}
             </p>
           </motion.div>
           
@@ -233,13 +277,23 @@ export default function Home() {
                               className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
                             >
                               <ExternalLink className="h-3 w-3" />
-                              Visit
+                              {t('experience.visit')}
                             </a>
                           )}
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <Badge variant="secondary" className="text-xs">
-                            {exp.employmentType}
+                            {(() => {
+                              const typeMap: Record<string, string> = {
+                                'Full-time': 'fullTime',
+                                'Part-time': 'partTime',
+                                'Contract': 'contract',
+                                'Freelance': 'freelance',
+                                'Internship': 'internship'
+                              };
+                              const key = typeMap[exp.employmentType] || 'fullTime';
+                              return tAbout(`employmentTypes.${key}` as 'employmentTypes.fullTime');
+                            })()}
                           </Badge>
                           <Badge variant="outline" className="text-xs">
                             {exp.duration}
@@ -255,8 +309,8 @@ export default function Home() {
                     size="sm"
                     className="w-full bg-primary hover:bg-primary/90 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 font-medium"
                   >
-                    <Link href={`/about/${exp.slug}`} className="flex items-center justify-center">
-                      View {exp.position} Details
+                    <Link href={`/${locale}/about/${exp.slug}`} className="flex items-center justify-center">
+                      {t('experience.viewDetails')}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Link>
                   </Button>
@@ -267,7 +321,7 @@ export default function Home() {
           </div>
 
           {/* Show More/Less Button */}
-          {profile.experience.length > 3 && (
+          {localizedExperiences.length > 3 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -283,12 +337,12 @@ export default function Home() {
                 {showAllExperiences ? (
                   <>
                     <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show Less
+                    {t('experience.showLess')}
                   </>
                 ) : (
                   <>
                     <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show All ({profile.experience.length - 3} more)
+                    {t('experience.showAll', { count: localizedExperiences.length - 3 })}
                   </>
                 )}
               </Button>
@@ -302,10 +356,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">Featured Projects</span>
+              <span className="text-gradient">{t('projects.title')}</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A showcase of my recent work and side projects
+              {t('projects.subtitle')}
             </p>
           </ScrollReveal>
           
@@ -321,6 +375,7 @@ export default function Home() {
                   <ProjectCard
                     project={project}
                     index={index}
+                    viewDetailsText={tProjects('viewProjectDetails')}
                   />
                 </div>
               </ScrollReveal>
@@ -344,12 +399,12 @@ export default function Home() {
                 {showAllProjects ? (
                   <>
                     <ChevronUp className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show Less
+                    {t('projects.showLess')}
                   </>
                 ) : (
                   <>
                     <ChevronDown className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Show All ({nonFeaturedProjects.length} more)
+                    {t('projects.showAll', { count: nonFeaturedProjects.length })}
                   </>
                 )}
               </Button>
@@ -363,11 +418,10 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal direction="up" className="space-y-8">
             <h2 className="text-3xl sm:text-4xl font-bold">
-              <span className="text-gradient">Let&apos;s Work Together</span>
+              <span className="text-gradient">{t('cta.title')}</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              I&apos;m always interested in new opportunities and exciting projects. 
-              Let&apos;s discuss how we can collaborate!
+              {t('cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -375,17 +429,17 @@ export default function Home() {
                 size="lg"
                 variant="glass"
               >
-                <a href="/contact">
-                  Get In Touch
-                </a>
+                <Link href={`/${locale}/contact`}>
+                  {t('cta.getInTouch')}
+                </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="glass"
               >
-                <Link href="/about">
-                  View Full Profile
+                <Link href={`/${locale}/about`}>
+                  {t('cta.viewFullProfile')}
                 </Link>
               </Button>
             </div>

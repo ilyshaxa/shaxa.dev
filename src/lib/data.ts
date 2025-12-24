@@ -1,4 +1,5 @@
 // import yaml from 'js-yaml'; // Not needed for static data
+import type { Locale } from '../types/i18n';
 
 export interface Experience {
   company: string;
@@ -44,6 +45,7 @@ export interface Profile {
   };
   experience: Experience[];
   education: Array<{
+    slug: string;
     institution: string;
     degree: string;
     year: string;
@@ -310,11 +312,12 @@ const profileData: Profile = {
       ],
       technologies: ["HTML", "CSS", "JavaScript", "React", "Git", "Figma"],
       teamSize: "100-200",
-      industry: "IT services & digital marketing."
+      industry: "IT services & digital marketing"
     }
   ],
   education: [
     {
+      slug: "tsue-economics",
       institution: "Tashkent State University of Economics",
       degree: "Bachelor's in Economics",
       year: "2022 - 2027",
@@ -570,4 +573,136 @@ export function getExperienceSlugByCompany(companyName: string): string | null {
     companyName.toLowerCase().includes(exp.company.toLowerCase())
   );
   return experience?.slug || null;
+}
+
+// Localized data functions
+export async function getLocalizedProjects(locale: Locale = 'en'): Promise<Project[]> {
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+  const projectsData = messages.data?.projects || {};
+  
+  return getAllProjects().map(project => {
+    const translatedData = projectsData[project.slug || ''];
+    if (!translatedData) return project;
+    
+    return {
+      ...project,
+      title: translatedData.title || project.title,
+      shortDescription: translatedData.shortDescription || project.shortDescription,
+      fullDescription: translatedData.fullDescription || project.fullDescription,
+      status: translatedData.status || project.status,
+      companyName: translatedData.companyName || project.companyName,
+    };
+  });
+}
+
+export async function getLocalizedFeaturedProjects(locale: Locale = 'en'): Promise<Project[]> {
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+  const projectsData = messages.data?.projects || {};
+  
+  return getFeaturedProjects().map(project => {
+    const translatedData = projectsData[project.slug || ''];
+    if (!translatedData) return project;
+    
+    return {
+      ...project,
+      title: translatedData.title || project.title,
+      shortDescription: translatedData.shortDescription || project.shortDescription,
+      fullDescription: translatedData.fullDescription || project.fullDescription,
+      status: translatedData.status || project.status,
+      companyName: translatedData.companyName || project.companyName,
+    };
+  });
+}
+
+export async function getLocalizedProjectBySlug(slug: string, locale: Locale = 'en'): Promise<Project | null> {
+  const projects = await getLocalizedProjects(locale);
+  return projects.find(p => p.slug === slug) || null;
+}
+
+export async function getLocalizedExperiences(locale: Locale = 'en'): Promise<Experience[]> {
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+  const experiencesData = messages.data?.experiences || {};
+  
+  return getAllExperiences().map(experience => {
+    const translatedData = experiencesData[experience.slug];
+    if (!translatedData) return experience;
+    
+    return {
+      ...experience,
+      company: translatedData.company || experience.company,
+      position: translatedData.position || experience.position,
+      duration: translatedData.duration || experience.duration,
+      description: translatedData.description || experience.description,
+      location: translatedData.location || experience.location,
+      responsibilities: translatedData.responsibilities || experience.responsibilities,
+      achievements: translatedData.achievements || experience.achievements,
+      teamSize: translatedData.teamSize || experience.teamSize,
+      industry: translatedData.industry || experience.industry,
+    };
+  });
+}
+
+export async function getLocalizedExperienceBySlug(slug: string, locale: Locale = 'en'): Promise<Experience | null> {
+  const experiences = await getLocalizedExperiences(locale);
+  return experiences.find(exp => exp.slug === slug) || null;
+}
+
+// Synchronous localization functions for client components
+export function localizeProjects(projects: Project[], translations: Record<string, unknown>): Project[] {
+  const projectsData = (translations?.data as Record<string, unknown>)?.projects as Record<string, unknown> || {};
+  
+  return projects.map(project => {
+    const translatedData = projectsData[project.slug || ''] as Record<string, string> | undefined;
+    if (!translatedData) return project;
+    
+    return {
+      ...project,
+      title: translatedData.title || project.title,
+      shortDescription: translatedData.shortDescription || project.shortDescription,
+      fullDescription: translatedData.fullDescription || project.fullDescription,
+      status: translatedData.status || project.status,
+      companyName: translatedData.companyName || project.companyName,
+    };
+  });
+}
+
+export function localizeExperiences(experiences: Experience[], translations: Record<string, unknown>): Experience[] {
+  const experiencesData = (translations?.data as Record<string, unknown>)?.experiences as Record<string, unknown> || {};
+  
+  return experiences.map(experience => {
+    const translatedData = experiencesData[experience.slug] as Record<string, string | string[]> | undefined;
+    if (!translatedData) return experience;
+    
+    return {
+      ...experience,
+      company: (translatedData.company as string) || experience.company,
+      position: (translatedData.position as string) || experience.position,
+      duration: (translatedData.duration as string) || experience.duration,
+      description: (translatedData.description as string) || experience.description,
+      location: (translatedData.location as string) || experience.location,
+      responsibilities: (translatedData.responsibilities as string[]) || experience.responsibilities,
+      achievements: (translatedData.achievements as string[]) || experience.achievements,
+      teamSize: (translatedData.teamSize as string) || experience.teamSize,
+      industry: (translatedData.industry as string) || experience.industry,
+    };
+  });
+}
+
+// Helper function to localize education data (client-side)
+export function localizeEducation(
+  education: Profile['education'], 
+  translations: Record<string, unknown>
+): Profile['education'] {
+  const educationData = (translations?.data as Record<string, unknown>)?.education as Record<string, unknown> || {};
+  
+  return education.map(edu => {
+    const translatedData = educationData[edu.slug] as Record<string, string> | undefined;
+    if (!translatedData) return edu;
+    
+    return {
+      ...edu,
+      institution: translatedData.institution || edu.institution,
+      degree: translatedData.degree || edu.degree,
+    };
+  });
 }

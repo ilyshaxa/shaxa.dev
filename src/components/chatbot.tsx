@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LinkParser } from '@/lib/link-parser';
+import { useTranslations } from 'next-intl';
 
 interface Message {
   id: string;
@@ -17,13 +18,14 @@ interface Message {
 }
 
 export function Chatbot() {
+  const t = useTranslations('chatbot');
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hi! I'm Shaxriyor's AI assistant. Ask me anything about his work, experience, or projects!",
+      content: t('welcome'),
       isUser: false,
       timestamp: new Date(),
     },
@@ -110,12 +112,29 @@ export function Chatbot() {
     setTimeout(() => scrollToBottom(), 100);
 
     try {
+      // Build conversation history for context (exclude system welcome message)
+      const conversationHistory = messages
+        .filter((_, index) => index > 0) // Skip initial welcome message
+        .map(msg => ({
+          role: msg.isUser ? 'user' : 'assistant',
+          content: msg.content,
+        }));
+
+      // Add the current message
+      conversationHistory.push({
+        role: 'user',
+        content: input.trim(),
+      });
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input.trim() }),
+        body: JSON.stringify({ 
+          message: input.trim(),
+          history: conversationHistory,
+        }),
       });
 
       const data = await response.json();
@@ -124,7 +143,7 @@ export function Chatbot() {
       if (response.status === 429) {
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: data.error || "You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov.",
+          content: t('errors.tooManyOffTopic'),
           isUser: false,
           timestamp: new Date(),
         };
@@ -139,7 +158,7 @@ export function Chatbot() {
       if (!response.ok) {
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: data.error || 'Sorry, I encountered an error. Please try again.',
+          content: t('errors.generic'),
           isUser: false,
           timestamp: new Date(),
         };
@@ -150,11 +169,8 @@ export function Chatbot() {
         return;
       }
 
-      // Add remaining attempts info for off-topic questions
-      let messageContent = data.response || 'Sorry, I encountered an error. Please try again.';
-      if (data.isOffTopic && data.remainingAttempts !== undefined) {
-        messageContent += `\n\n💡 Note: You have ${data.remainingAttempts} off-topic question${data.remainingAttempts !== 1 ? 's' : ''} remaining before rate limiting.`;
-      }
+      // Use the response directly (no off-topic notes added)
+      const messageContent = data.response || t('errors.generic');
       
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -168,7 +184,7 @@ export function Chatbot() {
       console.error('Chatbot error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: t('errors.generic'),
         isUser: false,
         timestamp: new Date(),
       };
@@ -228,7 +244,7 @@ export function Chatbot() {
             }
           }}
           className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group border border-border"
-          aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
+          aria-label={isOpen ? t('aria.closeChat') : t('aria.openChat')}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -270,8 +286,8 @@ export function Chatbot() {
                     <Bot className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Shaxriyor&apos;s AI</h3>
-                    <p className="text-xs text-primary-foreground/70">Online</p>
+                    <h3 className="font-semibold">{t('title')}</h3>
+                    <p className="text-xs text-primary-foreground/70">{t('status')}</p>
                   </div>
                 </div>
               </div>
@@ -344,7 +360,7 @@ export function Chatbot() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about Shaxriyor's work..."
+                    placeholder={t('placeholder')}
                     className="flex-1 bg-background border-border rounded-full px-4 py-2 focus:ring-2 focus:ring-primary"
                     disabled={isLoading}
                   />
@@ -352,7 +368,7 @@ export function Chatbot() {
                     onClick={sendMessage}
                     disabled={!input.trim() || isLoading}
                     className="bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center transition-colors"
-                    aria-label="Send message"
+                    aria-label={t('aria.sendMessage')}
                   >
                     <motion.div
                       animate={isSending ? { y: -2, scale: 1.1 } : { y: 0, scale: 1 }}
@@ -390,10 +406,10 @@ export function Chatbot() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-medium text-card-foreground mb-1">
-                      Hi! I&apos;m Shaxriyor&apos;s AI Assistant
+                      {t('popup.title')}
                     </p>
                     <p className="text-xs text-muted-foreground mb-3">
-                      Ask me anything about his work, experience, or projects!
+                      {t('popup.subtitle')}
                     </p>
                     <div className="flex gap-2">
                       <Button
@@ -410,7 +426,7 @@ export function Chatbot() {
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs hover:scale-[1.05] hover:shadow-md transition-all duration-200"
                       >
-                        Start Chat
+                        {t('popup.startChat')}
                       </Button>
                       <Button
                         onClick={() => setShowWelcome(false)}
@@ -418,19 +434,10 @@ export function Chatbot() {
                         size="sm"
                         className="text-xs border-border hover:scale-[1.05] hover:shadow-sm transition-all duration-200"
                       >
-                        Maybe Later
+                        {t('popup.maybeLater')}
                       </Button>
                     </div>
                   </div>
-                  <Button
-                    onClick={() => setShowWelcome(false)}
-                    variant="ghost"
-                    size="sm"
-                    className="p-1 h-6 w-6 text-muted-foreground hover:text-foreground"
-                    aria-label="Close welcome message"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
                 </div>
               </CardContent>
             </Card>

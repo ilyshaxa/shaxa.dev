@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Copy, Check, Key, Loader2, AlertCircle, Lock, LogOut, Eye, EyeOff, Shield, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
+import { useTranslations } from 'next-intl';
 
 interface SSHKey {
   name: string;
@@ -17,6 +18,7 @@ interface SSHKey {
 }
 
 export default function KeysPage() {
+  const t = useTranslations('keys');
   const [keys, setKeys] = useState<SSHKey[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -157,13 +159,13 @@ export default function KeysPage() {
     
     // Validate all required fields are filled
     if (!password) {
-      setError('Password is required');
+      setError(t('auth.password') + ' is required');
       return;
     }
     
     // If MFA is enabled, require MFA code before submission
     if (mfaEnabled === true && !totpCode) {
-      setError('Please enter your authentication code');
+      setError(t('auth.authCode') + ' is required');
       return;
     }
 
@@ -300,33 +302,33 @@ export default function KeysPage() {
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Lock className="h-8 w-8 text-primary" />
                 <h1 className="text-4xl sm:text-5xl font-bold">
-                  <span className="text-gradient">SSH Keys</span>
+                  <span className="text-gradient">{t('title')}</span>
                 </h1>
               </div>
               <p className="text-lg text-muted-foreground">
-                Enter password to access your SSH keys
+                {t('auth.subtitle')}
               </p>
             </div>
 
             {/* Login Form */}
             <Card className="glass-dark border border-gray-300/40 dark:border-white/20">
               <CardHeader>
-                <CardTitle>Authentication Required</CardTitle>
+                <CardTitle>{t('auth.title')}</CardTitle>
                 <CardDescription>
-                  {mfaEnabled ? 'Please enter your password and authentication code' : 'Please enter your password to view SSH keys'}
+                  {mfaEnabled ? t('auth.descriptionWithMFA') : t('auth.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{t('auth.password')}</Label>
                     <div className="relative">
                       <Input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password"
+                        placeholder={t('auth.passwordPlaceholder')}
                         required
                         className="pr-10"
                         disabled={isLoggingIn || isRateLimited}
@@ -353,17 +355,17 @@ export default function KeysPage() {
                     <div className="space-y-4 pt-2 border-t">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Shield className="h-4 w-4 text-primary" />
-                        <span className="font-medium">Two-Factor Authentication</span>
+                        <span className="font-medium">{t('auth.mfaTitle')}</span>
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="totpCode">Authentication Code</Label>
+                        <Label htmlFor="totpCode">{t('auth.authCode')}</Label>
                         <Input
                           id="totpCode"
                           type="text"
                           value={totpCode}
                           onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                          placeholder="XXXXXX"
+                          placeholder={t('auth.authCodePlaceholder')}
                           maxLength={6}
                           className="text-left text-lg tracking-widest font-mono"
                           disabled={isLoggingIn || isRateLimited}
@@ -371,7 +373,7 @@ export default function KeysPage() {
                           required
                         />
                         <p className="text-xs text-muted-foreground">
-                          Enter the 6-digit code from your authenticator app
+                          {t('auth.authCodeHint')}
                         </p>
                       </div>
                     </div>
@@ -389,10 +391,10 @@ export default function KeysPage() {
                       <AlertCircle className="h-4 w-4 text-yellow-500" />
                       <div className="flex-1">
                         <p className="font-medium text-yellow-600 dark:text-yellow-400">
-                          Rate limit exceeded
+                          {t('auth.rateLimitExceeded')}
                         </p>
                         <p className="text-xs mt-1">
-                          Try again in {countdownMinutes} minute{countdownMinutes !== 1 ? 's' : ''}
+                          {t('auth.tryAgainIn', { minutes: countdownMinutes, plural: countdownMinutes !== 1 ? 's' : '' })}
                         </p>
                       </div>
                     </div>
@@ -400,7 +402,7 @@ export default function KeysPage() {
 
                   {remainingAttempts !== null && remainingAttempts > 0 && !isRateLimited && !error && (
                     <div className="text-sm text-muted-foreground">
-                      {remainingAttempts} attempt{remainingAttempts !== 1 ? 's' : ''} remaining
+                      {t('auth.attemptsRemaining', { count: remainingAttempts, plural: remainingAttempts !== 1 ? 's' : '' })}
                     </div>
                   )}
 
@@ -418,17 +420,17 @@ export default function KeysPage() {
                     {isLoggingIn ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Authenticating...
+                        {t('auth.authenticating')}
                       </>
                     ) : isRateLimited ? (
                       <>
                         <Lock className="h-4 w-4 mr-2" />
-                        Rate Limited
+                        {t('auth.rateLimited')}
                       </>
                     ) : (
                       <>
                         <Lock className="h-4 w-4 mr-2" />
-                        Login
+                        {t('auth.login')}
                       </>
                     )}
                   </Button>
@@ -455,12 +457,12 @@ export default function KeysPage() {
             <div className="flex items-center justify-center gap-3 mb-4">
               <Key className="h-8 w-8 text-primary" />
               <h1 className="text-4xl sm:text-5xl font-bold">
-                <span className="text-gradient">SSH Keys</span>
+                <span className="text-gradient">{t('title')}</span>
               </h1>
             </div>
             <div className="flex items-center justify-center gap-4">
               <p className="text-lg text-muted-foreground">
-                Access your SSH keys from anywhere
+                {t('subtitle')}
               </p>
               <Button
                 onClick={handleLogout}
@@ -469,7 +471,7 @@ export default function KeysPage() {
                 className="gap-2"
               >
                 <LogOut className="h-4 w-4" />
-                Logout
+                {t('auth.logout')}
               </Button>
             </div>
           </div>
@@ -488,7 +490,7 @@ export default function KeysPage() {
                 <div className="flex items-center gap-3">
                   <AlertCircle className="h-5 w-5 text-destructive" />
                   <div>
-                    <p className="font-semibold text-destructive">Error</p>
+                    <p className="font-semibold text-destructive">{t('list.error')}</p>
                     <p className="text-sm text-muted-foreground">{error}</p>
                   </div>
                 </div>
@@ -507,7 +509,7 @@ export default function KeysPage() {
                   className="gap-2"
                 >
                   <Copy className="h-4 w-4" />
-                  Copy All Keys
+                  {t('list.copyAll')}
                 </Button>
               </div>
 
@@ -534,19 +536,19 @@ export default function KeysPage() {
                                   {sshKey.type === 'private' ? (
                                     <>
                                       <Shield className="h-3 w-3" />
-                                      Private
+                                      {t('list.private')}
                                     </>
                                   ) : (
                                     <>
                                       <Globe className="h-3 w-3" />
-                                      Public
+                                      {t('list.public')}
                                     </>
                                   )}
                                 </Badge>
                               )}
                             </CardTitle>
                             <CardDescription className="mt-1">
-                              Click the copy button to copy the entire key
+                              {t('list.clickToCopy')}
                             </CardDescription>
                           </div>
                           <Button
@@ -558,12 +560,12 @@ export default function KeysPage() {
                             {copiedIndex === index ? (
                               <>
                                 <Check className="h-4 w-4" />
-                                Copied
+                                {t('list.copied')}
                               </>
                             ) : (
                               <>
                                 <Copy className="h-4 w-4" />
-                                Copy
+                                {t('list.copy')}
                               </>
                             )}
                           </Button>
@@ -590,9 +592,9 @@ export default function KeysPage() {
             <Card>
               <CardContent className="pt-6 text-center py-12">
                 <Key className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-lg font-semibold mb-2">No SSH keys found</p>
+                <p className="text-lg font-semibold mb-2">{t('list.empty.title')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Configure SSH keys in your environment variables
+                  {t('list.empty.description')}
                 </p>
               </CardContent>
             </Card>
