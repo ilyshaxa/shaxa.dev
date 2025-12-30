@@ -63,7 +63,7 @@ export function ProjectCard({ project, featured = false, viewDetailsText }: Proj
             {featured && (
               <Badge className="bg-gradient-to-r from-blue-600 to-blue-500 text-white border-0 shadow-lg backdrop-blur-sm">
                 <Star className="h-3 w-3 mr-1" />
-                Featured
+                {t('featuredBadge')}
               </Badge>
             )}
             

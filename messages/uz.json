@@ -15,6 +15,16 @@
       "en": "Ingliz",
       "uz": "O'zbek",
       "ru": "Rus"
+    },
+    "changeLanguage": "Tilni o'zgartirish",
+    "currentTheme": "Joriy mavzu: {theme}",
+    "switchToLightMode": "Yorug' rejimga o'tish",
+    "switchToDarkMode": "Qorong'i rejimga o'tish",
+    "openMenu": "Navigatsiya menyusini ochish",
+    "closeMenu": "Navigatsiya menyusini yopish",
+    "themeNames": {
+      "light": "Yorug'",
+      "dark": "Qorong'i"
     }
   },
   "home": {
@@ -149,6 +159,7 @@
     "title": "Loyihalar",
     "subtitle": "Innovatsiya va texnik mukammallikni namoyish etuvchi ishlarim va loyihalarimning tanlangan to'plami",
     "featured": "Tanlangan Loyihalar",
+    "featuredBadge": "Tanlangan",
     "all": "Barcha Loyihalar",
     "viewProject": "Loyihani Ko'rish",
     "viewProjectDetails": "Loyiha Tafsilotlarini Ko'rish",

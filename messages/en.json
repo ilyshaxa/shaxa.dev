@@ -15,6 +15,16 @@
       "en": "English",
       "uz": "Uzbek",
       "ru": "Russian"
+    },
+    "changeLanguage": "Change language",
+    "currentTheme": "Current theme: {theme}",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "themeNames": {
+      "light": "Light",
+      "dark": "Dark"
     }
   },
   "home": {
@@ -149,6 +159,7 @@
     "title": "Projects",
     "subtitle": "A curated collection of my work and projects, showcasing innovation and technical excellence",
     "featured": "Featured Projects",
+    "featuredBadge": "Featured",
     "all": "All Projects",
     "viewProject": "View Project",
     "viewProjectDetails": "View Project Details",

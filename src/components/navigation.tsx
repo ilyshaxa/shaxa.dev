@@ -190,8 +190,8 @@ export function Navigation() {
                   <Button
                     variant="glass"
                     size="sm"
-                    title="Change language"
-                    aria-label="Change language"
+                    title={t('changeLanguage')}
+                    aria-label={t('changeLanguage')}
                     className="gap-1.5"
                   >
                     <span className="text-base leading-none">
@@ -224,10 +224,29 @@ export function Navigation() {
                 variant="glass"
                 size="sm"
                 onClick={cycleTheme}
-                title={`Current theme: ${actualTheme}`}
-                aria-label={`Switch to ${actualTheme === 'dark' ? 'light' : 'dark'} mode`}
+                title={t('currentTheme', { theme: t(`themeNames.${actualTheme}` as 'themeNames.light' | 'themeNames.dark') })}
+                aria-label={actualTheme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}
+                className="relative w-9 h-9 p-0"
               >
-                <ThemeIcon className="h-4 w-4 text-foreground" />
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={actualTheme}
+                    initial={{ rotate: -180, scale: 0, opacity: 0 }}
+                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                    exit={{ rotate: 180, scale: 0, opacity: 0 }}
+                    transition={{ 
+                      duration: 0.2,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    {actualTheme === 'dark' ? (
+                      <Moon className="h-4 w-4 text-foreground" />
+                    ) : (
+                      <Sun className="h-4 w-4 text-foreground" />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </Button>
             </ClientOnly>
             
@@ -254,8 +273,8 @@ export function Navigation() {
                   <Button
                     variant="glass"
                     size="sm"
-                    title="Change language"
-                    aria-label="Change language"
+                    title={t('changeLanguage')}
+                    aria-label={t('changeLanguage')}
                     className="gap-1.5"
                   >
                     <span className="text-base leading-none">
@@ -288,10 +307,29 @@ export function Navigation() {
                 variant="glass"
                 size="sm"
                 onClick={cycleTheme}
-                title={`Current theme: ${actualTheme}`}
-                aria-label={`Switch to ${actualTheme === 'dark' ? 'light' : 'dark'} mode`}
+                title={t('currentTheme', { theme: t(`themeNames.${actualTheme}` as 'themeNames.light' | 'themeNames.dark') })}
+                aria-label={actualTheme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}
+                className="relative w-9 h-9 p-0"
               >
-                <ThemeIcon className="h-4 w-4 text-foreground" />
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={actualTheme}
+                    initial={{ rotate: -180, scale: 0, opacity: 0 }}
+                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                    exit={{ rotate: 180, scale: 0, opacity: 0 }}
+                    transition={{ 
+                      duration: 0.2,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    {actualTheme === 'dark' ? (
+                      <Moon className="h-4 w-4 text-foreground" />
+                    ) : (
+                      <Sun className="h-4 w-4 text-foreground" />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </Button>
             </ClientOnly>
             
@@ -300,7 +338,7 @@ export function Navigation() {
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
               className="text-foreground"
-              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={isOpen ? t('closeMenu') : t('openMenu')}
               aria-expanded={isOpen}
             >
               {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
