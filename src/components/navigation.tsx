@@ -71,14 +71,11 @@ export function Navigation() {
     
     const cvUrl = cvUrls[locale] || cvUrls.en;
     
-    // Show toast notification
-    const languageNames: Record<string, string> = {
-      en: 'English',
-      uz: 'Uzbek',
-      ru: 'Russian',
-    };
+    // Get localized language name
+    const languageName = t(`languageNames.${locale}` as any) || t('languageNames.en');
     
-    toast.success(`Downloading CV in ${languageNames[locale]} language...`);
+    // Show localized toast notification
+    toast.success(t('downloadingCV', { language: languageName }));
     
     // Wait 2 seconds before downloading to let user read the notification
     setTimeout(() => {

@@ -25,6 +25,7 @@ export default function Home() {
   const tProfile = useTranslations('profile');
   const tProjects = useTranslations('projects');
   const tAbout = useTranslations('about');
+  const tNav = useTranslations('navigation');
   
   // Localize projects and experiences
   const allProjects = useMemo(() => localizeProjects(baseProjects, messages), [baseProjects, messages]);
@@ -57,14 +58,11 @@ export default function Home() {
     
     const cvUrl = cvUrls[locale] || cvUrls.en;
     
-    // Show toast notification
-    const languageNames: Record<string, string> = {
-      en: 'English',
-      uz: 'Uzbek',
-      ru: 'Russian',
-    };
+    // Get localized language name
+    const languageName = tNav(`languageNames.${locale}` as any) || tNav('languageNames.en');
     
-    toast.success(`Downloading CV in ${languageNames[locale]} language...`);
+    // Show localized toast notification
+    toast.success(tNav('downloadingCV', { language: languageName }));
     
     // Wait 2 seconds before downloading to let user read the notification
     setTimeout(() => {

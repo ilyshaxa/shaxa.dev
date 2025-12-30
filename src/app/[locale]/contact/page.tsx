@@ -79,10 +79,10 @@ export default function ContactPage() {
           className="text-center mb-20"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">
-            <span className="text-gradient">{t('title')}</span>
+            <span className="text-gradient">{t('header.title')}</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {t('subtitle')}
+            {t('header.subtitle')}
           </p>
         </motion.div>
 
@@ -98,10 +98,10 @@ export default function ContactPage() {
               <CardHeader className="pb-6">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <MessageCircle className="h-6 w-6 text-muted-foreground" />
-                  {t('title')}
+                  {t('form.title')}
                 </CardTitle>
                 <CardDescription className="text-base">
-                  {t('subtitle')}
+                  {t('form.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
@@ -135,13 +135,13 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
+                    <Label htmlFor="subject" className="text-sm font-medium">{t('form.subjectLabel')}</Label>
                     <Input
                       id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="What's this about?"
+                      placeholder={t('form.subjectPlaceholder')}
                       className="glass-dark border-white/10 hover:border-white/20 transition-colors h-12"
                       required
                     />
@@ -167,7 +167,7 @@ export default function ContactPage() {
                     {formData.message.length > MAX_MESSAGE_LENGTH * 0.9 && (
                       <p className="text-sm text-amber-500 flex items-center gap-2">
                         <span>⚠️</span>
-                        Message is getting close to the character limit
+                        {t('form.charLimitWarning')}
                       </p>
                     )}
                   </div>
@@ -205,7 +205,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">{t('info.title')}</CardTitle>
                 <CardDescription className="text-base">
-                  {t('subtitle')}
+                  {t('info.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -255,10 +255,10 @@ export default function ContactPage() {
             <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-2xl">
-                  Response Times
+                  {t('responseTimes.title')}
                 </CardTitle>
                 <CardDescription className="text-base">
-                  When you can expect to hear back
+                  {t('responseTimes.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -268,27 +268,27 @@ export default function ContactPage() {
                       <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
                         <Mail className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <span className="font-medium">Email:</span>
+                      <span className="font-medium">{t('responseTimes.email')}</span>
                     </div>
-                    <span className="font-semibold">Within 24 hours</span>
+                    <span className="font-semibold">{t('responseTimes.emailTime')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
                         <Phone className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <span className="font-medium">Phone:</span>
+                      <span className="font-medium">{t('responseTimes.phone')}</span>
                     </div>
-                    <span className="font-semibold">Same day</span>
+                    <span className="font-semibold">{t('responseTimes.phoneTime')}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
                         <MessageCircle className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <span className="font-medium">Social Media:</span>
+                      <span className="font-medium">{t('responseTimes.socialMedia')}</span>
                     </div>
-                    <span className="font-semibold">Within 2-3 days</span>
+                    <span className="font-semibold">{t('responseTimes.socialMediaTime')}</span>
                   </div>
                 </div>
               </CardContent>

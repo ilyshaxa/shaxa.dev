@@ -9,7 +9,13 @@
     "selectLanguage": "Select CV Language",
     "downloadInEnglish": "Download in English",
     "downloadInUzbek": "Download in Uzbek",
-    "downloadInRussian": "Download in Russian"
+    "downloadInRussian": "Download in Russian",
+    "downloadingCV": "Downloading CV in {language}...",
+    "languageNames": {
+      "en": "English",
+      "uz": "Uzbek",
+      "ru": "Russian"
+    }
   },
   "home": {
     "hero": {
@@ -174,19 +180,22 @@
     "form": {
       "title": "Send a Message",
       "description": "Fill out the form below and I'll get back to you as soon as possible",
+      "name": "Name",
       "nameLabel": "Name",
       "namePlaceholder": "Your name",
+      "email": "Email",
       "emailLabel": "Email",
       "emailPlaceholder": "your.email@example.com",
       "subjectLabel": "Subject",
       "subjectPlaceholder": "What's this about?",
+      "message": "Message",
       "messageLabel": "Message",
       "messagePlaceholder": "Your message here...",
       "send": "Send Message",
       "sending": "Sending...",
       "success": "Message sent successfully!",
       "error": "Failed to send message. Please try again.",
-      "charLimitWarning": "You're approaching the character limit!"
+      "charLimitWarning": "Message is getting close to the character limit"
     },
     "info": {
       "title": "Contact Information",
@@ -196,14 +205,14 @@
       "location": "Location"
     },
     "responseTimes": {
-      "title": "Average Response Times",
-      "description": "I aim to respond as quickly as possible",
-      "email": "Email",
-      "emailTime": "24-48 hours",
-      "phone": "Phone",
+      "title": "Response Times",
+      "description": "When you can expect to hear back",
+      "email": "Email:",
+      "emailTime": "Within 24 hours",
+      "phone": "Phone:",
       "phoneTime": "Same day",
-      "socialMedia": "Social Media",
-      "socialMediaTime": "1-2 days"
+      "socialMedia": "Social Media:",
+      "socialMediaTime": "Within 2-3 days"
     }
   },
   "footer": {

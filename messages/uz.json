@@ -9,7 +9,13 @@
     "selectLanguage": "CV Tilini Tanlash",
     "downloadInEnglish": "Ingliz tilida yuklab olish",
     "downloadInUzbek": "O'zbek tilida yuklab olish",
-    "downloadInRussian": "Rus tilida yuklab olish"
+    "downloadInRussian": "Rus tilida yuklab olish",
+    "downloadingCV": "CV {language} tilida yuklab olinmoqda...",
+    "languageNames": {
+      "en": "Ingliz",
+      "uz": "O'zbek",
+      "ru": "Rus"
+    }
   },
   "home": {
     "hero": {
@@ -174,19 +180,22 @@
     "form": {
       "title": "Xabar Yuborish",
       "description": "Quyidagi formani to'ldiring va men imkon qadar tezroq javob beraman",
+      "name": "Ism",
       "nameLabel": "Ism",
       "namePlaceholder": "Sizning ismingiz",
+      "email": "Email",
       "emailLabel": "Email",
       "emailPlaceholder": "sizning.email@example.com",
       "subjectLabel": "Mavzu",
       "subjectPlaceholder": "Bu nima haqida?",
+      "message": "Xabar",
       "messageLabel": "Xabar",
       "messagePlaceholder": "Sizning xabaringiz...",
       "send": "Xabar Yuborish",
       "sending": "Yuborilmoqda...",
       "success": "Xabar muvaffaqiyatli yuborildi!",
       "error": "Xabarni yuborib bo'lmadi. Iltimos, qayta urinib ko'ring.",
-      "charLimitWarning": "Siz belgilar chegarasiga yaqinlashyapsiz!"
+      "charLimitWarning": "Xabar belgilar chegarasiga yaqinlashmoqda"
     },
     "info": {
       "title": "Aloqa Ma'lumotlari",
@@ -196,19 +205,19 @@
       "location": "Joylashuv"
     },
     "responseTimes": {
-      "title": "O'rtacha Javob Vaqtlari",
-      "description": "Men imkon qadar tezroq javob berishga harakat qilaman",
-      "email": "Email",
-      "emailTime": "24-48 soat",
-      "phone": "Telefon",
+      "title": "Javob Vaqtlari",
+      "description": "Qachon javob kutishingiz mumkin",
+      "email": "Email:",
+      "emailTime": "24 soat ichida",
+      "phone": "Telefon:",
       "phoneTime": "Bir kun ichida",
-      "socialMedia": "Ijtimoiy Tarmoqlar",
-      "socialMediaTime": "1-2 kun"
+      "socialMedia": "Ijtimoiy Tarmoqlar:",
+      "socialMediaTime": "2-3 kun ichida"
     }
   },
   "footer": {
     "copyright": "© 2025 {name}. Next.js, TypeScript va VibeCoding bilan yaratilgan ☕",
-    "template": "Bu shablonni mening",
+    "template": "Template ",
     "github": "GitHub"
   },
   "keys": {

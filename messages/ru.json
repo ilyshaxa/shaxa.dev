@@ -9,7 +9,13 @@
     "selectLanguage": "Выбрать Язык CV",
     "downloadInEnglish": "Скачать на английском",
     "downloadInUzbek": "Скачать на узбекском",
-    "downloadInRussian": "Скачать на русском"
+    "downloadInRussian": "Скачать на русском",
+    "downloadingCV": "Загрузка CV на {language} языке...",
+    "languageNames": {
+      "en": "английском",
+      "uz": "узбекском",
+      "ru": "русском"
+    }
   },
   "home": {
     "hero": {
@@ -174,19 +180,22 @@
     "form": {
       "title": "Отправить Сообщение",
       "description": "Заполните форму ниже, и я свяжусь с вами как можно скорее",
+      "name": "Имя",
       "nameLabel": "Имя",
       "namePlaceholder": "Ваше имя",
+      "email": "Email",
       "emailLabel": "Email",
       "emailPlaceholder": "ваш.email@example.com",
       "subjectLabel": "Тема",
       "subjectPlaceholder": "О чем это?",
+      "message": "Сообщение",
       "messageLabel": "Сообщение",
       "messagePlaceholder": "Ваше сообщение здесь...",
       "send": "Отправить Сообщение",
       "sending": "Отправка...",
       "success": "Сообщение успешно отправлено!",
       "error": "Не удалось отправить сообщение. Пожалуйста, попробуйте снова.",
-      "charLimitWarning": "Вы приближаетесь к лимиту символов!"
+      "charLimitWarning": "Сообщение приближается к лимиту символов"
     },
     "info": {
       "title": "Контактная Информация",
@@ -196,14 +205,14 @@
       "location": "Местоположение"
     },
     "responseTimes": {
-      "title": "Среднее Время Ответа",
-      "description": "Я стремлюсь отвечать как можно быстрее",
-      "email": "Email",
-      "emailTime": "24-48 часов",
-      "phone": "Телефон",
+      "title": "Время Ответа",
+      "description": "Когда вы можете ожидать ответа",
+      "email": "Email:",
+      "emailTime": "В течение 24 часов",
+      "phone": "Телефон:",
       "phoneTime": "В тот же день",
-      "socialMedia": "Социальные Сети",
-      "socialMediaTime": "1-2 дня"
+      "socialMedia": "Социальные Сети:",
+      "socialMediaTime": "В течение 2-3 дней"
     }
   },
   "footer": {
