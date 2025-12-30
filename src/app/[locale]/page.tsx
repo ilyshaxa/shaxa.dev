@@ -59,7 +59,8 @@ export default function Home() {
     const cvUrl = cvUrls[locale] || cvUrls.en;
     
     // Get localized language name
-    const languageName = tNav(`languageNames.${locale}` as any) || tNav('languageNames.en');
+    const languageNameKey = `languageNames.${locale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
+    const languageName = tNav(languageNameKey) || tNav('languageNames.en');
     
     // Show localized toast notification
     toast.success(tNav('downloadingCV', { language: languageName }));
