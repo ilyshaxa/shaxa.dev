@@ -88,6 +88,7 @@ export interface Project {
   githubUrl?: string;
   featured: boolean;
   status: string;
+  originalStatus?: string; // Preserves original status for color determination
   year: string;
   companyName?: string;
   slug?: string;
@@ -516,7 +517,7 @@ export async function getLocalizedProjects(locale: Locale = 'en'): Promise<Proje
   
   return getAllProjects().map(project => {
     const translatedData = projectsData[project.slug || ''];
-    if (!translatedData) return project;
+    if (!translatedData) return { ...project, originalStatus: project.status };
     
     return {
       ...project,
@@ -524,6 +525,7 @@ export async function getLocalizedProjects(locale: Locale = 'en'): Promise<Proje
       shortDescription: translatedData.shortDescription || project.shortDescription,
       fullDescription: translatedData.fullDescription || project.fullDescription,
       status: translatedData.status || project.status,
+      originalStatus: project.status, // Preserve original status for color determination
       companyName: translatedData.companyName || project.companyName,
     };
   });
@@ -535,7 +537,7 @@ export async function getLocalizedFeaturedProjects(locale: Locale = 'en'): Promi
   
   return getFeaturedProjects().map(project => {
     const translatedData = projectsData[project.slug || ''];
-    if (!translatedData) return project;
+    if (!translatedData) return { ...project, originalStatus: project.status };
     
     return {
       ...project,
@@ -543,6 +545,7 @@ export async function getLocalizedFeaturedProjects(locale: Locale = 'en'): Promi
       shortDescription: translatedData.shortDescription || project.shortDescription,
       fullDescription: translatedData.fullDescription || project.fullDescription,
       status: translatedData.status || project.status,
+      originalStatus: project.status, // Preserve original status for color determination
       companyName: translatedData.companyName || project.companyName,
     };
   });
@@ -587,7 +590,7 @@ export function localizeProjects(projects: Project[], translations: Record<strin
   
   return projects.map(project => {
     const translatedData = projectsData[project.slug || ''] as Record<string, string> | undefined;
-    if (!translatedData) return project;
+    if (!translatedData) return { ...project, originalStatus: project.status };
     
     return {
       ...project,
@@ -595,6 +598,7 @@ export function localizeProjects(projects: Project[], translations: Record<strin
       shortDescription: translatedData.shortDescription || project.shortDescription,
       fullDescription: translatedData.fullDescription || project.fullDescription,
       status: translatedData.status || project.status,
+      originalStatus: project.status, // Preserve original status for color determination
       companyName: translatedData.companyName || project.companyName,
     };
   });

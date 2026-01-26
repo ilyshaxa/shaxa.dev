@@ -487,9 +487,9 @@ export default function ProjectPage() {
                 <h3 className="font-semibold mb-2">{t('status.title')}</h3>
                 <Badge 
                   variant={
-                    project.status === 'Completed' 
+                    (project.originalStatus || project.status) === 'Completed' 
                       ? 'default' 
-                      : project.status === 'Discontinued'
+                      : (project.originalStatus || project.status) === 'Discontinued'
                       ? 'destructive'
                       : 'secondary'
                   }
