@@ -486,7 +486,13 @@ export default function ProjectPage() {
               <div className="glass-dark p-4 rounded-lg border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
                 <h3 className="font-semibold mb-2">{t('status.title')}</h3>
                 <Badge 
-                  variant={project.status === 'Completed' ? 'default' : 'secondary'}
+                  variant={
+                    project.status === 'Completed' 
+                      ? 'default' 
+                      : project.status === 'Discontinued'
+                      ? 'destructive'
+                      : 'secondary'
+                  }
                   className="text-sm border border-gray-300/50 dark:border-white/20 shadow-sm"
                 >
                   {project.status}

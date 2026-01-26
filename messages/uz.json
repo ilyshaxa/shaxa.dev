@@ -385,9 +385,9 @@
         "companyName": "Praaktisgo"
       },
       "hikcentral-remote-device-integration": {
-        "title": "HikCentral Integratsiyasi",
-        "shortDescription": "Hikvision yuzni tanish qurilmalari va markazlashtirilgan HikCentral Professional server o'rtasida xavfsiz outbound ISUP aloqa orqali remote ulanish platformasi.",
-        "fullDescription": "Hikvision yuzni tanish qurilmalarini ISUP 5.0 outbound aloqa orqali bulut infratuzilmasiga ulash imkonini beruvchi xavfsiz, kengaytiriladigan remote qurilma integratsiya platformasini ishlab chiqdim. Har bir qurilma Google Cloud Windows Server VM da joylashgan HikCentral Professional instancega shifrlangan ulanish o'rnatadi, bu esa mijoz saytlarida hech qanday inbound exposuresiz ishonchli registratsiya va ma'lumot o'tkazishni ta'minlaydi. Arxitektura qurilma firmware, tarmoq transporti (TLS bilan ISUP over TCP), bulut infratuzilmasi (GCP Compute Engine) va ilova servislari (HikCentral ISUP Gateway, Web Client va OpenAPI)ni o'z ichiga oladi. Xavfsizlik nazorati TLS shifrlash, faqat outbound qurilma trafigi, firewall allowlistlari, RBAC enforcement va token-based API autentifikatsiyasini o'z ichiga oladi. Tizim Node.js, Python va .NET kabi texnologiyalar bilan qurilgan tashqi ilovalarni qo'llab-quvvatlab, HTTPS orqali seamless third-party integratsiya uchun REST-based OpenAPI interfaceini expose qiladi.",
+        "title": "Hikvision Remote Device Integratsiyasi",
+        "shortDescription": "HikGateway (Device Gateway) yordamida xavfsiz va kengaytiriladigan remote qurilma integratsiya platformasini ishlab chiqdim, bu Hikvision qurilmalariga outbound ISUP aloqa orqali bulut infratuzilmasiga ulanish imkonini beradi. NAT va firewalllar orqasida joylashtirilgan qurilmalar mijoz saytlarida statik IP manzillar yoki inbound tarmoq ko'rinishiga ehtiyoj qoldirmasdan, jamoat Internet orqali bulutda joylashtirilgan HikGateway instancega doimiy, shifrlangan ISUP ulanishlarini boshlaydi. HikGateway markazlashtirilgan boshqaruv tekisligi sifatida ishlaydi, qurilma registratsiyasi, sessiya hayotiy davri, holat monitoringi va voqea boshqaruvini boshqaradi. Barcha qurilma operatsiyalari va uchinchi tomon integratsiyalari HTTPS orqali HikGateway'ning ISAPI interfeyslari orqali amalga oshiriladi, bu tashqi backend servislarga to'g'ridan-to'g'ri qurilma kirishisiz qurilmalarni xavfsiz boshqarish, voqealarni olish va boshqaruv harakatlarini bajarish imkonini beradi. Arxitektura faqat outbound ulanish, TLS-shifrlangan transport, qat'iy tarmoq izolyatsiyasi va API-ga asoslangan integratsiyani ta'kidlaydi, bu uni Hikvision ISUP-ga ega qurilmalarning katta miqyosli, ko'p tenantli deploymentlari uchun mos qiladi.",
+        "fullDescription": "HikGateway (Device Gateway) yordamida xavfsiz va kengaytiriladigan remote qurilma integratsiya platformasini ishlab chiqdim, bu Hikvision qurilmalariga outbound ISUP aloqa orqali bulut infratuzilmasiga ulanish imkonini beradi. NAT va firewalllar orqasida joylashtirilgan qurilmalar mijoz saytlarida statik IP manzillar yoki inbound tarmoq ko'rinishiga ehtiyoj qoldirmasdan, jamoat Internet orqali bulutda joylashtirilgan HikGateway instancega doimiy, shifrlangan ISUP ulanishlarini boshlaydi. HikGateway markazlashtirilgan boshqaruv tekisligi sifatida ishlaydi, qurilma registratsiyasi, sessiya hayotiy davri, holat monitoringi va voqea boshqaruvini boshqaradi. Barcha qurilma operatsiyalari va uchinchi tomon integratsiyalari HTTPS orqali HikGateway'ning ISAPI interfeyslari orqali amalga oshiriladi, bu tashqi backend servislarga to'g'ridan-to'g'ri qurilma kirishisiz qurilmalarni xavfsiz boshqarish, voqealarni olish va boshqaruv harakatlarini bajarish imkonini beradi. Arxitektura faqat outbound ulanish, TLS-shifrlangan transport, qat'iy tarmoq izolyatsiyasi va API-ga asoslangan integratsiyani ta'kidlaydi, bu uni Hikvision ISUP-ga ega qurilmalarning katta miqyosli, ko'p tenantli deploymentlari uchun mos qiladi.",
         "status": "Bajarildi",
         "companyName": "KPI"
       },
@@ -402,7 +402,7 @@
         "title": "SaveThis4Me Telegram Bot",
         "shortDescription": "Xavfsiz akkaunt bog'lash orqali Instagram kontentini avtomatik saqlaydigan Telegram bot. Endi ilovalar o'rtasida o'tish va havolalarni nusxalash kerak emas.",
         "fullDescription": "SaveThis4Me - bu dastlab o'zim uchun yaratilgan va keyinchalik ommaviy foydalanish uchun kengaytirilgan shaxsiy hobby loyiha sifatida ishlab chiqilgan Telegram bot. U foydalanuvchilarga qo'lda havola nusxalash yoki ilovalar o'rtasida o'tishsiz Instagram kontentini to'g'ridan-to'g'ri Telegram chatlarida olish imkonini beradi. Bot har bir foydalanuvchining Instagram akkaunt IDsini Telegram akkaunti bilan xavfsiz bog'lash uchun user binding tokenlardan foydalanadi, bu esa reellar, postlar va storylarni avtomatik forwardingni ta'minlaydi. Python, FastAPI va Telegram Bot API bilan qurilgan, u Free va Pro obuna rejalarini o'z ichiga oladi, Telethon to'lov processini va obuna validatsiyasini boshqaradi. PostgreSQL ma'lumotlar bazasi foydalanuvchi ma'lumotlari, to'lov ma'lumotlari va media statistikasini boshqarish uchun ishlatiladi. Media retrieval API Docker bilan konteynerlashtrilgan va Nginx reverse proxy orqasida deploy qilingan, scalability, reliability va xavfsiz kontent yetkazib berishni ta'minlaydi.",
-        "status": "Bajarildi",
+        "status": "To'xtatilgan",
         "companyName": "Shaxsiy Loyiha"
       }
     },
@@ -484,52 +484,6 @@
         ],
         "teamSize": "10+",
         "industry": "Marketing va Reklama"
-      },
-      "retouchgarage-com-devops-engineer": {
-        "company": "Retouch Garage",
-        "position": "DevOps Muhandis",
-        "duration": "Iyun 2025 - Iyul 2025",
-        "description": "Rasm qayta ishlash xizmatlari uchun bulut infratuzilmasi, CI/CD va deployment avtomatizatsiyasini boshqarish.",
-        "location": "Masofaviy",
-        "responsibilities": [
-          "Yuqori-trafik rasm qayta ishlash workflowlarini qo'llab-quvvatlash uchun Azure da bulut infratuzilmasini boshqardim va optimallashtirdim",
-          "Test va deployment tsikllarini tartibga solish uchun CI/CD pipelinelarni sozladim va ta'minladim",
-          "Bir nechta muhitlarda xavfsiz, kengaytiriladigan va xarajat-samarali operatsiyalarni ta'minladim",
-          "Deployment processlarini optimallashtirish va release bottlenecklarni kamaytirish uchun development jamoalari bilan hamkorlik qildim",
-          "Ishonchlilik va uptime uchun yaxshilashlarni amalga oshirish uchun tizim ishlashini monitoring qildim"
-        ],
-        "achievements": [
-          "Avtomatlashtirilgan test va davomli integratsiya amaliyotlari orqali deployment ishonchliligini yaxshiladim",
-          "Performance standartlarini saqlab, Azure resurs taqsimotini optimallashtirdim va infratuzilma xarajatlarini qisqartirdim",
-          "Tezroq incident aniqlash va hal qilish uchun monitoring va logging imkoniyatlarini yaxshiladim",
-          "Tezroq feature releaselari va bug tuzatishlarini ta'minlab, hamkorlik workflowlarini tartibga soldim"
-        ],
-        "teamSize": "10+",
-        "industry": "Elektron tijorat"
-      },
-      "izish-uz-devops-engineer": {
-        "company": "Izish",
-        "position": "DevOps Muhandis",
-        "duration": "May 2024 - Dekabr 2024",
-        "description": "Scalable bulut infratuzilmasi va CI/CD pipelinelarni loyihalash, deploy qilish va ta'minlash.",
-        "location": "Masofaviy",
-        "responsibilities": [
-          "Scalable, yuqori-availability veb ilovalarni qo'llab-quvvatlash uchun Google Cloud Platform da bulut infratuzilmasini arxitektura qildim va deploy qildim",
-          "Test, build va deployment workflowlarini avtomatlashtirish uchun CI/CD pipelinelarni loyihalashtirdim va ta'minladim",
-          "Muhitlar bo'ylab izchil deploymentlar uchun Docker bilan ilovalarni konteynerlashtirdim",
-          "Xavfsiz, performant service delivery uchun veb serverlarni (Nginx), SSL sertifikatlarini va DNSni sozladim",
-          "Proaktiv tizim salomatligi boshqaruvi uchun monitoring, logging va alerting yechimlarini amalga oshirdim",
-          "Build processlarini optimallashtirish va eng yaxshi amaliyotlarni amalga oshirish uchun development jamoalari bilan hamkorlik qildim"
-        ],
-        "achievements": [
-          "6 hafta ichida noldan butun texnik infratuzilmani qurdim va ishga tushdim",
-          "Proaktiv monitoring va avtomatlashtirilgan alerting orqali 99.9% uptimni saqlab qoldim",
-          "Avtomatlashtirilgan CI/CD pipelinelar va Docker konteynerizatsiyasi orqali deployment vaqtlarini 60% ga qisqartirdim",
-          "Resurslarni to'g'ri o'lcham tanlash va GCP chegirmalaridan foydalanish orqali infratuzilma xarajatlarini 25% ga optimallashtirdim",
-          "Jamoa samaradorligini va onboarding tezligini yaxshilagan texnik standartlar va hujjatlarni o'rnatdim"
-        ],
-        "teamSize": "5+",
-        "industry": "Elektron tijorat"
       },
       "datasite-technology-frontend-developer": {
         "company": "Datasite",

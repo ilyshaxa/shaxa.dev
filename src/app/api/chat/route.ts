@@ -149,8 +149,6 @@ EXPERIENCE:
 - DevOps Engineer at kpi.com (May 2023 - Present)(Full-time): 2+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com.
 - DevOps Engineer at PraaktisGo (January 2025 - Present)(Freelance): DevOps, automation, and cloud infrastructure at PraaktisGo.
 - DevOps Engineer & Tech Lead at zaytra.ai (July 2025 - Present)(Freelance): DevOps, automation, and cloud infrastructure at zaytra.ai. Also responsible for the technical direction of the company.
-- DevOps Engineer at izish.uz (November 2024 - July 2025)(Contract): DevOps, automation, and cloud infrastructure at izish.uz.
-- DevOps Engineer at retouchgarage.com (June 2025 - July 2025)(Freelance): DevOps, automation, and cloud infrastructure at retouchgarage.com.
 - Frontend Developer at DataSite Technology (Sep 2022 - May 2023)(Internship): Gained experience in frontend development at DataSite Technology.
 
 EDUCATION:

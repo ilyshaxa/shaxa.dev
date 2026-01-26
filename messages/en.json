@@ -385,9 +385,8 @@
         "companyName": "Praaktisgo"
       },
       "hikcentral-remote-device-integration": {
-        "title": "HikCentral Integration",
-        "shortDescription": "A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP communication.",
-        "fullDescription": "Developed a secure, scalable remote device integration platform allowing Hikvision face recognition devices to connect to cloud infrastructure through ISUP 5.0 outbound communication. Each device establishes an encrypted connection to a HikCentral Professional instance hosted on a Google Cloud Windows Server VM, enabling reliable registration and data transfer without any inbound exposure at client sites. The architecture spans device firmware, network transport (ISUP over TCP with TLS), cloud infrastructure (GCP Compute Engine), and application services (HikCentral ISUP Gateway, Web Client, and OpenAPI). Security controls include TLS encryption, outbound-only device traffic, firewall allowlists, RBAC enforcement, and token-based API authentication. The system exposes a REST-based OpenAPI interface for seamless third-party integration over HTTPS, supporting external applications built with technologies such as Node.js, Python, and .NET.",
+        "title": "HikGateway Integration",
+        "shortDescription": "Developed a secure and scalable remote device integration platform using HikGateway (Device Gateway) to enable Hikvision devices to connect to cloud infrastructure via outbound ISUP communication. Devices deployed behind NAT and firewalls initiate persistent, encrypted ISUP connections over the public Internet to a cloud-hosted HikGateway instance, eliminating the need for static IP addresses or inbound network exposure at customer sites. HikGateway acts as the centralized control plane, managing device registration, session lifecycle, status monitoring, and event handling. All device operations and third-party integrations are performed through HikGateway’s ISAPI interfaces over HTTPS, allowing external backend services to securely manage devices, retrieve events, and perform control actions without direct device access. The architecture emphasizes outbound-only connectivity, TLS-encrypted transport, strict network isolation, and API-driven integration, making it suitable for large-scale, multi-tenant deployments of Hikvision ISUP-enabled devices.",
         "status": "Completed",
         "companyName": "KPI"
       },
@@ -402,7 +401,7 @@
         "title": "SaveThis4Me Telegram Bot",
         "shortDescription": "A Telegram bot that automatically saves Instagram content using secure account binding. No more swiching between apps and copying links.",
         "fullDescription": "SaveThis4Me is a Telegram bot developed as a personal hobby project, initially created for my own use and later extended for public access. It allows users to receive Instagram content directly in their Telegram chats without manual link copying or app switching. The bot uses user binding tokens to securely connect each user's Instagram account ID with their Telegram account, enabling automatic forwarding of reels, posts and stories. Built with Python, FastAPI, and the Telegram Bot API, it includes both Free and Pro subscription plans, with Telethon handling payment processing and subscription validation. A PostgreSQL database is used to manage user information, payment data, and media statistics. The media retrieval API is containerized with Docker and deployed behind an Nginx reverse proxy, ensuring scalability, reliability, and secure content delivery.",
-        "status": "Completed",
+        "status": "Discontinued",
         "companyName": "Personal Project"
       }
     },
@@ -484,52 +483,6 @@
         ],
         "teamSize": "10+",
         "industry": "Marketing & Advertising"
-      },
-      "retouchgarage-com-devops-engineer": {
-        "company": "Retouch Garage",
-        "position": "DevOps Engineer",
-        "duration": "June 2025 - July 2025",
-        "description": "Managed cloud infrastructure, CI/CD, and deployment automation for image processing services.",
-        "location": "Remote",
-        "responsibilities": [
-          "Managed and optimized cloud infrastructure on Azure to support high-traffic image processing workflows",
-          "Configured and maintained CI/CD pipelines to streamline testing and deployment cycles",
-          "Ensured secure, scalable, and cost-effective operations across multiple environments",
-          "Collaborated with development teams to optimize deployment processes and reduce release bottlenecks",
-          "Monitored system performance and implemented improvements for reliability and uptime"
-        ],
-        "achievements": [
-          "Improved deployment reliability through automated testing and continuous integration practices",
-          "Optimized Azure resource allocation, reducing infrastructure costs while maintaining performance standards",
-          "Enhanced monitoring and logging capabilities for faster incident detection and resolution",
-          "Streamlined collaboration workflows, enabling faster feature releases and bug fixes"
-        ],
-        "teamSize": "10+",
-        "industry": "E-commerce"
-      },
-      "izish-uz-devops-engineer": {
-        "company": "Izish",
-        "position": "DevOps Engineer",
-        "duration": "May 2024 - December 2024",
-        "description": "Designed, deployed, and maintained scalable cloud infrastructure and CI/CD pipelines.",
-        "location": "Remote",
-        "responsibilities": [
-          "Architected and deployed cloud infrastructure on Google Cloud Platform to support scalable, high-availability web applications",
-          "Designed and maintained CI/CD pipelines to automate testing, building, and deployment workflows",
-          "Containerized applications with Docker for consistent deployments across environments",
-          "Configured web servers (Nginx), SSL certificates, and DNS for secure, performant service delivery",
-          "Implemented monitoring, logging, and alerting solutions for proactive system health management",
-          "Collaborated with development teams to optimize build processes and enforce best practices"
-        ],
-        "achievements": [
-          "Built and launched the entire technical infrastructure from scratch within 6 weeks",
-          "Maintained 99.9% uptime through proactive monitoring and automated alerting",
-          "Reduced deployment times by 60% via automated CI/CD pipelines and Docker containerization",
-          "Optimized infrastructure costs by 25% through rightsizing resources and leveraging GCP discounts",
-          "Established technical standards and documentation that improved team efficiency and onboarding speed"
-        ],
-        "teamSize": "5+",
-        "industry": "E-commerce"
       },
       "datasite-technology-frontend-developer": {
         "company": "Datasite",
