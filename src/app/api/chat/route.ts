@@ -95,7 +95,7 @@ function parseAIResponse(rawResponse: string): AIResponse {
   } catch {
     // If JSON parsing fails, use fallback keyword detection
   }
-  
+
   // Fallback: keyword-based detection for backwards compatibility
   const refusalIndicators = [
     "I'm Shaxriyor's AI assistant, and I can only answer questions about Shaxriyor Jabborov",
@@ -103,11 +103,11 @@ function parseAIResponse(rawResponse: string): AIResponse {
     "only answer questions about Shaxriyor Jabborov",
     "I can only help with questions about Shaxriyor",
   ];
-  
-  const isOffTopic = refusalIndicators.some(indicator => 
+
+  const isOffTopic = refusalIndicators.some(indicator =>
     rawResponse.toLowerCase().includes(indicator.toLowerCase())
   );
-  
+
   return { response: rawResponse, isOffTopic };
 }
 
@@ -148,7 +148,7 @@ Tools: Git, Linux, Bash, Python, YAML, JSON
 EXPERIENCE:
 - DevOps Engineer at kpi.com (May 2023 - Present)(Full-time): 2+ years of experience in DevOps, automation, and cloud infrastructure at kpi.com.
 - DevOps Engineer at PraaktisGo (January 2025 - Present)(Freelance): DevOps, automation, and cloud infrastructure at PraaktisGo.
-- DevOps Engineer & Tech Lead at zaytra.ai (July 2025 - Present)(Freelance): DevOps, automation, and cloud infrastructure at zaytra.ai. Also responsible for the technical direction of the company.
+
 - Frontend Developer at DataSite Technology (Sep 2022 - May 2023)(Internship): Gained experience in frontend development at DataSite Technology.
 
 EDUCATION:
@@ -217,7 +217,7 @@ Your role is to:
 8. Use a conversational tone that reflects Shaxriyor's personality
 9. When providing links (like GitHub, LinkedIn, website), include the full URL so they can be clicked. Never add punctuation (periods, commas, etc.) immediately after URLs as this breaks the link functionality
 10. CRITICAL: Only provide information that is explicitly mentioned in the training data. Do not make assumptions, guess, or provide information about topics not covered in the provided information (like religion, personal beliefs, family details, etc.)
-11. When asked about current work or companies, mention ALL current positions (those with "Present" end dates), not just one. For example, if asked "where is he currently working?", list all 3 current positions: kpi.com, PraaktisGo, and zaytra.ai
+11. When asked about current work or companies, mention ALL current positions (those with "Present" end dates), not just one. For example, if asked "where is he currently working?", list all 2 current positions: kpi.com and PraaktisGo
 12. Do not volunteer information about Shaxriyor's frontend background unless specifically asked about his career history, career transition, or frontend experience. Only mention frontend development when the user explicitly asks about it
 13. CRITICAL - NO HALLUCINATIONS: When discussing projects, ONLY mention technologies that are EXPLICITLY listed in the "EXACT Technologies Used" section for that project. If a technology is listed under "NOT USED", do NOT claim Shaxriyor used it for that project. If asked about a specific technology (like Kubernetes), check if it's in any project's technology list before claiming it was used. If unsure, say "I don't have specific information about that technology being used in Shaxriyor's projects."
 14. If asked "does Shaxriyor have experience with X technology?", check the SKILLS section and project technologies. Only confirm if the technology is explicitly listed
@@ -243,8 +243,8 @@ You MUST respond in valid JSON format with exactly this structure:
 
 // Log chatbot interactions
 async function logChatInteraction(
-  userMessage: string, 
-  aiResponse: string, 
+  userMessage: string,
+  aiResponse: string,
   userIP: string,
   isOffTopic: boolean = false,
   remainingAttempts?: number
@@ -257,7 +257,7 @@ async function logChatInteraction(
       return;
     }
 
-    const offTopicStatus = isOffTopic 
+    const offTopicStatus = isOffTopic
       ? `⚠️ *Off-Topic:* Yes${remainingAttempts !== undefined ? ` (${remainingAttempts}/5 attempts remaining)` : ''}`
       : `✅ *Off-Topic:* No`;
 
@@ -309,10 +309,10 @@ interface ChatMessage {
 export async function POST(request: NextRequest) {
   let userMessage = '';
   let userIP = 'Unknown';
-  
+
   try {
-    const { message, history } = await request.json() as { 
-      message: string; 
+    const { message, history } = await request.json() as {
+      message: string;
       history?: ChatMessage[];
     };
     userMessage = message;
@@ -344,7 +344,7 @@ export async function POST(request: NextRequest) {
     // For now, we'll use a simple response system
     // In production, you would integrate with OpenAI API here
     const openaiApiKey = process.env.OPENAI_API_KEY;
-    
+
     if (!openaiApiKey) {
       // Fallback responses when OpenAI API key is not available
       // These are generic responses so we don't count them against rate limit
@@ -355,12 +355,12 @@ export async function POST(request: NextRequest) {
         "Shaxriyor has worked on some amazing projects! Would you like to hear about his e-commerce platform, AI analytics dashboard, or something else?",
         "I'm here to answer questions about Shaxriyor's work and experience. What would you like to know?"
       ];
-      
+
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-      
+
       // Log fallback response (not off-topic, just fallback)
       await logChatInteraction(userMessage, randomResponse, userIP, false);
-      
+
       return NextResponse.json({
         response: randomResponse,
         timestamp: new Date().toISOString(),
@@ -418,11 +418,11 @@ export async function POST(request: NextRequest) {
     if (parsedResponse.isOffTopic) {
       incrementRateLimit(userIP);
       const updatedRateLimit = checkRateLimit(userIP);
-      
+
       // Log off-topic question
       await logChatInteraction(
-        userMessage, 
-        parsedResponse.response, 
+        userMessage,
+        parsedResponse.response,
         userIP,
         true,
         updatedRateLimit.remaining
@@ -447,14 +447,14 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Chat API error:', error);
-    
+
     const errorResponse = 'Sorry, I encountered an error. Please try again later.';
-    
+
     // Log error case (not off-topic, just error)
     await logChatInteraction(userMessage, errorResponse, userIP, false);
-    
+
     return NextResponse.json(
-      { 
+      {
         response: errorResponse,
         timestamp: new Date().toISOString()
       },

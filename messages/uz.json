@@ -459,32 +459,6 @@
         "teamSize": "10+",
         "industry": "Wellness va Fitness"
       },
-      "zaytra-ai-devops-tech-lead": {
-        "company": "Zaytra",
-        "position": "DevOps Muhandis va Tech Lead",
-        "duration": "Iyul 2025 - Hozir",
-        "description": "Texnik asosni qurish va o'lchash uchun infratuzilma dizayni, avtomatlashtirish va jamoa rivojlanishini boshqarish.",
-        "location": "Masofaviy",
-        "responsibilities": [
-          "Yangi startup uchun butun texnik infratuzilmani noldan loyihalashtirdim va amalga oshirdim",
-          "Ishlab chiqarishga tayyor bulut serverlar, CI/CD pipelinelar va xavfsiz deployment workflowlarni sozladim va ta'minladim",
-          "Izchil rivojlanish va ishlab chiqarish parity uchun Docker yordamida konteynerlashtrilgan muhitlar qurdim",
-          "Professional va xavfsiz onlayn mavjudlikni o'rnatish uchun domenlar, SSL sertifikatlari va DNSni sozladim",
-          "Tizim ishonchliligi va uptimeni ta'minlash uchun monitoring, logging va alerting tizimlarini ishlab chiqdim",
-          "Kelajakdagi scalabilityni qo'llab-quvvatlash uchun muhandislik eng yaxshi amaliyotlari va texnik hujjatlarni o'rnatdim",
-          "Internlar va junior developerlarni mentor qildim, kuchli texnik madaniyatni rivojlantirib va arxitektura qarorlarini yo'naltirdim"
-        ],
-        "achievements": [
-          "Startupning butun texnik stackini 8 hafta ichida noldan ishlab chiqarishga qurdim",
-          "Proaktiv monitoring, avtomatlashtirilgan alertlar va konteynerlashtrilgan deploymentlar orqali 99.9% uptimni erishib oldim",
-          "Erta foydalanuvchi o'sishini minimal xarajat bilan (~90% etakchi bulut providerlardan past) qo'llab-quvvatlash uchun infratuzilmani optimallashtirdim",
-          "Asosiy demolarda va investor pitchlarda nol downtime bilan xavfsiz, SSL-sertifikatlangan veb xizmatlarni yetkazib berdim",
-          "Yangi muhandislarning tez onboarding olishini ta'minlovchi texnik standartlar va hujjatlarni o'rnatdim",
-          "Texnik va biznes maqsadlarini moslashtirish uchun AI tadqiqotchilari, product va operatsiyalar o'rtasida cross-functional hamkorlikni boshqardim"
-        ],
-        "teamSize": "10+",
-        "industry": "Marketing va Reklama"
-      },
       "datasite-technology-frontend-developer": {
         "company": "Datasite",
         "position": "Frontend Developer",
@@ -516,5 +490,3 @@
     }
   }
 }
-
-

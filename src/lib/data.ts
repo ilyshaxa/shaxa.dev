@@ -194,39 +194,6 @@ const profileData: Profile = {
       industry: "Wellness & Fitness"
     },
     {
-      company: "Zaytra",
-      position: "DevOps Engineer & Tech Lead",
-      duration: "July 2025 - Present",
-      description: "Lead infrastructure design, automation, and team development to build and scale technical foundation.",
-      website: "https://zaytra.ai",
-      employmentType: "Freelance",
-      logo: "/images/companies/zaytra-logo.png",
-      slug: "zaytra-ai-devops-tech-lead",
-      startDate: "2025-07-01",
-      isCurrent: true,
-      location: "Remote",
-      responsibilities: [
-        "Designed and implemented the entire technical infrastructure for a new startup from the ground up",
-        "Set up and maintained production-ready cloud servers, CI/CD pipelines, and secure deployment workflows",
-        "Built containerized environments using Docker for consistent development and production parity",
-        "Configured domains, SSL certificates, and DNS to establish a professional and secure online presence",
-        "Developed monitoring, logging, and alerting systems to ensure system reliability and uptime",
-        "Established engineering best practices and technical documentation to support future scalability",
-        "Mentored interns and junior developers, fostering a strong technical culture and guiding architectural decisions"
-      ],      
-      achievements: [
-        "Built the startup's entire technical stack from zero to production within 8 weeks",
-        "Achieved 99.9% uptime through proactive monitoring, automated alerts, and containerized deployments",
-        "Optimized infrastructure to handle early user growth with minimal cost (~90% below leading cloud providers)",
-        "Delivered secure, SSL-certified web services with zero downtime during key demos and investor pitches",
-        "Established technical standards and documentation that enabled rapid onboarding of new engineers",
-        "Led cross-functional collaboration between AI researchers, product, and operations to align technical and business goals"
-      ],
-      technologies: ["Linux", "Docker", "Grafana", "Prometheus", "MongoDB", "Github actions",  "PostgreSQL"],
-      teamSize: "10+",
-      industry: "Marketing & Advertising"
-    },
-    {
       company: "DataSite Technology",
       position: "Frontend Developer",
       duration: "September 2022 - May 2023",
