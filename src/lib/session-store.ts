@@ -8,16 +8,6 @@ interface SessionToken {
 
 const validSessions = new Map<string, SessionToken>();
 
-// Clean up expired sessions every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [token, session] of validSessions.entries()) {
-    if (now > session.expiresAt) {
-      validSessions.delete(token);
-    }
-  }
-}, 5 * 60 * 1000);
-
 export function addValidSession(token: string, maxAgeSeconds: number) {
   validSessions.set(token, {
     token,
@@ -31,9 +21,20 @@ export function isValidSession(token: string): boolean {
     return false;
   }
 
-  // Check if token exists and is not expired
+  // Lazy cleanup: Check if token exists and is not expired
   const session = validSessions.get(token);
-  return session ? Date.now() < session.expiresAt : false;
+  if (!session) {
+    return false;
+  }
+
+  const now = Date.now();
+  if (now >= session.expiresAt) {
+    // Clean up expired token immediately
+    validSessions.delete(token);
+    return false;
+  }
+
+  return true;
 }
 
 export function removeSession(token: string) {

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Calendar, ArrowRight, Star, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
@@ -17,7 +18,7 @@ interface ProjectCardProps {
   viewDetailsText?: string;
 }
 
-export function ProjectCard({ project, featured = false, viewDetailsText }: ProjectCardProps) {
+export const ProjectCard = React.memo(function ProjectCard({ project, featured = false, viewDetailsText }: ProjectCardProps) {
   const t = useTranslations('projects');
   // Use the predefined slug or generate a consistent one
   const projectSlug = project.slug || generateProjectSlug(project.title);
@@ -53,6 +54,8 @@ export function ProjectCard({ project, featured = false, viewDetailsText }: Proj
               style={{ transform: 'scale(1.1)' }}
               loading="lazy"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur in='SourceGraphic' stdDeviation='20'/%3E%3C/filter%3E%3Crect width='200' height='200' fill='%23cccccc'/%3E%3C/svg%3E"
             />
           </Link>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -161,4 +164,4 @@ export function ProjectCard({ project, featured = false, viewDetailsText }: Proj
       </Card>
     </div>
   );
-}
+});

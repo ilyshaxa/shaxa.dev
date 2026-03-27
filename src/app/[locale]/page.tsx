@@ -3,10 +3,16 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ProjectCard } from '@/components/project-card';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { ParallaxSection } from '@/components/parallax-section';
@@ -49,31 +55,25 @@ export default function Home() {
   ];
 
   // CV download handler
-  const handleCvDownload = () => {
+  const handleCvDownload = (cvLocale: string) => {
     const cvUrls: Record<string, string> = {
       en: '/cv/shaxriyor-jabborov-cv-en.pdf',
       uz: '/cv/shaxriyor-jabborov-cv-uz.pdf',
       ru: '/cv/shaxriyor-jabborov-cv-ru.pdf',
     };
-    
-    const cvUrl = cvUrls[locale] || cvUrls.en;
-    
-    // Get localized language name
-    const languageNameKey = `languageNames.${locale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
+
+    const cvUrl = cvUrls[cvLocale] || cvUrls.en;
+
+    // Download immediately (no delay - user explicitly chose language)
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = `shaxriyor-jabborov-cv-${cvLocale}.pdf`;
+    link.click();
+
+    // Optional: Small confirmation toast
+    const languageNameKey = `languageNames.${cvLocale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
     const languageName = tNav(languageNameKey) || tNav('languageNames.en');
-    
-    // Show localized toast notification
-    toast.success(tNav('downloadingCV', { language: languageName }));
-    
-    // Wait 2 seconds before downloading to let user read the notification
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = cvUrl;
-      link.download = `shaxriyor-jabborov-cv-${locale}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 2000);
+    toast.success(`${languageName} CV download complete`);
   };
 
   return (
@@ -104,6 +104,8 @@ export default function Home() {
                   quality={75}
                   priority
                   fetchPriority="high"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwAqAFwA/9oACAEBAAEFAv/EABoQAAICAwAAAAAAAAAAAAAAAAEQAIAiExQv/2gAIAQEAAD8AT//EABQQAQAAAAAAAAAAAAAAAAAAAADR/9oACAEBAAE/AIwA//EABQQAQAAAAAAAAAAAAAAAAAAAADR/9oACAECAAA/AAAAf//EABQRAQAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8QAH//xAAaEAACAwEBAAAAAAAAAAAAAAABABARMSJBQv/aAAgBAQABPxAh//EAB0RAAEEBUAAAAAAAAAAAAAAEAExUUISIxQZH/2gAIAQEAAT8Qf//EABsRAAEFAQEAAAAAAAAAAAAAAABADESEyFRQf/aAAgBAQABPxEI//EABkQAAEAAwEAAAAAAAAAAAAAAABADESEyFRQf/aAAgBAQABPxAI//EABkQAACAgIDAAAAAAAAAAAAAAABADERIQJBQf/aAAgBAQABPxAAF/9oADAMBAAIRAxEAPwCqAFwA/9oACAEBAAEFAv/EABoQAAICAwAAAAAAAAAAAAAAAAEQAIAiExQv/2gAIAQEAAD8AT//EABQQAQAAAAAAAAAAAAAAAAAAAADR/9oACAEBAAE/AIwA//EABQQAQAAAAAAAAAAAAAAAAAAAADR/9oACAECAAA/AAAAf//EABQRAQAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8QAH//xAAaEAACAwEBAAAAAAAAAAAAAAABABARMSJBQv/aAAgBAQABPxAh//EAB0RAAEEBUAAAAAAAAAAAAAAEAExUUISIxQZH/2gAIAQEAAT8Qf//EABsRAAEFAQEAAAAAAAAAAAAAAABADESEyFRQf/aAAgBAQABPxEI//EABkQAAEAAwEAAAAAAAAAAAAAAABADERIQJBQf/aAAgBAQABPxAI//EABkQAACAgIDAAAAAAAAAAAAAAABADERIQJBQf/aAAgBAQABPxAAF/9k="
                 />
               </div>
             </motion.div>
@@ -142,15 +144,35 @@ export default function Home() {
               transition={{ delay: 0.4, duration: 0.5 }}
               className="flex flex-wrap justify-center gap-4"
             >
-              <Button
-                size="lg"
-                variant="glass"
-                onClick={handleCvDownload}
-              >
-                <Download className="h-5 w-5 mr-2" />
-                {t('hero.downloadCV')}
-              </Button>
-              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="lg"
+                    variant="glass"
+                  >
+                    <Download className="h-5 w-5 mr-2" />
+                    {t('hero.downloadCV')}
+                    <ChevronDown className="h-5 w-5 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => handleCvDownload('en')} className="cursor-pointer">
+                    <span className="mr-2">🇬🇧</span>
+                    <span>English</span>
+                    {locale === 'en' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
+                    <span className="mr-2">🇺🇿</span>
+                    <span>O&apos;zbekcha</span>
+                    {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
+                    <span className="mr-2">🇷🇺</span>
+                    <span>Русский</span>
+                    {locale === 'ru' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </motion.div>
             
           </motion.div>

@@ -10,13 +10,19 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
-import { Chatbot } from "@/components/chatbot";
+import dynamic from 'next/dynamic';
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
 import { StructuredData } from "@/components/structured-data";
 import { getBaseUrl, getPrimaryDomain } from "@/lib/seo";
+import { ErrorBoundary } from "@/components/error-boundary";
+
+// Lazy load Chatbot component
+const Chatbot = dynamic(() => import('@/components/chatbot').then(mod => ({ default: mod.Chatbot })), {
+  loading: () => null,
+});
 
 const profile = getProfile();
 
@@ -132,9 +138,11 @@ export default async function LocaleLayout({
           
           <Navigation />
           <main className="relative z-10 pt-16">
-            <PageTransition>
-              {children}
-            </PageTransition>
+            <ErrorBoundary>
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </ErrorBoundary>
           </main>
           <Footer />
           <Chatbot />

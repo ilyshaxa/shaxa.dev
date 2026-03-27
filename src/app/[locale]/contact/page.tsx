@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, Phone, MessageCircle, Loader2 } from 'lucide-react';
 import { getProfile } from '@/lib/data';
 
 export default function ContactPage() {
@@ -181,7 +181,7 @@ export default function ContactPage() {
                   >
                     {isSubmitting ? (
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin" />
                         {t('form.sending')}
                       </div>
                     ) : (

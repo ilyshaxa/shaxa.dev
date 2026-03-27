@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useTransition, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Download, Check } from 'lucide-react';
+import { Menu, X, Sun, Moon, Download, Check, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { ClientOnly } from '@/components/client-only';
@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'uz', name: "O'zbekcha", flag: '🇺🇿' },
+  { code: 'uz', name: "O&apos;zbekcha", flag: '🇺🇿' },
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
 ];
 
@@ -35,10 +35,6 @@ export function Navigation() {
   const cycleTheme = () => {
     setTheme(actualTheme === 'dark' ? 'light' : 'dark');
   };
-
-  const getThemeIcon = () => (actualTheme === 'dark' ? Moon : Sun);
-
-  const ThemeIcon = getThemeIcon();
 
   // Remove locale prefix from pathname for comparison
   const getPathWithoutLocale = (path: string) => {
@@ -62,31 +58,25 @@ export function Navigation() {
   };
 
   // CV download handler
-  const handleCvDownload = () => {
+  const handleCvDownload = (cvLocale: string) => {
     const cvUrls: Record<string, string> = {
       en: '/cv/shaxriyor-jabborov-cv-en.pdf',
       uz: '/cv/shaxriyor-jabborov-cv-uz.pdf',
       ru: '/cv/shaxriyor-jabborov-cv-ru.pdf',
     };
-    
-    const cvUrl = cvUrls[locale] || cvUrls.en;
-    
-    // Get localized language name
-    const languageNameKey = `languageNames.${locale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
+
+    const cvUrl = cvUrls[cvLocale] || cvUrls.en;
+
+    // Download immediately (no delay - user explicitly chose language)
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = `shaxriyor-jabborov-cv-${cvLocale}.pdf`;
+    link.click();
+
+    // Optional: Small confirmation toast
+    const languageNameKey = `languageNames.${cvLocale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
     const languageName = t(languageNameKey) || t('languageNames.en');
-    
-    // Show localized toast notification
-    toast.success(t('downloadingCV', { language: languageName }));
-    
-    // Wait 2 seconds before downloading to let user read the notification
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = cvUrl;
-      link.download = `shaxriyor-jabborov-cv-${locale}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 2000);
+    toast.success(`${languageName} CV download complete`);
   };
 
   const switchLanguage = (newLocale: string) => {
@@ -102,7 +92,7 @@ export function Navigation() {
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ x: number; width: number } | null>(null);
 
-  const updateIndicator = () => {
+  const updateIndicator = useCallback(() => {
     const container = linksContainerRef.current;
     if (!container) return;
     const activeItem = navItems.find(item => isActive(item.path));
@@ -118,7 +108,7 @@ export function Navigation() {
     const containerRect = container.getBoundingClientRect();
     const activeRect = active.getBoundingClientRect();
     setIndicator({ x: activeRect.left - containerRect.left, width: activeRect.width });
-  };
+  }, [navItems, isActive]);
 
   useLayoutEffect(() => {
     updateIndicator();
@@ -129,8 +119,7 @@ export function Navigation() {
     const onResize = () => updateIndicator();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateIndicator]);
 
   return (
     <motion.nav
@@ -249,19 +238,42 @@ export function Navigation() {
                 </AnimatePresence>
               </Button>
             </ClientOnly>
-            
-            <Button
-              variant="glass"
-              size="sm"
-              onClick={handleCvDownload}
-              className="text-foreground"
-              title={t('downloadCV')}
-              aria-label={t('downloadCV')}
-            >
-              <Download className="h-4 w-4 mr-2 text-foreground/90" />
-              {t('cv')}
-            </Button>
-            
+
+            <ClientOnly>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="glass"
+                    size="sm"
+                    className="text-foreground"
+                    title={t('downloadCV')}
+                    aria-label={t('downloadCV')}
+                  >
+                    <Download className="h-4 w-4 mr-2 text-foreground/90" />
+                    {t('cv')}
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => handleCvDownload('en')} className="cursor-pointer">
+                    <span className="mr-2">🇬🇧</span>
+                    <span>English</span>
+                    {locale === 'en' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
+                    <span className="mr-2">🇺🇿</span>
+                    <span>O&apos;zbekcha</span>
+                    {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
+                    <span className="mr-2">🇷🇺</span>
+                    <span>Русский</span>
+                    {locale === 'ru' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ClientOnly>
+
           </div>
 
           {/* Mobile menu button */}
@@ -374,15 +386,38 @@ export function Navigation() {
               ))}
               
               <div className="pt-4 border-t border-white/10 space-y-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleCvDownload}
-                  className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  {t('downloadCV')}
-                </Button>
+                <ClientOnly>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        {t('downloadCV')}
+                        <ChevronDown className="h-4 w-4 ml-auto" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={() => handleCvDownload('en')} className="cursor-pointer">
+                        <span className="mr-2">🇬🇧</span>
+                        <span>English</span>
+                        {locale === 'en' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
+                        <span className="mr-2">🇺🇿</span>
+                        <span>O&apos;zbekcha</span>
+                        {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
+                        <span className="mr-2">🇷🇺</span>
+                        <span>Русский</span>
+                        {locale === 'ru' && <Check className="h-4 w-4 ml-auto text-primary" />}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </ClientOnly>
               </div>
             </div>
           </motion.div>

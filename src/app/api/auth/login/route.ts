@@ -18,16 +18,6 @@ const rateLimitStore = new Map<string, RateLimitEntry>();
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
-// Clean up old entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, entry] of rateLimitStore.entries()) {
-    if (now - entry.lastAttempt > WINDOW_MS) {
-      rateLimitStore.delete(ip);
-    }
-  }
-}, 5 * 60 * 1000);
-
 // Get client IP address
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
@@ -35,7 +25,7 @@ function getClientIP(request: NextRequest): string {
   return forwarded?.split(',')[0]?.trim() || realIP || 'unknown';
 }
 
-// Check rate limit
+// Check rate limit with lazy cleanup
 function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetAt: number } {
   const now = Date.now();
   const entry = rateLimitStore.get(ip);
@@ -49,7 +39,7 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number; rese
     return { allowed: true, remaining: MAX_ATTEMPTS - 1, resetAt: now + WINDOW_MS };
   }
 
-  // Reset if window has passed
+  // Lazy cleanup: Reset if window has passed
   if (now - entry.firstAttempt > WINDOW_MS) {
     rateLimitStore.set(ip, {
       attempts: 1,
