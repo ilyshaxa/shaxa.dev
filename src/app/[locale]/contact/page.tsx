@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, MapPin, Phone, MessageCircle, Loader2 } from 'lucide-react';
 import { getProfile } from '@/lib/data';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 export default function ContactPage() {
   const profile = getProfile();
@@ -72,28 +72,19 @@ export default function ContactPage() {
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-        >
+        <ScrollReveal direction="up" className="text-center mb-20">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">
             <span className="text-gradient">{t('header.title')}</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {t('header.subtitle')}
           </p>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Symmetric Layout - 2 Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
+          <ScrollReveal direction="left" delay={0.1}>
             <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300 h-full">
               <CardHeader className="pb-6">
                 <CardTitle className="flex items-center gap-3 text-2xl">
@@ -191,15 +182,10 @@ export default function ContactPage() {
                 </form>
               </CardContent>
             </Card>
-          </motion.div>
+          </ScrollReveal>
 
           {/* Contact Information & Response Times */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="space-y-8"
-          >
+          <ScrollReveal direction="right" delay={0.2} className="space-y-8">
             {/* Contact Information */}
             <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300">
               <CardHeader>
@@ -293,7 +279,7 @@ export default function ContactPage() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </div>
     </div>

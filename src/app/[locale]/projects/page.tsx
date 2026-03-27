@@ -1,10 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 import { ProjectCard } from '@/components/project-card';
 import { getAllProjects, localizeProjects } from '@/lib/data';
 import { useTranslations, useMessages } from 'next-intl';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 export default function ProjectsPage() {
   const baseProjects = getAllProjects();
@@ -16,38 +16,34 @@ export default function ProjectsPage() {
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-        >
+        <ScrollReveal direction="up" className="text-center mb-20">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">
             <span className="text-gradient">{t('title')}</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {t('subtitle')}
           </p>
-        </motion.div>
-        
+        </ScrollReveal>
+
         {/* Projects Grid */}
         {projects.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {projects.map((project, index) => (
-              <ProjectCard
+              <ScrollReveal
                 key={project.title}
-                project={project}
-                index={index}
-                featured={project.featured}
-                viewDetailsText={t('viewProjectDetails')}
-              />
+                direction="up"
+                delay={index * 0.1}
+                className="h-full"
+              >
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  featured={project.featured}
+                  viewDetailsText={t('viewProjectDetails')}
+                />
+              </ScrollReveal>
             ))}
-          </motion.div>
+          </div>
         ) : (
           <div className="text-center py-20">
             <div className="max-w-md mx-auto">

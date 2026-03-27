@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Copy, Check, Shield, Loader2, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 interface SetupData {
   secret: string;
@@ -114,12 +114,7 @@ export default function SetupMFAPage() {
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-8"
-        >
+        <ScrollReveal direction="up" className="space-y-8">
           {/* Header */}
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -357,7 +352,7 @@ export default function SetupMFAPage() {
               </CardContent>
             </Card>
           )}
-        </motion.div>
+        </ScrollReveal>
       </div>
     </div>
   );

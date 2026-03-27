@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +9,7 @@ import { Copy, Check, Key, Loader2, AlertCircle, Lock, LogOut, Eye, EyeOff, Shie
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations } from 'next-intl';
+import { ScrollReveal } from '@/components/scroll-reveal';
 
 interface SSHKey {
   name: string;
@@ -291,12 +291,7 @@ export default function KeysPage() {
     return (
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-8"
-          >
+          <ScrollReveal direction="up" className="space-y-8">
             {/* Header */}
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-3 mb-4">
@@ -437,7 +432,7 @@ export default function KeysPage() {
                 </form>
               </CardContent>
             </Card>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </div>
     );
@@ -446,12 +441,7 @@ export default function KeysPage() {
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-8"
-        >
+        <ScrollReveal direction="up" className="space-y-8">
           {/* Header */}
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -515,11 +505,10 @@ export default function KeysPage() {
 
               <div className="space-y-4">
                 {keys.map((sshKey, index) => (
-                  <motion.div
+                  <ScrollReveal
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    direction="up"
+                    delay={index * 0.05}
                   >
                     <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200">
                       <CardHeader>
@@ -581,7 +570,7 @@ export default function KeysPage() {
                         </div>
                       </CardContent>
                     </Card>
-                  </motion.div>
+                  </ScrollReveal>
                 ))}
               </div>
             </>
@@ -599,7 +588,7 @@ export default function KeysPage() {
               </CardContent>
             </Card>
           )}
-        </motion.div>
+        </ScrollReveal>
       </div>
     </div>
   );

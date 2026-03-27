@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight, Check } from 'lucide-react';
+import { Download, MapPin, ExternalLink, ChevronDown, ChevronUp, ArrowRight, Check, Cloud, Container, Server, GitBranch, Activity, Database, Wrench, LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -191,52 +191,78 @@ export default function Home() {
             </p>
           </ScrollReveal>
           
-          {/* Compact Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Two-Column Tag Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
-              // Define unique colors for each category
-              const categoryColors = {
-                cloud: 'bg-blue-500',
-                containers: 'bg-green-500', 
-                infrastructure: 'bg-purple-500',
-                cicd: 'bg-orange-500',
-                monitoring: 'bg-red-500',
-                database: 'bg-pink-500',
-                tools: 'bg-cyan-500'
+              // Define icons and colors for each category
+              const categoryConfig: Record<string, { icon: LucideIcon; color: string }> = {
+                cloud: {
+                  icon: Cloud,
+                  color: 'text-blue-500 dark:text-blue-400',
+                },
+                containers: {
+                  icon: Container,
+                  color: 'text-green-500 dark:text-green-400',
+                },
+                infrastructure: {
+                  icon: Server,
+                  color: 'text-purple-500 dark:text-purple-400',
+                },
+                cicd: {
+                  icon: GitBranch,
+                  color: 'text-orange-500 dark:text-orange-400',
+                },
+                monitoring: {
+                  icon: Activity,
+                  color: 'text-red-500 dark:text-red-400',
+                },
+                database: {
+                  icon: Database,
+                  color: 'text-pink-500 dark:text-pink-400',
+                },
+                tools: {
+                  icon: Wrench,
+                  color: 'text-cyan-500 dark:text-cyan-400',
+                },
               };
-              
-              const categoryColor = categoryColors[category as keyof typeof categoryColors] || 'bg-primary';
-              
+
+              const config = categoryConfig[category] || categoryConfig.tools;
+              const Icon = config.icon;
+
               return (
                 <ScrollReveal
                   key={category}
                   direction="up"
-                  delay={categoryIndex * 0.1}
+                  delay={categoryIndex * 0.05}
                   className="group"
                 >
-                  <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 h-full overflow-hidden relative">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full ${categoryColor}`} />
-                        <CardTitle className="text-lg font-semibold capitalize text-foreground">
-                          {t(`skills.categories.${category}`)}
-                        </CardTitle>
-                      </div>
-                    </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex flex-wrap gap-2">
-                      {skills.map((skill, skillIndex) => (
-                        <div
-                          key={skillIndex}
-                          className="text-xs font-medium px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/20 hover:border-primary/40 hover:scale-105 transition-all duration-200"
-                        >
-                          {skill}
+                  <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden relative">
+                    <div className="p-6">
+                      {/* Category Header */}
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className={`p-2.5 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-gray-200/20 dark:border-white/10 ${config.color}`}>
+                          <Icon className="h-5 w-5" />
                         </div>
-                      ))}
+                        <h3 className="text-lg font-semibold capitalize text-foreground">
+                          {t(`skills.categories.${category}`)}
+                        </h3>
+                      </div>
+
+                      {/* Skills Grid */}
+                      <div className="flex flex-wrap gap-2">
+                        {skills.map((skill, skillIndex) => (
+                          <Badge
+                            key={skillIndex}
+                            variant="outline"
+                            className="px-3 py-1.5 text-sm font-medium border-gray-300/40 dark:border-white/20 bg-white/10 dark:bg-black/10 hover:bg-white/20 dark:hover:bg-black/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
+                  </Card>
+                </ScrollReveal>
               );
             })}
           </div>

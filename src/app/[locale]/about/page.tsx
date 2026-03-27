@@ -3,8 +3,9 @@
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale, useMessages } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollReveal } from '@/components/scroll-reveal';
 import { Badge } from '@/components/ui/badge';
-import { GraduationCap, Award, Globe, Code, Heart, User, MapPin, Users, Building } from 'lucide-react';
+import { GraduationCap, Award, Globe, Code, Heart, User, MapPin, Users, Building, Cloud, Container, Server, GitBranch, Activity, Database, Wrench, LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { getProfile, getAllExperiences, localizeExperiences, localizeEducation } from '@/lib/data';
 import { useTheme } from '@/components/theme-provider';
@@ -21,6 +22,7 @@ export default function AboutPage() {
   const [mounted, setMounted] = useState(false);
   const t = useTranslations('about');
   const tProfile = useTranslations('profile');
+  const tHome = useTranslations('home');
   const locale = useLocale();
 
   // Helper function to get localized industry
@@ -526,96 +528,89 @@ export default function AboutPage() {
               {t('sections.skills.subtitle')}
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 gap-8">
+
           {/* Skills */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="group"
-          >
-            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <Code className="h-6 w-6 text-primary" />
-                  {t('sections.skills.technicalSkills')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('sections.skills.technicalSkillsSubtitle')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-8">
-                  {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
-                    // Define unique colors for each category
-                    const categoryColors = {
-                      cloud: 'bg-blue-500',
-                      containers: 'bg-green-500', 
-                      infrastructure: 'bg-purple-500',
-                      cicd: 'bg-orange-500',
-                      monitoring: 'bg-red-500',
-                      database: 'bg-pink-500',
-                      tools: 'bg-cyan-500'
-                    };
-                    
-                    const categoryColor = categoryColors[category as keyof typeof categoryColors] || 'bg-primary';
-                    
-                    return (
-                      <motion.div 
-                        key={category} 
-                        className="space-y-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: categoryIndex * 0.1, duration: 0.6 }}
-                      >
-                        {/* Simple Category Header */}
-                        <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-                          <div className={`w-3 h-3 rounded-full ${categoryColor}`} />
-                          <h4 className="font-semibold text-lg capitalize text-primary">
-                            {category.replace(/([A-Z])/g, ' $1').trim()}
-                          </h4>
-                          <span className="text-sm text-muted-foreground">
-                            ({skills.length})
-                          </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
+              // Define icons and colors for each category
+              const categoryConfig: Record<string, { icon: LucideIcon; color: string }> = {
+                cloud: {
+                  icon: Cloud,
+                  color: 'text-blue-500 dark:text-blue-400',
+                },
+                containers: {
+                  icon: Container,
+                  color: 'text-green-500 dark:text-green-400',
+                },
+                infrastructure: {
+                  icon: Server,
+                  color: 'text-purple-500 dark:text-purple-400',
+                },
+                cicd: {
+                  icon: GitBranch,
+                  color: 'text-orange-500 dark:text-orange-400',
+                },
+                monitoring: {
+                  icon: Activity,
+                  color: 'text-red-500 dark:text-red-400',
+                },
+                database: {
+                  icon: Database,
+                  color: 'text-pink-500 dark:text-pink-400',
+                },
+                tools: {
+                  icon: Wrench,
+                  color: 'text-cyan-500 dark:text-cyan-400',
+                },
+              };
+
+              const config = categoryConfig[category] || categoryConfig.tools;
+              const Icon = config.icon;
+
+              return (
+                <ScrollReveal
+                  key={category}
+                  direction="up"
+                  delay={categoryIndex * 0.05}
+                  className="group"
+                >
+                  <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden relative">
+                    <div className="p-6">
+                      {/* Category Header */}
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className={`p-2.5 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-gray-200/20 dark:border-white/10 ${config.color}`}>
+                          <Icon className="h-5 w-5" />
                         </div>
-                        
-                        {/* Simple Skills Grid */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                          {skills.map((skill, skillIndex) => (
-                            <motion.div
-                              key={skillIndex}
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ 
-                                delay: categoryIndex * 0.1 + skillIndex * 0.05, 
-                                duration: 0.4 
-                              }}
-                              whileHover={{}}
-                              className="group"
-                            >
-                              <div className="p-3 rounded-lg bg-white/5 dark:bg-black/5 border border-gray-200/40 dark:border-white/10 hover:border-primary/30 dark:hover:border-primary/30 transition-all duration-200 text-center">
-                                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200">
-                                  {skill}
-                                </span>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                        <h3 className="text-lg font-semibold capitalize text-foreground">
+                          {tHome(`skills.categories.${category}`)}
+                        </h3>
+                      </div>
+
+                      {/* Skills Grid */}
+                      <div className="flex flex-wrap gap-2">
+                        {skills.map((skill, skillIndex) => (
+                          <Badge
+                            key={skillIndex}
+                            variant="outline"
+                            className="px-3 py-1.5 text-sm font-medium border-gray-300/40 dark:border-white/20 bg-white/10 dark:bg-black/10 hover:bg-white/20 dark:hover:bg-black/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </ScrollReveal>
+              );
+            })}
+          </div>
 
           {/* Languages */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.0, duration: 0.8 }}
-            className="group"
+            className="group mt-12"
           >
             <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
               <CardHeader className="pb-4">
@@ -684,7 +679,6 @@ export default function AboutPage() {
               </CardContent>
             </Card>
           </motion.div>
-          </div>
         </motion.div>
 
         {/* Values & Philosophy Section */}
