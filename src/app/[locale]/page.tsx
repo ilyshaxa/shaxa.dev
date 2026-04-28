@@ -163,7 +163,7 @@ export default function Home() {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
                     <span className="mr-2">🇺🇿</span>
-                    <span>O&apos;zbekcha</span>
+                    <span>O'zbekcha</span>
                     {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">

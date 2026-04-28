@@ -227,7 +227,7 @@
     }
   },
   "footer": {
-    "copyright": "© 2026 {name}. Создано с Next.js, TypeScript и VibeCoding ☕",
+    "copyright": "© {year} {name}. Создано с Next.js, TypeScript и VibeCoding ☕",
     "template": "Не стесняйтесь использовать этот шаблон из моего",
     "github": "GitHub"
   },

@@ -12,6 +12,7 @@ export function Footer() {
   const profile = getProfile();
   const t = useTranslations('footer');
   const { theme } = useTheme();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className={`py-16 px-4 sm:px-6 lg:px-8 relative z-10 border-t ${
@@ -98,7 +99,7 @@ export function Footer() {
             </Button>
           </div>
           <p className="text-muted-foreground">
-            {t('copyright', { name: profile.name })}
+            {t('copyright', { year: currentYear, name: profile.name })}
           </p>
           <LastUpdated />
           <p className="text-muted-foreground">
