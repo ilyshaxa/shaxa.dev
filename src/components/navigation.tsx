@@ -262,7 +262,7 @@ export function Navigation() {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
                     <span className="mr-2">🇺🇿</span>
-                    <span>O'zbekcha</span>
+                    <span>{"O'zbekcha"}</span>
                     {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
@@ -407,7 +407,7 @@ export function Navigation() {
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
                         <span className="mr-2">🇺🇿</span>
-                        <span>O'zbekcha</span>
+                        <span>{"O'zbekcha"}</span>
                         {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
