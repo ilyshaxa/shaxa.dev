@@ -1,19 +1,11 @@
 import { MetadataRoute } from 'next';
-import { getPrimaryDomain } from '@/lib/seo';
 
-export default async function robots(): Promise<MetadataRoute.Robots> {
-  // Use primary domain for sitemap reference (canonical)
-  const primaryDomain = getPrimaryDomain();
-  
+export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/keys', '/api/'],
-      },
-    ],
-    sitemap: `${primaryDomain}/sitemap.xml`,
+    rules: {
+      userAgent: '*',
+      allow: '/',
+    },
+    sitemap: 'https://shaxa.dev/sitemap.xml',
   };
 }
-
