@@ -231,42 +231,6 @@
     "template": "Feel free to use this template from my",
     "github": "GitHub"
   },
-  "keys": {
-    "title": "SSH Keys",
-    "subtitle": "Access your SSH keys from anywhere",
-    "auth": {
-      "title": "Authentication Required",
-      "subtitle": "Enter password to access your SSH keys",
-      "description": "Please enter your password to view SSH keys",
-      "descriptionWithMFA": "Please enter your password and authentication code",
-      "password": "Password",
-      "passwordPlaceholder": "Enter password",
-      "mfaTitle": "Two-Factor Authentication",
-      "authCode": "Authentication Code",
-      "authCodePlaceholder": "XXXXXX",
-      "authCodeHint": "Enter the 6-digit code from your authenticator app",
-      "authenticating": "Authenticating...",
-      "rateLimited": "Rate Limited",
-      "login": "Login",
-      "logout": "Logout",
-      "rateLimitExceeded": "Rate limit exceeded",
-      "tryAgainIn": "Try again in {minutes} minute{plural}",
-      "attemptsRemaining": "{count} attempt{plural} remaining"
-    },
-    "list": {
-      "copyAll": "Copy All Keys",
-      "copy": "Copy",
-      "copied": "Copied",
-      "clickToCopy": "Click the copy button to copy the entire key",
-      "private": "Private",
-      "public": "Public",
-      "empty": {
-        "title": "No SSH keys found",
-        "description": "Configure SSH keys in your environment variables"
-      },
-      "error": "Error"
-    }
-  },
   "chatbot": {
     "welcome": "Hi! I'm Shaxriyor's AI assistant. Ask me anything about his work, experience, or projects!",
     "title": "Shaxriyor's AI",

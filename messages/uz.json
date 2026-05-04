@@ -231,42 +231,6 @@
     "template": "Template ",
     "github": "GitHub"
   },
-  "keys": {
-    "title": "SSH Kalitlari",
-    "subtitle": "SSH kalitlaringizga istalgan joydan kiring",
-    "auth": {
-      "title": "Autentifikatsiya Talab Qilinadi",
-      "subtitle": "SSH kalitlariga kirish uchun parolni kiriting",
-      "description": "SSH kalitlarini ko'rish uchun parolingizni kiriting",
-      "descriptionWithMFA": "Parolingiz va autentifikatsiya kodini kiriting",
-      "password": "Parol",
-      "passwordPlaceholder": "Parolni kiriting",
-      "mfaTitle": "Ikki Faktorli Autentifikatsiya",
-      "authCode": "Autentifikatsiya Kodi",
-      "authCodePlaceholder": "XXXXXX",
-      "authCodeHint": "Autentifikator ilovasidan 6 raqamli kodni kiriting",
-      "authenticating": "Tekshirilmoqda...",
-      "rateLimited": "Cheklangan",
-      "login": "Kirish",
-      "logout": "Chiqish",
-      "rateLimitExceeded": "Cheklov oshib ketdi",
-      "tryAgainIn": "{minutes} daqiqada qayta urinib ko'ring",
-      "attemptsRemaining": "{count} urinish qoldi"
-    },
-    "list": {
-      "copyAll": "Barcha Kalitlarni Nusxalash",
-      "copy": "Nusxalash",
-      "copied": "Nusxalandi",
-      "clickToCopy": "Butun kalitni nusxalash uchun nusxalash tugmasini bosing",
-      "private": "Shaxsiy",
-      "public": "Ommaviy",
-      "empty": {
-        "title": "SSH kalitlari topilmadi",
-        "description": "Atrof-muhit o'zgaruvchilarida SSH kalitlarini sozlang"
-      },
-      "error": "Xatolik"
-    }
-  },
   "chatbot": {
     "welcome": "Salom! Men Shaxriyorning AI yordamchisiman. Uning ishi, tajribasi yoki loyihalari haqida biror narsa so'rang!",
     "title": "Shaxriyorning AI",
