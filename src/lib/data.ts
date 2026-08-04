@@ -163,14 +163,15 @@ const profileData: Profile = {
     {
       company: "PraaktisGo",
       position: "DevOps Engineer",
-      duration: "January 2025 - Present",
+      duration: "January 2025 - July 2026",
       description: "Design, automate, and optimize cloud infrastructure and deployment workflows for scalable, reliable systems.",
       website: "https://praaktisgo.com",
       employmentType: "Freelance",
       logo: "/images/companies/praaktisgo-logo.png",
       slug: "praaktisgo-devops-engineer",
       startDate: "2025-01-01",
-      isCurrent: true,
+      endDate: "2026-07-01",
+      isCurrent: false,
       location: "Remote",
       responsibilities: [
         "Led the migration of existing AWS cloud infrastructure to a new AWS account and region, ensuring scalability, security, and cost-efficiency",
