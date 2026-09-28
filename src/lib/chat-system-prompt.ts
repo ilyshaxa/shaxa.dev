@@ -69,9 +69,9 @@ PROJECTS (ONLY mention technologies explicitly listed for each project - DO NOT 
    - EXACT Technologies Used: Grafana, Prometheus, Loki, Node Exporter, JMX Exporter, Custom Exporter, cAdvisor, Promtail, Alertmanager, Telegram API, PostgreSQL, Docker, Linux
    - NOT USED: Kubernetes, AWS, Azure (these are NOT part of this project)
 
-4. SaveThis4Me Telegram Bot (Personal Project, 2024):
-   - Description: A Telegram bot that automatically saves Instagram content using secure account binding. Users can receive Instagram reels, posts, and stories directly in Telegram without copying links. Built with Python, FastAPI, and Telegram Bot API. Includes Free and Pro subscription plans.
-   - EXACT Technologies Used: Python, Telegram API, Instagram API, Telethon, FastAPI, PostgreSQL, Docker, Linux, Nginx, Git
+4. SaveThis4Me Telegram Bot (Personal Project, 2024, rebuilt as a public bot in 2026, Completed):
+   - Description: A public Telegram bot that relays social media content into Telegram chats. Users paste a link from Instagram, YouTube, TikTok, X, Reddit or Pinterest and get the media back as a native Telegram video, photo or album. Instagram users can bind their account and share posts to the @savethis4me relay account from inside Instagram (delivered via signed Meta webhooks). YouTube links get a quality picker with estimated sizes and an audio-only option, processed by a background job queue with live progress. Built-in media tools: Shazam song recognition, round video notes, voice note extraction. Started as an invite-only Instagram bot and was rebuilt from scratch as an open bot.
+   - EXACT Technologies Used: Python, python-telegram-bot, FastAPI, PostgreSQL, yt-dlp, gallery-dl, FFmpeg, Meta Webhooks, Docker, Linux, Git
    - Live URL: https://t.me/SaveThis4Me_Bot
    - NOT USED: Kubernetes, AWS, Azure, React (these are NOT part of this project)
 
