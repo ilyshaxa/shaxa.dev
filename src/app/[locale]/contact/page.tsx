@@ -1,284 +1,247 @@
 'use client';
 
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CheckCircle2, Loader2, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, MapPin, Phone, MessageCircle, Loader2 } from 'lucide-react';
-import { getProfile } from '@/lib/data';
+import { GroupedList, GroupedListItem } from '@/components/grouped-list';
 import { ScrollReveal } from '@/components/scroll-reveal';
+import { SectionHeader } from '@/components/section-header';
+import { getProfile } from '@/lib/data';
+import { spring } from '@/lib/motion';
+import { isValidEmail } from '@/lib/validation';
+
+const MAX_MESSAGE_LENGTH = 3000; // Telegram has a 4096 character limit, leaving some buffer
+const emptyForm = { name: '', email: '', subject: '', message: '' };
+
+type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'sent' } | { kind: 'error'; detail?: string };
+
+function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
+  return (
+    <span className="flex size-8 items-center justify-center rounded-[9px] bg-primary-fill text-white">
+      <Icon className="size-4" />
+    </span>
+  );
+}
 
 export default function ContactPage() {
   const profile = getProfile();
   const t = useTranslations('contact');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const MAX_MESSAGE_LENGTH = 3000; // Telegram has a 4096 character limit, leaving some buffer
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        // Reset form on success
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        alert(t('form.success'));
-      } else {
-        alert(`${t('form.error')}: ${result.error || t('form.error')}`);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert(t('form.error'));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [formData, setFormData] = useState(emptyForm);
+  const [status, setStatus] = useState<Status>({ kind: 'idle' });
+  const [emailError, setEmailError] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
     // Apply character limit to message field
-    if (name === 'message' && value.length > MAX_MESSAGE_LENGTH) {
-      return; // Don't update if exceeding limit
-    }
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'message' && value.length > MAX_MESSAGE_LENGTH) return;
+    if (name === 'email' && emailError && isValidEmail(value)) setEmailError(false);
+    if (status.kind === 'error') setStatus({ kind: 'idle' });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isValidEmail(formData.email)) {
+      setEmailError(true);
+      return;
+    }
+    setStatus({ kind: 'submitting' });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.ok) {
+        setFormData(emptyForm);
+        setStatus({ kind: 'sent' });
+      } else {
+        // Typed text is kept so the visitor can retry.
+        setStatus({ kind: 'error', detail: result.error });
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus({ kind: 'error' });
+    }
+  };
+
+  const responseLabel = (key: 'email' | 'phone' | 'socialMedia') => t(`responseTimes.${key}`).replace(/:$/, '');
+
   return (
-    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <ScrollReveal direction="up" className="text-center mb-20">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">
-            <span className="text-gradient">{t('header.title')}</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {t('header.subtitle')}
-          </p>
+    <div className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+      <div className="mx-auto max-w-[1200px]">
+        <ScrollReveal>
+          <SectionHeader as="h1" title={t('header.title')} subtitle={t('header.subtitle')} />
         </ScrollReveal>
 
-        {/* Symmetric Layout - 2 Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Contact Form */}
-          <ScrollReveal direction="left" delay={0.1}>
-            <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300 h-full">
-              <CardHeader className="pb-6">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <MessageCircle className="h-6 w-6 text-muted-foreground" />
-                  {t('form.title')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('form.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-sm font-medium">{t('form.name')}</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder={t('form.namePlaceholder')}
-                        className="glass-dark border-white/10 hover:border-white/20 transition-colors h-12"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-medium">{t('form.email')}</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder={t('form.emailPlaceholder')}
-                        className="glass-dark border-white/10 hover:border-white/20 transition-colors h-12"
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-sm font-medium">{t('form.subjectLabel')}</Label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      placeholder={t('form.subjectPlaceholder')}
-                      className="glass-dark border-white/10 hover:border-white/20 transition-colors h-12"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <Label htmlFor="message" className="text-sm font-medium">{t('form.message')}</Label>
-                      <span className="text-sm text-muted-foreground">
-                        {formData.message.length}/{MAX_MESSAGE_LENGTH}
-                      </span>
-                    </div>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder={t('form.messagePlaceholder')}
-                      className="glass-dark border-white/10 hover:border-white/20 transition-colors min-h-[140px] resize-none"
-                      maxLength={MAX_MESSAGE_LENGTH}
-                      required
-                    />
-                    {formData.message.length > MAX_MESSAGE_LENGTH * 0.9 && (
-                      <p className="text-sm text-amber-500 flex items-center gap-2">
-                        <span>⚠️</span>
-                        {t('form.charLimitWarning')}
-                      </p>
-                    )}
-                  </div>
-                  
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    variant="glass"
-                    size="lg"
-                    className="w-full h-12 text-base font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <ScrollReveal>
+            <Card className="gap-0 p-6 md:p-8">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {status.kind === 'sent' ? (
+                  <motion.div
+                    key="sent"
+                    role="status"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={spring.default}
+                    className="flex min-h-[28rem] flex-col items-center justify-center text-center"
                   >
-                    {isSubmitting ? (
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        {t('form.sending')}
+                    <CheckCircle2 className="size-14 text-success" strokeWidth={1.5} aria-hidden />
+                    <p className="mt-6 text-title-2">{t('form.success')}</p>
+                    <Button variant="plain" className="mt-4" onClick={() => setStatus({ kind: 'idle' })}>
+                      {t('form.sendAnother')}
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    onSubmit={handleSubmit}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={spring.default}
+                  >
+                    <h2 className="text-title-2">{t('form.title')}</h2>
+                    <p className="mt-2 text-body text-muted-foreground">{t('form.description')}</p>
+
+                    <div className="mt-8 space-y-5">
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">{t('form.name')}</Label>
+                          <Input
+                            id="name"
+                            name="name"
+                            autoComplete="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder={t('form.namePlaceholder')}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">{t('form.email')}</Label>
+                          <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            onBlur={() => setEmailError(formData.email.trim() !== '' && !isValidEmail(formData.email))}
+                            aria-invalid={emailError}
+                            aria-describedby={emailError ? 'email-error' : undefined}
+                            placeholder={t('form.emailPlaceholder')}
+                            required
+                          />
+                          {emailError && (
+                            <p id="email-error" className="text-caption text-destructive">
+                              {t('form.invalidEmail')}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      t('form.send')
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="subject">{t('form.subjectLabel')}</Label>
+                        <Input
+                          id="subject"
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                          placeholder={t('form.subjectPlaceholder')}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="message">{t('form.message')}</Label>
+                          <span className="text-caption tabular-nums text-muted-foreground">
+                            {formData.message.length}/{MAX_MESSAGE_LENGTH}
+                          </span>
+                        </div>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          placeholder={t('form.messagePlaceholder')}
+                          className="min-h-[140px] resize-none"
+                          maxLength={MAX_MESSAGE_LENGTH}
+                          required
+                        />
+                        {formData.message.length > MAX_MESSAGE_LENGTH * 0.9 && (
+                          <p className="text-caption text-amber-600 dark:text-amber-400">{t('form.charLimitWarning')}</p>
+                        )}
+                      </div>
+
+                      {status.kind === 'error' && (
+                        <p role="alert" className="rounded-chip bg-destructive/10 px-4 py-3 text-caption text-destructive">
+                          {t('form.error')}
+                          {status.detail ? ` (${status.detail})` : ''}
+                        </p>
+                      )}
+
+                      <Button type="submit" size="lg" className="w-full" disabled={status.kind === 'submitting'}>
+                        {status.kind === 'submitting' ? (
+                          <>
+                            <Loader2 className="size-4 animate-spin" />
+                            {t('form.sending')}
+                          </>
+                        ) : (
+                          t('form.send')
+                        )}
+                      </Button>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </Card>
           </ScrollReveal>
 
-          {/* Contact Information & Response Times */}
-          <ScrollReveal direction="right" delay={0.2} className="space-y-8">
-            {/* Contact Information */}
-            <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300">
-              <CardHeader>
-                <CardTitle className="text-2xl">{t('info.title')}</CardTitle>
-                <CardDescription className="text-base">
-                  {t('info.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-muted/20 flex items-center justify-center">
-                    <Mail className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">{t('info.email')}</h4>
-                    <a 
-                      href={`mailto:${profile.email}`}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {profile.email}
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-muted/20 flex items-center justify-center">
-                    <Phone className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">{t('info.phone')}</h4>
-                    <a 
-                      href={`tel:${profile.phone}`}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {profile.phone}
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-muted/20 flex items-center justify-center">
-                    <MapPin className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-lg">{t('info.location')}</h4>
-                    <p className="text-muted-foreground">{profile.location}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <ScrollReveal delay={0.05} className="space-y-12">
+            <section>
+              <h2 className="text-title-2">{t('info.title')}</h2>
+              <p className="mt-2 text-body text-muted-foreground">{t('info.description')}</p>
+              <GroupedList className="mt-6">
+                <GroupedListItem
+                  leading={<RowIcon icon={Mail} />}
+                  title={profile.email}
+                  subtitle={t('info.email')}
+                  href={`mailto:${profile.email}`}
+                />
+                <GroupedListItem
+                  leading={<RowIcon icon={Phone} />}
+                  title={profile.phone}
+                  subtitle={t('info.phone')}
+                  href={`tel:${profile.phone.replace(/\s/g, '')}`}
+                />
+                <GroupedListItem leading={<RowIcon icon={MapPin} />} title={profile.location} subtitle={t('info.location')} />
+              </GroupedList>
+            </section>
 
-            {/* Response Times */}
-            <Card className="glass-dark border-white/20 hover:border-white/40 transition-all duration-300">
-              <CardHeader>
-                <CardTitle className="text-2xl">
-                  {t('responseTimes.title')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('responseTimes.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
-                        <Mail className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                      <span className="font-medium">{t('responseTimes.email')}</span>
-                    </div>
-                    <span className="font-semibold">{t('responseTimes.emailTime')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                      <span className="font-medium">{t('responseTimes.phone')}</span>
-                    </div>
-                    <span className="font-semibold">{t('responseTimes.phoneTime')}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
-                        <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                      <span className="font-medium">{t('responseTimes.socialMedia')}</span>
-                    </div>
-                    <span className="font-semibold">{t('responseTimes.socialMediaTime')}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <section>
+              <h2 className="text-title-2">{t('responseTimes.title')}</h2>
+              <p className="mt-2 text-body text-muted-foreground">{t('responseTimes.description')}</p>
+              <GroupedList className="mt-6">
+                <GroupedListItem leading={<RowIcon icon={Mail} />} title={responseLabel('email')} trailing={t('responseTimes.emailTime')} />
+                <GroupedListItem leading={<RowIcon icon={Phone} />} title={responseLabel('phone')} trailing={t('responseTimes.phoneTime')} />
+                <GroupedListItem
+                  leading={<RowIcon icon={MessageCircle} />}
+                  title={responseLabel('socialMedia')}
+                  trailing={t('responseTimes.socialMediaTime')}
+                />
+              </GroupedList>
+            </section>
           </ScrollReveal>
         </div>
       </div>
