@@ -25,7 +25,8 @@
     "themeNames": {
       "light": "Light",
       "dark": "Dark"
-    }
+    },
+    "cvDownloaded": "{language} CV download complete"
   },
   "home": {
     "hero": {

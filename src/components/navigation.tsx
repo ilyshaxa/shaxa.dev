@@ -187,7 +187,7 @@ export function Navigation() {
             {indicator && (
               <motion.div
                 aria-hidden
-                className="absolute inset-y-1 left-0 rounded-full bg-black/[0.05] dark:bg-white/[0.1]"
+                className="absolute inset-y-2 left-0 rounded-full bg-black/[0.05] dark:bg-white/[0.1]"
                 initial={false}
                 animate={{ x: indicator.x, width: indicator.width }}
                 transition={spring.snappy}
@@ -202,7 +202,7 @@ export function Navigation() {
                 }}
                 aria-current={item.href === activeHref ? 'page' : undefined}
                 className={cn(
-                  'relative rounded-full px-3.5 py-2 text-[0.8125rem] transition-colors',
+                  'relative flex h-11 items-center rounded-full px-3.5 text-[0.8125rem] transition-colors',
                   item.href === activeHref ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 )}
               >

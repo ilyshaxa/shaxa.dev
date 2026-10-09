@@ -25,7 +25,8 @@
     "themeNames": {
       "light": "Yorug'",
       "dark": "Qorong'i"
-    }
+    },
+    "cvDownloaded": "{language} tilidagi CV yuklab olindi"
   },
   "home": {
     "hero": {

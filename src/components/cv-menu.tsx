@@ -33,7 +33,7 @@ export function CvMenu({ children, align = 'end' }: CvMenuProps) {
     link.href = `/cv/shaxriyor-jabborov-cv-${cvLocale}.pdf`;
     link.download = `shaxriyor-jabborov-cv-${cvLocale}.pdf`;
     link.click();
-    toast.success(`${t(`languageNames.${cvLocale}`)} CV download complete`);
+    toast.success(t('cvDownloaded', { language: t(`languageNames.${cvLocale}`) }));
   };
 
   return (

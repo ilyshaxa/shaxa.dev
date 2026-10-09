@@ -25,7 +25,8 @@
     "themeNames": {
       "light": "Светлая",
       "dark": "Темная"
-    }
+    },
+    "cvDownloaded": "CV на языке «{language}» загружено"
   },
   "home": {
     "hero": {
