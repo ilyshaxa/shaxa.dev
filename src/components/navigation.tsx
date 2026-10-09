@@ -19,6 +19,7 @@ import { CrossfadeIcon } from '@/components/crossfade-icon';
 import { CvMenu } from '@/components/cv-menu';
 import { useTheme } from '@/components/theme-provider';
 import { spring } from '@/lib/motion';
+import { useMediaQuery } from '@/lib/use-media-query';
 import { cn } from '@/lib/utils';
 
 const languages = [
@@ -105,6 +106,7 @@ export function Navigation() {
   const locale = useLocale();
   const t = useTranslations('navigation');
   const currentPath = stripLocale(pathname);
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
   const navItems = useMemo(
     () => [
@@ -159,6 +161,10 @@ export function Navigation() {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (isDesktop) setIsOpen(false);
+  }, [isDesktop]);
 
   useEffect(() => {
     if (!isOpen) return;

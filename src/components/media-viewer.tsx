@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { AnimatePresence, animate, motion, useMotionValue } from 'framer-motion';
 import { Maximize, Pause, Play, RotateCcw, Volume2, VolumeX, X, ZoomIn, ZoomOut } from 'lucide-react';
@@ -155,6 +156,14 @@ function ZoomPanStage({ src, alt, layoutId, showImage, sizes, className, priorit
     settle(scale.get(), { x: x.get() + project(velocity.x), y: y.get() + project(velocity.y) }, velocity);
   };
 
+  const onPointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    // A cancelled gesture carries no trustworthy release position: settle in place, no fling.
+    settle(scale.get(), { x: x.get(), y: y.get() });
+  };
+
   return (
     <div
       ref={stageRef}
@@ -167,7 +176,7 @@ function ZoomPanStage({ src, alt, layoutId, showImage, sizes, className, priorit
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
+      onPointerCancel={onPointerCancel}
     >
       {showImage && (
         <motion.div layoutId={layoutId} className="absolute inset-0" transition={spring.default}>
@@ -230,7 +239,7 @@ function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps
     };
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={alt}>
       <motion.div
         aria-hidden
@@ -254,7 +263,8 @@ function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps
           </ViewerChip>
         }
       />
-    </div>
+    </div>,
+    document.body
   );
 }
 
