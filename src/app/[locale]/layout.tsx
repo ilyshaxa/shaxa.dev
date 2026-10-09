@@ -8,8 +8,6 @@ import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MotionProvider } from "@/components/motion-provider";
-import { ParticleBackground } from "@/components/particle-background";
-import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
 import dynamic from 'next/dynamic';
 import { ScrollToTop } from "@/components/scroll-to-top";
@@ -131,19 +129,11 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages} key={locale}>
       <ThemeProvider>
         <MotionProvider>
-          <div className="min-h-screen relative overflow-hidden bg-background">
-            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 dark:opacity-10" />
-            <div className="fixed inset-0 pointer-events-none">
-              <ParticleBackground />
-              <FloatingElements />
-            </div>
-
+          <div className="relative min-h-screen overflow-x-clip bg-background">
             <Navigation />
-            <main className="relative z-10 pt-16">
+            <main className="relative z-10 pt-12">
               <ErrorBoundary>
-                <PageTransition>
-                  {children}
-                </PageTransition>
+                <PageTransition>{children}</PageTransition>
               </ErrorBoundary>
             </main>
             <Footer />

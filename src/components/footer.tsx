@@ -1,111 +1,56 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, Instagram } from 'lucide-react';
+import { Github, Instagram, Linkedin, Mail, Twitter, type LucideIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { getProfile } from '@/lib/data';
-import { useTheme } from 'next-themes';
 import { LastUpdated } from '@/components/last-updated';
+import { getProfile } from '@/lib/data';
 
 export function Footer() {
   const profile = getProfile();
   const t = useTranslations('footer');
-  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
+  const socials: Array<{ href: string; label: string; icon: LucideIcon; external: boolean }> = [
+    { href: profile.github, label: "Visit Shaxriyor's GitHub profile", icon: Github, external: true },
+    { href: profile.linkedin, label: 'Connect with Shaxriyor on LinkedIn', icon: Linkedin, external: true },
+    { href: profile.twitter, label: 'Follow Shaxriyor on Twitter', icon: Twitter, external: true },
+    { href: `mailto:${profile.email}`, label: 'Send email to Shaxriyor', icon: Mail, external: false },
+    { href: profile.instagram, label: 'Follow Shaxriyor on Instagram', icon: Instagram, external: true },
+  ];
+
   return (
-    <footer className={`py-16 px-4 sm:px-6 lg:px-8 relative z-10 border-t ${
-      theme === 'light' 
-        ? 'border-gray-200/60' 
-        : 'border-white/10'
-    }`}>
-      <div className="max-w-7xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="space-y-8"
-        >
-          <div className="flex justify-center space-x-6">
+    <footer className="relative z-10 bg-secondary px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[980px] flex-col items-center gap-5 text-center text-caption text-muted-foreground">
+        <div className="flex flex-wrap justify-center gap-1">
+          {socials.map(({ href, label, icon: Icon, external }) => (
             <Button
+              key={label}
               asChild
-              variant="glass"
-              size="sm"
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground"
             >
-              <a 
-                href={profile.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="Visit Shaxriyor's GitHub profile"
-              >
-                <Github className="h-5 w-5" />
+              <a href={href} aria-label={label} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                <Icon className="size-5" />
               </a>
             </Button>
-            <Button
-              asChild
-              variant="glass"
-              size="sm"
-            >
-              <a 
-                href={profile.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="Connect with Shaxriyor on LinkedIn"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="glass"
-              size="sm"
-            >
-              <a 
-                href={profile.twitter} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="Follow Shaxriyor on Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="glass"
-              size="sm"
-            >
-              <a 
-                href={`mailto:${profile.email}`}
-                aria-label="Send email to Shaxriyor"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="glass"
-              size="sm"
-            >
-              <a 
-                href={profile.instagram} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="Follow Shaxriyor on Instagram"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-            </Button>
-          </div>
-          <p className="text-muted-foreground">
-            {t('copyright', { year: currentYear, name: profile.name })}
-          </p>
-          <LastUpdated />
-          <p className="text-muted-foreground">
-            {t('template')} <a href="https://github.com/ilyshaxa/shaxa.dev" target="_blank" rel="noopener noreferrer" className="underline">{t('github')}</a>
-          </p>
-        </motion.div>
+          ))}
+        </div>
+        <div aria-hidden className="h-px w-full max-w-md bg-border" />
+        <p>{t('copyright', { year: currentYear, name: profile.name })}</p>
+        <LastUpdated />
+        <p>
+          {t('template')}{' '}
+          <a
+            href="https://github.com/ilyshaxa/shaxa.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline-offset-4 hover:underline"
+          >
+            {t('github')}
+          </a>
+        </p>
       </div>
     </footer>
   );
