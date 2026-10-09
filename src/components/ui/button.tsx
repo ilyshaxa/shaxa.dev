@@ -16,8 +16,6 @@ const buttonVariants = cva(
         destructive: "bg-destructive text-white hover:bg-destructive/90",
         outline: "border border-border bg-background text-foreground hover:bg-secondary",
         secondary: `text-foreground ${fill}`,
-        // Deprecated alias kept until every call site is migrated; removed in the final task.
-        glass: `text-foreground ${fill}`,
         ghost: "text-foreground hover:bg-black/[0.05] dark:hover:bg-white/[0.1]",
         plain: "text-primary underline-offset-4 hover:underline active:scale-100 active:opacity-60",
         link: "text-primary underline-offset-4 hover:underline active:scale-100",
