@@ -7,6 +7,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MotionProvider } from "@/components/motion-provider";
 import { ParticleBackground } from "@/components/particle-background";
 import { FloatingElements } from "@/components/floating-elements";
 import { PageTransition } from "@/components/page-transition";
@@ -129,31 +130,32 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages} key={locale}>
       <ThemeProvider>
-        <div className="min-h-screen relative overflow-hidden bg-background">
-          <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 dark:opacity-10" />
-          <div className="fixed inset-0 pointer-events-none">
-            <ParticleBackground />
-            <FloatingElements />
+        <MotionProvider>
+          <div className="min-h-screen relative overflow-hidden bg-background">
+            <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 dark:opacity-10" />
+            <div className="fixed inset-0 pointer-events-none">
+              <ParticleBackground />
+              <FloatingElements />
+            </div>
+
+            <Navigation />
+            <main className="relative z-10 pt-16">
+              <ErrorBoundary>
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </ErrorBoundary>
+            </main>
+            <Footer />
+            <Chatbot />
+            <ScrollToTop />
+            <Toaster />
+            <Analytics />
+            <SpeedInsights />
+            <StructuredData />
           </div>
-          
-          <Navigation />
-          <main className="relative z-10 pt-16">
-            <ErrorBoundary>
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </ErrorBoundary>
-          </main>
-          <Footer />
-          <Chatbot />
-          <ScrollToTop />
-          <Toaster />
-          <Analytics />
-          <SpeedInsights />
-          <StructuredData />
-        </div>
+        </MotionProvider>
       </ThemeProvider>
     </NextIntlClientProvider>
   );
 }
-

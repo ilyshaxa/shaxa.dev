@@ -1,76 +1,40 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { spring } from '@/lib/motion';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
   direction?: 'up' | 'down' | 'left' | 'right';
+  /** Stagger offset in seconds; capped at 0.2s so content never waits on a long cascade. */
   delay?: number;
-  duration?: number;
   distance?: number;
   className?: string;
 }
+
+const offsets = {
+  up: [0, 1],
+  down: [0, -1],
+  left: [1, 0],
+  right: [-1, 0],
+} as const;
 
 export function ScrollReveal({
   children,
   direction = 'up',
   delay = 0,
-  duration = 0.5,
-  distance = 30,
+  distance = 16,
   className = '',
 }: ScrollRevealProps) {
-  const ref = useRef(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  
-  // More aggressive viewport detection to reduce unnecessary animations
-  const isInView = useInView(ref, { 
-    once: true, 
-    margin: '-50px',
-    amount: 0.2 // Trigger when 20% of element is visible
-  });
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  // Skip animations if user prefers reduced motion
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  const directionVariants = {
-    up: { y: distance, opacity: 0 },
-    down: { y: -distance, opacity: 0 },
-    left: { x: distance, opacity: 0 },
-    right: { x: -distance, opacity: 0 },
-  };
-
-  const animateVariants = {
-    up: { y: 0, opacity: 1 },
-    down: { y: 0, opacity: 1 },
-    left: { x: 0, opacity: 1 },
-    right: { x: 0, opacity: 1 },
-  };
+  const reduceMotion = useReducedMotion();
+  const [dx, dy] = offsets[direction];
 
   return (
     <motion.div
-      ref={ref}
-      initial={directionVariants[direction]}
-      animate={isInView ? animateVariants[direction] : directionVariants[direction]}
-      transition={{
-        duration,
-        delay,
-        ease: 'easeOut',
-      }}
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: dx * distance, y: dy * distance }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+      transition={{ ...spring.default, delay: Math.min(delay, 0.2) }}
       className={className}
     >
       {children}
