@@ -29,7 +29,6 @@ export default function Home() {
   const messages = useMessages();
   const t = useTranslations('home');
   const tProfile = useTranslations('profile');
-  const tProjects = useTranslations('projects');
   const tAbout = useTranslations('about');
   const tNav = useTranslations('navigation');
   
@@ -419,11 +418,7 @@ export default function Home() {
                 className="group"
               >
                 <div className="h-full">
-                  <ProjectCard
-                    project={project}
-                    index={index}
-                    viewDetailsText={tProjects('viewProjectDetails')}
-                  />
+                  <ProjectCard project={project} />
                 </div>
               </ScrollReveal>
             ))}
