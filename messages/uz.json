@@ -64,7 +64,8 @@
       "title": "Tanlangan Loyihalar",
       "subtitle": "Mening so'nggi ishlarim va shaxsiy loyihalarim namunasi",
       "showAll": "Barchasini ko'rsatish (yana {count})",
-      "showLess": "Kamroq ko'rsatish"
+      "showLess": "Kamroq ko'rsatish",
+      "seeAll": "Barcha loyihalar"
     },
     "cta": {
       "title": "Keling, Birga Ishlaylik",
@@ -181,7 +182,15 @@
     "empty": {
       "title": "Hozircha loyihalar mavjud emas",
       "description": "Tez orada qiziqarli yangi loyihalar uchun qaytib keling!"
-    }
+    },
+    "zoomIn": "Kattalashtirish",
+    "zoomOut": "Kichiklashtirish",
+    "resetZoom": "Masshtabni tiklash",
+    "enterFullscreen": "To'liq ekran",
+    "play": "Ijro etish",
+    "pause": "Pauza",
+    "mute": "Ovozni o'chirish",
+    "unmute": "Ovozni yoqish"
   },
   "contact": {
     "header": {
@@ -206,7 +215,9 @@
       "sending": "Yuborilmoqda...",
       "success": "Xabar muvaffaqiyatli yuborildi!",
       "error": "Xabarni yuborib bo'lmadi. Iltimos, qayta urinib ko'ring.",
-      "charLimitWarning": "Xabar belgilar chegarasiga yaqinlashmoqda"
+      "charLimitWarning": "Xabar belgilar chegarasiga yaqinlashmoqda",
+      "sendAnother": "Yana xabar yuborish",
+      "invalidEmail": "To'g'ri elektron pochta manzilini kiriting."
     },
     "info": {
       "title": "Aloqa Ma'lumotlari",
@@ -252,7 +263,8 @@
       "closeChat": "Chat yordamchisini yopish",
       "closeWelcome": "Xush kelibsiz xabarini yopish",
       "sendMessage": "Xabar yuborish"
-    }
+    },
+    "today": "Bugun, {time}"
   },
   "experienceDetail": {
     "current": "Hozirgi",
@@ -296,7 +308,9 @@
     "justNow": "hozir",
     "minutesAgo": "{minutes} daqiqa oldin",
     "hoursAgo": "{hours} soat oldin",
-    "daysAgo": "{days} kun oldin"
+    "daysAgo": "{days} kun oldin",
+    "previous": "Oldingi",
+    "next": "Keyingi"
   },
   "profile": {
     "location": "Toshkent, O'zbekiston",

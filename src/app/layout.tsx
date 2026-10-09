@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial'],
+// Apple platforms render SF Pro through -apple-system (see --font-sans in globals.css);
+// everyone else gets Inter, including Cyrillic for the Russian locale.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: 'swap',
-  preload: true,
-  fallback: ['ui-monospace', 'monospace'],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -39,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="scroll-smooth" suppressHydrationWarning>
+    <html className={`${inter.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <head>
         {/* DNS Prefetch & Preconnect for external resources */}
         <link rel="preconnect" href="https://vercel.com" />
@@ -48,7 +47,7 @@ export default function RootLayout({
         
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0b0b" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(() => {
@@ -70,9 +69,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen transition-colors duration-300`}
-      >
+      <body className="min-h-screen font-sans antialiased">
         {children}
       </body>
     </html>

@@ -64,7 +64,8 @@
       "title": "Featured Projects",
       "subtitle": "A showcase of my recent work and side projects",
       "showAll": "Show All ({count} more)",
-      "showLess": "Show Less"
+      "showLess": "Show Less",
+      "seeAll": "See all projects"
     },
     "cta": {
       "title": "Let's Work Together",
@@ -181,7 +182,15 @@
     "empty": {
       "title": "No projects available yet",
       "description": "Check back soon for exciting new projects!"
-    }
+    },
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "enterFullscreen": "Full screen",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute",
+    "unmute": "Unmute"
   },
   "contact": {
     "header": {
@@ -206,7 +215,9 @@
       "sending": "Sending...",
       "success": "Message sent successfully!",
       "error": "Failed to send message. Please try again.",
-      "charLimitWarning": "Message is getting close to the character limit"
+      "charLimitWarning": "Message is getting close to the character limit",
+      "sendAnother": "Send another message",
+      "invalidEmail": "Enter a valid email address."
     },
     "info": {
       "title": "Contact Information",
@@ -252,7 +263,8 @@
       "closeChat": "Close chat assistant",
       "closeWelcome": "Close welcome message",
       "sendMessage": "Send message"
-    }
+    },
+    "today": "Today {time}"
   },
   "experienceDetail": {
     "current": "Current",
@@ -296,7 +308,9 @@
     "justNow": "just now",
     "minutesAgo": "{minutes} minutes ago",
     "hoursAgo": "{hours} hours ago",
-    "daysAgo": "{days} days ago"
+    "daysAgo": "{days} days ago",
+    "previous": "Previous",
+    "next": "Next"
   },
   "profile": {
     "location": "Tashkent, Uzbekistan",
