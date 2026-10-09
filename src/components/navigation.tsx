@@ -1,21 +1,25 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, useTransition, useCallback } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Download, Check, ChevronDown } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Check, ChevronDown, Download, Menu, Moon, Sun, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTheme } from '@/components/theme-provider';
-import { ClientOnly } from '@/components/client-only';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { toast } from 'sonner';
+import { ClientOnly } from '@/components/client-only';
+import { CrossfadeIcon } from '@/components/crossfade-icon';
+import { CvMenu } from '@/components/cv-menu';
+import { useTheme } from '@/components/theme-provider';
+import { spring } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -23,406 +27,278 @@ const languages = [
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
 ];
 
-export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [, startTransition] = useTransition();
+function stripLocale(path: string) {
+  return path.replace(/^\/(en|uz|ru)/, '') || '/';
+}
+
+function LanguageMenu() {
+  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
-  const locale = useLocale();
   const t = useTranslations('navigation');
-  const { setTheme, actualTheme } = useTheme();
+  const [, startTransition] = useTransition();
+  const current = languages.find((language) => language.code === locale);
 
-  const cycleTheme = () => {
-    setTheme(actualTheme === 'dark' ? 'light' : 'dark');
-  };
-
-  // Remove locale prefix from pathname for comparison
-  const getPathWithoutLocale = (path: string) => {
-    return path.replace(/^\/(en|uz|ru)/, '') || '/';
-  };
-
-  const currentPath = getPathWithoutLocale(pathname);
-
-  const navItems = [
-    { href: `/${locale}`, label: t('home'), path: '/' },
-    { href: `/${locale}/about`, label: t('about'), path: '/about' },
-    { href: `/${locale}/projects`, label: t('projects'), path: '/projects' },
-    { href: `/${locale}/contact`, label: t('contact'), path: '/contact' },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/') {
-      return currentPath === '/';
-    }
-    return currentPath.startsWith(path);
-  };
-
-  // CV download handler
-  const handleCvDownload = (cvLocale: string) => {
-    const cvUrls: Record<string, string> = {
-      en: '/cv/shaxriyor-jabborov-cv-en.pdf',
-      uz: '/cv/shaxriyor-jabborov-cv-uz.pdf',
-      ru: '/cv/shaxriyor-jabborov-cv-ru.pdf',
-    };
-
-    const cvUrl = cvUrls[cvLocale] || cvUrls.en;
-
-    // Download immediately (no delay - user explicitly chose language)
-    const link = document.createElement('a');
-    link.href = cvUrl;
-    link.download = `shaxriyor-jabborov-cv-${cvLocale}.pdf`;
-    link.click();
-
-    // Optional: Small confirmation toast
-    const languageNameKey = `languageNames.${cvLocale}` as 'languageNames.en' | 'languageNames.uz' | 'languageNames.ru';
-    const languageName = t(languageNameKey) || t('languageNames.en');
-    toast.success(`${languageName} CV download complete`);
-  };
-
-  const switchLanguage = (newLocale: string) => {
-    const pathWithoutLocale = getPathWithoutLocale(pathname);
+  const switchTo = (code: string) => {
     startTransition(() => {
-      router.replace(`/${newLocale}${pathWithoutLocale}`);
+      router.replace(`/${code}${stripLocale(pathname)}`);
       router.refresh();
     });
   };
 
-  // Deterministic pill animation: measure active link and animate an absolute indicator
-  const linksContainerRef = useRef<HTMLDivElement>(null);
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" aria-label={t('changeLanguage')} title={t('changeLanguage')}>
+          <span className="text-base leading-none">{current?.flag ?? '🌐'}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {languages.map((language) => (
+          <DropdownMenuItem key={language.code} onClick={() => switchTo(language.code)} className="cursor-pointer">
+            <span>{language.flag}</span>
+            <span>{language.name}</span>
+            {locale === language.code && <Check className="ml-auto size-4 text-primary" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function ThemeToggle() {
+  const { setTheme, actualTheme } = useTheme();
+  const reduceMotion = useReducedMotion();
+  const t = useTranslations('navigation');
+  const isDark = actualTheme === 'dark';
+
+  // Cross-fade the whole page instead of flashing between light and dark.
+  // flushSync makes next-themes apply the class inside the view-transition callback.
+  const toggle = () => {
+    const next = isDark ? 'light' : 'dark';
+    if (reduceMotion || typeof document.startViewTransition !== 'function') {
+      setTheme(next);
+      return;
+    }
+    document.startViewTransition(() => {
+      flushSync(() => setTheme(next));
+    });
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggle}
+      aria-label={isDark ? t('switchToLightMode') : t('switchToDarkMode')}
+      title={t('currentTheme', { theme: t(isDark ? 'themeNames.dark' : 'themeNames.light') })}
+    >
+      <CrossfadeIcon showAlt={isDark} icon={Sun} altIcon={Moon} />
+    </Button>
+  );
+}
+
+export function Navigation() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations('navigation');
+  const currentPath = stripLocale(pathname);
+
+  const navItems = useMemo(
+    () => [
+      { href: `/${locale}`, label: t('home'), path: '/' },
+      { href: `/${locale}/about`, label: t('about'), path: '/about' },
+      { href: `/${locale}/projects`, label: t('projects'), path: '/projects' },
+      { href: `/${locale}/contact`, label: t('contact'), path: '/contact' },
+    ],
+    [locale, t]
+  );
+
+  const activeHref =
+    navItems.find((item) => (item.path === '/' ? currentPath === '/' : currentPath.startsWith(item.path)))?.href ??
+    null;
+
+  // Sliding pill: measure the active link and spring the indicator to it.
+  const linksRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ x: number; width: number } | null>(null);
 
-  const updateIndicator = useCallback(() => {
-    const container = linksContainerRef.current;
-    if (!container) return;
-    const activeItem = navItems.find(item => isActive(item.path));
-    if (!activeItem) {
-      setIndicator(null);
-      return;
-    }
-    const active = linkRefs.current[activeItem.href];
-    if (!active) {
+  const measureIndicator = useCallback(() => {
+    const container = linksRef.current;
+    const active = activeHref ? linkRefs.current[activeHref] : null;
+    if (!container || !active) {
       setIndicator(null);
       return;
     }
     const containerRect = container.getBoundingClientRect();
     const activeRect = active.getBoundingClientRect();
     setIndicator({ x: activeRect.left - containerRect.left, width: activeRect.width });
-  }, [navItems, isActive]);
+  }, [activeHref]);
 
   useLayoutEffect(() => {
-    updateIndicator();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, locale]);
+    measureIndicator();
+    // Label widths change once the web font arrives.
+    document.fonts?.ready.then(measureIndicator);
+  }, [measureIndicator]);
 
   useEffect(() => {
-    const onResize = () => updateIndicator();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, [updateIndicator]);
+    window.addEventListener('resize', measureIndicator);
+    return () => window.removeEventListener('resize', measureIndicator);
+  }, [measureIndicator]);
+
+  // Hairline under the bar only once content scrolls beneath it.
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    return () => {
+      root.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [isOpen]);
 
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm border-b border-gray-100 dark:border-white/10 shadow-2xl"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-bold text-gradient"
-            >
-              shaxa.dev
-            </motion.div>
+    <nav className="fixed inset-x-0 top-0 z-50">
+      <div className="material-bar relative">
+        <div className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href={`/${locale}`} className="text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground">
+            shaxa.dev
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 relative" ref={linksContainerRef}>
+          <div ref={linksRef} className="relative hidden items-center gap-1 md:flex">
             {indicator && (
               <motion.div
-                className="absolute top-0 bottom-0 rounded-md bg-black/5 dark:bg-white/10"
+                aria-hidden
+                className="absolute inset-y-1 left-0 rounded-full bg-black/[0.05] dark:bg-white/[0.1]"
                 initial={false}
                 animate={{ x: indicator.x, width: indicator.width }}
-                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                style={{ left: 0 }}
+                transition={spring.snappy}
               />
             )}
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                ref={(el: HTMLAnchorElement | null) => {
-                  linkRefs.current[item.href] = el;
+                ref={(element) => {
+                  linkRefs.current[item.href] = element;
                 }}
-                className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
-                  isActive(item.path)
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground hover:scale-105'
-                }`}
+                aria-current={item.href === activeHref ? 'page' : undefined}
+                className={cn(
+                  'relative rounded-full px-3.5 py-2 text-[0.8125rem] transition-colors',
+                  item.href === activeHref ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                )}
               >
                 {item.label}
               </Link>
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Language Switcher */}
-            <ClientOnly>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="glass"
-                    size="sm"
-                    title={t('changeLanguage')}
-                    aria-label={t('changeLanguage')}
-                    className="gap-1.5"
-                  >
-                    <span className="text-base leading-none">
-                      {languages.find(lang => lang.code === locale)?.flag || '🌐'}
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  {languages.map((lang) => (
-                    <DropdownMenuItem
-                      key={lang.code}
-                      onClick={() => switchLanguage(lang.code)}
-                      className="flex items-center justify-between cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
-                      </span>
-                      {locale === lang.code && (
-                        <Check className="h-4 w-4 text-primary" />
-                      )}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+          <div className="flex items-center">
+            <LanguageMenu />
+            <ClientOnly fallback={<div className="size-11" />}>
+              <ThemeToggle />
             </ClientOnly>
-
-            <ClientOnly>
-              <Button
-                variant="glass"
-                size="sm"
-                onClick={cycleTheme}
-                title={t('currentTheme', { theme: t(`themeNames.${actualTheme}` as 'themeNames.light' | 'themeNames.dark') })}
-                aria-label={actualTheme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}
-                className="relative w-9 h-9 p-0"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={actualTheme}
-                    initial={{ rotate: -180, scale: 0, opacity: 0 }}
-                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                    exit={{ rotate: 180, scale: 0, opacity: 0 }}
-                    transition={{ 
-                      duration: 0.2,
-                      ease: [0.4, 0, 0.2, 1]
-                    }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    {actualTheme === 'dark' ? (
-                      <Moon className="h-4 w-4 text-foreground" />
-                    ) : (
-                      <Sun className="h-4 w-4 text-foreground" />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
+            <CvMenu>
+              <Button variant="ghost" size="sm" className="hidden md:inline-flex" title={t('downloadCV')} aria-label={t('downloadCV')}>
+                <Download className="size-4" />
+                {t('cv')}
+                <ChevronDown className="size-3.5 text-muted-foreground" />
               </Button>
-            </ClientOnly>
-
-            <ClientOnly>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="glass"
-                    size="sm"
-                    className="text-foreground"
-                    title={t('downloadCV')}
-                    aria-label={t('downloadCV')}
-                  >
-                    <Download className="h-4 w-4 mr-2 text-foreground/90" />
-                    {t('cv')}
-                    <ChevronDown className="h-4 w-4 ml-2" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => handleCvDownload('en')} className="cursor-pointer">
-                    <span className="mr-2">🇬🇧</span>
-                    <span>English</span>
-                    {locale === 'en' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
-                    <span className="mr-2">🇺🇿</span>
-                    <span>{"O'zbekcha"}</span>
-                    {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
-                    <span className="mr-2">🇷🇺</span>
-                    <span>Русский</span>
-                    {locale === 'ru' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </ClientOnly>
-
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            {/* Language Switcher Mobile */}
-            <ClientOnly>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="glass"
-                    size="sm"
-                    title={t('changeLanguage')}
-                    aria-label={t('changeLanguage')}
-                    className="gap-1.5"
-                  >
-                    <span className="text-base leading-none">
-                      {languages.find(lang => lang.code === locale)?.flag || '🌐'}
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  {languages.map((lang) => (
-                    <DropdownMenuItem
-                      key={lang.code}
-                      onClick={() => switchLanguage(lang.code)}
-                      className="flex items-center justify-between cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
-                      </span>
-                      {locale === lang.code && (
-                        <Check className="h-4 w-4 text-primary" />
-                      )}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </ClientOnly>
-
-            <ClientOnly>
-              <Button
-                variant="glass"
-                size="sm"
-                onClick={cycleTheme}
-                title={t('currentTheme', { theme: t(`themeNames.${actualTheme}` as 'themeNames.light' | 'themeNames.dark') })}
-                aria-label={actualTheme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}
-                className="relative w-9 h-9 p-0"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={actualTheme}
-                    initial={{ rotate: -180, scale: 0, opacity: 0 }}
-                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                    exit={{ rotate: 180, scale: 0, opacity: 0 }}
-                    transition={{ 
-                      duration: 0.2,
-                      ease: [0.4, 0, 0.2, 1]
-                    }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    {actualTheme === 'dark' ? (
-                      <Moon className="h-4 w-4 text-foreground" />
-                    ) : (
-                      <Sun className="h-4 w-4 text-foreground" />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </Button>
-            </ClientOnly>
-            
+            </CvMenu>
             <Button
-              variant="glass"
-              size="sm"
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground"
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsOpen((open) => !open)}
               aria-label={isOpen ? t('closeMenu') : t('openMenu')}
               aria-expanded={isOpen}
+              aria-controls="mobile-nav"
             >
-              {isOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
+              <CrossfadeIcon showAlt={isOpen} icon={Menu} altIcon={X} />
             </Button>
           </div>
         </div>
+        <motion.div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-px bg-border"
+          initial={false}
+          animate={{ opacity: isScrolled || isOpen ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+        />
       </div>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm border-t border-gray-100 dark:border-white/10"
+            key="mobile-scrim"
+            aria-hidden
+            className="fixed inset-x-0 bottom-0 top-12 -z-10 bg-black/20 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+        {isOpen && (
+          <motion.div
+            key="mobile-nav"
+            id="mobile-nav"
+            className="material-sheet overflow-hidden md:hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={spring.default}
           >
-            <div className="px-4 py-4 space-y-4">
-              {navItems.map((item) => (
-                <Link
+            <div className="px-6 pb-6 pt-2">
+              {navItems.map((item, index) => (
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
-                    isActive(item.path)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...spring.default, delay: index * 0.03 }}
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={item.href === activeHref ? 'page' : undefined}
+                    className={cn(
+                      'block border-b border-border py-3 text-title-2',
+                      item.href === activeHref ? 'text-foreground' : 'text-muted-foreground'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
-              
-              <div className="pt-4 border-t border-white/10 space-y-2">
-                <ClientOnly>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full justify-start bg-white/10 dark:bg-black/10 bg-clip-padding backdrop-filter backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/20 border border-gray-100 dark:border-white/10"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        {t('downloadCV')}
-                        <ChevronDown className="h-4 w-4 ml-auto" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem onClick={() => handleCvDownload('en')} className="cursor-pointer">
-                        <span className="mr-2">🇬🇧</span>
-                        <span>English</span>
-                        {locale === 'en' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleCvDownload('uz')} className="cursor-pointer">
-                        <span className="mr-2">🇺🇿</span>
-                        <span>{"O'zbekcha"}</span>
-                        {locale === 'uz' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleCvDownload('ru')} className="cursor-pointer">
-                        <span className="mr-2">🇷🇺</span>
-                        <span>Русский</span>
-                        {locale === 'ru' && <Check className="h-4 w-4 ml-auto text-primary" />}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </ClientOnly>
-              </div>
+              <CvMenu align="start">
+                <Button variant="secondary" className="mt-6 w-full">
+                  <Download className="size-4" />
+                  {t('downloadCV')}
+                  <ChevronDown className="ml-auto size-4" />
+                </Button>
+              </CvMenu>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 }
