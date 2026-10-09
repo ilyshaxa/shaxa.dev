@@ -1,838 +1,227 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollReveal } from '@/components/scroll-reveal';
-import { Badge } from '@/components/ui/badge';
-import { GraduationCap, Award, Globe, Code, Heart, User, MapPin, Users, Building, Cloud, Container, Server, GitBranch, Activity, Database, Wrench, LucideIcon } from 'lucide-react';
+import { useMemo } from 'react';
 import Image from 'next/image';
-import { getProfile, getAllExperiences, localizeExperiences, localizeEducation } from '@/lib/data';
-import { useTheme } from '@/components/theme-provider';
-import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
+import { Award, Code, Globe, GraduationCap, Heart, type LucideIcon } from 'lucide-react';
+import { useMessages, useTranslations } from 'next-intl';
+import { ExperienceList } from '@/components/experience-list';
+import { GroupedList, GroupedListItem } from '@/components/grouped-list';
+import { ScrollReveal } from '@/components/scroll-reveal';
+import { SectionHeader } from '@/components/section-header';
+import { SkillsBento } from '@/components/skills-bento';
+import { ThemedImage } from '@/components/themed-image';
+import { getAllExperiences, getProfile, localizeEducation, localizeExperiences } from '@/lib/data';
+import { cn } from '@/lib/utils';
+
+const values: Array<{
+  key: 'codeQuality' | 'userCentric' | 'continuousLearning' | 'collaboration';
+  icon: LucideIcon;
+  color: string;
+}> = [
+  { key: 'codeQuality', icon: Code, color: 'text-[#007aff] dark:text-[#0a84ff]' },
+  { key: 'userCentric', icon: Heart, color: 'text-[#ff2d55] dark:text-[#ff375f]' },
+  { key: 'continuousLearning', icon: GraduationCap, color: 'text-[#af52de] dark:text-[#bf5af2]' },
+  { key: 'collaboration', icon: Globe, color: 'text-[#34c759] dark:text-[#30d158]' },
+];
+
+const funFacts = ['linux', 'fitness', 'gaming', 'learner'] as const;
+
+const tileClass = 'rounded-tile bg-secondary p-6 md:p-8 contrast-more:border contrast-more:border-foreground/40';
+const sectionClass = 'mt-24 md:mt-32';
+
+function LogoTile({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-background">
+      {children}
+    </span>
+  );
+}
 
 export default function AboutPage() {
   const profile = getProfile();
-  const baseExperiences = getAllExperiences();
   const messages = useMessages();
-  const experiences = useMemo(() => localizeExperiences(baseExperiences, messages), [baseExperiences, messages]);
-  const localizedEducation = useMemo(() => localizeEducation(profile.education, messages), [profile.education, messages]);
-  const { actualTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const experiences = useMemo(() => localizeExperiences(getAllExperiences(), messages), [messages]);
+  const education = useMemo(() => localizeEducation(profile.education, messages), [profile.education, messages]);
   const t = useTranslations('about');
   const tProfile = useTranslations('profile');
-  const tHome = useTranslations('home');
-  const locale = useLocale();
 
-  // Helper function to get localized industry
-  const getLocalizedIndustry = (industry: string): string => {
-    const profileMessages = messages as Record<string, unknown>;
-    const profile = profileMessages?.profile as Record<string, unknown> | undefined;
-    const industries = profile?.industries as Record<string, string> | undefined;
-    return industries?.[industry] || industry;
-  };
-
-  // Filter out Planned and Expired certifications
   const activeCertifications = profile.certifications.filter(
-    cert => cert.status !== 'Planned' && cert.status !== 'Expired'
+    (cert) => cert.status !== 'Planned' && cert.status !== 'Expired'
   );
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const languageName = (name: string) => {
+    try {
+      return tProfile(`languages.${name}`);
+    } catch {
+      return name;
+    }
+  };
 
   return (
-    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-gradient">{t('title')}</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t('subtitle')}
-          </p>
-        </motion.div>
+    <div className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+      <div className="mx-auto max-w-[980px]">
+        <ScrollReveal>
+          <SectionHeader as="h1" title={t('title')} subtitle={t('subtitle')} />
+        </ScrollReveal>
 
-        {/* Bio Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-20"
-        >
-          <Card className="glass-dark border-white/20">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <User className="h-6 w-6 text-primary" />
-                {t('sections.bio.title')}
-              </CardTitle>
-              <CardDescription className="text-base">
-                {t('sections.bio.subtitle')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="prose prose-lg max-w-none text-muted-foreground">
-                <p className="text-lg leading-relaxed mb-6">
-                  {tProfile('bio')}
-                </p>
-                <p className="text-lg leading-relaxed">
-                  {t('sections.bio.additionalText')}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/* Bio */}
+        <ScrollReveal className="mx-auto max-w-[680px] space-y-6 text-body-lg text-muted-foreground text-pretty">
+          <p>{tProfile('bio')}</p>
+          <p>{t('sections.bio.additionalText')}</p>
+        </ScrollReveal>
 
-        {/* Professional Experience Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">{t('sections.experience.title')}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('sections.experience.subtitle')}
-            </p>
-          </div>
+        {/* Experience */}
+        <section className={sectionClass}>
+          <ScrollReveal>
+            <SectionHeader title={t('sections.experience.title')} subtitle={t('sections.experience.subtitle')} />
+          </ScrollReveal>
+          <ScrollReveal>
+            <ExperienceList experiences={experiences} variant="detailed" />
+          </ScrollReveal>
+        </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="group h-full"
-              >
-                <Link href={`/${locale}/about/${exp.slug}`} className="block h-full">
-                  <Card className="glass-dark border-gray-200/20 dark:border-white/20 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full cursor-pointer group relative overflow-hidden flex flex-col">
-                    {/* Hover effect overlay */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                    
-                    {/* Header - Fixed structure */}
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start gap-3.5 mb-3">
-                        {exp.logo && (
-                          <div className="w-12 h-12 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 p-1.5">
-                            <Image
-                              src={exp.logo}
-                              alt={`${exp.company} logo`}
-                              width={32}
-                              height={32}
-                              className="object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-base font-semibold mb-1.5 line-clamp-2 group-hover:text-primary transition-colors duration-300 min-h-[2.5rem] leading-tight">
-                            {exp.position}
-                          </CardTitle>
-                          <CardDescription className="text-sm font-medium text-muted-foreground line-clamp-1">
-                            {exp.company}
-                          </CardDescription>
-                        </div>
-                      </div>
-                      
-                      {/* Badges */}
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="secondary" className="text-xs px-2.5 py-1 font-medium">
-                          {(() => {
-                            const typeMap: Record<string, string> = {
-                              'Full-time': 'fullTime',
-                              'Part-time': 'partTime',
-                              'Contract': 'contract',
-                              'Freelance': 'freelance',
-                              'Internship': 'internship'
-                            };
-                            const key = typeMap[exp.employmentType] || 'fullTime';
-                            try {
-                              return t(`employmentTypes.${key}` as 'employmentTypes.fullTime');
-                            } catch {
-                              return exp.employmentType;
-                            }
-                          })()}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs px-2.5 py-1 font-medium">
-                          {exp.duration}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    
-                    {/* Content - Flexible with consistent spacing */}
-                    <CardContent className="pt-0 pb-4 flex-1 flex flex-col">
-                      {/* Description - Fixed height for consistency */}
-                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4 min-h-[3.75rem]">
-                        {exp.description}
-                      </p>
-                      
-                      {/* Key Skills Section */}
-                      <div className="mb-4">
-                        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2.5">
-                          {t('sections.experience.keySkills')}
-                        </h4>
-                        <div className="flex flex-wrap gap-1.5">
-                          {exp.technologies.slice(0, 5).map((skill, skillIndex) => (
-                            <Badge 
-                              key={skillIndex}
-                              variant="outline" 
-                              className="text-xs px-2.5 py-0.5 bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 transition-colors"
-                            >
-                              {skill}
-                            </Badge>
-                          ))}
-                          {exp.technologies.length > 5 && (
-                            <Badge variant="outline" className="text-xs px-2.5 py-0.5 text-muted-foreground border-muted-foreground/30">
-                              +{exp.technologies.length - 5}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Spacer to push footer to bottom */}
-                      <div className="flex-1" />
-
-                      {/* Footer Info - Always at bottom */}
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-3.5 mt-auto border-t border-white/10">
-                        {exp.location && (
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
-                            <span className="truncate">{exp.location}</span>
-                          </div>
-                        )}
-                        {exp.teamSize && (
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap">
-                            <Users className="h-3.5 w-3.5 flex-shrink-0" />
-                            <span>{exp.teamSize}</span>
-                          </div>
-                        )}
-                        {exp.industry && (
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Building className="h-3.5 w-3.5 flex-shrink-0" />
-                            <span className="truncate max-w-[150px]">{getLocalizedIndustry(exp.industry)}</span>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Education & Certifications Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">{t('sections.education.title')}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('sections.education.subtitle')}
-            </p>
-          </div>
-          
-          <div className={`grid grid-cols-1 gap-8 ${
-            activeCertifications.length > 2 
-              ? 'lg:grid-cols-3' 
-              : 'lg:grid-cols-2'
-          }`}>
-          {/* Education */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className={activeCertifications.length > 2 ? 'lg:col-span-1' : ''}
-          >
-            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                  {t('sections.education.educationTab')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('sections.education.educationSubtitle')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className={`grid gap-6 items-stretch ${
-                  localizedEducation.length === 1 
-                    ? 'grid-cols-1' 
-                    : localizedEducation.length === 2 
-                    ? 'grid-cols-1 md:grid-cols-2' 
-                    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                }`}>
-                  {localizedEducation.map((edu, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
-                      className="group relative h-full"
-                    >
-                      {edu.website ? (
-                        <a
-                          href={edu.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block h-full"
-                          aria-label={`Visit ${edu.institution} website`}
-                        >
-                          <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col cursor-pointer">
-                            <div className="flex items-start gap-4 flex-1">
-                              <div className="w-12 h-12 relative flex-shrink-0">
-                                {(edu.logo || edu.logoLight || edu.logoDark) ? (
-                                  <Image
-                                    src={
-                                      mounted && actualTheme === 'dark' && edu.logoDark
-                                        ? edu.logoDark
-                                        : mounted && actualTheme === 'light' && edu.logoLight
-                                        ? edu.logoLight
-                                        : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
-                                    }
-                                    alt={`${edu.institution} logo`}
-                                    fill
-                                    className="object-contain group-hover:scale-110 transition-transform duration-300"
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                                    <GraduationCap className="h-6 w-6 text-muted-foreground" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0 flex flex-col h-full">
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                                    {edu.degree}
-                                  </h4>
-                                  <p className="text-muted-foreground text-sm mb-3">
-                                    {edu.institution}
-                                  </p>
-                                </div>
-                                <div className="flex items-center gap-2 mt-auto">
-                                  <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
-                                    {edu.year}
-                                  </Badge>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {/* Hover effect overlay */}
-                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                          </div>
-                        </a>
-                      ) : (
-                        <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
-                          <div className="flex items-start gap-4 flex-1">
-                            <div className="w-12 h-12 relative flex-shrink-0">
-                              {(edu.logo || edu.logoLight || edu.logoDark) ? (
-                                <Image
-                                  src={
-                                    mounted && actualTheme === 'dark' && edu.logoDark
-                                      ? edu.logoDark
-                                      : mounted && actualTheme === 'light' && edu.logoLight
-                                      ? edu.logoLight
-                                      : edu.logo || edu.logoLight || edu.logoDark || '/images/placeholder.png'
-                                  }
-                                  alt={`${edu.institution} logo`}
-                                  fill
-                                  className="object-contain group-hover:scale-110 transition-transform duration-300"
-                                  loading="lazy"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                                  <GraduationCap className="h-6 w-6 text-muted-foreground" />
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0 flex flex-col h-full">
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                                  {edu.degree}
-                                </h4>
-                                <p className="text-muted-foreground text-sm mb-3">
-                                  {edu.institution}
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2 mt-auto">
-                                <Badge variant="outline" className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20">
-                                  {edu.year}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Hover effect overlay */}
-                          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Certifications */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className={activeCertifications.length > 2 ? 'lg:col-span-2' : ''}
-          >
-            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <Award className="h-6 w-6 text-primary" />
-                  {t('sections.education.certificationsTab')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('sections.education.certificationsSubtitle')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {(() => {
-                  // If no active certifications, show a message
-                  if (activeCertifications.length === 0) {
-                    return (
-                      <div className="flex flex-col items-center justify-center py-12 px-4">
-                        <Award className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
-                        <p className="text-muted-foreground text-center text-lg">
-                          {t('sections.education.comingSoon')}
-                        </p>
-                        <p className="text-muted-foreground/70 text-center text-sm mt-2">
-                          {t('sections.education.comingSoonDesc')}
-                        </p>
-                      </div>
-                    );
-                  }
-
-                  // Display active certifications
+        {/* Education & certifications */}
+        <section className={sectionClass}>
+          <ScrollReveal>
+            <SectionHeader title={t('sections.education.title')} subtitle={t('sections.education.subtitle')} />
+          </ScrollReveal>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+            <ScrollReveal>
+              <h3 className="mb-3 px-1 text-headline">{t('sections.education.educationTab')}</h3>
+              <GroupedList>
+                {education.map((edu) => {
+                  const logo = edu.logo || edu.logoLight || edu.logoDark;
                   return (
-                    <div className={`grid gap-6 items-stretch ${
-                      activeCertifications.length === 1 
-                        ? 'grid-cols-1' 
-                        : activeCertifications.length === 2 
-                        ? 'grid-cols-1 md:grid-cols-2' 
-                        : activeCertifications.length === 4
-                        ? 'grid-cols-1 md:grid-cols-2'
-                        : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                    }`}>
-                      {activeCertifications.map((cert, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1, duration: 0.6 }}
-                          className="group relative h-full"
-                        >
-                          <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-6 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 h-full flex flex-col">
-                            <div className="flex items-start gap-4 flex-1">
-                              <div className="w-12 h-12 relative flex-shrink-0">
-                                {(cert.logo || cert.logoLight || cert.logoDark) ? (
-                                  <Image
-                                    src={
-                                      mounted && actualTheme === 'dark' && cert.logoDark
-                                        ? cert.logoDark
-                                        : mounted && actualTheme === 'light' && cert.logoLight
-                                        ? cert.logoLight
-                                        : cert.logo || cert.logoLight || cert.logoDark || '/images/placeholder.png'
-                                    }
-                                    alt={`${cert.issuer} logo`}
-                                    fill
-                                    className="object-contain group-hover:scale-110 transition-transform duration-300"
-                                    unoptimized={cert.logo?.includes('british-council')}
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <div className="w-full h-full bg-muted/20 rounded-lg flex items-center justify-center">
-                                    <Award className="h-6 w-6 text-muted-foreground" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0 flex flex-col h-full">
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors duration-300">
-                                    {cert.name}
-                                  </h4>
-                                  <p className="text-muted-foreground text-sm mb-3 line-clamp-1">
-                                    {cert.issuer}
-                                  </p>
-                                </div>
-                                <div className="flex items-center gap-2 mt-auto">
-                                  <Badge 
-                                    variant="outline" 
-                                    className="glass-dark text-xs px-2 py-1 border-gray-300/50 dark:border-white/20"
-                                  >
-                                    {cert.year}
-                                  </Badge>
-                                  <Badge 
-                                    variant="outline" 
-                                    className={`glass-dark text-xs px-2 py-1 ${
-                                      cert.status === 'Planned' 
-                                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                                        : cert.status === 'Expired'
-                                        ? 'bg-red-500/20 text-red-400 border-red-500/30'
-                                        : 'bg-green-500/20 text-green-400 border-green-500/30'
-                                    }`}
-                                  >
-                                    {cert.status}
-                                  </Badge>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {/* Hover effect overlay */}
-                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  );
-                })()}
-              </CardContent>
-            </Card>
-          </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Skills & Languages Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">{t('sections.skills.title')}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('sections.skills.subtitle')}
-            </p>
-          </div>
-
-          {/* Skills */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            {Object.entries(profile.skills).map(([category, skills], categoryIndex) => {
-              // Define icons and colors for each category
-              const categoryConfig: Record<string, { icon: LucideIcon; color: string }> = {
-                cloud: {
-                  icon: Cloud,
-                  color: 'text-blue-500 dark:text-blue-400',
-                },
-                containers: {
-                  icon: Container,
-                  color: 'text-green-500 dark:text-green-400',
-                },
-                infrastructure: {
-                  icon: Server,
-                  color: 'text-purple-500 dark:text-purple-400',
-                },
-                cicd: {
-                  icon: GitBranch,
-                  color: 'text-orange-500 dark:text-orange-400',
-                },
-                monitoring: {
-                  icon: Activity,
-                  color: 'text-red-500 dark:text-red-400',
-                },
-                database: {
-                  icon: Database,
-                  color: 'text-pink-500 dark:text-pink-400',
-                },
-                tools: {
-                  icon: Wrench,
-                  color: 'text-cyan-500 dark:text-cyan-400',
-                },
-              };
-
-              const config = categoryConfig[category] || categoryConfig.tools;
-              const Icon = config.icon;
-
-              return (
-                <ScrollReveal
-                  key={category}
-                  direction="up"
-                  delay={categoryIndex * 0.05}
-                  className="group"
-                >
-                  <Card className="glass-dark border border-gray-300/40 dark:border-white/20 hover:border-gray-400/60 dark:hover:border-white/40 hover:shadow-xl hover:shadow-gray-200/20 dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden relative">
-                    <div className="p-6">
-                      {/* Category Header */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className={`p-2.5 rounded-lg bg-white/10 dark:bg-black/10 backdrop-blur-sm border border-gray-200/20 dark:border-white/10 ${config.color}`}>
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <h3 className="text-lg font-semibold capitalize text-foreground">
-                          {tHome(`skills.categories.${category}`)}
-                        </h3>
-                      </div>
-
-                      {/* Skills Grid */}
-                      <div className="flex flex-wrap gap-2">
-                        {skills.map((skill, skillIndex) => (
-                          <Badge
-                            key={skillIndex}
-                            variant="outline"
-                            className="px-3 py-1.5 text-sm font-medium border-gray-300/40 dark:border-white/20 bg-white/10 dark:bg-black/10 hover:bg-white/20 dark:hover:bg-black/20 hover:border-gray-400/60 dark:hover:border-white/40 transition-all duration-200"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </Card>
-                </ScrollReveal>
-              );
-            })}
-          </div>
-
-          {/* Languages */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.0, duration: 0.8 }}
-            className="group mt-12"
-          >
-            <Card className="glass-dark border-gray-200/40 dark:border-white/20 h-full">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Globe className="h-6 w-6 text-primary" />
-                  </div>
-                  {t('sections.skills.languages')}
-                </CardTitle>
-                <CardDescription className="text-base">
-                  {t('sections.skills.languagesSubtitle')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-4">
-                  {profile.languages.map((lang, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
-                      className="group/language relative"
-                    >
-                      <div className="glass-dark border-gray-200/40 dark:border-white/20 rounded-xl p-4 hover:border-primary/30 dark:hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/10 flex items-center gap-4 group-hover/language:bg-primary/5">
-                        <div className="w-14 h-14 relative flex-shrink-0 group-hover/language:scale-110 transition-transform duration-300 rounded-lg overflow-hidden border border-white/10">
-                          {lang.flag ? (
-                            <Image
-                              src={lang.flag}
-                              alt={`${lang.country} flag`}
+                    <GroupedListItem
+                      key={edu.slug}
+                      leading={
+                        <LogoTile>
+                          {logo ? (
+                            <ThemedImage
+                              src={logo}
+                              lightSrc={edu.logoLight}
+                              darkSrc={edu.logoDark}
+                              alt=""
                               fill
-                              className="object-cover"
-                              loading="lazy"
+                              sizes="40px"
+                              className="object-contain p-1.5"
                             />
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
-                              <Globe className="h-6 w-6 text-primary" />
-                            </div>
+                            <GraduationCap className="size-5 text-muted-foreground" />
                           )}
-                        </div>
-                        
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-lg group-hover/language:text-primary transition-colors duration-300">
-                            {(() => {
-                              try {
-                                return tProfile(`languages.${lang.name}` as 'languages.English');
-                              } catch {
-                                return lang.name;
-                              }
-                            })()}
-                          </h4>
-                        </div>
-                        
-                        <Badge 
-                          variant="outline" 
-                          className="glass-dark border-primary/30 dark:border-primary/30 text-xs px-3 py-1.5 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all duration-200"
-                        >
-                          {lang.level}
-                        </Badge>
-                        
-                        {/* Hover effect overlay */}
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover/language:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      </div>
-                    </motion.div>
-                  ))}
+                        </LogoTile>
+                      }
+                      title={edu.degree}
+                      subtitle={`${edu.institution} · ${edu.year}`}
+                      href={edu.website}
+                    />
+                  );
+                })}
+              </GroupedList>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.05}>
+              <h3 className="mb-3 px-1 text-headline">{t('sections.education.certificationsTab')}</h3>
+              {activeCertifications.length > 0 ? (
+                <GroupedList>
+                  {activeCertifications.map((cert) => {
+                    const logo = cert.logo || cert.logoLight || cert.logoDark;
+                    return (
+                      <GroupedListItem
+                        key={cert.name}
+                        leading={
+                          <LogoTile>
+                            {logo ? (
+                              <ThemedImage
+                                src={logo}
+                                lightSrc={cert.logoLight}
+                                darkSrc={cert.logoDark}
+                                alt=""
+                                fill
+                                sizes="40px"
+                                className="object-contain p-1.5"
+                                unoptimized={cert.logo?.includes('british-council')}
+                              />
+                            ) : (
+                              <Award className="size-5 text-muted-foreground" />
+                            )}
+                          </LogoTile>
+                        }
+                        title={cert.name}
+                        subtitle={`${cert.issuer} · ${cert.year}`}
+                      />
+                    );
+                  })}
+                </GroupedList>
+              ) : (
+                <div className="rounded-lg bg-secondary px-6 py-10 text-center">
+                  <p className="text-headline">{t('sections.education.comingSoon')}</p>
+                  <p className="mt-1 text-caption text-muted-foreground">{t('sections.education.comingSoonDesc')}</p>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </motion.div>
-
-        {/* Values & Philosophy Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">{t('sections.values.title')}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('sections.values.subtitle')}
-            </p>
+              )}
+            </ScrollReveal>
           </div>
-          <Card className="glass-dark border-white/20">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <motion.div 
-                  className="space-y-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.3, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg flex items-center gap-2">
-                    <Code className="h-5 w-5 text-primary" />
-                    {t('sections.values.codeQuality.title')}
-                  </h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.values.codeQuality.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.4, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-primary" />
-                    {t('sections.values.userCentric.title')}
-                  </h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.values.userCentric.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.5, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5 text-primary" />
-                    {t('sections.values.continuousLearning.title')}
-                  </h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.values.continuousLearning.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-primary" />
-                    {t('sections.values.collaboration.title')}
-                  </h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.values.collaboration.description')}
-                  </p>
-                </motion.div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        </section>
 
-        {/* Fun Facts Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              <span className="text-gradient">{t('sections.funFacts.title')}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('sections.funFacts.subtitle')}
-            </p>
+        {/* Skills & languages */}
+        <section className={sectionClass}>
+          <ScrollReveal>
+            <SectionHeader title={t('sections.skills.title')} subtitle={t('sections.skills.subtitle')} />
+          </ScrollReveal>
+          <SkillsBento skills={profile.skills} />
+          <ScrollReveal className="mt-16">
+            <h3 className="mb-3 px-1 text-headline">{t('sections.skills.languages')}</h3>
+            <GroupedList>
+              {profile.languages.map((language) => (
+                <GroupedListItem
+                  key={language.name}
+                  leading={
+                    language.flag ? (
+                      <span className="relative block h-6 w-8 overflow-hidden rounded-[4px]">
+                        <Image src={language.flag} alt="" fill sizes="32px" className="object-cover" />
+                      </span>
+                    ) : (
+                      <Globe className="size-5 text-muted-foreground" />
+                    )
+                  }
+                  title={languageName(language.name)}
+                  trailing={language.level}
+                />
+              ))}
+            </GroupedList>
+          </ScrollReveal>
+        </section>
+
+        {/* Values */}
+        <section className={sectionClass}>
+          <ScrollReveal>
+            <SectionHeader title={t('sections.values.title')} subtitle={t('sections.values.subtitle')} />
+          </ScrollReveal>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {values.map(({ key, icon: Icon, color }, index) => (
+              <ScrollReveal key={key} delay={index * 0.05} className={tileClass}>
+                <Icon className={cn('size-7', color)} strokeWidth={1.75} aria-hidden />
+                <h3 className="mt-4 text-headline">{t(`sections.values.${key}.title`)}</h3>
+                <p className="mt-2 text-body text-muted-foreground">{t(`sections.values.${key}.description`)}</p>
+              </ScrollReveal>
+            ))}
           </div>
-          
-          <Card className="glass-dark border-white/20">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <motion.div 
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.9, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg">{t('sections.funFacts.linux.title')}</h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.funFacts.linux.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.0, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg">{t('sections.funFacts.fitness.title')}</h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.funFacts.fitness.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.1, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg">{t('sections.funFacts.gaming.title')}</h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.funFacts.gaming.description')}
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.2, duration: 0.6 }}
-                >
-                  <h4 className="font-semibold text-lg">{t('sections.funFacts.learner.title')}</h4>
-                  <p className="text-muted-foreground">
-                    {t('sections.funFacts.learner.description')}
-                  </p>
-                </motion.div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        </section>
+
+        {/* Fun facts (titles already start with an emoji) */}
+        <section className={sectionClass}>
+          <ScrollReveal>
+            <SectionHeader title={t('sections.funFacts.title')} subtitle={t('sections.funFacts.subtitle')} />
+          </ScrollReveal>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {funFacts.map((key, index) => (
+              <ScrollReveal key={key} delay={index * 0.05} className={tileClass}>
+                <h3 className="text-headline">{t(`sections.funFacts.${key}.title`)}</h3>
+                <p className="mt-2 text-body text-muted-foreground">{t(`sections.funFacts.${key}.description`)}</p>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
