@@ -2042,14 +2042,14 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
   export default function NotFound() {
     return (
-      <div className="page-container flex min-h-screen flex-col justify-center py-24">
+      <main className="page-container flex min-h-screen flex-col justify-center py-24">
         <p className="text-title-2 text-muted-foreground">404</p>
         <h1 className="mt-2 text-title-1">Page not found</h1>
         <p className="mt-4 max-w-[34rem] text-body-lg text-muted-foreground">This page doesn&apos;t exist or has moved.</p>
         <Button asChild variant="plain" size="lg" className="mt-6 min-h-11 self-start">
           <Link href="/">Back to home</Link>
         </Button>
-      </div>
+      </main>
     );
   }
   ```
@@ -2064,6 +2064,8 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     notFound();
   }
   ```
+
+Note: Next 15.5 ignores `metadata` exported from a not-found file (verified), so the locale 404's `<title>` is the layout's and the root 404 has none; Next injects `noindex` itself and the status is 404, which is enough for crawlers.
 
 - [ ] **Step 3: Verify.** lint, test, build. Visit `/en/definitely-missing`, `/ru/definitely-missing`, `/uz/definitely-missing` (translated, left-aligned, "404" in muted title-2) and a path outside any locale (the middleware redirects `/definitely-missing` to `/<locale>/definitely-missing`; the English root version renders only for paths the middleware skips, such as `/foo.bar` and `/api/nothing`). Also check `/en/about/no-such-slug`.
 
