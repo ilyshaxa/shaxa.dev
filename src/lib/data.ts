@@ -36,6 +36,11 @@ export interface Experience extends ExperienceSource {
   points: string[];
 }
 
+export interface Language {
+  name: 'Uzbek' | 'English' | 'Russian';
+  level: 'native' | 'advanced' | 'basic';
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -79,12 +84,7 @@ export interface Profile {
     logoLight?: string;
     logoDark?: string;
   }>;
-  languages: Array<{
-    name: string;
-    level: string;
-    flag?: string;
-    country?: string;
-  }>;
+  languages: Language[];
   cvUrl: string;
 }
 
@@ -271,7 +271,7 @@ const profileData: Profile = {
       slug: "tsue-economics",
       institution: "Tashkent State University of Economics",
       degree: "Bachelor's in Economics",
-      year: "2022 - 2027",
+      year: "2022 – 2027",
       logo: "/images/education/tsue-light.png",
       logoLight: "/images/education/tsue-light.png",
       logoDark: "/images/education/tsue-dark.png",
@@ -319,24 +319,9 @@ const profileData: Profile = {
     // }
   ],
   languages: [
-    { 
-      name: "English", 
-      level: "Fluent", 
-      flag: "https://flagcdn.com/gb.svg",
-      country: "United Kingdom"
-    },
-    { 
-      name: "Russian", 
-      level: "Basic", 
-      flag: "https://flagcdn.com/ru.svg",
-      country: "Russia"
-    },
-    { 
-      name: "Uzbek", 
-      level: "Native", 
-      flag: "https://flagcdn.com/uz.svg",
-      country: "Uzbekistan"
-    }
+    { name: 'Uzbek', level: 'native' },
+    { name: 'English', level: 'advanced' },
+    { name: 'Russian', level: 'basic' }
   ],
   cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
 };
