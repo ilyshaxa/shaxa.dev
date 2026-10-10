@@ -102,6 +102,8 @@
   --material-sheet: rgb(255 255 255 / 80%);
   --material-chip: rgb(255 255 255 / 70%);
   --material-shadow: 0 12px 48px rgb(0 0 0 / 16%);
+  --page-gutter: 1.25rem;
+  --section-gap: 5rem;
 }
 
 .dark {
@@ -130,6 +132,13 @@
   --material-sheet: rgb(30 30 32 / 80%);
   --material-chip: rgb(44 44 46 / 70%);
   --material-shadow: 0 12px 48px rgb(0 0 0 / 48%);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --page-gutter: 2rem;
+    --section-gap: 7rem;
+  }
 }
 
 @layer base {
@@ -231,6 +240,21 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* One grid: 980px of content, centered, shared by the nav, every section and the footer. */
+@utility page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: calc(980px + 2 * var(--page-gutter));
+  padding-inline: var(--page-gutter);
+}
+
+/* One rhythm: sections are spaced by a single token and carry no vertical padding of their own. */
+@utility section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
 }
 
 /* Theme switch cross-fade (see ThemeToggle in navigation.tsx). */

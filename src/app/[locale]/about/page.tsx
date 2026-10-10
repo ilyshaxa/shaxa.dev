@@ -61,7 +61,7 @@ export default function AboutPage() {
     <div className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
       <div className="mx-auto max-w-[980px]">
         <ScrollReveal>
-          <SectionHeader as="h1" title={t('title')} subtitle={t('subtitle')} />
+          <SectionHeader as="h1" title={t('title')} />
         </ScrollReveal>
 
         {/* Bio */}
@@ -73,7 +73,7 @@ export default function AboutPage() {
         {/* Experience */}
         <section className={sectionClass}>
           <ScrollReveal>
-            <SectionHeader title={t('sections.experience.title')} subtitle={t('sections.experience.subtitle')} />
+            <SectionHeader title={t('sections.experience.title')} />
           </ScrollReveal>
           <ScrollReveal>
             <ExperienceList experiences={experiences} variant="detailed" />
@@ -83,7 +83,7 @@ export default function AboutPage() {
         {/* Education & certifications */}
         <section className={sectionClass}>
           <ScrollReveal>
-            <SectionHeader title={t('sections.education.title')} subtitle={t('sections.education.subtitle')} />
+            <SectionHeader title={t('sections.education.title')} />
           </ScrollReveal>
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <ScrollReveal>
@@ -166,7 +166,7 @@ export default function AboutPage() {
         {/* Skills & languages */}
         <section className={sectionClass}>
           <ScrollReveal>
-            <SectionHeader title={t('sections.skills.title')} subtitle={t('sections.skills.subtitle')} />
+            <SectionHeader title={t('sections.skills.title')} />
           </ScrollReveal>
           <SkillsBento skills={profile.skills} />
           <ScrollReveal className="mt-16">
@@ -195,7 +195,7 @@ export default function AboutPage() {
         {/* Values */}
         <section className={sectionClass}>
           <ScrollReveal>
-            <SectionHeader title={t('sections.values.title')} subtitle={t('sections.values.subtitle')} />
+            <SectionHeader title={t('sections.values.title')} />
           </ScrollReveal>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {values.map(({ key, icon: Icon, color }, index) => (
@@ -211,7 +211,7 @@ export default function AboutPage() {
         {/* Fun facts (titles already start with an emoji) */}
         <section className={sectionClass}>
           <ScrollReveal>
-            <SectionHeader title={t('sections.funFacts.title')} subtitle={t('sections.funFacts.subtitle')} />
+            <SectionHeader title={t('sections.funFacts.title')} />
           </ScrollReveal>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {funFacts.map((key, index) => (

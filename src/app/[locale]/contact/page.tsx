@@ -78,7 +78,7 @@ export default function ContactPage() {
     <div className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
       <div className="mx-auto max-w-[1200px]">
         <ScrollReveal>
-          <SectionHeader as="h1" title={t('header.title')} subtitle={t('header.subtitle')} />
+          <SectionHeader as="h1" title={t('header.title')} />
         </ScrollReveal>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">

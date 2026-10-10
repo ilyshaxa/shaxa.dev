@@ -85,7 +85,7 @@ export default function Home() {
       <section className="px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal>
-            <SectionHeader title={t('skills.title')} subtitle={t('skills.subtitle')} />
+            <SectionHeader title={t('skills.title')} />
           </ScrollReveal>
           <SkillsBento skills={profile.skills} />
         </div>
@@ -95,7 +95,7 @@ export default function Home() {
       <section className="px-4 py-24 sm:px-6 md:py-32 lg:px-8">
         <div className="mx-auto max-w-[980px]">
           <ScrollReveal>
-            <SectionHeader title={t('experience.title')} subtitle={t('experience.subtitle')} />
+            <SectionHeader title={t('experience.title')} />
           </ScrollReveal>
           <ScrollReveal>
             <ExperienceList experiences={experiences} initialCount={3} />
@@ -107,7 +107,7 @@ export default function Home() {
       <section className="py-24 md:py-32">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="px-4 sm:px-6 lg:px-8">
-            <SectionHeader title={t('projects.title')} subtitle={t('projects.subtitle')} />
+            <SectionHeader title={t('projects.title')} />
           </ScrollReveal>
           <ProjectCarousel projects={carouselProjects} />
           <div className="mt-8 text-center">

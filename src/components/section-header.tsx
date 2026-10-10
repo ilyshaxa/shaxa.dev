@@ -1,27 +1,19 @@
 import { cn } from '@/lib/utils';
 
 interface SectionHeaderProps {
-  eyebrow?: string;
   title: string;
-  subtitle?: string;
-  align?: 'center' | 'left';
+  /** `h1` for a page title (larger), `h2` for a section heading. */
   as?: 'h1' | 'h2';
+  /** Trailing link, baseline-aligned with the heading ("All projects ›"). */
+  action?: React.ReactNode;
   className?: string;
 }
 
-export function SectionHeader({
-  eyebrow,
-  title,
-  subtitle,
-  align = 'center',
-  as: Heading = 'h2',
-  className,
-}: SectionHeaderProps) {
+export function SectionHeader({ title, as: Heading = 'h2', action, className }: SectionHeaderProps) {
   return (
-    <div className={cn('mb-12 max-w-3xl md:mb-16', align === 'center' && 'mx-auto text-center', className)}>
-      {eyebrow && <p className="mb-3 text-eyebrow text-primary">{eyebrow}</p>}
-      <Heading className="text-title-1 text-balance">{title}</Heading>
-      {subtitle && <p className="mt-4 text-body-lg text-muted-foreground text-pretty">{subtitle}</p>}
+    <div className={cn('mb-6 flex items-baseline justify-between gap-4 md:mb-8', className)}>
+      <Heading className={cn('text-balance', Heading === 'h1' ? 'text-title-1' : 'text-title-2')}>{title}</Heading>
+      {action}
     </div>
   );
 }

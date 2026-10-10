@@ -18,7 +18,7 @@ export default function ProjectsPage() {
     <div className="px-4 py-16 sm:px-6 md:py-24 lg:px-8">
       <div className="mx-auto max-w-[1200px]">
         <ScrollReveal>
-          <SectionHeader as="h1" title={t('title')} subtitle={t('subtitle')} />
+          <SectionHeader as="h1" title={t('title')} />
         </ScrollReveal>
 
         {projects.length > 0 ? (
