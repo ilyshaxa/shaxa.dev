@@ -124,9 +124,9 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages} key={locale}>
       <ThemeProvider>
         <MotionProvider>
-          <div className="relative min-h-screen overflow-x-clip bg-background">
+          <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background">
             <Navigation />
-            <main className="relative z-10 pt-12">
+            <main className="relative z-10 flex-1 pt-12">
               <ErrorBoundary>
                 <PageTransition>{children}</PageTransition>
               </ErrorBoundary>

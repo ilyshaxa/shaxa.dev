@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { DotList } from '@/components/dot-list';
+import { InlineList } from '@/components/inline-list';
 import { ThemedImage } from '@/components/themed-image';
 import type { Project } from '@/lib/data';
 import { spring } from '@/lib/motion';
@@ -54,7 +54,7 @@ export const ProjectRow = React.memo(function ProjectRow({ project, as: Heading 
           {project.summary}
         </p>
         {project.outcome && <p className="text-body">{project.outcome}</p>}
-        <DotList items={project.highlights} className="text-caption text-muted-foreground" />
+        <InlineList items={project.highlights} className="text-caption text-muted-foreground" />
         <span className="mt-1 inline-flex items-center gap-0.5 text-body text-primary">
           {t('learnMore')}
           <ChevronRight className="size-4" aria-hidden />

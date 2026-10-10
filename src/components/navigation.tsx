@@ -222,10 +222,10 @@ export function Navigation() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50">
       <div className="material-bar relative">
-        <div className="page-container flex h-12 items-center justify-between">
+        <div className="page-container flex h-12 items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
           <Link
             href={`/${locale}`}
-            className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground"
+            className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground md:justify-self-start"
           >
             shaxa.dev
           </Link>
@@ -258,7 +258,7 @@ export function Navigation() {
             ))}
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center md:justify-self-end">
             <div className="hidden items-center md:flex">
               <LanguageMenu />
               <ClientOnly fallback={<div className="size-11" />}>

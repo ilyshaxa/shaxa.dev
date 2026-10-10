@@ -8,7 +8,7 @@ import { useLocale, useMessages, useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BulletList } from '@/components/bullet-list';
-import { DotList } from '@/components/dot-list';
+import { InlineList } from '@/components/inline-list';
 import { GroupedList, GroupedListItem } from '@/components/grouped-list';
 import { getAllExperiences, localizeExperiences } from '@/lib/data';
 import { employmentTypeKeys } from '@/lib/employment-type';
@@ -80,7 +80,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
           </GroupedList>
           <section>
             <h2 className="text-caption text-muted-foreground">{tHome('title')}</h2>
-            <DotList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
+            <InlineList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
           </section>
         </aside>
       </div>

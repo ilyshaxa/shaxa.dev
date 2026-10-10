@@ -30,6 +30,7 @@
 10. **Light-mode accent text is `#0066cc`** (Apple's link blue) instead of the spec's `#0071e3`, because `#0071e3` on the `#f5f5f7` tile surface is 4.31:1, below WCAG AA (4.5:1) for body-size link text such as "Learn more ›". `--primary-fill` (button backgrounds) stays `#0071e3`; dark mode is unchanged.
 11. **Three new test files** (`messages.test.ts`, `data.test.ts`, `chat-system-prompt.test.ts`) keep the content consistent so the contradictions this redesign removes cannot creep back.
 12. **Contact page departures from the first draft of Task 8** (the code block in Task 8 is the file as committed, not the originally validated block): the email row breaks after the `@` (`BreakableEmail`, so it fits at 320px); the phone number uses `text-balance`; the location row reads the localized `profile.location` message instead of the raw data string; the form no longer appends the API's English-only error text to the localized error; keyboard and screen-reader users get focus on the confirmation after sending, on the email field after a client-side rejection, and on the name field after "Send another message"; the error alert text uses the foreground colour with a destructive icon (red text on the tinted fill was 3.8:1).
+13. **Polish from the final visual pass (Task 12)**, each verified in a production build: `InlineList` (renamed from `DotList`) separates items with commas instead of "·", because wrapped lists left a dangling "·" at line ends (reverting is one class: `after:content-['·']` plus `after:ml-2`); the layout wrapper is a flex column and `main` is `flex-1`, so short pages such as the 404 keep the footer at the bottom of the viewport; the nav is a three-column grid from `md` up, so the links sit on the page's centre axis in every locale (they were 15px off and moved per locale); input and textarea placeholders use `text-foreground/70` (5.7:1 light, 6.9:1 dark; muted grey was 4.2:1 and 3.7:1); the fullscreen image viewer traps Tab and returns focus to its opener; the media stages and the previous/next job cards gain the `contrast-more` border.
 
 ## Global constraints
 
@@ -63,7 +64,7 @@ Inputs most likely to bite real users that the spec implies but doesn't spell ou
 5. **`t.rich` email link and `<mail>` tags**: renders a working `mailto:` link in all three locales. Owned by Task 5.
 6. **Whole-tile links**: one accessible name, no nested interactive elements, visible focus ring. Owned by Task 5.
 7. **Nav active state on detail pages**: `/about/<slug>` highlights About, `/projects/<slug>` highlights Projects, Home highlights nothing. Owned by Task 4.
-8. **Wrapped dot lists** (Stack rows, tile highlights, technology lines) never start a line with "·": check `/ru` at 390 and the HikGateway page. Owned by Tasks 5–7.
+8. **Wrapped inline lists** (Stack rows, tile highlights, technology lines) never start a line with a separator: check `/ru` at 390 and the HikGateway page. Owned by Tasks 5–7.
 9. **The cut-skills list never returns**: stack, SEO keywords, JSON-LD and the chatbot prompt. Owned by Tasks 2, 10, 11.
 
 ## Execution protocol
@@ -82,7 +83,7 @@ Subagents don't see this conversation; paste what they need. Keep screenshots an
 
 **Created**
 - `src/lib/messages.test.ts`, `src/lib/data.test.ts`, `src/lib/chat-system-prompt.test.ts`
-- `src/components/project-row.tsx`, `src/components/stack-list.tsx`, `src/components/dot-list.tsx`
+- `src/components/project-row.tsx`, `src/components/stack-list.tsx`, `src/components/inline-list.tsx`
 
 **Rewritten**
 - `src/app/[locale]/page.tsx`, `about/page.tsx`, `about/[slug]/page.tsx`, `projects/page.tsx`, `projects/[slug]/page.tsx`, `contact/page.tsx`, `not-found.tsx`; `src/app/not-found.tsx`
@@ -848,10 +849,10 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     return (
       <nav className="fixed inset-x-0 top-0 z-50">
         <div className="material-bar relative">
-          <div className="page-container flex h-12 items-center justify-between">
+          <div className="page-container flex h-12 items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
             <Link
               href={`/${locale}`}
-              className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground"
+              className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground md:justify-self-start"
             >
               shaxa.dev
             </Link>
@@ -884,7 +885,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
               ))}
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center md:justify-self-end">
               <div className="hidden items-center md:flex">
                 <LanguageMenu />
                 <ClientOnly fallback={<div className="size-11" />}>
@@ -1027,21 +1028,22 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 ## Task 5: Home
 
 **Files:**
-- Create: `src/components/dot-list.tsx`, `src/components/project-row.tsx`, `src/components/stack-list.tsx`
+- Create: `src/components/inline-list.tsx`, `src/components/project-row.tsx`, `src/components/stack-list.tsx`
 - Rewrite: `src/components/experience-list.tsx`, `src/app/[locale]/page.tsx`
 - Modify (review follow-ups, already applied on the branch): `src/components/grouped-list.tsx` (`pressableClass` gains `focus-visible:-outline-offset-2` so a row's focus ring isn't clipped by the rounded container), `src/app/globals.css` (light `--primary` is `#0066cc`; see deviation 10)
 - Modify: `src/app/[locale]/about/page.tsx` (one line)
 - Delete: `src/components/project-carousel.tsx`, `src/lib/scroll-edges.ts`, `src/lib/scroll-edges.test.ts`
 
-- [ ] **Step 1: `src/components/dot-list.tsx`.** Middle-dot separated items whose dot *trails* its item, so when a long list wraps (a Russian stack row at 390px, the 20 Hikvision technologies) no line ever starts with a stray "·":
+- [ ] **Step 1: `src/components/inline-list.tsx`.** Comma-separated items (changed in Task 12 from a trailing "·", which left a dangling "Loki ·" at the end of wrapped lines; see deviation 13). A comma may end a wrapped line, which reads as ordinary prose, and no line starts with a stray separator:
   ```tsx
   import { cn } from '@/lib/utils';
 
-  export function DotList({ items, className }: { items: string[]; className?: string }) {
+  /** Items run together as text ("Loki, Vault, Nginx"); a comma may end a wrapped line, unlike a leading or trailing "·". */
+  export function InlineList({ items, className }: { items: string[]; className?: string }) {
     return (
-      <ul role="list" className={cn('flex flex-wrap gap-x-2', className)}>
+      <ul role="list" className={cn('flex flex-wrap gap-x-[0.3em]', className)}>
         {items.map((item) => (
-          <li key={item} className="after:ml-2 after:text-muted-foreground after:content-['·'] last:after:content-none">
+          <li key={item} className="after:content-[','] last:after:content-none">
             {item}
           </li>
         ))}
@@ -1053,7 +1055,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 - [ ] **Step 2: `src/components/stack-list.tsx`**
   ```tsx
   import { useTranslations } from 'next-intl';
-  import { DotList } from '@/components/dot-list';
+  import { InlineList } from '@/components/inline-list';
   import { stackRows, type Profile } from '@/lib/data';
 
   /** Seven hairline rows: a muted label and the tools, separated by middle dots. No icons, no color. */
@@ -1066,7 +1068,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
           <div key={row} className="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-baseline sm:gap-6">
             <dt className="shrink-0 text-caption text-muted-foreground sm:w-44">{t(row)}</dt>
             <dd>
-              <DotList items={stack[row]} className="text-body" />
+              <InlineList items={stack[row]} className="text-body" />
             </dd>
           </div>
         ))}
@@ -1084,7 +1086,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { motion } from 'framer-motion';
   import { ChevronRight } from 'lucide-react';
   import { useLocale, useTranslations } from 'next-intl';
-  import { DotList } from '@/components/dot-list';
+  import { InlineList } from '@/components/inline-list';
   import { ThemedImage } from '@/components/themed-image';
   import type { Project } from '@/lib/data';
   import { spring } from '@/lib/motion';
@@ -1133,7 +1135,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             {project.summary}
           </p>
           {project.outcome && <p className="text-body">{project.outcome}</p>}
-          <DotList items={project.highlights} className="text-caption text-muted-foreground" />
+          <InlineList items={project.highlights} className="text-caption text-muted-foreground" />
           <span className="mt-1 inline-flex items-center gap-0.5 text-body text-primary">
             {t('learnMore')}
             <ChevronRight className="size-4" aria-hidden />
@@ -1397,7 +1399,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { ChevronLeft } from 'lucide-react';
   import { Button } from '@/components/ui/button';
   import { BulletList } from '@/components/bullet-list';
-  import { DotList } from '@/components/dot-list';
+  import { InlineList } from '@/components/inline-list';
   import { GroupedList, GroupedListItem } from '@/components/grouped-list';
   import { MediaViewer } from '@/components/media-viewer';
   import { StatusDot } from '@/components/status-dot';
@@ -1473,7 +1475,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             </GroupedList>
             <section>
               <h2 className="text-caption text-muted-foreground">{t('technologies')}</h2>
-              <DotList items={project.technologies} className="mt-2 text-body text-muted-foreground" />
+              <InlineList items={project.technologies} className="mt-2 text-body text-muted-foreground" />
             </section>
           </aside>
         </div>
@@ -1625,7 +1627,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { ChevronLeft, ChevronRight } from 'lucide-react';
   import { Button } from '@/components/ui/button';
   import { BulletList } from '@/components/bullet-list';
-  import { DotList } from '@/components/dot-list';
+  import { InlineList } from '@/components/inline-list';
   import { GroupedList, GroupedListItem } from '@/components/grouped-list';
   import { getAllExperiences, localizeExperiences } from '@/lib/data';
   import { employmentTypeKeys } from '@/lib/employment-type';
@@ -1697,7 +1699,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             </GroupedList>
             <section>
               <h2 className="text-caption text-muted-foreground">{tHome('title')}</h2>
-              <DotList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
+              <InlineList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
             </section>
           </aside>
         </div>
