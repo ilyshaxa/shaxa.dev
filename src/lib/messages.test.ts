@@ -69,7 +69,9 @@ test('numbers match across locales', () => {
 test('no message claims a certification', () => {
   for (const locale of locales) {
     for (const [key, text] of flat[locale]) {
-      assert.ok(!/AWS\s+(Certified|Сертифицирован|Sertifikatlangan)/i.test(text), `${locale} ${key} claims an AWS certification`);
+      // Any wording of "AWS ... certified" in en, ru or uz, in either order; plain "SSL certificates" stays allowed.
+      const claims = /certif|сертиф|sertifik/i.test(text) && /\b(AWS|Amazon)\b/i.test(text);
+      assert.ok(!claims, `${locale} ${key} claims an AWS certification`);
       assert.ok(!key.includes('awsCertified'), `${locale} still has ${key}`);
     }
   }

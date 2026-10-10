@@ -5,7 +5,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 ## 🚀 Features
 
 ### Core
-- **Modern Design**: Light/dark theme with glassmorphism effects and smooth animations
+- **Modern Design**: Light/dark theme, a calm Apple-style layout and subtle spring animations
 - **Responsive**: Fully responsive design for all devices
 - **Multi-Domain**: Supports both `shaxa.dev` and `shaxriyor.com` with proper SEO
 - **AI Chatbot**: GPT-powered "Ask Shaxriyor" assistant
@@ -306,10 +306,10 @@ Customize the chatbot's knowledge by editing `SYSTEM_PROMPT` in `src/app/api/cha
 
 ### Styling
 
-Custom classes in `src/app/globals.css`:
-- `.glass` / `.glass-dark` - Glassmorphism effects
-- `.text-gradient` - Gradient text
-- `.animate-float` - Floating animation
+Design tokens and layout utilities live in `src/app/globals.css`:
+- `page-container` / `section-stack` - the shared 980px content column and section rhythm
+- `text-title-1`, `text-body`, `text-caption`, ... - the type scale
+- Light and dark colour tokens (`--primary`, `--secondary`, `--muted-foreground`, ...)
 
 ## 🌐 Multi-Domain SEO
 
