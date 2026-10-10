@@ -30,6 +30,7 @@ export interface ExperienceLegacyText {
 
 export type ExperienceSource = ExperienceBase & ExperienceLegacyText;
 
+/** `summary` and `points` come from messages; a locale missing the entry yields '' and [] (data.test.ts fails on that). */
 export interface Experience extends ExperienceSource {
   summary: string;
   points: string[];
@@ -118,6 +119,7 @@ export interface ProjectLegacyText {
 
 export type ProjectSource = ProjectBase & ProjectLegacyText;
 
+/** `summary` and `points` come from messages; a locale missing the entry yields '' and [] (data.test.ts fails on that). */
 export interface Project extends ProjectSource {
   summary: string;
   outcome?: string;
@@ -195,7 +197,7 @@ const profileData: Profile = {
         "Developed a custom Prometheus exporter to surface key business metrics in Grafana dashboards for data-driven decision-making",
         "Improved incident response time by 60% through proactive alerting and centralized log aggregation"
       ],
-      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "Gitlab CI", "Git", "Python", "Bash", "Sentry", "Prometheus", "Grafana", "Loki", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
+      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "GitLab CI", "Git", "Python", "Bash", "Sentry", "Prometheus", "Grafana", "Loki", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
       teamSize: "50+",
       industry: "Software & IT Services"
     },
@@ -518,7 +520,8 @@ export function getExperienceSlugByCompany(companyName: string): string | null {
 
 // Synchronous localization functions (usable from server and client components)
 const text = (value: unknown, fallback = ''): string => (typeof value === 'string' && value ? value : fallback);
-const list = (value: unknown): string[] => (Array.isArray(value) ? (value as string[]) : []);
+const list = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string' && item.length > 0) : [];
 
 export function localizeProjects(projects: ProjectSource[], translations: Record<string, unknown>): Project[] {
   const projectsData = ((translations?.data as Record<string, unknown>)?.projects as Record<string, unknown>) || {};

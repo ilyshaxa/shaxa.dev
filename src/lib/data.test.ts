@@ -23,29 +23,42 @@ test('the stack has every row, no duplicates and none of the cut skills', () => 
   for (const skill of CUT_SKILLS) assert.ok(!items.includes(skill), `${skill} was cut in v2`);
 });
 
+type Copy = Record<string, Record<string, Record<string, unknown>>>;
+const rawCopy = (locale: (typeof locales)[number], section: 'projects' | 'experiences', slug: string) =>
+  ((messages[locale].data as Copy)[section]?.[slug] ?? {}) as Record<string, unknown>;
+
 test('every project has four highlights and complete copy in every locale', () => {
+  const projects = getAllProjects();
+  assert.equal(projects.length, 4, 'expected four projects');
+  for (const project of projects) assert.equal(project.highlights.length, 4, `${project.slug} highlights`);
+  assert.ok(projects.every((project) => project.technologies.length > 0), 'a project has no technologies');
   for (const locale of locales) {
-    const projects = localizeProjects(getAllProjects(), messages[locale]);
-    assert.equal(projects.length, 4);
     for (const project of projects) {
-      const where = `${locale} ${project.slug}`;
-      assert.equal(project.highlights.length, 4, `${where} highlights`);
-      assert.ok(project.title && project.summary && project.companyName, `${where} title, summary, companyName`);
-      assert.ok(project.points.length >= 3, `${where} points`);
-      assert.ok(project.technologies.length > 0, `${where} technologies`);
+      // Read the message entry directly: localizeProjects may fall back to English text, which would hide a gap.
+      const entry = rawCopy(locale, 'projects', project.slug);
+      for (const field of ['title', 'summary', 'companyName']) {
+        assert.ok(typeof entry[field] === 'string' && entry[field], `${locale} ${project.slug} is missing ${field}`);
+      }
+      assert.ok(Array.isArray(entry.points) && entry.points.length >= 3, `${locale} ${project.slug} needs at least 3 points`);
     }
+    const localized = localizeProjects(projects, messages[locale]);
+    assert.ok(localized.every((project) => project.summary && project.points.length >= 3), `${locale} localizeProjects lost copy`);
   }
 });
 
 test('every experience has complete copy in every locale', () => {
+  const experiences = getAllExperiences();
+  assert.equal(experiences.length, 3, 'expected three experiences');
   for (const locale of locales) {
-    const experiences = localizeExperiences(getAllExperiences(), messages[locale]);
-    assert.equal(experiences.length, 3);
     for (const experience of experiences) {
-      const where = `${locale} ${experience.slug}`;
-      assert.ok(experience.position && experience.duration && experience.summary, `${where} position, duration, summary`);
-      assert.ok(experience.points.length >= 3, `${where} points`);
+      const entry = rawCopy(locale, 'experiences', experience.slug);
+      for (const field of ['position', 'duration', 'summary']) {
+        assert.ok(typeof entry[field] === 'string' && entry[field], `${locale} ${experience.slug} is missing ${field}`);
+      }
+      assert.ok(Array.isArray(entry.points) && entry.points.length >= 3, `${locale} ${experience.slug} needs at least 3 points`);
     }
+    const localized = localizeExperiences(experiences, messages[locale]);
+    assert.ok(localized.every((experience) => experience.summary && experience.points.length >= 3), `${locale} localizeExperiences lost copy`);
   }
 });
 
