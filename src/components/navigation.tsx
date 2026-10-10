@@ -22,8 +22,10 @@ import { useMediaQuery } from '@/lib/use-media-query';
 import { cn } from '@/lib/utils';
 import { languageNames, locales, type Locale } from '@/types/i18n';
 
+const localePrefix = new RegExp(`^/(${locales.join('|')})(?=/|$)`);
+
 function stripLocale(path: string) {
-  return path.replace(/^\/(en|uz|ru)/, '') || '/';
+  return path.replace(localePrefix, '') || '/';
 }
 
 function useLanguageSwitch() {
@@ -33,6 +35,7 @@ function useLanguageSwitch() {
   const [, startTransition] = useTransition();
 
   const switchTo = (code: Locale) => {
+    if (code === locale) return;
     startTransition(() => {
       router.replace(`/${code}${stripLocale(pathname)}`);
       router.refresh();
@@ -53,7 +56,7 @@ function LanguageMenu() {
         <Button
           variant="ghost"
           className="h-11 gap-1 px-3 text-[0.8125rem] uppercase"
-          aria-label={t('changeLanguage')}
+          aria-label={`${locale.toUpperCase()}, ${t('changeLanguage')}`}
           title={t('changeLanguage')}
         >
           {locale}
@@ -62,7 +65,12 @@ function LanguageMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {locales.map((code) => (
-          <DropdownMenuItem key={code} onClick={() => switchTo(code)} className="cursor-pointer">
+          <DropdownMenuItem
+            key={code}
+            onClick={() => switchTo(code)}
+            aria-current={locale === code ? 'true' : undefined}
+            className="cursor-pointer"
+          >
             <span lang={code}>{languageNames[code]}</span>
             {locale === code && <Check className="ml-auto size-4 text-primary" />}
           </DropdownMenuItem>
@@ -86,7 +94,7 @@ function LanguageList() {
           variant={locale === code ? 'default' : 'secondary'}
           aria-pressed={locale === code}
           onClick={() => switchTo(code)}
-          className="h-9 px-4 text-[0.875rem]"
+          className="h-11 px-4 text-[0.875rem]"
         >
           {languageNames[code]}
         </Button>
@@ -135,6 +143,7 @@ export function Navigation() {
   const t = useTranslations('navigation');
   const currentPath = stripLocale(pathname);
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   const navItems = useMemo(
     () => [
@@ -195,7 +204,10 @@ export function Navigation() {
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsOpen(false);
+      if (event.key !== 'Escape') return;
+      setIsOpen(false);
+      // The focused element inside the sheet unmounts; hand focus back to the button that opened it.
+      burgerRef.current?.focus();
     };
     const root = document.documentElement;
     const previousOverflow = root.style.overflow;
@@ -211,7 +223,10 @@ export function Navigation() {
     <nav className="fixed inset-x-0 top-0 z-50">
       <div className="material-bar relative">
         <div className="page-container flex h-12 items-center justify-between">
-          <Link href={`/${locale}`} className="text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground">
+          <Link
+            href={`/${locale}`}
+            className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground"
+          >
             shaxa.dev
           </Link>
 
@@ -251,6 +266,7 @@ export function Navigation() {
               </ClientOnly>
             </div>
             <Button
+              ref={burgerRef}
               variant="ghost"
               size="icon"
               className="md:hidden"

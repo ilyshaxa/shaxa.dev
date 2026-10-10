@@ -596,7 +596,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
         <DropdownMenuContent align={align}>
           {locales.map((code) => (
-            <DropdownMenuItem key={code} onClick={() => download(code)} className="cursor-pointer">
+            <DropdownMenuItem
+              key={code}
+              onClick={() => download(code)}
+              aria-current={locale === code ? 'true' : undefined}
+              className="cursor-pointer"
+            >
               <span lang={code}>{languageNames[code]}</span>
               {locale === code && <Check className="ml-auto size-4 text-primary" />}
             </DropdownMenuItem>
@@ -635,8 +640,10 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { cn } from '@/lib/utils';
   import { languageNames, locales, type Locale } from '@/types/i18n';
 
+  const localePrefix = new RegExp(`^/(${locales.join('|')})(?=/|$)`);
+
   function stripLocale(path: string) {
-    return path.replace(/^\/(en|uz|ru)/, '') || '/';
+    return path.replace(localePrefix, '') || '/';
   }
 
   function useLanguageSwitch() {
@@ -646,6 +653,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     const [, startTransition] = useTransition();
 
     const switchTo = (code: Locale) => {
+      if (code === locale) return;
       startTransition(() => {
         router.replace(`/${code}${stripLocale(pathname)}`);
         router.refresh();
@@ -666,7 +674,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
           <Button
             variant="ghost"
             className="h-11 gap-1 px-3 text-[0.8125rem] uppercase"
-            aria-label={t('changeLanguage')}
+            aria-label={`${locale.toUpperCase()}, ${t('changeLanguage')}`}
             title={t('changeLanguage')}
           >
             {locale}
@@ -675,7 +683,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {locales.map((code) => (
-            <DropdownMenuItem key={code} onClick={() => switchTo(code)} className="cursor-pointer">
+            <DropdownMenuItem
+              key={code}
+              onClick={() => switchTo(code)}
+              aria-current={locale === code ? 'true' : undefined}
+              className="cursor-pointer"
+            >
               <span lang={code}>{languageNames[code]}</span>
               {locale === code && <Check className="ml-auto size-4 text-primary" />}
             </DropdownMenuItem>
@@ -699,7 +712,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             variant={locale === code ? 'default' : 'secondary'}
             aria-pressed={locale === code}
             onClick={() => switchTo(code)}
-            className="h-9 px-4 text-[0.875rem]"
+            className="h-11 px-4 text-[0.875rem]"
           >
             {languageNames[code]}
           </Button>
@@ -748,6 +761,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     const t = useTranslations('navigation');
     const currentPath = stripLocale(pathname);
     const isDesktop = useMediaQuery('(min-width: 768px)');
+    const burgerRef = useRef<HTMLButtonElement>(null);
 
     const navItems = useMemo(
       () => [
@@ -808,7 +822,10 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     useEffect(() => {
       if (!isOpen) return;
       const onKey = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') setIsOpen(false);
+        if (event.key !== 'Escape') return;
+        setIsOpen(false);
+        // The focused element inside the sheet unmounts; hand focus back to the button that opened it.
+        burgerRef.current?.focus();
       };
       const root = document.documentElement;
       const previousOverflow = root.style.overflow;
@@ -824,7 +841,10 @@ Everything here is additive or a type split, so the pages that haven't been rebu
       <nav className="fixed inset-x-0 top-0 z-50">
         <div className="material-bar relative">
           <div className="page-container flex h-12 items-center justify-between">
-            <Link href={`/${locale}`} className="text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground">
+            <Link
+              href={`/${locale}`}
+              className="inline-flex h-11 items-center text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground"
+            >
               shaxa.dev
             </Link>
 
@@ -864,6 +884,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                 </ClientOnly>
               </div>
               <Button
+                ref={burgerRef}
                 variant="ghost"
                 size="icon"
                 className="md:hidden"
@@ -966,7 +987,8 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     return (
       <footer className="relative z-10 border-t border-border">
         <div className="page-container flex flex-col gap-1 py-6 text-caption text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>{t('copyright', { year: new Date().getFullYear(), name: profile.name })}</p>
+          {/* Pages are prerendered, so the year can differ from the browser's around New Year. */}
+          <p suppressHydrationWarning>{t('copyright', { year: new Date().getFullYear(), name: profile.name })}</p>
           <ul className="flex flex-wrap gap-x-5">
             {links.map(({ href, label, external }) => (
               <li key={label}>

@@ -61,7 +61,7 @@ const report = (ok, message) => {
   const isDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
   report(wasDark !== isDark, 'theme: toggle flips the dark class');
 
-  await page.locator('button[aria-label="Change language"]').click();
+  await page.locator('button[aria-label$="Change language"]').click();
   await page.getByRole('menuitem', { name: /Русский/ }).click();
   await page.waitForURL(/\/ru(\/|$)/, { timeout: 5000 }).catch(() => {});
   report(/\/ru(\/|$)/.test(page.url()), `language: switched to ru (${page.url()})`);

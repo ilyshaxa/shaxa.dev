@@ -34,7 +34,12 @@ export function CvMenu({ children, align = 'end' }: CvMenuProps) {
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent align={align}>
         {locales.map((code) => (
-          <DropdownMenuItem key={code} onClick={() => download(code)} className="cursor-pointer">
+          <DropdownMenuItem
+            key={code}
+            onClick={() => download(code)}
+            aria-current={locale === code ? 'true' : undefined}
+            className="cursor-pointer"
+          >
             <span lang={code}>{languageNames[code]}</span>
             {locale === code && <Check className="ml-auto size-4 text-primary" />}
           </DropdownMenuItem>

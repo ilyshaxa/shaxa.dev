@@ -19,7 +19,8 @@ export function Footer() {
   return (
     <footer className="relative z-10 border-t border-border">
       <div className="page-container flex flex-col gap-1 py-6 text-caption text-muted-foreground md:flex-row md:items-center md:justify-between">
-        <p>{t('copyright', { year: new Date().getFullYear(), name: profile.name })}</p>
+        {/* Pages are prerendered, so the year can differ from the browser's around New Year. */}
+        <p suppressHydrationWarning>{t('copyright', { year: new Date().getFullYear(), name: profile.name })}</p>
         <ul className="flex flex-wrap gap-x-5">
           {links.map(({ href, label, external }) => (
             <li key={label}>
