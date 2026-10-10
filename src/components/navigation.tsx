@@ -55,7 +55,7 @@ function LanguageMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-11 gap-1 px-3 text-[0.8125rem] uppercase"
+          className="h-11 gap-1 px-3 has-[>svg]:px-3 text-[0.8125rem] uppercase"
           aria-label={`${locale.toUpperCase()}, ${t('changeLanguage')}`}
           title={t('changeLanguage')}
         >
@@ -69,7 +69,7 @@ function LanguageMenu() {
             key={code}
             onClick={() => switchTo(code)}
             aria-current={locale === code ? 'true' : undefined}
-            className="cursor-pointer"
+            className="min-h-11 cursor-pointer"
           >
             <span lang={code}>{languageNames[code]}</span>
             {locale === code && <Check className="ml-auto size-4 text-primary" />}
@@ -247,7 +247,7 @@ export function Navigation() {
                 ref={(element) => {
                   linkRefs.current[item.href] = element;
                 }}
-                aria-current={item.href === activeHref ? 'page' : undefined}
+                aria-current={item.href === activeHref ? (currentPath === item.path ? 'page' : 'true') : undefined}
                 className={cn(
                   'relative flex h-11 items-center rounded-full px-3.5 text-[0.8125rem] transition-colors',
                   item.href === activeHref ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
@@ -321,7 +321,7 @@ export function Navigation() {
                   <Link
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    aria-current={item.href === activeHref ? 'page' : undefined}
+                    aria-current={item.href === activeHref ? (currentPath === item.path ? 'page' : 'true') : undefined}
                     className={cn(
                       'block border-b border-border py-3 text-title-2',
                       item.href === activeHref ? 'text-foreground' : 'text-muted-foreground'

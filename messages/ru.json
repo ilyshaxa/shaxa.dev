@@ -18,7 +18,7 @@
       "light": "Светлая",
       "dark": "Темная"
     },
-    "cvDownloaded": "CV на языке «{language}» загружено"
+    "cvDownloaded": "Скачано CV на {language}"
   },
   "home": {
     "hero": {
@@ -29,7 +29,7 @@
     },
     "experience": {
       "title": "Опыт",
-      "more": "Обо мне подробнее"
+      "more": "Подробнее обо мне"
     },
     "work": {
       "title": "Избранные работы",
@@ -131,12 +131,12 @@
     "info": {
       "email": "Email",
       "phone": "Телефон",
-      "location": "Город"
+      "location": "Местоположение"
     }
   },
   "footer": {
     "copyright": "© {year} {name}",
-    "email": "Почта"
+    "email": "Email"
   },
   "chatbot": {
     "welcome": "Здравствуйте, я AI-ассистент Шахрияра. Спросите меня о его работе, опыте или проектах.",

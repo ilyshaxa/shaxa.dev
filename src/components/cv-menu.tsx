@@ -38,7 +38,7 @@ export function CvMenu({ children, align = 'end' }: CvMenuProps) {
             key={code}
             onClick={() => download(code)}
             aria-current={locale === code ? 'true' : undefined}
-            className="cursor-pointer"
+            className="min-h-11 cursor-pointer"
           >
             <span lang={code}>{languageNames[code]}</span>
             {locale === code && <Check className="ml-auto size-4 text-primary" />}

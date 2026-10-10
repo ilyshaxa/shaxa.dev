@@ -136,7 +136,7 @@
   },
   "footer": {
     "copyright": "© {year} {name}",
-    "email": "Pochta"
+    "email": "Email"
   },
   "chatbot": {
     "welcome": "Salom, men Shaxriyorning AI yordamchisiman. Uning ishi, tajribasi yoki loyihalari haqida mendan so'rang.",
@@ -300,7 +300,7 @@
     },
     "education": {
       "tsue-economics": {
-        "institution": "Toshkent Davlat Iqtisodiyot Universiteti",
+        "institution": "Toshkent davlat iqtisodiyot universiteti",
         "degree": "Iqtisodiyot bakalavri"
       }
     }

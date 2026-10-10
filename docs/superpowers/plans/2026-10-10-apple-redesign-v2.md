@@ -30,7 +30,7 @@
 10. **Light-mode accent text is `#0066cc`** (Apple's link blue) instead of the spec's `#0071e3`, because `#0071e3` on the `#f5f5f7` tile surface is 4.31:1, below WCAG AA (4.5:1) for body-size link text such as "Learn more ›". `--primary-fill` (button backgrounds) stays `#0071e3`; dark mode is unchanged.
 11. **Three new test files** (`messages.test.ts`, `data.test.ts`, `chat-system-prompt.test.ts`) keep the content consistent so the contradictions this redesign removes cannot creep back.
 12. **Contact page departures from the first draft of Task 8** (the code block in Task 8 is the file as committed, not the originally validated block): the email row breaks after the `@` (`BreakableEmail`, so it fits at 320px); the phone number uses `text-balance`; the location row reads the localized `profile.location` message instead of the raw data string; the form no longer appends the API's English-only error text to the localized error; keyboard and screen-reader users get focus on the confirmation after sending, on the email field after a client-side rejection, and on the name field after "Send another message"; the error alert text uses the foreground colour with a destructive icon (red text on the tinted fill was 3.8:1).
-13. **Polish from the final visual pass (Task 12)**, each verified in a production build: `InlineList` (renamed from `DotList`) separates items with commas instead of "·", because wrapped lists left a dangling "·" at line ends (reverting is one class: `after:content-['·']` plus `after:ml-2`); the layout wrapper is a flex column and `main` is `flex-1`, so short pages such as the 404 keep the footer at the bottom of the viewport; the nav is a three-column grid from `md` up, so the links sit on the page's centre axis in every locale (they were 15px off and moved per locale); input and textarea placeholders use `text-foreground/70` (5.7:1 light, 6.9:1 dark; muted grey was 4.2:1 and 3.7:1); the fullscreen image viewer traps Tab and returns focus to its opener; the media stages and the previous/next job cards gain the `contrast-more` border.
+13. **Polish from the final visual pass (Task 12)**, each verified in a production build: `InlineList` (renamed from `DotList`) separates items with commas instead of "·", because wrapped lists left a dangling "·" at line ends (reverting is one class: `after:content-['·']` plus `after:ml-2`); the layout wrapper is a flex column and `main` is `flex-1`, so short pages such as the 404 keep the footer at the bottom of the viewport; the nav is a three-column grid from `md` up, so the links sit on the page's centre axis in every locale (they were 15px off and moved per locale); input and textarea placeholders use `text-foreground/70` (5.7:1 light, 6.9:1 dark; muted grey was 4.2:1 and 3.7:1); the fullscreen image viewer traps Tab and returns focus to its opener; the media stages and the previous/next job cards gain the `contrast-more` border. From the whole-branch review: the nav's `aria-current="page"` is `"true"` for a parent section on a detail page, the CV and language menu items are 44px tall, the chat input placeholder matches the form placeholders, the chat welcome popup pauses its auto-hide on keyboard focus, the experience page's technology list reuses `projects.technologies`, copy fixes in ru and uz (`cvDownloaded` grammar, footer "Email", "Подробнее обо мне", "Местоположение", lower-case Uzbek university name), and the orphaned `ui/badge.tsx` is deleted.
 
 ## Global constraints
 
@@ -510,7 +510,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     }
   }
   ```
-  After the existing `@utility scrollbar-none { … }` add:
+  After the existing `@utility` blocks add (the old `scrollbar-none` utility is deleted in Task 12: only the carousel used it):
   ```css
   /* One grid: 980px of content, centered, shared by the nav, every section and the footer. */
   @utility page-container {
@@ -609,7 +609,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
               key={code}
               onClick={() => download(code)}
               aria-current={locale === code ? 'true' : undefined}
-              className="cursor-pointer"
+              className="min-h-11 cursor-pointer"
             >
               <span lang={code}>{languageNames[code]}</span>
               {locale === code && <Check className="ml-auto size-4 text-primary" />}
@@ -682,7 +682,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="h-11 gap-1 px-3 text-[0.8125rem] uppercase"
+            className="h-11 gap-1 px-3 has-[>svg]:px-3 text-[0.8125rem] uppercase"
             aria-label={`${locale.toUpperCase()}, ${t('changeLanguage')}`}
             title={t('changeLanguage')}
           >
@@ -696,7 +696,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
               key={code}
               onClick={() => switchTo(code)}
               aria-current={locale === code ? 'true' : undefined}
-              className="cursor-pointer"
+              className="min-h-11 cursor-pointer"
             >
               <span lang={code}>{languageNames[code]}</span>
               {locale === code && <Check className="ml-auto size-4 text-primary" />}
@@ -874,7 +874,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                   ref={(element) => {
                     linkRefs.current[item.href] = element;
                   }}
-                  aria-current={item.href === activeHref ? 'page' : undefined}
+                  aria-current={item.href === activeHref ? (currentPath === item.path ? 'page' : 'true') : undefined}
                   className={cn(
                     'relative flex h-11 items-center rounded-full px-3.5 text-[0.8125rem] transition-colors',
                     item.href === activeHref ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
@@ -948,7 +948,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                     <Link
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      aria-current={item.href === activeHref ? 'page' : undefined}
+                      aria-current={item.href === activeHref ? (currentPath === item.path ? 'page' : 'true') : undefined}
                       className={cn(
                         'block border-b border-border py-3 text-title-2',
                         item.href === activeHref ? 'text-foreground' : 'text-muted-foreground'
@@ -1038,7 +1038,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   ```tsx
   import { cn } from '@/lib/utils';
 
-  /** Items run together as text ("Loki, Vault, Nginx"); a comma may end a wrapped line, unlike a leading or trailing "·". */
+  /** Items run together as text ("Loki, Vault, Nginx"). */
   export function InlineList({ items, className }: { items: string[]; className?: string }) {
     return (
       <ul role="list" className={cn('flex flex-wrap gap-x-[0.3em]', className)}>
@@ -1058,7 +1058,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { InlineList } from '@/components/inline-list';
   import { stackRows, type Profile } from '@/lib/data';
 
-  /** Seven hairline rows: a muted label and the tools, separated by middle dots. No icons, no color. */
+  /** Seven hairline rows: a muted label and the tools as comma-separated text. No icons, no color. */
   export function StackList({ stack }: { stack: Profile['stack'] }) {
     const t = useTranslations('home.stack.rows');
 
@@ -1639,12 +1639,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   }
 
   const neighborClass =
-    'block rounded-lg bg-secondary p-5 transition-[scale,background-color] duration-100 active:scale-[0.98] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]';
+    'block rounded-lg bg-secondary p-5 contrast-more:border contrast-more:border-foreground/40 transition-[scale,background-color] duration-100 active:scale-[0.98] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]';
 
   export default function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {
     const t = useTranslations('experienceDetail');
     const tAbout = useTranslations('about');
-    const tHome = useTranslations('home.stack');
+    const tProjects = useTranslations('projects');
     const tCommon = useTranslations('common');
     const locale = useLocale();
     const { slug } = use(params);
@@ -1698,7 +1698,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
               {experience.website && <GroupedListItem title={t('website')} href={experience.website} />}
             </GroupedList>
             <section>
-              <h2 className="text-caption text-muted-foreground">{tHome('title')}</h2>
+              <h2 className="text-caption text-muted-foreground">{tProjects('technologies')}</h2>
               <InlineList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
             </section>
           </aside>

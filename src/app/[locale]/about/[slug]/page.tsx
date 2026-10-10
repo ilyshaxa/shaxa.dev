@@ -25,7 +25,7 @@ const neighborClass =
 export default function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {
   const t = useTranslations('experienceDetail');
   const tAbout = useTranslations('about');
-  const tHome = useTranslations('home.stack');
+  const tProjects = useTranslations('projects');
   const tCommon = useTranslations('common');
   const locale = useLocale();
   const { slug } = use(params);
@@ -79,7 +79,7 @@ export default function ExperienceDetailPage({ params }: ExperienceDetailPagePro
             {experience.website && <GroupedListItem title={t('website')} href={experience.website} />}
           </GroupedList>
           <section>
-            <h2 className="text-caption text-muted-foreground">{tHome('title')}</h2>
+            <h2 className="text-caption text-muted-foreground">{tProjects('technologies')}</h2>
             <InlineList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
           </section>
         </aside>

@@ -246,6 +246,8 @@ export function Chatbot() {
             style={{ transformOrigin: 'bottom right' }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onFocus={() => setIsHovering(true)}
+            onBlur={() => setIsHovering(false)}
             className="material-sheet fixed bottom-[88px] right-6 z-[45] w-[300px] max-w-[calc(100vw-3rem)] rounded-[20px] p-4"
           >
             <p className="text-[0.9375rem] font-semibold">{t('popup.title')}</p>

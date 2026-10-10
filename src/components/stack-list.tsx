@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { InlineList } from '@/components/inline-list';
 import { stackRows, type Profile } from '@/lib/data';
 
-/** Seven hairline rows: a muted label and the tools, separated by middle dots. No icons, no color. */
+/** Seven hairline rows: a muted label and the tools as comma-separated text. No icons, no color. */
 export function StackList({ stack }: { stack: Profile['stack'] }) {
   const t = useTranslations('home.stack.rows');
 

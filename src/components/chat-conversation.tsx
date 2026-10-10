@@ -141,7 +141,7 @@ export function ChatConversation({
             aria-label={t('placeholder')}
             autoFocus={autoFocus}
             enterKeyHint="send"
-            className="h-10 w-full rounded-full bg-black/[0.05] pl-4 pr-12 text-base outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring dark:bg-white/[0.08]"
+            className="h-10 w-full rounded-full bg-black/[0.05] pl-4 pr-12 text-base outline-none placeholder:text-foreground/70 focus-visible:ring-2 focus-visible:ring-ring dark:bg-white/[0.08]"
           />
           <button
             type="submit"
