@@ -4,17 +4,14 @@ import { useMemo } from 'react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { useLocale, useMessages, useTranslations } from 'next-intl';
-import { Building2, ChevronLeft, ExternalLink, Github } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DotList } from '@/components/dot-list';
 import { GroupedList, GroupedListItem } from '@/components/grouped-list';
 import { MediaViewer } from '@/components/media-viewer';
-import { ScrollReveal } from '@/components/scroll-reveal';
 import { StatusDot } from '@/components/status-dot';
-import { generateProjectSlug, getAllProjects, getExperienceSlugByCompany, localizeProjects } from '@/lib/data';
+import { getAllProjects, getExperienceSlugByCompany, localizeProjects } from '@/lib/data';
 import { useThemedSrc } from '@/lib/use-themed-src';
-
-const rowIconClass = 'size-5 text-muted-foreground';
 
 export default function ProjectPage() {
   const t = useTranslations('projects');
@@ -22,7 +19,7 @@ export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>();
   const messages = useMessages();
   const projects = useMemo(() => localizeProjects(getAllProjects(), messages), [messages]);
-  const project = projects.find((p) => p.slug === slug || generateProjectSlug(p.title) === slug);
+  const project = projects.find((p) => p.slug === slug);
 
   // Hooks run before notFound() so their order never changes between renders.
   const defaultMedia = project
@@ -37,68 +34,64 @@ export default function ProjectPage() {
     notFound();
   }
 
-  const status = project.status;
-  const statusLabel = t(status === 'Completed' ? 'status.completed' : 'status.inProgress');
+  const statusLabel = t(project.status === 'Completed' ? 'status.completed' : 'status.inProgress');
+  // Only company projects link to a job entry; a personal project has none.
   const companySlug = project.companyName ? getExperienceSlugByCompany(project.companyName) : null;
-  const companyHref = companySlug ? `/${locale}/about/${companySlug}` : `/${locale}/about`;
+  const eyebrow = [project.companyName, project.year].filter(Boolean).join(' · ');
+  // The only project with a live URL is the Telegram bot; any other host falls back to its hostname.
+  const liveHost = project.liveUrl ? new URL(project.liveUrl).hostname : null;
+  const liveLabel = liveHost === 't.me' ? t('openInTelegram') : liveHost;
 
   return (
-    <article className="px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-      <div className="mx-auto max-w-[1200px]">
-        <Button asChild variant="plain" size="sm">
-          <Link href={`/${locale}/projects`}>
-            <ChevronLeft className="size-4" />
-            {t('backToProjects')}
-          </Link>
-        </Button>
+    <article className="page-container pb-24 pt-10 md:pb-32 md:pt-16">
+      <Button asChild variant="plain" size="sm" className="min-h-11">
+        <Link href={`/${locale}/projects`}>
+          <ChevronLeft className="size-4" />
+          {t('back')}
+        </Link>
+      </Button>
 
-        <ScrollReveal className="mt-8 max-w-[800px]">
-          <h1 className="text-title-1 text-balance">{project.title}</h1>
-          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <StatusDot status={status} label={statusLabel} />
-            <span className="text-caption text-muted-foreground">{project.year}</span>
-            {project.companyName && <span className="text-caption text-muted-foreground">{project.companyName}</span>}
-          </div>
-        </ScrollReveal>
+      <header className="mt-8 max-w-[44rem]">
+        <p className="text-caption text-muted-foreground">{eyebrow}</p>
+        <h1 className="mt-2 text-title-1 text-balance">{project.title}</h1>
+        <p className="mt-4 text-body-lg text-muted-foreground text-pretty">{project.summary}</p>
+      </header>
 
-        <div className="mt-10">
-          <MediaViewer src={mediaSrc} alt={project.title} isVideo={project.isVideo} />
-        </div>
+      <div className="mt-10">
+        <MediaViewer src={mediaSrc} alt={project.title} isVideo={project.isVideo} />
+      </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-3">
-          <div className="space-y-10 lg:col-span-2">
-            <section>
-              <h2 className="text-title-2">{t('aboutProject')}</h2>
-              <p className="mt-4 max-w-[680px] text-body-lg text-muted-foreground text-pretty">{project.fullDescription}</p>
-            </section>
-            <section>
-              <h2 className="text-title-2">{t('technologies')}</h2>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <Badge key={tech} variant="secondary" className="px-3 py-1 text-[0.9375rem] font-normal">
-                    {tech}
-                  </Badge>
-                ))}
-              </div>
-            </section>
-          </div>
+      <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
+        <section>
+          <h2 className="text-title-2">{t('whatIBuilt')}</h2>
+          <ul className="mt-6 space-y-4">
+            {project.points.map((point) => (
+              <li key={point} className="flex gap-3 text-body text-muted-foreground">
+                <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
+                {point}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-          <aside>
-            <GroupedList>
-              <GroupedListItem title={t('status.title')} trailing={<StatusDot status={status} label={statusLabel} />} />
-              <GroupedListItem title={t('year')} trailing={project.year} />
-              {project.companyName && (
-                <GroupedListItem leading={<Building2 className={rowIconClass} />} title={project.companyName} href={companyHref} />
-              )}
-              {project.liveUrl && (
-                <GroupedListItem leading={<ExternalLink className={rowIconClass} />} title={t('liveDemo')} href={project.liveUrl} />
-              )}
-              {project.githubUrl && (
-                <GroupedListItem leading={<Github className={rowIconClass} />} title={t('viewCode')} href={project.githubUrl} />
-              )}
-            </GroupedList>
-          </aside>
-        </div>
+        <aside className="space-y-8">
+          <GroupedList>
+            {project.companyName && (
+              <GroupedListItem
+                title={t('company')}
+                trailing={project.companyName}
+                href={companySlug ? `/${locale}/about/${companySlug}` : undefined}
+              />
+            )}
+            <GroupedListItem title={t('year')} trailing={project.year} />
+            <GroupedListItem title={t('status.label')} trailing={<StatusDot status={project.status} label={statusLabel} />} />
+            {project.liveUrl && liveLabel && <GroupedListItem title={liveLabel} href={project.liveUrl} />}
+          </GroupedList>
+          <section>
+            <h2 className="text-caption text-muted-foreground">{t('technologies')}</h2>
+            <DotList items={project.technologies} className="mt-2 text-body" />
+          </section>
+        </aside>
       </div>
     </article>
   );
