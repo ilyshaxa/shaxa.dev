@@ -1,0 +1,253 @@
+{
+  "home": {
+    "hero": {
+      "role": "DevOps muhandisi",
+      "lead": "AWS va GCP'da bulut infratuzilmasi, CI/CD pipeline'lari va monitoring tizimlarini quraman.",
+      "downloadCV": "CV yuklab olish",
+      "getInTouch": "Bog'lanish"
+    },
+    "work": {
+      "title": "Tanlangan ishlar",
+      "all": "Barcha loyihalar"
+    },
+    "experience": {
+      "title": "Tajriba",
+      "more": "Men haqimda batafsil"
+    },
+    "stack": {
+      "title": "Texnologiyalar",
+      "rows": {
+        "cloud": "Bulut",
+        "containers": "Konteynerlar",
+        "cicd": "CI/CD",
+        "observability": "Observability",
+        "systems": "Tizimlar",
+        "data": "Ma'lumotlar",
+        "scripting": "Skriptlar"
+      }
+    },
+    "contact": {
+      "title": "Bog'lanish",
+      "body": "Ish, loyihalar yoki savollar bo'yicha <mail>{address}</mail> manziliga yozing.",
+      "cta": "Bog'lanish"
+    }
+  },
+  "profile": {
+    "location": "Toshkent, O'zbekiston",
+    "bio": "Toshkentlik DevOps muhandisi: AWS va GCP'da bulut infratuzilmasi, CI/CD pipeline'lari va monitoring."
+  },
+  "about": {
+    "title": "Men haqimda",
+    "intro": {
+      "p1": "Men Toshkentda ishlaydigan DevOps muhandisiman. AWS va GCP'da bulut infratuzilmasini quraman va ishlatib turaman, Jenkins va Docker yordamida yetkazib berishni avtomatlashtiraman hamda biror narsa noto'g'ri ketganda jamoaga xabar beradigan monitoringni sozlayman.",
+      "p2": "Men frontend dasturlashdan boshladim: DataSite Technology'da stajyor bo'ldim, 2023-yilda esa KPI'da DevOps'ga o'tdim. Shuningdek, Toshkent davlat iqtisodiyot universitetida iqtisodiyot yo'nalishida o'qiyman.",
+      "p3": "Ishdan tashqari Linux'dan foydalanaman, sport zaliga qatnayman va Clash Royale o'ynayman."
+    },
+    "headings": {
+      "experience": "Tajriba",
+      "education": "Ta'lim",
+      "languages": "Tillar"
+    },
+    "languages": {
+      "level": {
+        "native": "Ona tili",
+        "advanced": "Ilg'or (C1)",
+        "basic": "Boshlang'ich (A1)"
+      }
+    }
+  },
+  "data": {
+    "education": {
+      "tsue-economics": {
+        "degree": "Iqtisodiyot bakalavri"
+      }
+    },
+    "experiences": {
+      "kpi-com-devops-engineer": {
+        "position": "DevOps muhandisi",
+        "duration": "May 2023 – hozir",
+        "summary": "Observability, qurilmalarni bulutga xavfsiz ulash va AWS xarajatlarini optimallashtirish.",
+        "points": [
+          "Prometheus, Grafana, Loki va Alertmanager asosida markazlashtirilgan observability stekini qurdim, bu hodisalarga javob berish vaqtini 60% ga qisqartirdi.",
+          "Hikvision yuzni tanish qurilmalari uchun ISUP 5.0 va chiquvchi TLS asosida xavfsiz davomat integratsiyasini loyihaladim: mijoz joylarida kiruvchi ulanish kerak emas, boshqa tizimlar esa API orqali ulanadi.",
+          "Biznes KPI'larini real vaqtda monitoring qilish uchun Python'da Prometheus eksporteri yozdim.",
+          "Dev, stage va prod muhitlari o'rtasida ma'lumotlar bazasi sxemalarini sinxronlashni Python CLI vositasi bilan avtomatlashtirdim, bu qo'lda yo'l qo'yiladigan xatolarni kamaytirdi.",
+          "EC2 va S3 foydalanishini optimallashtirib, Savings Plans'ga o'tib, AWS oylik xarajatlarini 20% ga kamaytirdim.",
+          "Tomcat'da oqimlar tugashi bilan bog'liq to'siqlarni topib, avtomatik tiklashni qo'shib, production uzilishlarining oldini oldim.",
+          "Eskirgan GitLab Omnibus'ni oxirgi barqaror versiyaga yangilab, CI/CD xavfsizligi va tezligini oshirdim.",
+          "Docker asosidagi ilovalarni turli muhitlarda joylashtirdim va boshqardim, build'larni Jenkins bilan avtomatlashtirdim."
+        ]
+      },
+      "praaktisgo-devops-engineer": {
+        "position": "DevOps muhandisi",
+        "duration": "Yanvar 2025 – iyul 2026",
+        "summary": "AWS'ni to'xtovsiz ko'chirish, Jenkins CI/CD va 99,9% uptime.",
+        "points": [
+          "Production AWS infratuzilmasini yangi akkaunt va regionga to'xtovsiz va ma'lumotlarni yo'qotmasdan ko'chirishga rahbarlik qildim.",
+          "Proaktiv monitoring, alerting va hodisalarning oldini olish orqali 99,9% uptime'ga erishdim.",
+          "Jenkins CI/CD avtomatlashtirishi va Docker asosida muhitlarni standartlashtirish orqali deploy vaqtini 50% ga qisqartirdim.",
+          "Gibrid bulut strategiyasini qo'llab-quvvatlash uchun bulutlararo xarajatlarni kuzatish va unumdorlik monitoringini loyihaladim.",
+          "Google Cloud'dan $100K kredit (GFS Cloud Program 2024) va AWS Activate Portfolio'dan $10K kredit jalb qildim.",
+          "Google Workspace Business rejasi va bulut xarajatlarini boshqarish amaliyotlari orqali operatsion xarajatlarni 15% ga kamaytirdim.",
+          "AWS va GCP'da xavfsizlik amaliyotlarini joriy etdim: IAM hardening, tarmoq segmentatsiyasi va nazorat ostidagi kirish siyosatlari.",
+          "Arxitektura, deploy jarayonlari va operatsion standartlarni hujjatlashtirdim — yangi a'zolarni o'rgatish va uzluksizlik uchun."
+        ]
+      },
+      "datasite-technology-frontend-developer": {
+        "position": "Frontend muhandis (stajyor)",
+        "duration": "Sentyabr 2022 – may 2023",
+        "summary": "Figma dizaynlari asosida React'da adaptiv interfeyslar.",
+        "points": [
+          "HTML5, CSS3, JavaScript va React yordamida adaptiv veb-interfeyslar yaratdim.",
+          "Figma dizaynlarini productionga tayyor sahifalarga aylantirdim.",
+          "Backend va DevOps jamoalari bilan ishladim va deploy jarayonlari hamda versiyalarni boshqarish bilan dastlabki tanishuvga ega bo'ldim."
+        ]
+      }
+    },
+    "projects": {
+      "jenkins-cicd-pipeline": {
+        "title": "Jenkins CI/CD pipeline'i",
+        "summary": "Jenkins va AWS asosidagi avtomatlashtirilgan build, test va deploy pipeline'i; build infratuzilmasini Prometheus kuzatadi.",
+        "outcome": "Deploy vaqti 50% ga qisqardi.",
+        "points": [
+          "Dev va prod muhitlarida build, test va deploy'ni avtomatlashtiradi; joylashtirishni AWS CodeDeploy bajaradi.",
+          "Jenkins agentlari build vositalari (JDK, Ant, Git, AWS CLI) oldindan o'rnatilgan maxsus AMI'larda ishlaydi, pipeline esa agentlarni talab bo'yicha yaratadi.",
+          "Build artefaktlari S3'ga yuklanadi va CodeDeploy orqali deploy qilinadi.",
+          "Build'dan keyingi skriptlar o'zgarishlar ro'yxati va build holatini Telegram guruhiga yuboradi.",
+          "Prometheus va node_exporter Jenkins controller va agentlarida resurslardan foydalanishni kuzatadi."
+        ],
+        "companyName": "PraaktisGo"
+      },
+      "hikcentral-remote-device-integration": {
+        "title": "HikGateway integratsiyasi",
+        "summary": "Masofaviy qurilmalar platformasi: NAT va firewall ortidagi Hikvision qurilmalari bulutga ulanadi, mijoz joylarida esa kiruvchi ulanish kerak emas.",
+        "points": [
+          "Qurilmalar bulutdagi HikGateway'ga doimiy, shifrlangan chiquvchi ISUP ulanishlarini ochadi, shuning uchun mijoz joylariga statik IP va kiruvchi portlar kerak emas.",
+          "HikGateway boshqaruv qatlami vazifasini bajaradi: qurilmalarni ro'yxatga olish, sessiya hayot tsikli, holat monitoringi va hodisalar.",
+          "Backend xizmatlari qurilmalarni boshqaradi, hodisalarni o'qiydi va boshqaruv buyruqlarini HikGateway'ning ISAPI interfeyslari orqali HTTPS bilan yuboradi, qurilmalarga bevosita murojaat qilmaydi.",
+          "Arxitektura faqat chiquvchi ulanishlar, TLS shifrlash, tarmoq izolyatsiyasi va API integratsiyasiga asoslangan, bu yirik multi-tenant joylashtirishlarga mos keladi."
+        ],
+        "companyName": "KPI"
+      },
+      "comprehensive-monitoring-stack": {
+        "title": "Monitoring steki",
+        "summary": "KPI infratuzilmasi va ilovalari bo'yicha metrikalar, loglar va alertlar uchun markazlashtirilgan observability steki.",
+        "outcome": "Hodisalarga javob berish vaqti 60% ga qisqardi.",
+        "points": [
+          "Prometheus metrikalarni node_exporter (tizim), jmx_exporter (Java), cAdvisor (konteynerlar) va ilova metrikalari uchun maxsus eksporter orqali yig'adi.",
+          "Grafana dashboardlari infratuzilma holati, ilova unumdorligi va biznes metrikalarini ko'rsatadi.",
+          "Loki barcha xizmatlar loglarini jamlaydi, Promtail esa ularni yig'ib uzatadi.",
+          "Alertmanager alertlarni yo'naltiradi va takrorlanishlarini olib tashlaydi, muhimlarini Telegram'ga yuboradi.",
+          "Butun stek konteynerlarda ishlaydi va yuqori mavjudlikka mo'ljallangan."
+        ],
+        "companyName": "KPI"
+      },
+      "savethis4me-telegram-bot": {
+        "title": "SaveThis4Me Telegram boti",
+        "summary": "Instagram, YouTube, TikTok, X, Reddit va Pinterest'dagi video va postlarni to'g'ridan-to'g'ri chatga saqlaydigan ommaviy Telegram bot.",
+        "points": [
+          "Havolani yuboring va media'ni Telegram'ning o'z video, rasm yoki albomi ko'rinishida qaytarib oling.",
+          "Instagram foydalanuvchilari akkauntini bog'lab, postlarni Instagram ilovasidan @savethis4me akkauntiga ulashishi mumkin; yetkazib berish imzolangan Meta webhook'lari orqali amalga oshadi.",
+          "YouTube havolalari sifat tanlash oynasini ochadi: fayl hajmi taxminan ko'rsatiladi va faqat audio varianti bor; yuklashlar fon navbatida jonli progress va foydalanuvchi limitlari bilan bajariladi.",
+          "Ichki vositalar qo'shiqlarni Shazam orqali taniydi, videolarni dumaloq video xabarlarga aylantiradi va ovozli xabarlarni ajratib oladi.",
+          "Python'da python-telegram-bot va FastAPI bilan yozilgan, yt-dlp, gallery-dl va FFmpeg'dan foydalanadi; foydalanuvchilar, keshlangan media va metrikalar PostgreSQL'da saqlanadi, hammasi Docker'da domen bo'yicha parallellik limitlari va rate limiting bilan ishlaydi.",
+          "Instagram Reels va Stories uchun faqat taklif bilan ishlaydigan hobbi loyiha sifatida boshlangan, keyin ochiq bot sifatida noldan qayta qurilgan."
+        ],
+        "companyName": "Shaxsiy loyiha"
+      }
+    }
+  },
+  "experienceDetail": {
+    "back": "Men haqimda",
+    "whatIDid": "Nima qildim",
+    "company": "Kompaniya",
+    "dates": "Davr",
+    "type": "Turi",
+    "website": "Saytga o'tish"
+  },
+  "projects": {
+    "title": "Loyihalar",
+    "back": "Loyihalar",
+    "whatIBuilt": "Nima yaratdim",
+    "company": "Kompaniya",
+    "year": "Yil",
+    "status": {
+      "label": "Holat",
+      "completed": "Tugallangan",
+      "inProgress": "Jarayonda"
+    },
+    "technologies": "Texnologiyalar",
+    "openInTelegram": "Telegram'da ochish",
+    "empty": {
+      "title": "Hozircha loyihalar yo'q",
+      "description": "Keyinroq qaytib ko'ring."
+    },
+    "exitFullscreen": "To'liq ekrandan chiqish"
+  },
+  "common": {
+    "learnMore": "Batafsil"
+  },
+  "contact": {
+    "header": {
+      "title": "Bog'lanish"
+    },
+    "form": {
+      "nameLabel": "Ism",
+      "emailLabel": "Email",
+      "subjectLabel": "Mavzu",
+      "messageLabel": "Xabar",
+      "namePlaceholder": "Ismingiz",
+      "emailPlaceholder": "you@example.com",
+      "subjectPlaceholder": "Nima haqida?",
+      "messagePlaceholder": "Xabaringiz",
+      "send": "Xabar yuborish",
+      "sending": "Yuborilmoqda…",
+      "success": "Xabar yuborildi. Elektron pochta orqali javob beraman.",
+      "error": "Xabar yuborilmadi. Qayta urinib ko'ring.",
+      "invalidEmail": "To'g'ri elektron pochta manzilini kiriting.",
+      "sendAnother": "Yana xabar yuborish",
+      "charLimitWarning": "Belgilar limitiga yaqinlashdingiz."
+    },
+    "info": {
+      "email": "Email",
+      "phone": "Telefon",
+      "location": "Joylashuv"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} {name}",
+    "email": "Pochta"
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "body": "Bunday sahifa yo'q yoki boshqa joyga ko'chirilgan.",
+    "cta": "Bosh sahifaga"
+  },
+  "chatbot": {
+    "welcome": "Salom, men Shaxriyorning AI yordamchisiman. Uning ishi, tajribasi yoki loyihalari haqida mendan so'rang.",
+    "popup": {
+      "title": "Salom, men Shaxriyorning AI yordamchisiman",
+      "subtitle": "Uning ishi, tajribasi yoki loyihalari haqida mendan so'rang.",
+      "startChat": "Suhbatni boshlash",
+      "maybeLater": "Keyinroq"
+    },
+    "errors": {
+      "generic": "Nimadir xato ketdi. Qayta urinib ko'ring."
+    }
+  },
+  "metadata": {
+    "home": {
+      "description": "Toshkentlik DevOps muhandisi: AWS va GCP'da bulut infratuzilmasi, CI/CD pipeline'lari va monitoring."
+    },
+    "about": {
+      "description": "{name} haqida: AWS va GCP bilan ishlaydigan toshkentlik DevOps muhandisi.",
+      "title": "Men haqimda - {name}"
+    },
+    "projects": {
+      "description": "{name} loyihalari: CI/CD, observability va qurilmalarni xavfsiz integratsiya qilish."
+    },
+    "contact": {
+      "description": "DevOps va bulut loyihalari bo'yicha {name} bilan bog'lanish."
+    }
+  }
+}

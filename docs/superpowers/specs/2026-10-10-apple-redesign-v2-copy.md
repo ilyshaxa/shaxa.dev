@@ -38,10 +38,10 @@ Removed: `home.hero.roles.*` (all five, including `awsCertified`), `home.hero.gr
 | `home.experience.more` | More about me | Обо мне подробнее | Men haqimda batafsil |
 | `home.stack.title` | Stack | Стек | Texnologiyalar |
 | `home.contact.title` | Get in touch | Связаться | Bog'lanish |
-| `home.contact.body` | For work, projects or questions, write to {email}. | По вопросам работы и проектов пишите на {email}. | Ish, loyihalar yoki savollar bo'yicha {email} manziliga yozing. |
+| `home.contact.body` | For work, projects or questions, write to <mail>{address}</mail>. | По вопросам работы и проектов пишите на <mail>{address}</mail>. | Ish, loyihalar yoki savollar bo'yicha <mail>{address}</mail> manziliga yozing. |
 | `home.contact.cta` | Get in touch | Связаться | Bog'lanish |
 
-(`{email}` renders as a link via `t.rich`.) Removed: all `home.skills.*`, `home.experience.subtitle/viewDetails/showAll/showLess/visit`,
+(`<mail>{address}</mail>` renders the address as a mailto link via `t.rich`.) Removed: all `home.skills.*`, `home.experience.subtitle/viewDetails/showAll/showLess/visit`,
 `home.projects.*`, `home.cta.*`. "Learn more ›" reuses `common.learnMore`.
 
 ### Stack (rows and items)
