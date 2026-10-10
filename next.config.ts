@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['js-yaml'],
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header
+  // Resolve metadata before the first byte for every client, so the title, canonical, hreflang and Open Graph tags are
+  // always in the server-sent <head>. By default Next streams them into <body> for browsers and for Googlebot's fetch.
+  htmlLimitedBots: /.*/,
   images: {
     remotePatterns: [
       {
