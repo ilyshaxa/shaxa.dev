@@ -76,6 +76,16 @@ test('a page supplies complete Open Graph and Twitter objects (a child replaces 
   assert.deepEqual(meta.alternates?.canonical, `${base}/uz/contact`);
 });
 
+test('canonical, hreflang and og:url stay on the primary domain when another host serves the page', () => {
+  const meta = buildPageMetadata({ baseUrl: 'https://shaxriyor.com', locale: 'ru', path: '/about', title: 't', description: 'd' });
+  const primary = 'https://shaxa.dev';
+  assert.equal(meta.alternates?.canonical, `${primary}/ru/about`);
+  assert.equal((meta.openGraph as { url: string }).url, `${primary}/ru/about`);
+  for (const href of Object.values(meta.alternates?.languages ?? {})) assert.ok(String(href).startsWith(primary), `${href} is not on the primary domain`);
+  const image = (meta.openGraph as { images: { url: string }[] }).images[0];
+  assert.equal(image.url, `https://shaxriyor.com${OG_IMAGE.path}`, 'the image follows the host that serves the page');
+});
+
 test('og:locale follows the page locale and the site name follows the host', () => {
   const ru = buildPageMetadata({ baseUrl: 'https://shaxriyor.com', locale: 'ru', title: 't', description: 'd' });
   assert.equal((ru.openGraph as { locale: string }).locale, 'ru_RU');

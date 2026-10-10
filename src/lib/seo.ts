@@ -65,7 +65,7 @@ export function pageUrl(baseUrl: string, locale: string, path = ''): string {
   return `${baseUrl}/${locale}${path}`;
 }
 
-/** Canonical = the page's own URL; hreflang for every locale; x-default points at the English page. */
+/** Canonical = the page's own URL on the given domain; hreflang for every locale; x-default points at the English page. */
 export function buildAlternates(baseUrl: string, locale: string, path = ''): { canonical: string; languages: Record<string, string> } {
   const languages: Record<string, string> = {};
   for (const code of locales) languages[code] = pageUrl(baseUrl, code, path);
@@ -89,13 +89,16 @@ interface PageSeo {
  */
 export function buildPageMetadata({ baseUrl, locale, path = '', title, description }: PageSeo): Metadata {
   const { name, title: role } = getProfile();
-  const url = pageUrl(baseUrl, locale, path);
+  // Canonical, hreflang and og:url always name the primary domain (as the sitemap and the README say), so
+  // shaxriyor.com, www and preview hosts do not each claim to be the canonical copy. The image and site name follow the host.
+  const primary = getPrimaryDomain();
+  const url = pageUrl(primary, locale, path);
   const image = { url: `${baseUrl}${OG_IMAGE.path}`, width: OG_IMAGE.width, height: OG_IMAGE.height, alt: `${name}, ${role}` };
 
   return {
     title: { absolute: title },
     description,
-    alternates: buildAlternates(baseUrl, locale, path),
+    alternates: buildAlternates(primary, locale, path),
     openGraph: {
       type: 'website',
       url,
