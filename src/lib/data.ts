@@ -1,9 +1,10 @@
-// import yaml from 'js-yaml'; // Not needed for static data
+// Language-neutral facts. All copy (titles, summaries, bullet points, durations, personal-project labels) lives in
+// messages/*.json under data.projects.<slug>, data.experiences.<slug> and data.education.<slug>;
+// localizeProjects / localizeExperiences / localizeEducation merge it in.
 
 export const stackRows = ['cloud', 'containers', 'cicd', 'observability', 'systems', 'data', 'scripting'] as const;
 export type StackRow = (typeof stackRows)[number];
 
-/** Language-neutral experience facts. Copy lives in messages/*.json under data.experiences.<slug>. */
 export interface ExperienceBase {
   slug: string;
   company: string;
@@ -16,24 +17,23 @@ export interface ExperienceBase {
   technologies: string[];
 }
 
-/** English copy that pages not yet rebuilt still read. Deleted with those pages in the final prune task. */
-export interface ExperienceLegacyText {
+/** Copy comes from messages; a locale missing the entry yields '' (data.test.ts fails on that). */
+export interface Experience extends ExperienceBase {
   position: string;
   duration: string;
-  description: string;
-  location?: string;
-  responsibilities: string[];
-  achievements: string[];
-  teamSize?: string;
-  industry?: string;
-}
-
-export type ExperienceSource = ExperienceBase & ExperienceLegacyText;
-
-/** `summary` and `points` come from messages; a locale missing the entry yields '' and [] (data.test.ts fails on that). */
-export interface Experience extends ExperienceSource {
   summary: string;
   points: string[];
+}
+
+export interface Education {
+  slug: string;
+  institution: string;
+  degree: string;
+  year: string;
+  logo?: string;
+  logoLight?: string;
+  logoDark?: string;
+  website?: string;
 }
 
 export interface Language {
@@ -52,43 +52,12 @@ export interface Profile {
   linkedin: string;
   twitter: string;
   instagram: string;
-  bio: string;
-  shortBio: string;
-  skills: {
-    cloud: string[];
-    containers: string[];
-    infrastructure: string[];
-    cicd: string[];
-    monitoring: string[];
-    database: string[];
-    tools: string[];
-  };
   stack: Record<StackRow, string[]>;
-  experience: ExperienceSource[];
-  education: Array<{
-    slug: string;
-    institution: string;
-    degree: string;
-    year: string;
-    logo?: string;
-    logoLight?: string;
-    logoDark?: string;
-    website?: string;
-  }>;
-  certifications: Array<{
-    name: string;
-    issuer: string;
-    year: string;
-    status: string;
-    logo?: string;
-    logoLight?: string;
-    logoDark?: string;
-  }>;
+  experience: ExperienceBase[];
+  education: Education[];
   languages: Language[];
-  cvUrl: string;
 }
 
-/** Language-neutral project facts. Copy lives in messages/*.json under data.projects.<slug>. */
 export interface ProjectBase {
   slug: string;
   technologies: string[];
@@ -102,62 +71,32 @@ export interface ProjectBase {
   expandedVideoLight?: string;
   isVideo?: boolean;
   liveUrl?: string;
-  githubUrl?: string;
   featured: boolean;
   /** Untranslated key ('Completed'); the label comes from projects.status.* in messages. */
   status: string;
   year: string;
 }
 
-/** English copy that pages not yet rebuilt still read. Deleted with those pages in the final prune task. */
-export interface ProjectLegacyText {
+/** Copy comes from messages; a locale missing the entry yields '' and [] (data.test.ts fails on that). */
+export interface Project extends ProjectBase {
   title: string;
-  shortDescription: string;
-  fullDescription: string;
-  companyName?: string;
-}
-
-export type ProjectSource = ProjectBase & ProjectLegacyText;
-
-/** `summary` and `points` come from messages; a locale missing the entry yields '' and [] (data.test.ts fails on that). */
-export interface Project extends ProjectSource {
   summary: string;
   outcome?: string;
   points: string[];
+  companyName?: string;
 }
 
-export function generateProjectSlug(title: string): string {
-  return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-}
-
-export interface ProjectsData {
-  featured: ProjectSource[];
-  all: ProjectSource[];
-}
-
-// Static data - in production, you might want to load this from a CMS or API
 const profileData: Profile = {
-  name: "Shaxriyor Jabborov",
-  title: "DevOps Engineer",
-  location: "Tashkent, Uzbekistan",
-  email: "shaxriyor@shaxa.dev",
-  phone: "+998 93 766 50 10",
-  website: "https://shaxa.dev",
-  github: "https://github.com/ilyshaxa",
-  linkedin: "https://linkedin.com/in/shaxriyor",
-  twitter: "https://x.com/ilyshaxa",
-  instagram: "https://instagram.com/ilyshaxa",
-  bio: "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps technology stack.",
-  shortBio: "DevOps engineer focused on building scalable infrastructure and creating reliable automation solutions.",
-  skills: {
-    cloud: ["AWS", "Azure", "Google Cloud", "DigitalOcean", "Alibaba Cloud"],
-    containers: ["Docker", "Kubernetes", "Podman", "Containerd", "Helm"],
-    infrastructure: ["Terraform", "Ansible", "Pulumi", "CloudFormation", "ARM Templates", "CDK"],
-    cicd: ["Jenkins", "GitLab CI", "GitHub Actions", "Azure DevOps", "CircleCI", "ArgoCD"],
-    monitoring: ["Prometheus", "Grafana", "Loki", "Promtail", "ELK Stack", "Datadog"],
-    database: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch", "DynamoDB"],
-    tools: ["Git", "Linux", "Bash", "Python", "YAML", "JSON"]
-  },
+  name: 'Shaxriyor Jabborov',
+  title: 'DevOps Engineer',
+  location: 'Tashkent, Uzbekistan',
+  email: 'shaxriyor@shaxa.dev',
+  phone: '+998 93 766 50 10',
+  website: 'https://shaxa.dev',
+  github: 'https://github.com/ilyshaxa',
+  linkedin: 'https://linkedin.com/in/shaxriyor',
+  twitter: 'https://x.com/ilyshaxa',
+  instagram: 'https://instagram.com/ilyshaxa',
   stack: {
     cloud: ['AWS', 'GCP'],
     containers: ['Docker'],
@@ -169,398 +108,196 @@ const profileData: Profile = {
   },
   experience: [
     {
-      company: "KPI",
-      position: "DevOps Engineer",
-      duration: "May 2023 - Present",
-      description: "Design, automate, and optimize systems to ensure performance and reliability.",
-      website: "https://kpi.com",
-      employmentType: "Full-time",
-      logo: "/images/companies/kpi-logo.png",
-      slug: "kpi-com-devops-engineer",
-      startDate: "2023-05-01",
+      slug: 'kpi-com-devops-engineer',
+      company: 'KPI',
+      website: 'https://kpi.com',
+      logo: '/images/companies/kpi-logo.png',
+      employmentType: 'Full-time',
+      startDate: '2023-05-01',
       isCurrent: true,
-      location: "On-site",
-      responsibilities: [
-        "Maintained, optimized, and secured cloud infrastructure on AWS to ensure scalability and high availability",
-        "Managed and deployed containerized applications using Docker across multiple environments",
-        "Automated CI/CD pipelines with Jenkins to streamline integration, testing, and deployment processes",
-        "Monitored system performance, identified bottlenecks, and implemented solutions to improve reliability",
-        "Collaborated closely with development teams to design efficient deployment workflows and improve release velocity",
-        "Ensured infrastructure compliance with security and cost optimization best practices"
+      technologies: [
+        'AWS', 'GCP', 'Docker', 'Linux', 'Jenkins', 'GitLab CI', 'Git', 'Python', 'Bash', 'Sentry', 'Prometheus', 'Grafana',
+        'Loki', 'Alertmanager', 'Tomcat', 'Nginx', 'Solr', 'Kafka', 'RabbitMQ', 'Redis', 'MongoDB', 'PostgreSQL',
       ],
-      achievements: [
-        "Reduced monthly AWS costs by 20% through strategic adoption of Savings Plans and resource right-sizing",
-        "Implemented a modern monitoring stack with Prometheus and Grafana, improving system visibility and reliability metrics by 40%",
-        "Upgraded legacy GitLab Omnibus to the latest stable version, strengthening CI/CD security and improving performance by 30%",
-        "Cut deployment times by 50% using parallelized Jenkins builds and optimized AWS instance configurations",
-        "Developed a Python CLI tool to automate database schema synchronization across dev, staging, and production environments, reducing manual work and human error",
-        "Developed a custom Prometheus exporter to surface key business metrics in Grafana dashboards for data-driven decision-making",
-        "Improved incident response time by 60% through proactive alerting and centralized log aggregation"
-      ],
-      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "GitLab CI", "Git", "Python", "Bash", "Sentry", "Prometheus", "Grafana", "Loki", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
-      teamSize: "50+",
-      industry: "Software & IT Services"
     },
     {
-      company: "PraaktisGo",
-      position: "DevOps Engineer",
-      duration: "January 2025 - July 2026",
-      description: "Design, automate, and optimize cloud infrastructure and deployment workflows for scalable, reliable systems.",
-      website: "https://praaktisgo.com",
-      employmentType: "Freelance",
-      logo: "/images/companies/praaktisgo-logo.png",
-      slug: "praaktisgo-devops-engineer",
-      startDate: "2025-01-01",
-      endDate: "2026-07-01",
+      slug: 'praaktisgo-devops-engineer',
+      company: 'PraaktisGo',
+      website: 'https://praaktisgo.com',
+      logo: '/images/companies/praaktisgo-logo.png',
+      employmentType: 'Freelance',
+      startDate: '2025-01-01',
+      endDate: '2026-07-01',
       isCurrent: false,
-      location: "Remote",
-      responsibilities: [
-        "Led the migration of existing AWS cloud infrastructure to a new AWS account and region, ensuring scalability, security, and cost-efficiency",
-        "Designed and maintained CI/CD pipelines with Jenkins to automate testing, integration, and deployment workflows",
-        "Implemented end-to-end monitoring and alerting solutions to ensure system reliability, availability, and performance visibility",
-        "Collaborated closely with development teams to streamline build, release, and automation processes",
-        "Optimized cloud infrastructure costs and enforced security best practices across environments",
-        "Documented architecture, deployment processes, and operational guidelines to improve team efficiency and continuity"
-      ],      
-      achievements: [
-        "Completed AWS infrastructure migration with zero downtime and no data loss",
-        "Secured $100K in Google Cloud credits through the 2024 GFS Cloud Program, expanding multi-cloud flexibility",
-        "Received $10K in AWS Activate Portfolio credits to accelerate infrastructure growth and experimentation",
-        "Awarded a 1-year free Google Workspace Business Plan, reducing operational costs by 15%",
-        "Reduced deployment time by 50% through CI/CD pipeline automation and environment standardization",
-        "Achieved 99.9% system uptime through proactive monitoring and incident prevention measures",
-        "Implemented cross-cloud cost tracking and performance monitoring to guide future hybrid-cloud strategy"
-      ],            
-      technologies: ["AWS", "GCP", "Docker", "Linux", "Jenkins", "Git", "Python", "Bash", "Prometheus", "Grafana", "Alertmanager", "Tomcat", "Nginx", "Solr", "Kafka", "RabbitMQ", "Redis", "MongoDB", "PostgreSQL"],
-      teamSize: "10+",
-      industry: "Wellness & Fitness"
+      technologies: [
+        'AWS', 'GCP', 'Docker', 'Linux', 'Jenkins', 'Git', 'Python', 'Bash', 'Prometheus', 'Grafana', 'Alertmanager', 'Tomcat',
+        'Nginx', 'Solr', 'Kafka', 'RabbitMQ', 'Redis', 'MongoDB', 'PostgreSQL',
+      ],
     },
     {
-      company: "DataSite Technology",
-      position: "Frontend Developer",
-      duration: "September 2022 - May 2023",
-      description: "Frontend developer at DataSite Technology.",
-      website: "https://dst.uz/",
-      employmentType: "Internship",
-      logo: "/images/companies/datasite-logo.png",
-      slug: "datasite-technology-frontend-developer",
-      startDate: "2022-09-01",
-      endDate: "2023-05-01",
+      slug: 'datasite-technology-frontend-developer',
+      company: 'DataSite Technology',
+      website: 'https://dst.uz/',
+      logo: '/images/companies/datasite-logo.png',
+      employmentType: 'Internship',
+      startDate: '2022-09-01',
+      endDate: '2023-05-01',
       isCurrent: false,
-      location: "Remote",
-      responsibilities: [
-        "Learned and practiced core frontend technologies including HTML, CSS, and JavaScript",
-        "Gained hands-on experience with React and Next.js by building components for internal projects",
-        "Collaborated with senior developers to understand code structure, version control, and best practices using Git",
-        "Assisted in styling and layout improvements using Tailwind CSS",
-        "Participated in code reviews and team discussions to improve technical and collaboration skills"
-      ],
-      achievements: [
-        "Successfully transitioned from academic learning to practical frontend development in a professional environment",
-        "Built and deployed small-scale frontend features using React and JavaScript under mentorship",
-        "Improved understanding of modern web development workflows, version control, and team collaboration",
-        "Established a strong foundation in responsive design and clean, maintainable code practices"
-      ],
-      technologies: ["HTML", "CSS", "JavaScript", "React", "Git", "Figma"],
-      teamSize: "100-200",
-      industry: "IT services & digital marketing"
-    }
+      technologies: ['HTML', 'CSS', 'JavaScript', 'React', 'Git', 'Figma'],
+    },
   ],
   education: [
     {
-      slug: "tsue-economics",
-      institution: "Tashkent State University of Economics",
-      degree: "Bachelor's in Economics",
-      year: "2022 – 2027",
-      logo: "/images/education/tsue-light.png",
-      logoLight: "/images/education/tsue-light.png",
-      logoDark: "/images/education/tsue-dark.png",
-      website: "https://tsue.uz"
-    }
-  ],
-  certifications: [
-    // Temporarily hidden - Planned certifications (will be available in the future)
-    // {
-    //   name: "AWS Certified Cloud Practitioner",
-    //   issuer: "Amazon Web Services",
-    //   year: "2025",
-    //   status: "Planned",
-    //   logo: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
-    //   logoLight: "/images/certifications/AWS-Certified-Cloud-Practitioner.png",
-    //   logoDark: "/images/certifications/AWS-Certified-Cloud-Practitioner.png"
-    // },
-    // {
-    //   name: "AWS Certified Solutions Architect Professional",
-    //   issuer: "Amazon Web Services",
-    //   year: "2026",
-    //   status: "Planned",
-    //   logo: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
-    //   logoLight: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png",
-    //   logoDark: "/images/certifications/AWS-Certified-Solutions-Architect-Professional.png"
-    // },
-    // {
-    //   name: "AWS Certified DevOps Engineer Professional",
-    //   issuer: "Amazon Web Services",
-    //   year: "2026",
-    //   status: "Planned",
-    //   logo: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
-    //   logoLight: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png",
-    //   logoDark: "/images/certifications/AWS-Certified-DevOps-Engineer-Professional.png"
-    // },
-    // Temporarily hidden - Expired certification
-    // {
-    //   name: "English Language Certificate",
-    //   issuer: "British Council",
-    //   year: "2022",
-    //   status: "Expired",
-    //   logo: "/images/certifications/IELTS.png",
-    //   logoLight: "/images/certifications/IELTS.png",
-    //   logoDark: "/images/certifications/IELTS.png"
-    // }
+      slug: 'tsue-economics',
+      institution: 'Tashkent State University of Economics',
+      degree: "Bachelor's degree in economics",
+      year: '2022 – 2027',
+      logo: '/images/education/tsue-light.png',
+      logoLight: '/images/education/tsue-light.png',
+      logoDark: '/images/education/tsue-dark.png',
+      website: 'https://tsue.uz',
+    },
   ],
   languages: [
     { name: 'Uzbek', level: 'native' },
     { name: 'English', level: 'advanced' },
-    { name: 'Russian', level: 'basic' }
+    { name: 'Russian', level: 'basic' },
   ],
-  cvUrl: "/cv/shaxriyor-jabborov-cv.pdf"
 };
 
-const projectsData: ProjectsData = {
-  featured: [
-    {
-      title: "Jenkins CI/CD Pipeline",
-      shortDescription: "A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments.",
-      fullDescription: "Designed and implemented a production-grade CI/CD pipeline for Praaktisgo using Jenkins and AWS. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs were built for Jenkins agents with preinstalled tools (JDK, Ant, Git, AWS CLI), and the pipeline dynamically provisions build agents to compile and deploy applications. Build artifacts are uploaded to S3 and deployed via AWS CodeDeploy, while post-build scripts send changelogs and build status updates to a Telegram group. Prometheus monitors the Jenkins controller and agents through node_exporter, providing real-time visibility into resource usage and performance metrics.",
-      technologies: [
-        "Jenkins",
-        "AWS EC2",
-        "AWS S3",
-        "AWS CodeDeploy",
-        "AWS IAM",
-        "AWS CLI",
-        "Git",
-        "Bash",
-        "Telegram API",
-        "Prometheus",
-        "Node Exporter",
-        "Ant"
-      ],
-      highlights: ["Jenkins", "AWS CodeDeploy", "S3", "Prometheus"],
-      coverImage: "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
-      coverImageLight: "/projects/praaktisgo-jenkins-ci-cd-light.svg",
-      expandedImage: "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
-      expandedImageLight: "/projects/praaktisgo-jenkins-ci-cd-light.svg",
-      liveUrl: "",
-      githubUrl: "",
-      featured: true,
-      status: "Completed",
-      year: "2025",
-      companyName: "Praaktisgo",
-      slug: "jenkins-cicd-pipeline"
-    },
-    {
-      title: "HikCentral Integration",
-      shortDescription: "A secure cloud-based integration platform enabling remote connectivity between Hikvision face recognition devices and a centralized HikCentral Professional server using outbound ISUP communication.",
-      fullDescription: "Developed a secure, scalable remote device integration platform allowing Hikvision face recognition devices to connect to cloud infrastructure through ISUP 5.0 outbound communication. Each device establishes an encrypted connection to a HikCentral Professional instance hosted on a Google Cloud Windows Server VM, enabling reliable registration and data transfer without any inbound exposure at client sites. The architecture spans device firmware, network transport (ISUP over TCP with TLS), cloud infrastructure (GCP Compute Engine), and application services (HikCentral ISUP Gateway, Web Client, and OpenAPI). Security controls include TLS encryption, outbound-only device traffic, firewall allowlists, RBAC enforcement, and token-based API authentication. The system exposes a REST-based OpenAPI interface for seamless third-party integration over HTTPS, supporting external applications built with technologies such as Node.js, Python, and .NET.",
-      technologies: [
-        "Hikvision Devices",
-        "ISUP 5.0 Protocol",
-        "ISUP over TCP",
-        "TCP/IP",
-        "TLS",
-        "HTTPS",
-        "NAT",
-        "Firewall",
-        "NTP",
-        "DNS",
-        "Hikvision Firmware",
-        "HikGateway (Device Gateway)",
-        "HikGateway ISUP Service",
-        "HikGateway ISAPI API",
-        "REST API",
-        "JSON",
-        "API Tokens & Authentication",
-        "Google Cloud Platform (GCP)",
-        "Compute Engine",
-        "Linux Server"
-      ],
-      highlights: ["ISUP 5.0", "HikGateway", "ISAPI", "TLS"],
-      coverImage: "/projects/hikcentral-remote-device-integration.svg",
-      coverImageLight: "/projects/hikcentral-remote-device-integration.svg",
-      expandedImage: "/projects/hikcentral-remote-device-integration.svg",
-      expandedImageLight: "/projects/hikcentral-remote-device-integration.svg",
-      liveUrl: "",
-      githubUrl: "",
-      featured: true,
-      status: "Completed",
-      year: "2025",
-      companyName: "KPI",
-      slug: "hikcentral-remote-device-integration"
-    },
-    {
-      title: "Comprehensive Monitoring Stack",
-      shortDescription: "A complete observability solution with Grafana, Prometheus, Loki, and Alertmanager providing full-stack monitoring, logging, and alerting for infrastructure and applications.",
-      fullDescription: "Designed and implemented a production-grade monitoring and observability stack for KPI's infrastructure and applications. The solution provides comprehensive visibility across the entire technology stack through multiple specialized exporters and collectors. Prometheus serves as the central metrics collection and storage system, scraping metrics from node_exporter (system metrics), jmx_exporter (Java application metrics), cAdvisor (container metrics), and a custom exporter for application-specific metrics. Grafana provides rich visualization dashboards for infrastructure health, application performance, and business metrics. Loki aggregates logs from all services, with Promtail collecting and forwarding log data from various sources. Alertmanager handles alert routing and deduplication, sending critical notifications directly to Telegram for real-time incident response. The entire stack is containerized and orchestrated for high availability and scalability, ensuring reliable monitoring even during infrastructure incidents.",
-      technologies: [
-        "Grafana",
-        "Prometheus",
-        "Loki",
-        "Node Exporter",
-        "JMX Exporter",
-        "Custom Exporter",
-        "cAdvisor",
-        "Promtail",
-        "Alertmanager",
-        "Telegram API",
-        "PostgreSQL",
-        "Docker",
-        "Linux"
-      ],
-      highlights: ["Prometheus", "Grafana", "Loki", "Alertmanager"],
-      coverImage: "/projects/kpi-monitoring-stack-dark.svg",
-      coverImageLight: "/projects/kpi-monitoring-stack-light.svg",
-      expandedImage: "/projects/kpi-monitoring-stack-dark.svg",
-      expandedImageLight: "/projects/kpi-monitoring-stack-light.svg",
-      liveUrl: "",
-      githubUrl: "",
-      featured: true,
-      status: "Completed",
-      year: "2023",
-      companyName: "KPI",
-      slug: "comprehensive-monitoring-stack"
-    },
-    {
-      title: "SaveThis4Me Telegram Bot",
-      shortDescription: "A Telegram bot that saves videos and posts from Instagram, YouTube, TikTok, X, Reddit and Pinterest straight into your chat. Paste a link, or share from Instagram, and the media arrives in seconds.",
-      fullDescription: "SaveThis4Me is a public Telegram bot that relays social media content into Telegram chats. It started as an invite-only hobby project for Instagram Reels and Stories and was later rebuilt from scratch as an open bot anyone can use. Users paste a link from Instagram, YouTube, TikTok, X, Reddit or Pinterest and get the media back as a native Telegram video, photo or album. Instagram users can also bind their account and share posts to the @savethis4me relay account right from the Instagram app, delivered to the bot through signed Meta webhooks. YouTube links open a quality picker with estimated file sizes and an audio-only option, and are processed by a background job queue with live progress and per-user limits. Built-in media tools recognize songs with Shazam, convert videos into round video notes and extract voice notes. The bot is written in Python with python-telegram-bot and FastAPI, uses yt-dlp, gallery-dl and FFmpeg to fetch and normalize media, stores users, cached media and engagement metrics in PostgreSQL, and runs in Docker with per-domain concurrency limits and rate limiting.",
-      technologies: [
-        "Python",
-        "python-telegram-bot",
-        "FastAPI",
-        "PostgreSQL",
-        "yt-dlp",
-        "gallery-dl",
-        "FFmpeg",
-        "Meta Webhooks",
-        "Docker",
-        "Linux",
-        "Git"
-      ],
-      highlights: ["Python", "FastAPI", "PostgreSQL", "Docker"],
-      coverImage: "/projects/ST4M-Transparent-Logo.svg",
-      coverImageLight: "/projects/ST4M-Transparent-Logo.svg",
-      expandedImage: "/projects/ST4M-Transparent-Logo.svg",
-      expandedImageLight: "/projects/ST4M-Transparent-Logo.svg",
-      expandedVideo: "/projects/savethis4me-demo.mp4",
-      expandedVideoLight: "/projects/savethis4me-demo.mp4",
-      isVideo: true,
-      liveUrl: "https://t.me/SaveThis4Me_Bot",
-      githubUrl: "",
-      featured: false,
-      status: "Completed",
-      year: "2024",
-      companyName: "Personal Project",
-      slug: "savethis4me-telegram-bot"
-    }
-  ],
-  all: []
-};
+const projectList: ProjectBase[] = [
+  {
+    slug: 'jenkins-cicd-pipeline',
+    technologies: [
+      'Jenkins', 'AWS EC2', 'AWS S3', 'AWS CodeDeploy', 'AWS IAM', 'AWS CLI', 'Git', 'Bash', 'Telegram API', 'Prometheus',
+      'Node Exporter', 'Ant',
+    ],
+    highlights: ['Jenkins', 'AWS CodeDeploy', 'S3', 'Prometheus'],
+    coverImage: '/projects/praaktisgo-jenkins-ci-cd-dark.svg',
+    coverImageLight: '/projects/praaktisgo-jenkins-ci-cd-light.svg',
+    expandedImage: '/projects/praaktisgo-jenkins-ci-cd-dark.svg',
+    expandedImageLight: '/projects/praaktisgo-jenkins-ci-cd-light.svg',
+    featured: true,
+    status: 'Completed',
+    year: '2025',
+  },
+  {
+    slug: 'hikcentral-remote-device-integration',
+    technologies: [
+      'Hikvision Devices', 'ISUP 5.0 Protocol', 'ISUP over TCP', 'TCP/IP', 'TLS', 'HTTPS', 'NAT', 'Firewall', 'NTP', 'DNS',
+      'Hikvision Firmware', 'HikGateway (Device Gateway)', 'HikGateway ISUP Service', 'HikGateway ISAPI API', 'REST API', 'JSON',
+      'API Tokens & Authentication', 'Google Cloud Platform (GCP)', 'Compute Engine', 'Linux Server',
+    ],
+    highlights: ['ISUP 5.0', 'HikGateway', 'ISAPI', 'TLS'],
+    coverImage: '/projects/hikcentral-remote-device-integration.svg',
+    coverImageLight: '/projects/hikcentral-remote-device-integration.svg',
+    expandedImage: '/projects/hikcentral-remote-device-integration.svg',
+    expandedImageLight: '/projects/hikcentral-remote-device-integration.svg',
+    featured: true,
+    status: 'Completed',
+    year: '2025',
+  },
+  {
+    slug: 'comprehensive-monitoring-stack',
+    technologies: [
+      'Grafana', 'Prometheus', 'Loki', 'Node Exporter', 'JMX Exporter', 'Custom Exporter', 'cAdvisor', 'Promtail',
+      'Alertmanager', 'Telegram API', 'PostgreSQL', 'Docker', 'Linux',
+    ],
+    highlights: ['Prometheus', 'Grafana', 'Loki', 'Alertmanager'],
+    coverImage: '/projects/kpi-monitoring-stack-dark.svg',
+    coverImageLight: '/projects/kpi-monitoring-stack-light.svg',
+    expandedImage: '/projects/kpi-monitoring-stack-dark.svg',
+    expandedImageLight: '/projects/kpi-monitoring-stack-light.svg',
+    featured: true,
+    status: 'Completed',
+    year: '2023',
+  },
+  {
+    slug: 'savethis4me-telegram-bot',
+    technologies: [
+      'Python', 'python-telegram-bot', 'FastAPI', 'PostgreSQL', 'yt-dlp', 'gallery-dl', 'FFmpeg', 'Meta Webhooks', 'Docker',
+      'Linux', 'Git',
+    ],
+    highlights: ['Python', 'FastAPI', 'PostgreSQL', 'Docker'],
+    coverImage: '/projects/ST4M-Transparent-Logo.svg',
+    coverImageLight: '/projects/ST4M-Transparent-Logo.svg',
+    expandedImage: '/projects/ST4M-Transparent-Logo.svg',
+    expandedImageLight: '/projects/ST4M-Transparent-Logo.svg',
+    expandedVideo: '/projects/savethis4me-demo.mp4',
+    expandedVideoLight: '/projects/savethis4me-demo.mp4',
+    isVideo: true,
+    liveUrl: 'https://t.me/SaveThis4Me_Bot',
+    featured: false,
+    status: 'Completed',
+    year: '2024',
+  },
+];
 
 export function getProfile(): Profile {
   return profileData;
 }
 
-export function getProjects(): ProjectsData {
-  return projectsData;
+export function getAllProjects(): ProjectBase[] {
+  return projectList;
 }
 
-export function getFeaturedProjects(): ProjectSource[] {
-  return projectsData.featured;
-}
-
-export function getAllProjects(): ProjectSource[] {
-  return [...projectsData.featured, ...projectsData.all];
-}
-
-export function getExperienceBySlug(slug: string): ExperienceSource | null {
-  const profile = getProfile();
-  return profile.experience.find(exp => exp.slug === slug) || null;
-}
-
-export function getAllExperiences(): ExperienceSource[] {
-  const profile = getProfile();
-  return profile.experience;
+export function getAllExperiences(): ExperienceBase[] {
+  return profileData.experience;
 }
 
 export function getExperienceSlugByCompany(companyName: string): string | null {
-  const experiences = getAllExperiences();
-  const experience = experiences.find(exp => 
-    exp.company.toLowerCase() === companyName.toLowerCase() ||
-    exp.company.toLowerCase().includes(companyName.toLowerCase()) ||
-    companyName.toLowerCase().includes(exp.company.toLowerCase())
-  );
-  return experience?.slug || null;
+  const name = companyName.toLowerCase();
+  const match = getAllExperiences().find((exp) => {
+    const company = exp.company.toLowerCase();
+    return company === name || company.includes(name) || name.includes(company);
+  });
+  return match?.slug ?? null;
 }
 
-// Synchronous localization functions (usable from server and client components)
-const text = (value: unknown, fallback = ''): string => (typeof value === 'string' && value ? value : fallback);
+type MessageTree = Record<string, unknown>;
+
+const text = (value: unknown): string => (typeof value === 'string' ? value : '');
 const list = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string' && item.length > 0) : [];
 
-export function localizeProjects(projects: ProjectSource[], translations: Record<string, unknown>): Project[] {
-  const projectsData = ((translations?.data as Record<string, unknown>)?.projects as Record<string, unknown>) || {};
+function dataSection(translations: MessageTree, section: 'projects' | 'experiences' | 'education'): Record<string, MessageTree> {
+  const data = translations?.data as Record<string, Record<string, MessageTree>> | undefined;
+  return data?.[section] ?? {};
+}
+
+export function localizeProjects(projects: ProjectBase[], translations: MessageTree): Project[] {
+  const copy = dataSection(translations, 'projects');
   return projects.map((project) => {
-    const copy = (projectsData[project.slug] ?? {}) as Record<string, unknown>;
+    const entry = copy[project.slug] ?? {};
     return {
       ...project,
-      title: text(copy.title, project.title),
-      shortDescription: text(copy.shortDescription, project.shortDescription),
-      fullDescription: text(copy.fullDescription, project.fullDescription),
-      companyName: text(copy.companyName, project.companyName) || undefined,
-      summary: text(copy.summary),
-      outcome: text(copy.outcome) || undefined,
-      points: list(copy.points),
+      title: text(entry.title),
+      summary: text(entry.summary),
+      outcome: text(entry.outcome) || undefined,
+      points: list(entry.points),
+      companyName: text(entry.companyName) || undefined,
     };
   });
 }
 
-export function localizeExperiences(experiences: ExperienceSource[], translations: Record<string, unknown>): Experience[] {
-  const experiencesData = ((translations?.data as Record<string, unknown>)?.experiences as Record<string, unknown>) || {};
+export function localizeExperiences(experiences: ExperienceBase[], translations: MessageTree): Experience[] {
+  const copy = dataSection(translations, 'experiences');
   return experiences.map((experience) => {
-    const copy = (experiencesData[experience.slug] ?? {}) as Record<string, unknown>;
+    const entry = copy[experience.slug] ?? {};
     return {
       ...experience,
-      company: text(copy.company, experience.company),
-      position: text(copy.position, experience.position),
-      duration: text(copy.duration, experience.duration),
-      description: text(copy.description, experience.description),
-      location: text(copy.location, experience.location) || undefined,
-      responsibilities: list(copy.responsibilities).length ? list(copy.responsibilities) : experience.responsibilities,
-      achievements: list(copy.achievements).length ? list(copy.achievements) : experience.achievements,
-      teamSize: text(copy.teamSize, experience.teamSize) || undefined,
-      industry: text(copy.industry, experience.industry) || undefined,
-      summary: text(copy.summary),
-      points: list(copy.points),
+      position: text(entry.position),
+      duration: text(entry.duration),
+      summary: text(entry.summary),
+      points: list(entry.points),
     };
   });
 }
 
-// Helper function to localize education data (client-side)
-export function localizeEducation(
-  education: Profile['education'], 
-  translations: Record<string, unknown>
-): Profile['education'] {
-  const educationData = (translations?.data as Record<string, unknown>)?.education as Record<string, unknown> || {};
-  
-  return education.map(edu => {
-    const translatedData = educationData[edu.slug] as Record<string, string> | undefined;
-    if (!translatedData) return edu;
-    
-    return {
-      ...edu,
-      institution: translatedData.institution || edu.institution,
-      degree: translatedData.degree || edu.degree,
-    };
+export function localizeEducation(education: Education[], translations: MessageTree): Education[] {
+  const copy = dataSection(translations, 'education');
+  return education.map((edu) => {
+    const entry = copy[edu.slug] ?? {};
+    return { ...edu, institution: text(entry.institution) || edu.institution, degree: text(entry.degree) || edu.degree };
   });
 }

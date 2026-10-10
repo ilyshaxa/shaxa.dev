@@ -1,16 +1,8 @@
 {
   "navigation": {
-    "home": "Home",
     "about": "About",
     "projects": "Projects",
     "contact": "Contact",
-    "downloadCV": "Download CV",
-    "cv": "CV",
-    "selectLanguage": "Select CV Language",
-    "downloadInEnglish": "Download in English",
-    "downloadInUzbek": "Download in Uzbek",
-    "downloadInRussian": "Download in Russian",
-    "downloadingCV": "Downloading CV in {language}...",
     "languageNames": {
       "en": "English",
       "uz": "Uzbek",
@@ -30,53 +22,14 @@
   },
   "home": {
     "hero": {
-      "greeting": "Hi, I'm",
-      "roles": {
-        "devops": "DevOps Engineer",
-        "observability": "Observability & Monitoring Expert",
-        "awsCertified": "AWS Certified",
-        "aiEnthusiast": "AI & Machine Learning Enthusiast",
-        "cloudEngineer": "Cloud Engineer"
-      },
       "downloadCV": "Download CV",
       "role": "DevOps engineer",
       "lead": "I build cloud infrastructure, CI/CD pipelines and monitoring on AWS and GCP.",
       "getInTouch": "Get in touch"
     },
-    "skills": {
-      "title": "Skills & Technologies",
-      "subtitle": "A comprehensive DevOps toolkit for modern infrastructure",
-      "categories": {
-        "cloud": "Cloud",
-        "containers": "Containers",
-        "infrastructure": "Infrastructure",
-        "cicd": "CI/CD",
-        "monitoring": "Monitoring",
-        "database": "Database",
-        "tools": "Tools"
-      }
-    },
     "experience": {
       "title": "Experience",
-      "subtitle": "My professional journey and key achievements",
-      "viewDetails": "View Details",
-      "showAll": "Show All ({count} more)",
-      "showLess": "Show Less",
-      "visit": "Visit",
       "more": "More about me"
-    },
-    "projects": {
-      "title": "Featured Projects",
-      "subtitle": "A showcase of my recent work and side projects",
-      "showAll": "Show All ({count} more)",
-      "showLess": "Show Less",
-      "seeAll": "See all projects"
-    },
-    "cta": {
-      "title": "Let's Work Together",
-      "subtitle": "I'm always interested in new opportunities and exciting projects. Let's discuss how we can collaborate!",
-      "getInTouch": "Get In Touch",
-      "viewFullProfile": "View Full Profile"
     },
     "work": {
       "title": "Selected work",
@@ -102,78 +55,6 @@
   },
   "about": {
     "title": "About",
-    "subtitle": "Get to know more about my journey, values, and what drives me as a DevOps engineer",
-    "sections": {
-      "bio": {
-        "title": "About Me",
-        "subtitle": "My story, passion, and approach to technology",
-        "additionalText": "DevOps engineer with a love for building things that scale and work seamlessly. I focus on creating clean, automated systems that make development and deployment smoother for everyone. Whether it's designing cloud infrastructure, fine-tuning CI/CD pipelines, or improving reliability across environments, I enjoy solving the tricky problems that keep systems running at their best. Always exploring new tools and better ways to connect code, infrastructure, and people."
-      },
-      "experience": {
-        "title": "Professional Experience",
-        "subtitle": "My journey through different companies and the skills I've gained along the way",
-        "keySkills": "Key Skills",
-        "more": "+{count} more"
-      },
-      "education": {
-        "title": "Education & Certifications",
-        "subtitle": "My academic background and professional certifications",
-        "educationTab": "Education",
-        "educationSubtitle": "My academic background and formal education",
-        "certificationsTab": "Certifications",
-        "certificationsSubtitle": "Professional certifications and achievements",
-        "comingSoon": "Certifications coming soon",
-        "comingSoonDesc": "Professional certifications will be displayed here once obtained"
-      },
-      "skills": {
-        "title": "Skills & Languages",
-        "subtitle": "My technical expertise and language proficiency",
-        "technicalSkills": "Technical Skills",
-        "technicalSkillsSubtitle": "Technologies and tools I work with",
-        "languages": "Languages",
-        "languagesSubtitle": "Languages I speak and work in"
-      },
-      "values": {
-        "title": "Values & Philosophy",
-        "subtitle": "What drives me and shapes my approach to work",
-        "codeQuality": {
-          "title": "Code Quality",
-          "description": "I believe in writing clean, maintainable, and well-documented code. Good code is not just about functionality, but about readability and maintainability for future DevOps engineers."
-        },
-        "userCentric": {
-          "title": "User-Centric Design",
-          "description": "Every project I work on is designed with the end user in mind. I focus on creating intuitive, accessible, and delightful experiences that solve real problems."
-        },
-        "continuousLearning": {
-          "title": "Continuous Learning",
-          "description": "Technology evolves rapidly, and I'm committed to staying current with the latest trends, tools, and best practices in DevOps and cloud infrastructure."
-        },
-        "collaboration": {
-          "title": "Collaboration",
-          "description": "I believe the best solutions come from collaborative efforts. I enjoy working with diverse teams and contributing to open-source projects."
-        }
-      },
-      "funFacts": {
-        "title": "Fun Facts",
-        "subtitle": "A few things about me outside of coding",
-        "linux": {
-          "title": "🐧 Linux Aficionado",
-          "description": "A passionate Linux main and open-source enthusiast who loves exploring new tools, tweaks, and optimizations."
-        },
-        "fitness": {
-          "title": "🏋️ Fitness Focused",
-          "description": "Regular gym sessions keep me grounded, energized, and ready to take on new challenges both in and out of code."
-        },
-        "gaming": {
-          "title": "⚔️ Clash Royale Pro",
-          "description": "A competitive Clash Royale player who enjoys strategic gameplay, quick thinking, and perfecting every move."
-        },
-        "learner": {
-          "title": "🧠 Lifelong Learner",
-          "description": "Always curious about emerging technologies and new ideas. I love growing my skills one experiment at a time."
-        }
-      }
-    },
     "employmentTypes": {
       "fullTime": "Full-time",
       "partTime": "Part-time",
@@ -201,24 +82,10 @@
   },
   "projects": {
     "title": "Projects",
-    "subtitle": "A curated collection of my work and projects, showcasing innovation and technical excellence",
-    "featured": "Featured Projects",
-    "featuredBadge": "Featured",
-    "all": "All Projects",
-    "viewProject": "View Project",
-    "viewProjectDetails": "View Project Details",
-    "viewCode": "View Code",
-    "liveDemo": "Live Demo",
-    "backToProjects": "Back to Projects",
-    "aboutProject": "About This Project",
-    "projectLinks": "Project Links",
     "exitFullscreen": "Exit full screen",
-    "fullscreenNotAvailable": "Fullscreen not available for video projects",
     "status": {
-      "title": "Status",
       "completed": "Completed",
       "inProgress": "In progress",
-      "planned": "Planned",
       "label": "Status"
     },
     "technologies": "Technologies",
@@ -242,21 +109,15 @@
   },
   "contact": {
     "header": {
-      "title": "Get in touch",
-      "subtitle": "Have a question or want to work together? Feel free to reach out!"
+      "title": "Get in touch"
     },
     "form": {
-      "title": "Send a Message",
-      "description": "Fill out the form below and I'll get back to you as soon as possible",
-      "name": "Name",
       "nameLabel": "Name",
       "namePlaceholder": "Your name",
-      "email": "Email",
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",
       "subjectLabel": "Subject",
       "subjectPlaceholder": "What is it about?",
-      "message": "Message",
       "messageLabel": "Message",
       "messagePlaceholder": "Your message",
       "send": "Send message",
@@ -268,27 +129,13 @@
       "invalidEmail": "Enter a valid email address."
     },
     "info": {
-      "title": "Contact Information",
-      "description": "Prefer other communication channels? Feel free to reach out through any of these",
       "email": "Email",
       "phone": "Phone",
       "location": "Location"
-    },
-    "responseTimes": {
-      "title": "Response Times",
-      "description": "When you can expect to hear back",
-      "email": "Email:",
-      "emailTime": "Within 24 hours",
-      "phone": "Phone:",
-      "phoneTime": "Same day",
-      "socialMedia": "Social Media:",
-      "socialMediaTime": "Within 2-3 days"
     }
   },
   "footer": {
     "copyright": "© {year} {name}",
-    "template": "Feel free to use this template from my",
-    "github": "GitHub",
     "email": "Email"
   },
   "chatbot": {
@@ -298,8 +145,7 @@
     "placeholder": "Ask about Shaxriyor's work...",
     "errors": {
       "generic": "Something went wrong. Please try again.",
-      "tooManyOffTopic": "You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov.",
-      "offTopicNote": "Note: You have {remaining} off-topic question{plural} remaining before rate limiting."
+      "tooManyOffTopic": "You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov."
     },
     "popup": {
       "title": "Hi, I'm Shaxriyor's AI assistant",
@@ -310,28 +156,11 @@
     "aria": {
       "openChat": "Open chat assistant",
       "closeChat": "Close chat assistant",
-      "closeWelcome": "Close welcome message",
       "sendMessage": "Send message"
     },
     "today": "Today {time}"
   },
   "experienceDetail": {
-    "current": "Current",
-    "visitWebsite": "Visit Company Website",
-    "responsibilities": {
-      "title": "Key Responsibilities",
-      "subtitle": "Main duties and responsibilities in this role"
-    },
-    "achievements": {
-      "title": "Key Achievements",
-      "subtitle": "Notable accomplishments and impact made"
-    },
-    "companyInfo": {
-      "title": "Company Information",
-      "teamSize": "Team Size: {size}"
-    },
-    "skillsAndTech": "Skills & Technologies",
-    "backToAbout": "Back to About",
     "back": "About",
     "whatIDid": "What I did",
     "company": "Company",
@@ -340,54 +169,21 @@
     "website": "Visit website"
   },
   "ariaLabels": {
-    "scrollToTop": "Scroll to top of page",
-    "visitGitHub": "Visit Shaxriyor's GitHub profile",
-    "connectLinkedIn": "Connect with Shaxriyor on LinkedIn",
-    "followTwitter": "Follow Shaxriyor on Twitter",
-    "sendEmail": "Send email to Shaxriyor",
-    "followInstagram": "Follow Shaxriyor on Instagram",
-    "closeFullscreen": "Close fullscreen view"
+    "scrollToTop": "Scroll to top of page"
   },
   "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "notFound": "Page not found",
-    "backToHome": "Back to Home",
-    "readMore": "Read More",
     "learnMore": "Learn more",
-    "viewAll": "View All",
-    "showMore": "Show More",
-    "showLess": "Show Less",
-    "more": "more",
-    "and": "and",
-    "justNow": "just now",
-    "minutesAgo": "{minutes} minutes ago",
-    "hoursAgo": "{hours} hours ago",
-    "daysAgo": "{days} days ago",
     "previous": "Previous",
     "next": "Next"
   },
   "profile": {
     "location": "Tashkent, Uzbekistan",
-    "lastUpdated": "Last updated: {time}",
     "bio": "DevOps engineer in Tashkent building cloud infrastructure, CI/CD pipelines and monitoring on AWS and GCP.",
-    "shortBio": "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps technology stack.",
     "languages": {
       "English": "English",
       "Russian": "Russian",
       "Uzbek": "Uzbek",
       "Turkish": "Turkish"
-    },
-    "industries": {
-      "Software & IT Services": "Software & IT Services",
-      "E-commerce": "E-commerce",
-      "Cloud Infrastructure": "Cloud Infrastructure",
-      "Technology": "Technology",
-      "Wellness & Fitness": "Wellness & Fitness",
-      "Marketing & Advertising": "Marketing & Advertising",
-      "Image Editing & Retouching": "Image Editing & Retouching",
-      "Recruitment & HR": "Recruitment & HR",
-      "IT services & digital marketing": "IT Services & Digital Marketing"
     }
   },
   "metadata": {
@@ -412,9 +208,6 @@
     "projects": {
       "jenkins-cicd-pipeline": {
         "title": "Jenkins CI/CD pipeline",
-        "shortDescription": "A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments.",
-        "fullDescription": "Designed and implemented a production-grade CI/CD pipeline for Praaktisgo using Jenkins and AWS. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs were built for Jenkins agents with preinstalled tools (JDK, Ant, Git, AWS CLI), and the pipeline dynamically provisions build agents to compile and deploy applications. Build artifacts are uploaded to S3 and deployed via AWS CodeDeploy, while post-build scripts send changelogs and build status updates to a Telegram group. Prometheus monitors the Jenkins controller and agents through node_exporter, providing real-time visibility into resource usage and performance metrics.",
-        "status": "Completed",
         "companyName": "PraaktisGo",
         "summary": "An automated build, test and deploy pipeline on Jenkins and AWS, with Prometheus watching the build infrastructure.",
         "outcome": "Deployment time down 50%.",
@@ -428,8 +221,6 @@
       },
       "hikcentral-remote-device-integration": {
         "title": "HikGateway integration",
-        "shortDescription": "Developed a secure and scalable remote device integration platform using HikGateway (Device Gateway) to enable Hikvision devices to connect to cloud infrastructure via outbound ISUP communication. Devices deployed behind NAT and firewalls initiate persistent, encrypted ISUP connections over the public Internet to a cloud-hosted HikGateway instance, eliminating the need for static IP addresses or inbound network exposure at customer sites. HikGateway acts as the centralized control plane, managing device registration, session lifecycle, status monitoring, and event handling. All device operations and third-party integrations are performed through HikGateway’s ISAPI interfaces over HTTPS, allowing external backend services to securely manage devices, retrieve events, and perform control actions without direct device access. The architecture emphasizes outbound-only connectivity, TLS-encrypted transport, strict network isolation, and API-driven integration, making it suitable for large-scale, multi-tenant deployments of Hikvision ISUP-enabled devices.",
-        "status": "Completed",
         "companyName": "KPI",
         "summary": "A remote-device platform that lets Hikvision devices behind NAT and firewalls connect to the cloud, with no inbound exposure at customer sites.",
         "points": [
@@ -441,9 +232,6 @@
       },
       "comprehensive-monitoring-stack": {
         "title": "Monitoring stack",
-        "shortDescription": "A complete observability solution with Grafana, Prometheus, Loki, and Alertmanager providing full-stack monitoring, logging, and alerting for infrastructure and applications.",
-        "fullDescription": "Designed and implemented a production-grade monitoring and observability stack for KPI's infrastructure and applications. The solution provides comprehensive visibility across the entire technology stack through multiple specialized exporters and collectors. Prometheus serves as the central metrics collection and storage system, scraping metrics from node_exporter (system metrics), jmx_exporter (Java application metrics), cAdvisor (container metrics), and a custom exporter for application-specific metrics. Grafana provides rich visualization dashboards for infrastructure health, application performance, and business metrics. Loki aggregates logs from all services, with Promtail collecting and forwarding log data from various sources. Alertmanager handles alert routing and deduplication, sending critical notifications directly to Telegram for real-time incident response. The entire stack is containerized and orchestrated for high availability and scalability, ensuring reliable monitoring even during infrastructure incidents.",
-        "status": "Completed",
         "companyName": "KPI",
         "summary": "A central observability stack for metrics, logs and alerts across KPI's infrastructure and applications.",
         "outcome": "Incident response time down 60%.",
@@ -457,9 +245,6 @@
       },
       "savethis4me-telegram-bot": {
         "title": "SaveThis4Me Telegram bot",
-        "shortDescription": "A Telegram bot that saves videos and posts from Instagram, YouTube, TikTok, X, Reddit and Pinterest straight into your chat. Paste a link, or share from Instagram, and the media arrives in seconds.",
-        "fullDescription": "SaveThis4Me is a public Telegram bot that relays social media content into Telegram chats. It started as an invite-only hobby project for Instagram Reels and Stories and was later rebuilt from scratch as an open bot anyone can use. Users paste a link from Instagram, YouTube, TikTok, X, Reddit or Pinterest and get the media back as a native Telegram video, photo or album. Instagram users can also bind their account and share posts to the @savethis4me relay account right from the Instagram app, delivered to the bot through signed Meta webhooks. YouTube links open a quality picker with estimated file sizes and an audio-only option, and are processed by a background job queue with live progress and per-user limits. Built-in media tools recognize songs with Shazam, convert videos into round video notes and extract voice notes. The bot is written in Python with python-telegram-bot and FastAPI, uses yt-dlp, gallery-dl and FFmpeg to fetch and normalize media, stores users, cached media and engagement metrics in PostgreSQL, and runs in Docker with per-domain concurrency limits and rate limiting.",
-        "status": "Completed",
         "companyName": "Personal project",
         "summary": "A public Telegram bot that saves videos and posts from Instagram, YouTube, TikTok, X, Reddit and Pinterest into your chat.",
         "points": [
@@ -474,30 +259,8 @@
     },
     "experiences": {
       "kpi-com-devops-engineer": {
-        "company": "KPI",
         "position": "DevOps engineer",
         "duration": "May 2023 – present",
-        "description": "Design, automate, and optimize systems to ensure performance and reliability.",
-        "location": "On-site",
-        "responsibilities": [
-          "Maintained, optimized, and secured cloud infrastructure on AWS to ensure scalability and high availability",
-          "Managed and deployed containerized applications using Docker across multiple environments",
-          "Automated CI/CD pipelines with Jenkins to streamline integration, testing, and deployment processes",
-          "Monitored system performance, identified bottlenecks, and implemented solutions to improve reliability",
-          "Collaborated closely with development teams to design efficient deployment workflows and improve release velocity",
-          "Ensured infrastructure compliance with security and cost optimization best practices"
-        ],
-        "achievements": [
-          "Reduced monthly AWS costs by 20% through strategic adoption of Savings Plans and resource right-sizing",
-          "Implemented a modern monitoring stack with Prometheus and Grafana, improving system visibility and reliability metrics by 40%",
-          "Upgraded legacy GitLab Omnibus to the latest stable version, strengthening CI/CD security and improving performance by 30%",
-          "Cut deployment times by 50% using parallelized Jenkins builds and optimized AWS instance configurations",
-          "Developed a Python CLI tool to automate database schema synchronization across dev, staging, and production environments, reducing manual work and human error",
-          "Developed a custom Prometheus exporter to surface key business metrics in Grafana dashboards for data-driven decision-making",
-          "Improved incident response time by 60% through proactive alerting and centralized log aggregation"
-        ],
-        "teamSize": "50+",
-        "industry": "Software & IT Services",
         "summary": "Observability, secure device-to-cloud integration and AWS cost optimization.",
         "points": [
           "Built a central observability stack with Prometheus, Grafana, Loki and Alertmanager, cutting incident response time by 60%.",
@@ -511,30 +274,8 @@
         ]
       },
       "praaktisgo-devops-engineer": {
-        "company": "PraaktisGo",
         "position": "DevOps engineer",
         "duration": "Jan 2025 – Jul 2026",
-        "description": "Design, automate, and optimize cloud infrastructure and deployment workflows for scalable, reliable systems.",
-        "location": "Remote",
-        "responsibilities": [
-          "Led the migration of existing AWS cloud infrastructure to a new AWS account and region, ensuring scalability, security, and cost-efficiency",
-          "Designed and maintained CI/CD pipelines with Jenkins to automate testing, integration, and deployment workflows",
-          "Implemented end-to-end monitoring and alerting solutions to ensure system reliability, availability, and performance visibility",
-          "Collaborated closely with development teams to streamline build, release, and automation processes",
-          "Optimized cloud infrastructure costs and enforced security best practices across environments",
-          "Documented architecture, deployment processes, and operational guidelines to improve team efficiency and continuity"
-        ],
-        "achievements": [
-          "Completed AWS infrastructure migration with zero downtime and no data loss",
-          "Secured $100K in Google Cloud credits through the 2024 GFS Cloud Program, expanding multi-cloud flexibility",
-          "Received $10K in AWS Activate Portfolio credits to accelerate infrastructure growth and experimentation",
-          "Awarded a 1-year free Google Workspace Business Plan, reducing operational costs by 15%",
-          "Reduced deployment time by 50% through CI/CD pipeline automation and environment standardization",
-          "Achieved 99.9% system uptime through proactive monitoring and incident prevention measures",
-          "Implemented cross-cloud cost tracking and performance monitoring to guide future hybrid-cloud strategy"
-        ],
-        "teamSize": "10+",
-        "industry": "Wellness & Fitness",
         "summary": "Zero-downtime AWS migration, Jenkins CI/CD and 99.9% uptime.",
         "points": [
           "Led a zero-downtime migration of production AWS infrastructure to a new account and region, with no data loss.",
@@ -548,26 +289,8 @@
         ]
       },
       "datasite-technology-frontend-developer": {
-        "company": "Datasite",
         "position": "Frontend engineer (intern)",
         "duration": "Sep 2022 – May 2023",
-        "description": "Developed modern, responsive web interfaces for client-facing applications.",
-        "location": "On-site",
-        "responsibilities": [
-          "Developed responsive, user-friendly web interfaces using HTML, CSS, JavaScript, and React",
-          "Collaborated with designers and backend developers to deliver seamless user experiences",
-          "Optimized frontend performance for faster load times and improved user engagement",
-          "Maintained code quality through reviews, testing, and adherence to best practices",
-          "Participated in agile development cycles, contributing to sprint planning and retrospectives"
-        ],
-        "achievements": [
-          "Delivered multiple high-quality projects on time, improving client satisfaction ratings",
-          "Improved page load performance by 30% through code optimization and asset compression",
-          "Contributed to the development of a component library used across multiple internal projects",
-          "Mentored junior developers on frontend best practices and modern JavaScript frameworks"
-        ],
-        "teamSize": "20+",
-        "industry": "Technology",
         "summary": "Responsive React interfaces built from Figma designs.",
         "points": [
           "Built responsive web interfaces with HTML5, CSS3, JavaScript and React.",

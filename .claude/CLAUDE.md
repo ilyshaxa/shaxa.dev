@@ -26,20 +26,21 @@ src/
     icons/              — Custom SVG icons
     *.tsx               — Feature components (chatbot, navigation, footer, etc.)
   lib/                  — Utilities (seo, data, link-parser, chat-*)
-  data/                 — YAML content (profile.yaml, projects.yaml)
   types/                — Shared TypeScript types
 ```
 
 ## Content pipeline
-- `src/data/profile.yaml` — Name, bio, links, skills, experience, education
-- `src/data/projects.yaml` — Project cards displayed on home/projects pages
-- `src/lib/data.ts` — Loads & transforms YAML into typed objects
+- `src/lib/data.ts` — Language-neutral facts: links, stack, experience and project structure, media paths
+- `messages/{en,ru,uz}.json` — All copy, including `data.projects.<slug>` and `data.experiences.<slug>` (title, summary, points) and `data.education.<slug>`
+- `localizeProjects` / `localizeExperiences` / `localizeEducation` in `src/lib/data.ts` merge the two
+- Facts rule: the CV and the site must agree. A claim that only one of them makes stays off the site (see `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` §9). Tests in `src/lib/*.test.ts` enforce key parity, the stack list and the chatbot prompt
 
 ## Key conventions
 - No barrel exports — import components directly
 - Server components by default; `'use client'` only where interactivity needed
 - `.env.example` documents required env vars
 - Vercel deployment with analytics & speed-insights
+- New copy goes through all three message files; `npm test` fails on mismatched keys, placeholders or numbers
 
 ## Chatbot architecture
 - `src/lib/chat-system-prompt.ts` — System prompt with full profile/projects info

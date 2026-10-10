@@ -66,11 +66,10 @@ src/
 │   ├── chatbot.tsx              # AI chatbot
 │   ├── navigation.tsx           # Site navigation
 │   └── ...                      # Backgrounds, animations, etc.
-├── lib/                         # Utilities
-│   ├── data.ts                  # Profile & projects data
-│   ├── seo.ts                   # SEO utilities
-│   └── session-store.ts         # In-memory session management
-└── data/                        # Legacy YAML (reference only)
+└── lib/                         # Utilities
+    ├── data.ts                  # Profile & projects data
+    ├── seo.ts                   # SEO utilities
+    └── session-store.ts         # In-memory session management
 ```
 
 ## 🚀 Getting Started
@@ -272,26 +271,27 @@ If you prefer password-only authentication (not recommended for production):
 ### Profile & Projects Data
 
 Edit `src/lib/data.ts` to update:
-- **profileData**: Personal info, skills, experience, education, certifications
-- **projectsData**: Featured and all projects
+- **profileData**: Links, stack, experience and education structure (copy lives in `messages/`)
+- **projectList**: Project facts (slug, technologies, media, year); copy lives in `messages/`
 
 ### Adding a Project
 
+Add the language-neutral facts to `projectList` in `src/lib/data.ts`:
+
 ```typescript
 {
-  title: "Project Name",
-  shortDescription: "Brief description",
-  fullDescription: "Detailed description",
-  technologies: ["Tech1", "Tech2"],
-  coverImage: "/projects/image-dark.svg",
-  coverImageLight: "/projects/image-light.svg",
+  slug: 'project-slug',
+  technologies: ['Tech1', 'Tech2'],
+  highlights: ['Tech1', 'Tech2', 'Tech3', 'Tech4'], // four, shown on the project tile
+  coverImage: '/projects/image-dark.svg',
+  coverImageLight: '/projects/image-light.svg',
   featured: true,
-  status: "Completed",
-  year: "2025",
-  companyName: "Company Name",
-  slug: "project-slug"
+  status: 'Completed',
+  year: '2025',
 }
 ```
+
+Then add the copy to `messages/en.json`, `ru.json` and `uz.json` under `data.projects.<slug>`: `title`, `summary`, `companyName`, at least three `points` and an optional `outcome`. `npm test` fails if a locale is missing any of it.
 
 ### AI Chatbot
 

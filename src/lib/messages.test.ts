@@ -27,10 +27,6 @@ function flatten(value: unknown, prefix = ''): Map<string, string> {
 const flat = Object.fromEntries(locales.map((locale) => [locale, flatten(load(locale))])) as Record<Locale, Map<string, string>>;
 const others = locales.filter((locale) => locale !== 'en');
 
-// Legacy strings the pre-v2 pages still read, which the prune step deletes. This Russian text spells "1-year" out as a
-// word, so its digits differ from the English. Delete this set (and its `continue`) when the legacy copy is removed.
-const LEGACY_UNTIL_PRUNE = new Set(['data.experiences.praaktisgo-devops-engineer.achievements.3']);
-
 test('every locale has exactly the same keys', () => {
   const reference = new Set(flat.en.keys());
   for (const locale of others) {
@@ -65,8 +61,16 @@ test('numbers match across locales', () => {
   const numbers = (text: string) => (text.replace(/,/g, '.').match(/\$?\d+(?:\.\d+)?[%K]?/g) ?? []).sort();
   for (const [key, text] of flat.en) {
     for (const locale of others) {
-      if (locale === 'ru' && LEGACY_UNTIL_PRUNE.has(key)) continue;
       assert.deepEqual(numbers(flat[locale].get(key) ?? ''), numbers(text), `${locale} ${key}`);
+    }
+  }
+});
+
+test('no message claims a certification', () => {
+  for (const locale of locales) {
+    for (const [key, text] of flat[locale]) {
+      assert.ok(!/AWS\s+(Certified|Сертифицирован|Sertifikatlangan)/i.test(text), `${locale} ${key} claims an AWS certification`);
+      assert.ok(!key.includes('awsCertified'), `${locale} still has ${key}`);
     }
   }
 });

@@ -34,7 +34,7 @@ test('every project has four highlights and complete copy in every locale', () =
   assert.ok(projects.every((project) => project.technologies.length > 0), 'a project has no technologies');
   for (const locale of locales) {
     for (const project of projects) {
-      // Read the message entry directly: localizeProjects may fall back to English text, which would hide a gap.
+      // Read the message entry directly, so a gap is reported by field name instead of as an empty rendered value.
       const entry = rawCopy(locale, 'projects', project.slug);
       for (const field of ['title', 'summary', 'companyName']) {
         assert.ok(typeof entry[field] === 'string' && entry[field], `${locale} ${project.slug} is missing ${field}`);
@@ -71,4 +71,13 @@ test('every project live URL is a valid absolute URL', () => {
 test('only projects marked featured are featured, and exactly three are', () => {
   const featured = getAllProjects().filter((project) => project.featured).map((project) => project.slug);
   assert.deepEqual(featured.sort(), ['comprehensive-monitoring-stack', 'hikcentral-remote-device-integration', 'jenkins-cicd-pipeline']);
+});
+
+test('the static education fallback matches the English messages', () => {
+  const { education } = getProfile();
+  const copy = (messages.en.data as Record<string, Record<string, Record<string, string>>>).education;
+  for (const edu of education) {
+    assert.equal(edu.institution, copy[edu.slug].institution, `${edu.slug} institution`);
+    assert.equal(edu.degree, copy[edu.slug].degree, `${edu.slug} degree`);
+  }
 });
