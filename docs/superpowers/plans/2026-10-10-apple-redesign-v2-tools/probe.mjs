@@ -36,10 +36,11 @@ for (const { name, viewport, gap } of widths) {
           // A page title inside a <header> (detail pages put a logo tile before it) is measured by the header's edge.
           ...(h1 ? { h1: left(h1.closest('header') ?? h1) } : {}),
           footer: left(document.querySelector('footer p')),
-          // Section headings only (title-2 and up); small caption headings in a detail page's aside sit in column two.
+          // Section headings only (title-2 and up, not inside a link): caption headings in a detail page's aside sit in
+          // column two, and project tile titles are headings inside their tile link.
           ...Object.fromEntries(
             [...document.querySelectorAll('main h2')]
-              .filter((heading) => parseFloat(getComputedStyle(heading).fontSize) >= 20)
+              .filter((heading) => parseFloat(getComputedStyle(heading).fontSize) >= 20 && !heading.closest('a'))
               .map((heading, i) => [`h2#${i}`, left(heading)])
           ),
         },
