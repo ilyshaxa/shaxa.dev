@@ -272,6 +272,7 @@ If you prefer password-only authentication (not recommended for production):
 
 Edit `src/lib/data.ts` to update:
 - **profileData**: Links, stack, experience and education structure (copy lives in `messages/`)
+  - **certifications**: Titles and issuers are proper names and stay here untranslated. The chatbot prompt (`src/lib/chat-system-prompt.ts`) must list the same certificates; `npm test` fails if they differ
 - **projectList**: Project facts (slug, technologies, media, year); copy lives in `messages/`
 
 ### Adding a Project

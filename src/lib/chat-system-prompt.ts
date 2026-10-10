@@ -60,8 +60,11 @@ EXPERIENCE:
 EDUCATION:
 - Bachelor's in Economics, Tashkent State University of Economics (2022 - 2027, part-time): Economics degree, attends university for 2 months each year as part of the part-time program.
 
-CERTIFICATIONS:
-- He is not AWS certified. Do not claim or imply any certification.
+CERTIFICATIONS (only these; do not claim others):
+- Fundamentals of DevOps (KodeKloud, September 2, 2026)
+- DevOps Pre-Requisite Course (KodeKloud, September 1, 2026)
+- 12 Factor App (KodeKloud, April 27, 2026)
+- He is NOT AWS certified. The entries above are KodeKloud course completion certificates, not AWS certifications. Do not claim or imply any AWS certification.
 
 LANGUAGES:
 - Uzbek: Native

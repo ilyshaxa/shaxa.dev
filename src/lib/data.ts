@@ -36,6 +36,17 @@ export interface Education {
   website?: string;
 }
 
+/** Titles and issuers are proper names, so they stay untranslated; only the section heading is copy. */
+export interface Certification {
+  slug: string;
+  title: string;
+  issuer: string;
+  /** 'YYYY-MM' or 'YYYY-MM-DD', as printed on the certificate. */
+  issued: string;
+  url: string;
+  credentialId?: string;
+}
+
 export interface Language {
   name: 'Uzbek' | 'English' | 'Russian';
   level: 'native' | 'advanced' | 'basic';
@@ -55,6 +66,7 @@ export interface Profile {
   stack: Record<StackRow, string[]>;
   experience: ExperienceBase[];
   education: Education[];
+  certifications: Certification[];
   languages: Language[];
 }
 
@@ -156,6 +168,32 @@ const profileData: Profile = {
       logoLight: '/images/education/tsue-light.png',
       logoDark: '/images/education/tsue-dark.png',
       website: 'https://tsue.uz',
+    },
+  ],
+  certifications: [
+    {
+      slug: 'kodekloud-fundamentals-of-devops',
+      title: 'Fundamentals of DevOps',
+      issuer: 'KodeKloud',
+      issued: '2026-09-02',
+      url: 'https://learn.kodekloud.com/learn/certificate/6c57cfa2-8b55-43be-80dd-156101287b29',
+      credentialId: '6c57cfa2-8b55-43be-80dd-156101287b29',
+    },
+    {
+      slug: 'kodekloud-devops-pre-requisite-course',
+      title: 'DevOps Pre-Requisite Course',
+      issuer: 'KodeKloud',
+      issued: '2026-09-01',
+      url: 'https://learn.kodekloud.com/learn/certificate/9a348c60-8518-41ee-945a-c44de8bbebf0',
+      credentialId: '9a348c60-8518-41ee-945a-c44de8bbebf0',
+    },
+    {
+      slug: 'kodekloud-12-factor-app',
+      title: '12 Factor App',
+      issuer: 'KodeKloud',
+      issued: '2026-04-27',
+      url: 'https://learn.kodekloud.com/learn/certificate/93c76b1a-d5c4-43a5-91c6-6759f1ddb6e3',
+      credentialId: '93c76b1a-d5c4-43a5-91c6-6759f1ddb6e3',
     },
   ],
   languages: [
