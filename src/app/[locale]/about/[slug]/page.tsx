@@ -20,7 +20,7 @@ interface ExperienceDetailPageProps {
 }
 
 const neighborClass =
-  'block rounded-lg bg-secondary p-5 transition-[scale,background-color] duration-100 active:scale-[0.98] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]';
+  'block rounded-lg bg-secondary p-5 contrast-more:border contrast-more:border-foreground/40 transition-[scale,background-color] duration-100 active:scale-[0.98] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]';
 
 export default function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {
   const t = useTranslations('experienceDetail');

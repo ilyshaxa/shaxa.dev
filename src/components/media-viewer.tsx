@@ -168,7 +168,7 @@ function ZoomPanStage({ src, alt, layoutId, showImage, sizes, className, priorit
     <div
       ref={stageRef}
       className={cn(
-        'relative select-none overflow-hidden rounded-tile bg-secondary',
+        'relative select-none overflow-hidden rounded-tile bg-secondary contrast-more:border contrast-more:border-foreground/40',
         zoom > MIN_ZOOM && 'cursor-grab active:cursor-grabbing',
         className
       )}
@@ -222,12 +222,38 @@ interface FullscreenViewerProps {
   onClose: () => void;
 }
 
+const FOCUSABLE = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
+
 function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps) {
   const t = useTranslations('projects');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  // Read during the first render, before the exit button's autoFocus moves focus into the dialog.
+  const openerRef = useRef<HTMLElement | null>(document.activeElement as HTMLElement | null);
+
+  // Hand focus back to whatever opened the dialog once it is gone.
+  useEffect(() => {
+    const opener = openerRef.current;
+    return () => {
+      if (opener?.isConnected) opener.focus();
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      // aria-modal says the page behind is inert; keep Tab inside the dialog to match.
+      const dialog = dialogRef.current;
+      const controls = dialog ? Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)) : [];
+      if (!dialog || controls.length === 0) return;
+      const edge = controls[event.shiftKey ? 0 : controls.length - 1];
+      if (document.activeElement === edge || !dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        controls[event.shiftKey ? controls.length - 1 : 0].focus();
+      }
     };
     const root = document.documentElement;
     const previousOverflow = root.style.overflow;
@@ -240,7 +266,13 @@ function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps
   }, [onClose]);
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={alt}>
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={alt}
+    >
       <motion.div
         aria-hidden
         className="absolute inset-0 bg-black/90"
@@ -256,7 +288,7 @@ function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps
         layoutId={layoutId}
         showImage
         sizes="95vw"
-        className="h-[90dvh] w-full max-w-[1400px] rounded-none bg-transparent"
+        className="h-[90dvh] w-full max-w-[1400px] rounded-none bg-transparent contrast-more:border-0"
         extraControls={
           <ViewerChip label={t('exitFullscreen')} onClick={onClose} autoFocus>
             <X />
@@ -311,7 +343,7 @@ function VideoViewer({ src, label }: { src: string; label: string }) {
   };
 
   return (
-    <div className="relative h-96 overflow-hidden rounded-tile bg-secondary lg:h-[500px]">
+    <div className="relative h-96 overflow-hidden rounded-tile bg-secondary contrast-more:border contrast-more:border-foreground/40 lg:h-[500px]">
       <video
         key={src}
         ref={videoRef}
