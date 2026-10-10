@@ -66,7 +66,7 @@ export function pageUrl(baseUrl: string, locale: string, path = ''): string {
 }
 
 /** Canonical = the page's own URL; hreflang for every locale; x-default points at the English page. */
-export function buildAlternates(baseUrl: string, locale: string, path = ''): NonNullable<Metadata['alternates']> {
+export function buildAlternates(baseUrl: string, locale: string, path = ''): { canonical: string; languages: Record<string, string> } {
   const languages: Record<string, string> = {};
   for (const code of locales) languages[code] = pageUrl(baseUrl, code, path);
   languages['x-default'] = pageUrl(baseUrl, 'en', path);

@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 // `app/[locale]/layout.tsx` does that for every page, and `app/not-found.tsx` for requests no locale handles.
 export const metadata: Metadata = {
   icons: {
+    // /favicon.ico is served by the App Router file convention (src/app/favicon.ico), which adds its own <link rel="icon">.
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
       { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
       { url: '/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
