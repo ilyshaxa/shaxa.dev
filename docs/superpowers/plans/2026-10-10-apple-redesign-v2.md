@@ -2581,6 +2581,7 @@ Everything that read the legacy fields is rebuilt now. This task deletes the leg
 
 - [ ] **Step 7: Config and docs**
   - `next.config.ts`: delete the `flagcdn.com` entry from `images.remotePatterns` (no flags remain: `grep -rn flagcdn src` prints nothing). Leave `serverExternalPackages` and the `js-yaml` dependency alone (removing a dependency is out of scope: no `npm uninstall`).
+  - `src/app/globals.css` and `src/lib/utils.ts`: v1's `SectionHeader` was the only user of the `text-eyebrow` type token. If `grep -rn "text-eyebrow" src` finds no use, delete the `--text-eyebrow*` variables in `globals.css` and `"eyebrow"` from the `theme.text` list in `utils.ts` (and mention it in the commit).
   - `.claude/CLAUDE.md`: delete the line `data/                 — YAML content (profile.yaml, projects.yaml)` from the structure block, and replace the **Content pipeline** section with:
     ```
     ## Content pipeline
