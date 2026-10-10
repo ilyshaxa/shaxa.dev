@@ -12,13 +12,6 @@ export const languageNames: Record<Locale, string> = {
   ru: 'Русский',
 };
 
-// Language flags
-export const languageFlags: Record<Locale, string> = {
-  en: '🇬🇧',
-  uz: '🇺🇿',
-  ru: '🇷🇺',
-};
-
 // Locale metadata for SEO
 export const localeMetadata: Record<Locale, { code: string; name: string; dir: 'ltr' | 'rtl' }> = {
   en: { code: 'en_US', name: 'English', dir: 'ltr' },

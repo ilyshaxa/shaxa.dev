@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Check, ChevronDown, Download, Menu, Moon, Sun, X } from 'lucide-react';
+import { Check, ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,54 +16,82 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ClientOnly } from '@/components/client-only';
 import { CrossfadeIcon } from '@/components/crossfade-icon';
-import { CvMenu } from '@/components/cv-menu';
 import { useTheme } from '@/components/theme-provider';
 import { spring } from '@/lib/motion';
 import { useMediaQuery } from '@/lib/use-media-query';
 import { cn } from '@/lib/utils';
-
-const languages = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'uz', name: "O'zbekcha", flag: '🇺🇿' },
-  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-];
+import { languageNames, locales, type Locale } from '@/types/i18n';
 
 function stripLocale(path: string) {
   return path.replace(/^\/(en|uz|ru)/, '') || '/';
 }
 
-function LanguageMenu() {
-  const locale = useLocale();
+function useLanguageSwitch() {
+  const locale = useLocale() as Locale;
   const pathname = usePathname();
   const router = useRouter();
-  const t = useTranslations('navigation');
   const [, startTransition] = useTransition();
-  const current = languages.find((language) => language.code === locale);
 
-  const switchTo = (code: string) => {
+  const switchTo = (code: Locale) => {
     startTransition(() => {
       router.replace(`/${code}${stripLocale(pathname)}`);
       router.refresh();
     });
   };
 
+  return { locale, switchTo };
+}
+
+/** Desktop: an "EN ▾" pill that opens a menu of endonyms. */
+function LanguageMenu() {
+  const { locale, switchTo } = useLanguageSwitch();
+  const t = useTranslations('navigation');
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t('changeLanguage')} title={t('changeLanguage')}>
-          <span className="text-base leading-none">{current?.flag ?? '🌐'}</span>
+        <Button
+          variant="ghost"
+          className="h-11 gap-1 px-3 text-[0.8125rem] uppercase"
+          aria-label={t('changeLanguage')}
+          title={t('changeLanguage')}
+        >
+          {locale}
+          <ChevronDown className="size-3.5 text-muted-foreground" aria-hidden />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {languages.map((language) => (
-          <DropdownMenuItem key={language.code} onClick={() => switchTo(language.code)} className="cursor-pointer">
-            <span>{language.flag}</span>
-            <span>{language.name}</span>
-            {locale === language.code && <Check className="ml-auto size-4 text-primary" />}
+        {locales.map((code) => (
+          <DropdownMenuItem key={code} onClick={() => switchTo(code)} className="cursor-pointer">
+            <span lang={code}>{languageNames[code]}</span>
+            {locale === code && <Check className="ml-auto size-4 text-primary" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+/** Mobile sheet: the three languages inline, so no menu opens over the sheet. */
+function LanguageList() {
+  const { locale, switchTo } = useLanguageSwitch();
+  const t = useTranslations('navigation');
+
+  return (
+    <div role="group" aria-label={t('changeLanguage')} className="flex flex-wrap gap-2">
+      {locales.map((code) => (
+        <Button
+          key={code}
+          lang={code}
+          variant={locale === code ? 'default' : 'secondary'}
+          aria-pressed={locale === code}
+          onClick={() => switchTo(code)}
+          className="h-9 px-4 text-[0.875rem]"
+        >
+          {languageNames[code]}
+        </Button>
+      ))}
+    </div>
   );
 }
 
@@ -110,7 +138,6 @@ export function Navigation() {
 
   const navItems = useMemo(
     () => [
-      { href: `/${locale}`, label: t('home'), path: '/' },
       { href: `/${locale}/about`, label: t('about'), path: '/about' },
       { href: `/${locale}/projects`, label: t('projects'), path: '/projects' },
       { href: `/${locale}/contact`, label: t('contact'), path: '/contact' },
@@ -118,9 +145,8 @@ export function Navigation() {
     [locale, t]
   );
 
-  const activeHref =
-    navItems.find((item) => (item.path === '/' ? currentPath === '/' : currentPath.startsWith(item.path)))?.href ??
-    null;
+  // Home highlights nothing: the wordmark is Home.
+  const activeHref = navItems.find((item) => currentPath.startsWith(item.path))?.href ?? null;
 
   // Sliding pill: measure the active link and spring the indicator to it.
   const linksRef = useRef<HTMLDivElement>(null);
@@ -184,7 +210,7 @@ export function Navigation() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50">
       <div className="material-bar relative">
-        <div className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="page-container flex h-12 items-center justify-between">
           <Link href={`/${locale}`} className="text-[1.0625rem] font-semibold tracking-[-0.01em] text-foreground">
             shaxa.dev
           </Link>
@@ -218,17 +244,12 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center">
-            <LanguageMenu />
-            <ClientOnly fallback={<div className="size-11" />}>
-              <ThemeToggle />
-            </ClientOnly>
-            <CvMenu>
-              <Button variant="ghost" size="sm" className="hidden md:inline-flex" title={t('downloadCV')} aria-label={t('downloadCV')}>
-                <Download className="size-4" />
-                {t('cv')}
-                <ChevronDown className="size-3.5 text-muted-foreground" />
-              </Button>
-            </CvMenu>
+            <div className="hidden items-center md:flex">
+              <LanguageMenu />
+              <ClientOnly fallback={<div className="size-11" />}>
+                <ThemeToggle />
+              </ClientOnly>
+            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -273,7 +294,7 @@ export function Navigation() {
             exit={{ height: 0, opacity: 0 }}
             transition={spring.default}
           >
-            <div className="px-6 pb-6 pt-2">
+            <div className="page-container pb-6 pt-2">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.href}
@@ -294,13 +315,12 @@ export function Navigation() {
                   </Link>
                 </motion.div>
               ))}
-              <CvMenu align="start">
-                <Button variant="secondary" className="mt-6 w-full">
-                  <Download className="size-4" />
-                  {t('downloadCV')}
-                  <ChevronDown className="ml-auto size-4" />
-                </Button>
-              </CvMenu>
+              <div className="mt-6 flex items-center justify-between gap-3">
+                <LanguageList />
+                <ClientOnly fallback={<div className="size-11" />}>
+                  <ThemeToggle />
+                </ClientOnly>
+              </div>
             </div>
           </motion.div>
         )}
