@@ -30,11 +30,11 @@ export function GroupedListItem({ leading, title, subtitle, trailing, href }: Gr
   const content = (
     <>
       {leading && <span className="flex shrink-0 items-center">{leading}</span>}
-      <span className="min-w-0 flex-1">
+      <span className="flex-1">
         <span className="block text-body">{title}</span>
         {subtitle && <span className="mt-0.5 block text-caption text-muted-foreground">{subtitle}</span>}
       </span>
-      {trailing && <span className="shrink-0 text-right text-body text-muted-foreground">{trailing}</span>}
+      {trailing && <span className="text-right text-body text-muted-foreground">{trailing}</span>}
       {href && <TrailingIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden />}
     </>
   );

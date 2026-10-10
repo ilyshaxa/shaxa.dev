@@ -1494,6 +1494,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 **Files:**
 - Rewrite: `src/app/[locale]/about/page.tsx`, `src/app/[locale]/about/[slug]/page.tsx`
 - Modify: `src/lib/data.ts` (languages, education year)
+- Modify (review follow-up, already applied): `src/components/grouped-list.tsx` (the title span drops `min-w-0` and the trailing span drops `shrink-0`, so a long value such as the Russian "Период" row at 390px wraps instead of squeezing its label into it)
 - Delete: `src/components/skills-bento.tsx`
 
 - [ ] **Step 1: Languages in `src/lib/data.ts`.** In `Profile` replace the `languages` type with `languages: Language[]` and add
