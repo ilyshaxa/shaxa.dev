@@ -17,6 +17,9 @@ import { getProfile } from "@/lib/data";
 import { StructuredData } from "@/components/structured-data";
 import { getBaseUrl, getPrimaryDomain } from "@/lib/seo";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { fontVariables } from "@/lib/fonts";
+import { themeScript } from "@/lib/theme-script";
+import "../globals.css";
 
 // Lazy load Chatbot component
 const Chatbot = dynamic(() => import('@/components/chatbot').then(mod => ({ default: mod.Chatbot })), {
@@ -121,26 +124,40 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages} key={locale}>
-      <ThemeProvider>
-        <MotionProvider>
-          <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background">
-            <Navigation />
-            <main className="relative z-10 flex-1 pt-12">
-              <ErrorBoundary>
-                <PageTransition>{children}</PageTransition>
-              </ErrorBoundary>
-            </main>
-            <Footer />
-            <Chatbot />
-            <ScrollToTop />
-            <Toaster />
-            <Analytics />
-            <SpeedInsights />
-            <StructuredData />
-          </div>
-        </MotionProvider>
-      </ThemeProvider>
-    </NextIntlClientProvider>
+    <html lang={locale} className={fontVariables} suppressHydrationWarning>
+      <head>
+        {/* DNS Prefetch & Preconnect for external resources */}
+        <link rel="preconnect" href="https://vercel.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://vercel.com" />
+
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-screen font-sans antialiased">
+        <NextIntlClientProvider locale={locale} messages={messages} key={locale}>
+          <ThemeProvider>
+            <MotionProvider>
+              <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background">
+                <Navigation />
+                <main className="relative z-10 flex-1 pt-12">
+                  <ErrorBoundary>
+                    <PageTransition>{children}</PageTransition>
+                  </ErrorBoundary>
+                </main>
+                <Footer />
+                <Chatbot />
+                <ScrollToTop />
+                <Toaster />
+                <Analytics />
+                <SpeedInsights />
+                <StructuredData />
+              </div>
+            </MotionProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
   );
 }
