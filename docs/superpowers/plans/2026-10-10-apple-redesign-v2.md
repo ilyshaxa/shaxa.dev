@@ -2701,14 +2701,14 @@ Everything that read the legacy fields is rebuilt now. This task deletes the leg
     - `localizeProjects` / `localizeExperiences` / `localizeEducation` in `src/lib/data.ts` merge the two
     - Facts rule: the CV and the site must agree. A claim that only one of them makes stays off the site (see `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` §9). Tests in `src/lib/*.test.ts` enforce key parity, the stack list and the chatbot prompt
     ```
-    Also change the structure line `lib/ — Utilities (seo, data, link-parser, chat-*)` only if it mentions anything deleted (it doesn't), and add one line under **Key conventions**: `- New copy goes through all three message files; `npm test` fails on mismatched keys, placeholders or numbers`.
+    Also change the **Animations** line from `Framer Motion + custom ScrollReveal component` to `Framer Motion (springs and fades in `src/lib/motion.ts`)` (ScrollReveal is deleted in this task; the legacy grep in Step 8 catches it), and change the structure line `lib/ — Utilities (seo, data, link-parser, chat-*)` only if it mentions anything deleted (it doesn't), and add one line under **Key conventions**: `- New copy goes through all three message files; `npm test` fails on mismatched keys, placeholders or numbers`.
   - `README.md`: update the line mentioning `profileData` ("Personal info, skills, experience, education, certifications") to match reality (`profileData`: links, stack, experience and education structure; copy lives in `messages/`), and `grep -n -i "yaml\|certif\|skills" README.md` for any other claim of YAML content or certifications; fix or delete those lines.
 
 - [ ] **Step 8: Verify.** `npm test` (33 pass: the original 19 minus the 4 scroll-edges tests, plus 5 messages, 6 data and 7 prompt tests), `npm run lint`, `npm run build`, `npx tsc --noEmit` (no output). Then the legacy grep, which must print nothing:
   ```bash
   grep -rniE "awsCertified|AWS Certified|ProjectCarousel|SkillsBento|LastUpdated|ScrollReveal|shortDescription|fullDescription|originalStatus|ProjectLegacyText|ExperienceLegacyText|shortBio|\.certifications|skills-bento|project-card|flagcdn|languageFlags" src messages next.config.ts .claude/CLAUDE.md README.md
   ```
-  (A hit in `src/lib/messages.test.ts` or the prompt test's own assertions is fine; anything else is not.) Open `/en`, `/ru`, `/uz` once more; they must look exactly as after Task 10.
+  (Acceptable hits: `src/lib/messages.test.ts` and `src/lib/chat-system-prompt.test.ts` assertions, the "He is not AWS certified" disclaimer in `src/lib/chat-system-prompt.ts`, and `lastUpdated` in `src/app/api/deployment/route.ts` (the `-i` flag matches that webhook field; it is unrelated to the deleted `LastUpdated` component). Anything else is not.) Open `/en`, `/ru`, `/uz` once more; they must look exactly as after Task 10.
 
 - [ ] **Step 9: Commit** `chore(prune): remove legacy fields, components, YAML, certification badges and dead message keys`.
 

@@ -6,7 +6,7 @@ Personal portfolio site for Shaxriyor Jabborov, DevOps Engineer.
 - **Framework:** Next.js 15 (App Router, Turbopack)
 - **Language:** TypeScript 5
 - **Styling:** Tailwind CSS 4 + shadcn/ui (Radix primitives)
-- **Animations:** Framer Motion + custom ScrollReveal component
+- **Animations:** Framer Motion (springs and fades in `src/lib/motion.ts`)
 - **State/theme:** next-themes (dark/light), sonner (toasts)
 - **i18n:** next-intl (en/ru/uz), messages in `messages/`
 - **API runtime:** Edge (chat), Node (contact, deployment)
