@@ -17,22 +17,24 @@ const MotionLink = motion.create(Link);
  * an optional outcome, four key technologies and "Learn more ›". The whole tile is one link whose
  * accessible name is the title.
  */
-export const ProjectRow = React.memo(function ProjectRow({ project }: { project: Project }) {
+export const ProjectRow = React.memo(function ProjectRow({ project, as: Heading = 'h3' }: { project: Project; as?: 'h2' | 'h3' }) {
   const locale = useLocale();
   const t = useTranslations('common');
   const titleId = useId();
+  const summaryId = useId();
   const eyebrow = [project.companyName, project.year].filter(Boolean).join(' · ');
 
   return (
     <MotionLink
       href={`/${locale}/projects/${project.slug}`}
       aria-labelledby={titleId}
+      aria-describedby={summaryId}
       whileTap={{ scale: 0.99 }}
       transition={spring.snappy}
       className="grid overflow-hidden rounded-tile bg-secondary contrast-more:border contrast-more:border-foreground/40 md:grid-cols-[5fr_6fr]"
     >
-      <div className="p-3">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[calc(var(--radius-tile)-0.75rem)] bg-background">
+      <div className="p-3 md:flex md:items-center">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[calc(var(--radius-tile)-0.75rem)] bg-background">
           <ThemedImage
             src={project.coverImage}
             lightSrc={project.coverImageLight}
@@ -45,10 +47,12 @@ export const ProjectRow = React.memo(function ProjectRow({ project }: { project:
       </div>
       <div className="flex flex-col justify-center gap-3 px-6 pb-7 pt-3 md:px-8 md:py-8">
         <p className="text-caption text-muted-foreground">{eyebrow}</p>
-        <h3 id={titleId} className="text-title-2 text-balance">
+        <Heading id={titleId} className="text-title-2 text-balance">
           {project.title}
-        </h3>
-        <p className="text-body text-muted-foreground text-pretty">{project.summary}</p>
+        </Heading>
+        <p id={summaryId} className="text-body text-muted-foreground text-pretty">
+          {project.summary}
+        </p>
         {project.outcome && <p className="text-body">{project.outcome}</p>}
         <DotList items={project.highlights} className="text-caption text-muted-foreground" />
         <span className="mt-1 inline-flex items-center gap-0.5 text-body text-primary">

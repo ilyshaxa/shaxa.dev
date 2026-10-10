@@ -27,7 +27,8 @@
 7. **The contact sentence uses an ICU tag** (`<mail>{address}</mail>`), because next-intl's `t.rich` only accepts strings and tag functions as values. The deck row was updated to match.
 8. **Additions the spec's goals imply** (each is small; veto any): fix the HikGateway project's light-theme image path (`…integrationsvg`, missing a dot, a broken image in light mode since v1); delete the stale, unloaded `src/data/*.yaml` files (they still contain AWS-certificate entries, "Russian: Native" and placeholder projects) and correct `.claude/CLAUDE.md`'s "Content pipeline"; delete the five unused AWS/IELTS badge PNGs in `public/images/certifications/` (they are publicly served URLs for certifications that were not earned); rewrite the root `src/app/not-found.tsx` (it jokes about "DevOps best practices" and says "Page Not Found"); replace SEO keywords and JSON-LD `knowsAbout` that name cut skills (Kubernetes, Azure, Terraform, Ansible); trim padding from two project technology lists ("Monitoring", "Observability", "Log Aggregation", "Alerting", "Metrics Collection" and a duplicate "TLS Encryption"); point the X link at `https://x.com/ilyshaxa`; translate the scroll-to-top label with its existing key; drop the unused `flagcdn.com` image host.
 9. **`metadata.about/projects/contact.*` stay** even though no code reads them today (those pages are client components and cannot export metadata). Wiring per-page metadata is out of scope.
-10. **Three new test files** (`messages.test.ts`, `data.test.ts`, `chat-system-prompt.test.ts`) keep the content consistent so the contradictions this redesign removes cannot creep back.
+10. **Light-mode accent text is `#0066cc`** (Apple's link blue) instead of the spec's `#0071e3`, because `#0071e3` on the `#f5f5f7` tile surface is 4.31:1, below WCAG AA (4.5:1) for body-size link text such as "Learn more ›". `--primary-fill` (button backgrounds) stays `#0071e3`; dark mode is unchanged.
+11. **Three new test files** (`messages.test.ts`, `data.test.ts`, `chat-system-prompt.test.ts`) keep the content consistent so the contradictions this redesign removes cannot creep back.
 
 ## Global constraints
 
@@ -1021,6 +1022,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 **Files:**
 - Create: `src/components/dot-list.tsx`, `src/components/project-row.tsx`, `src/components/stack-list.tsx`
 - Rewrite: `src/components/experience-list.tsx`, `src/app/[locale]/page.tsx`
+- Modify (review follow-ups, already applied on the branch): `src/components/grouped-list.tsx` (`pressableClass` gains `focus-visible:-outline-offset-2` so a row's focus ring isn't clipped by the rounded container), `src/app/globals.css` (light `--primary` is `#0066cc`; see deviation 10)
 - Modify: `src/app/[locale]/about/page.tsx` (one line)
 - Delete: `src/components/project-carousel.tsx`, `src/lib/scroll-edges.ts`, `src/lib/scroll-edges.test.ts`
 
@@ -1030,7 +1032,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
   export function DotList({ items, className }: { items: string[]; className?: string }) {
     return (
-      <ul className={cn('flex flex-wrap gap-x-2', className)}>
+      <ul role="list" className={cn('flex flex-wrap gap-x-2', className)}>
         {items.map((item) => (
           <li key={item} className="after:ml-2 after:text-muted-foreground after:content-['·'] last:after:content-none">
             {item}
@@ -1054,8 +1056,8 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     return (
       <dl className="border-t border-border">
         {stackRows.map((row) => (
-          <div key={row} className="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:gap-6">
-            <dt className="shrink-0 text-caption text-muted-foreground sm:w-44 sm:pt-[0.2rem]">{t(row)}</dt>
+          <div key={row} className="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-baseline sm:gap-6">
+            <dt className="shrink-0 text-caption text-muted-foreground sm:w-44">{t(row)}</dt>
             <dd>
               <DotList items={stack[row]} className="text-body" />
             </dd>
@@ -1087,22 +1089,24 @@ Everything here is additive or a type split, so the pages that haven't been rebu
    * an optional outcome, four key technologies and "Learn more ›". The whole tile is one link whose
    * accessible name is the title.
    */
-  export const ProjectRow = React.memo(function ProjectRow({ project }: { project: Project }) {
+  export const ProjectRow = React.memo(function ProjectRow({ project, as: Heading = 'h3' }: { project: Project; as?: 'h2' | 'h3' }) {
     const locale = useLocale();
     const t = useTranslations('common');
     const titleId = useId();
+    const summaryId = useId();
     const eyebrow = [project.companyName, project.year].filter(Boolean).join(' · ');
 
     return (
       <MotionLink
         href={`/${locale}/projects/${project.slug}`}
         aria-labelledby={titleId}
+        aria-describedby={summaryId}
         whileTap={{ scale: 0.99 }}
         transition={spring.snappy}
         className="grid overflow-hidden rounded-tile bg-secondary contrast-more:border contrast-more:border-foreground/40 md:grid-cols-[5fr_6fr]"
       >
-        <div className="p-3">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[calc(var(--radius-tile)-0.75rem)] bg-background">
+        <div className="p-3 md:flex md:items-center">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[calc(var(--radius-tile)-0.75rem)] bg-background">
             <ThemedImage
               src={project.coverImage}
               lightSrc={project.coverImageLight}
@@ -1115,10 +1119,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         </div>
         <div className="flex flex-col justify-center gap-3 px-6 pb-7 pt-3 md:px-8 md:py-8">
           <p className="text-caption text-muted-foreground">{eyebrow}</p>
-          <h3 id={titleId} className="text-title-2 text-balance">
+          <Heading id={titleId} className="text-title-2 text-balance">
             {project.title}
-          </h3>
-          <p className="text-body text-muted-foreground text-pretty">{project.summary}</p>
+          </Heading>
+          <p id={summaryId} className="text-body text-muted-foreground text-pretty">
+            {project.summary}
+          </p>
           {project.outcome && <p className="text-body">{project.outcome}</p>}
           <DotList items={project.highlights} className="text-caption text-muted-foreground" />
           <span className="mt-1 inline-flex items-center gap-0.5 text-body text-primary">
@@ -1157,7 +1163,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
           <li key={exp.slug} className="border-b border-border last:border-b-0">
             <Link
               href={`/${locale}/about/${exp.slug}`}
-              className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-black/[0.02] active:bg-black/[0.05] dark:hover:bg-white/[0.03] dark:active:bg-white/[0.07]"
+              className="flex items-center gap-4 px-5 py-4 transition-colors focus-visible:-outline-offset-2 hover:bg-black/[0.02] active:bg-black/[0.05] dark:hover:bg-white/[0.03] dark:active:bg-white/[0.07]"
             >
               <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-background">
                 {exp.logo && <Image src={exp.logo} alt="" width={28} height={28} className="object-contain" />}
@@ -1203,7 +1209,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
   function SeeMore({ href, children }: { href: string; children: React.ReactNode }) {
     return (
-      <Button asChild variant="plain">
+      <Button asChild variant="plain" className="-my-3 py-3">
         <Link href={href}>
           {children}
           <ChevronRight className="size-4" />
@@ -1263,7 +1269,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                     <ChevronDown className="size-4 opacity-80" />
                   </Button>
                 </CvMenu>
-                <Button asChild variant="plain" size="lg">
+                <Button asChild variant="plain" size="lg" className="min-h-11">
                   <Link href={`/${locale}/contact`}>
                     {t('hero.getInTouch')}
                     <ChevronRight className="size-4" />
@@ -1305,7 +1311,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             {t.rich('contact.body', {
               address: profile.email,
               mail: (chunks) => (
-                <a href={`mailto:${profile.email}`} className="text-primary underline-offset-4 hover:underline">
+                <a href={`mailto:${profile.email}`} className="text-primary underline underline-offset-4">
                   {chunks}
                 </a>
               ),
@@ -1356,7 +1362,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         {projects.length > 0 ? (
           <div className="flex flex-col gap-4">
             {projects.map((project) => (
-              <ProjectRow key={project.slug} project={project} />
+              <ProjectRow key={project.slug} project={project} as="h2" />
             ))}
           </div>
         ) : (

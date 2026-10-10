@@ -18,7 +18,7 @@ import { spring } from '@/lib/motion';
 
 function SeeMore({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Button asChild variant="plain">
+    <Button asChild variant="plain" className="-my-3 py-3">
       <Link href={href}>
         {children}
         <ChevronRight className="size-4" />
@@ -78,7 +78,7 @@ export default function Home() {
                   <ChevronDown className="size-4 opacity-80" />
                 </Button>
               </CvMenu>
-              <Button asChild variant="plain" size="lg">
+              <Button asChild variant="plain" size="lg" className="min-h-11">
                 <Link href={`/${locale}/contact`}>
                   {t('hero.getInTouch')}
                   <ChevronRight className="size-4" />
@@ -120,7 +120,7 @@ export default function Home() {
           {t.rich('contact.body', {
             address: profile.email,
             mail: (chunks) => (
-              <a href={`mailto:${profile.email}`} className="text-primary underline-offset-4 hover:underline">
+              <a href={`mailto:${profile.email}`} className="text-primary underline underline-offset-4">
                 {chunks}
               </a>
             ),

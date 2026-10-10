@@ -21,7 +21,7 @@ interface GroupedListItemProps {
 
 const rowClass = 'flex min-h-14 items-center gap-4 px-5 py-3';
 const pressableClass =
-  'transition-colors hover:bg-black/[0.02] active:bg-black/[0.05] dark:hover:bg-white/[0.03] dark:active:bg-white/[0.07]';
+  'transition-colors focus-visible:-outline-offset-2 hover:bg-black/[0.02] active:bg-black/[0.05] dark:hover:bg-white/[0.03] dark:active:bg-white/[0.07]';
 
 export function GroupedListItem({ leading, title, subtitle, trailing, href }: GroupedListItemProps) {
   const isExternal = href?.startsWith('http') ?? false;
