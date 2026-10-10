@@ -81,3 +81,23 @@ test('the static education fallback matches the English messages', () => {
     assert.equal(edu.degree, copy[edu.slug].degree, `${edu.slug} degree`);
   }
 });
+
+test('certifications have unique slugs, titles, KodeKloud URLs and issue dates that are real and not in the future', () => {
+  const { certifications } = getProfile();
+  assert.ok(certifications.length > 0, 'no certifications');
+  assert.equal(new Set(certifications.map((certification) => certification.slug)).size, certifications.length, 'duplicate slug');
+  assert.equal(new Set(certifications.map((certification) => certification.url)).size, certifications.length, 'duplicate url');
+  const today = new Date().toISOString().slice(0, 10);
+  for (const { slug, title, issuer, issued, url, credentialId } of certifications) {
+    assert.ok(slug && title.trim() && issuer.trim(), `${slug} needs a slug, a title and an issuer`);
+    const { protocol, hostname } = new URL(url);
+    assert.deepEqual({ protocol, hostname }, { protocol: 'https:', hostname: 'learn.kodekloud.com' }, `${slug} url`);
+    // KodeKloud uses the credential ID as the last path segment, so a mismatch means two entries were mixed up.
+    if (credentialId) assert.ok(url.endsWith(`/${credentialId}`), `${slug} url does not point at its credential`);
+    assert.match(issued, /^\d{4}-\d{2}(-\d{2})?$/, `${slug} issued must be YYYY-MM or YYYY-MM-DD`);
+    // Round-tripping rejects dates such as 2026-13 or 2026-02-30, which Date either refuses or rolls over.
+    const parsed = new Date(`${issued.length === 7 ? `${issued}-01` : issued}T00:00:00Z`);
+    assert.ok(!Number.isNaN(parsed.getTime()) && parsed.toISOString().startsWith(issued), `${slug} issued is not a real date`);
+    assert.ok(issued <= today.slice(0, issued.length), `${slug} is issued in the future`);
+  }
+});

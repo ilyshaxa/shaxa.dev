@@ -32,11 +32,31 @@ function blockAfter(heading: RegExp): string[] {
   return lines.slice(start + 1, end === -1 ? undefined : end).map((line) => line.trim());
 }
 
-test('the prompt never claims a certification', () => {
-  const disclaimer = lines.filter((line) => /not AWS certified/i.test(line));
+const NOT_AWS_CERTIFIED = /\bnot AWS certified\b/gi;
+
+/** A certificate's date the way the prompt writes it: "September 2, 2026", or "September 2026" for a YYYY-MM date. */
+function issuedLabel(issued: string): string {
+  const monthOnly = issued.length === 7;
+  const format = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', ...(monthOnly ? { month: 'long', year: 'numeric' } : { dateStyle: 'long' }) });
+  return format.format(new Date(`${monthOnly ? `${issued}-01` : issued}T00:00:00Z`));
+}
+
+test('the prompt never claims an AWS certification', () => {
+  const disclaimer = lines.filter((line) => line.search(NOT_AWS_CERTIFIED) >= 0);
   assert.equal(disclaimer.length, 1, 'prompt should say once that he is not AWS certified');
-  const rest = lines.filter((line) => !disclaimer.includes(line)).join('\n');
-  assert.ok(!/certified|certificate|IELTS|British Council|Cloud Practitioner|Solutions Architect Professional/i.test(rest), 'prompt names a certification');
+  assert.ok(blockAfter(/^CERTIFICATIONS\b/).includes(disclaimer[0].trim()), 'the disclaimer belongs in the CERTIFICATIONS block');
+  // Only the negation itself is exempt, so a claim added to the disclaimer line still fails.
+  const claims = SYSTEM_PROMPT.replace(NOT_AWS_CERTIFIED, '');
+  assert.ok(!/AWS Certified|Cloud Practitioner|Solutions Architect|DevOps Engineer Professional/i.test(claims), 'prompt claims an AWS certification');
+});
+
+test('the CERTIFICATIONS block is exactly the certificates on the site', () => {
+  const block = blockAfter(/^CERTIFICATIONS\b/);
+  const listed = block.filter((line) => line.search(NOT_AWS_CERTIFIED) < 0);
+  const expected = getProfile().certifications.map(({ title, issuer, issued }) => `- ${title} (${issuer}, ${issuedLabel(issued)})`);
+  assert.deepEqual(listed, expected);
+  const elsewhere = lines.filter((line) => !block.includes(line.trim())).join('\n');
+  assert.ok(!/certified|certificate|IELTS|British Council/i.test(elsewhere), 'prompt names a certificate outside the CERTIFICATIONS block');
 });
 
 test('the SKILLS block is exactly the stack on the site', () => {

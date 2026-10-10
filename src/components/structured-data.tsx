@@ -59,6 +59,16 @@ export function StructuredData() {
         "name": edu.institution,
         "description": edu.degree
       })),
+      "hasCredential": profile.certifications.map(certification => ({
+        "@type": "EducationalOccupationalCredential",
+        "name": certification.title,
+        "url": certification.url,
+        "credentialCategory": "certificate",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": certification.issuer
+        }
+      })),
       "worksFor": experiences
         .filter(exp => exp.isCurrent)
         .map(exp => ({

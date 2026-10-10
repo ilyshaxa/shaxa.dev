@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ChevronDown, Download, GraduationCap } from 'lucide-react';
+import { Award, ChevronDown, Download, GraduationCap } from 'lucide-react';
 import { useMessages, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { CvMenu } from '@/components/cv-menu';
@@ -88,6 +88,26 @@ export default function AboutPage() {
               />
             );
           })}
+        </GroupedList>
+      </section>
+
+      <section className="page-container">
+        <SectionHeader title={t('headings.certifications')} />
+        <GroupedList>
+          {profile.certifications.map((certification) => (
+            <GroupedListItem
+              key={certification.slug}
+              leading={
+                <LogoTile>
+                  <Award className="size-5 text-muted-foreground" />
+                </LogoTile>
+              }
+              title={certification.title}
+              // Year only: Chromium has no Uzbek month names, so a month-and-year date renders as "2026 M09" in uz.
+              subtitle={`${certification.issuer} · ${certification.issued.slice(0, 4)}`}
+              href={certification.url}
+            />
+          ))}
         </GroupedList>
       </section>
 
