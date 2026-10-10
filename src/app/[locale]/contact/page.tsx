@@ -43,6 +43,7 @@ function BreakableEmail({ address }: { address: string }) {
 export default function ContactPage() {
   const profile = getProfile();
   const t = useTranslations('contact');
+  const tProfile = useTranslations('profile');
   const [formData, setFormData] = useState(emptyForm);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [emailError, setEmailError] = useState(false);
@@ -221,7 +222,7 @@ export default function ContactPage() {
             subtitle={t('info.phone')}
             href={`tel:${profile.phone.replace(/\s/g, '')}`}
           />
-          <GroupedListItem leading={<RowIcon icon={MapPin} />} title={profile.location} subtitle={t('info.location')} />
+          <GroupedListItem leading={<RowIcon icon={MapPin} />} title={tProfile('location')} subtitle={t('info.location')} />
         </GroupedList>
       </div>
     </div>
