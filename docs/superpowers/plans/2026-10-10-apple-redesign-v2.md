@@ -11,7 +11,7 @@
 **Spec:** `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` (approved).
 **Copy:** `docs/superpowers/specs/2026-10-10-apple-redesign-v2-copy.md` (approved; the three **[confirm]** items ship as written because the spec and deck were approved without changes. If any is wrong, edit `messages/*.json` and the deck, it is a one-line change).
 **Machine-readable copy:** `docs/superpowers/plans/2026-10-10-apple-redesign-v2-copy-patch/{en,ru,uz}.json`, generated from the deck's tables. Task 1 merges them by script, so no string is retyped by hand.
-**Validated before approval:** every whole-file code block in this plan was extracted into a throwaway copy of the repo in the scratchpad (outside the repo), the plan's partial edits and message migration were applied to it as written, and that final state passed `tsc --noEmit`, `npm test` (29/29), `npm run lint` (0 warnings), `npm run build`, the layout probe (68 checks across 14 pages, three locales, 1440 and 390) and the interaction checks (10). Screenshots of it showed two defects, both fixed in this plan: stray leading dots in wrapped lists, and the HikGateway light-theme image path. The intermediate state after Tasks 1–3 (the riskiest transitional step, the additive `data.ts` split) was validated the same way (`tsc`, 26/26 tests, lint, build). The states between Tasks 4–10 were *not* built separately; each task's own checks do that during execution.
+**Validated before approval:** every whole-file code block in this plan was extracted into a throwaway copy of the repo in the scratchpad (outside the repo), the plan's partial edits and message migration were applied to it as written, and that final state passed `tsc --noEmit`, `npm test` (30/30), `npm run lint` (0 warnings), `npm run build`, the layout probe (68 checks across 14 pages, three locales, 1440 and 390) and the interaction checks (10). Screenshots of it showed two defects, both fixed in this plan: stray leading dots in wrapped lists, and the HikGateway light-theme image path. The intermediate state after Tasks 1–3 (the riskiest transitional step, the additive `data.ts` split) was validated the same way (`tsc`, 26/26 tests, lint, build). The states between Tasks 4–10 were *not* built separately; each task's own checks do that during execution.
 **Tools:** `docs/superpowers/plans/2026-10-10-apple-redesign-v2-tools/` (`apply-copy.mjs`, `dead-keys.mjs`, `shoot.mjs`, `probe.mjs`, `interact.mjs`), all tested before this plan was written.
 
 **Baseline (verified 2026-10-10 on `apple-redesign` @ `160d806`, Node 22.22, after `npm ci`):** `npm test` 19/19, `npm run lint` 0 errors and 0 warnings, `npm run build` passes. Message files round-trip byte-identically through `JSON.stringify(obj, null, 2)` (no trailing newline) and are in key parity except one stray RU/UZ key that Task 1 removes. The layout probe fails on v1 as expected: left edges of 152/359/495/336px on four elements at 1440, and 0px between sections. All interaction checks pass on v1 and must keep passing.
@@ -473,6 +473,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
       }
       const localized = localizeExperiences(experiences, messages[locale]);
       assert.ok(localized.every((experience) => experience.summary && experience.points.length >= 3), `${locale} localizeExperiences lost copy`);
+    }
+  });
+
+  test('every project live URL is a valid absolute URL', () => {
+    for (const project of getAllProjects()) {
+      if (project.liveUrl) assert.doesNotThrow(() => new URL(project.liveUrl as string), `${project.slug} liveUrl`);
     }
   });
 
@@ -1337,7 +1343,9 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 ## Task 6: Projects index and project detail
 
 **Files:**
+- Create: `src/components/bullet-list.tsx` (review follow-up, already on the branch; Task 7 reuses it)
 - Rewrite: `src/app/[locale]/projects/page.tsx`, `src/app/[locale]/projects/[slug]/page.tsx`
+- Modify (review follow-ups, already applied): `src/components/media-viewer.tsx` (the video no longer autoplays under reduced motion and has an accessible name), `src/components/grouped-list.tsx` (`role="list"`)
 - Delete: `src/components/project-card.tsx`
 
 - [ ] **Step 1: `src/app/[locale]/projects/page.tsx`**
@@ -1387,6 +1395,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { useLocale, useMessages, useTranslations } from 'next-intl';
   import { ChevronLeft } from 'lucide-react';
   import { Button } from '@/components/ui/button';
+  import { BulletList } from '@/components/bullet-list';
   import { DotList } from '@/components/dot-list';
   import { GroupedList, GroupedListItem } from '@/components/grouped-list';
   import { MediaViewer } from '@/components/media-viewer';
@@ -1425,7 +1434,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
     return (
       <article className="page-container pb-24 pt-10 md:pb-32 md:pt-16">
-        <Button asChild variant="plain" size="sm">
+        <Button asChild variant="plain" size="sm" className="min-h-11">
           <Link href={`/${locale}/projects`}>
             <ChevronLeft className="size-4" />
             {t('back')}
@@ -1445,14 +1454,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
           <section>
             <h2 className="text-title-2">{t('whatIBuilt')}</h2>
-            <ul className="mt-6 space-y-4">
-              {project.points.map((point) => (
-                <li key={point} className="flex gap-3 text-body text-muted-foreground">
-                  <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
-                  {point}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={project.points} />
           </section>
 
           <aside className="space-y-8">
@@ -1465,12 +1467,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                 />
               )}
               <GroupedListItem title={t('year')} trailing={project.year} />
-              <GroupedListItem title={t('status.label')} trailing={<StatusDot status={project.status} label={statusLabel} />} />
+              <GroupedListItem title={t('status.label')} trailing={<StatusDot status={project.status} label={statusLabel} className="text-body" />} />
               {project.liveUrl && liveLabel && <GroupedListItem title={liveLabel} href={project.liveUrl} />}
             </GroupedList>
             <section>
               <h2 className="text-caption text-muted-foreground">{t('technologies')}</h2>
-              <DotList items={project.technologies} className="mt-2 text-body" />
+              <DotList items={project.technologies} className="mt-2 text-body text-muted-foreground" />
             </section>
           </aside>
         </div>
@@ -1620,6 +1622,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   import { useLocale, useMessages, useTranslations } from 'next-intl';
   import { ChevronLeft, ChevronRight } from 'lucide-react';
   import { Button } from '@/components/ui/button';
+  import { BulletList } from '@/components/bullet-list';
   import { DotList } from '@/components/dot-list';
   import { GroupedList, GroupedListItem } from '@/components/grouped-list';
   import { getAllExperiences, localizeExperiences } from '@/lib/data';
@@ -1680,14 +1683,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
           <section>
             <h2 className="text-title-2">{t('whatIDid')}</h2>
-            <ul className="mt-6 space-y-4">
-              {experience.points.map((point) => (
-                <li key={point} className="flex gap-3 text-body text-muted-foreground">
-                  <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
-                  {point}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={experience.points} />
           </section>
 
           <aside className="space-y-8">
@@ -1699,7 +1695,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
             </GroupedList>
             <section>
               <h2 className="text-caption text-muted-foreground">{tHome('title')}</h2>
-              <DotList items={experience.technologies} className="mt-2 text-body" />
+              <DotList items={experience.technologies} className="mt-2 text-body text-muted-foreground" />
             </section>
           </aside>
         </div>
@@ -2621,7 +2617,7 @@ Everything that read the legacy fields is rebuilt now. This task deletes the leg
     Also change the structure line `lib/ — Utilities (seo, data, link-parser, chat-*)` only if it mentions anything deleted (it doesn't), and add one line under **Key conventions**: `- New copy goes through all three message files; `npm test` fails on mismatched keys, placeholders or numbers`.
   - `README.md`: update the line mentioning `profileData` ("Personal info, skills, experience, education, certifications") to match reality (`profileData`: links, stack, experience and education structure; copy lives in `messages/`), and `grep -n -i "yaml\|certif\|skills" README.md` for any other claim of YAML content or certifications; fix or delete those lines.
 
-- [ ] **Step 8: Verify.** `npm test` (29 pass: the original 19 minus the 4 scroll-edges tests, plus 5 messages, 5 data and 4 prompt tests), `npm run lint`, `npm run build`, `npx tsc --noEmit` (no output). Then the legacy grep, which must print nothing:
+- [ ] **Step 8: Verify.** `npm test` (30 pass: the original 19 minus the 4 scroll-edges tests, plus 5 messages, 6 data and 4 prompt tests), `npm run lint`, `npm run build`, `npx tsc --noEmit` (no output). Then the legacy grep, which must print nothing:
   ```bash
   grep -rniE "awsCertified|AWS Certified|ProjectCarousel|SkillsBento|LastUpdated|ScrollReveal|shortDescription|fullDescription|originalStatus|ProjectLegacyText|ExperienceLegacyText|shortBio|\.certifications|skills-bento|project-card|flagcdn|languageFlags" src messages next.config.ts .claude/CLAUDE.md README.md
   ```

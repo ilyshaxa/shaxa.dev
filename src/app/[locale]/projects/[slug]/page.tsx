@@ -6,6 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { useLocale, useMessages, useTranslations } from 'next-intl';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BulletList } from '@/components/bullet-list';
 import { DotList } from '@/components/dot-list';
 import { GroupedList, GroupedListItem } from '@/components/grouped-list';
 import { MediaViewer } from '@/components/media-viewer';
@@ -64,14 +65,7 @@ export default function ProjectPage() {
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
         <section>
           <h2 className="text-title-2">{t('whatIBuilt')}</h2>
-          <ul className="mt-6 space-y-4">
-            {project.points.map((point) => (
-              <li key={point} className="flex gap-3 text-body text-muted-foreground">
-                <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
-                {point}
-              </li>
-            ))}
-          </ul>
+          <BulletList items={project.points} />
         </section>
 
         <aside className="space-y-8">
@@ -84,12 +78,12 @@ export default function ProjectPage() {
               />
             )}
             <GroupedListItem title={t('year')} trailing={project.year} />
-            <GroupedListItem title={t('status.label')} trailing={<StatusDot status={project.status} label={statusLabel} />} />
+            <GroupedListItem title={t('status.label')} trailing={<StatusDot status={project.status} label={statusLabel} className="text-body" />} />
             {project.liveUrl && liveLabel && <GroupedListItem title={liveLabel} href={project.liveUrl} />}
           </GroupedList>
           <section>
             <h2 className="text-caption text-muted-foreground">{t('technologies')}</h2>
-            <DotList items={project.technologies} className="mt-2 text-body" />
+            <DotList items={project.technologies} className="mt-2 text-body text-muted-foreground" />
           </section>
         </aside>
       </div>

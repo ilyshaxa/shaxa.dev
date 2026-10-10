@@ -62,6 +62,12 @@ test('every experience has complete copy in every locale', () => {
   }
 });
 
+test('every project live URL is a valid absolute URL', () => {
+  for (const project of getAllProjects()) {
+    if (project.liveUrl) assert.doesNotThrow(() => new URL(project.liveUrl as string), `${project.slug} liveUrl`);
+  }
+});
+
 test('only projects marked featured are featured, and exactly three are', () => {
   const featured = getAllProjects().filter((project) => project.featured).map((project) => project.slug);
   assert.deepEqual(featured.sort(), ['comprehensive-monitoring-stack', 'hikcentral-remote-device-integration', 'jenkins-cicd-pipeline']);

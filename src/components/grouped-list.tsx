@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 export function GroupedList({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <ul className={cn('overflow-hidden rounded-lg bg-secondary contrast-more:border contrast-more:border-foreground/40', className)}>
+    <ul role="list" className={cn('overflow-hidden rounded-lg bg-secondary contrast-more:border contrast-more:border-foreground/40', className)}>
       {children}
     </ul>
   );

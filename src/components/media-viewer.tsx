@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { AnimatePresence, animate, motion, useMotionValue } from 'framer-motion';
+import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from 'framer-motion';
 import { Maximize, Pause, Play, RotateCcw, Volume2, VolumeX, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { clamp, createVelocityTracker, project, rubberbandClamp, spring } from '@/lib/motion';
@@ -268,8 +268,9 @@ function FullscreenViewer({ src, alt, layoutId, onClose }: FullscreenViewerProps
   );
 }
 
-function VideoViewer({ src }: { src: string }) {
+function VideoViewer({ src, label }: { src: string; label: string }) {
   const t = useTranslations('projects');
+  const reduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -288,6 +289,12 @@ function VideoViewer({ src }: { src: string }) {
       video.removeEventListener('ended', sync);
     };
   }, [src]);
+
+  // Autoplay is skipped under reduced motion; the play button still starts it.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && !reduceMotion) video.play().catch(() => {});
+  }, [src, reduceMotion]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -310,7 +317,7 @@ function VideoViewer({ src }: { src: string }) {
         ref={videoRef}
         src={src}
         className="size-full object-contain"
-        autoPlay
+        aria-label={label}
         muted={isMuted}
         loop
         playsInline
@@ -340,7 +347,7 @@ export function MediaViewer({ src, alt, isVideo = false }: MediaViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const closeFullscreen = useCallback(() => setIsFullscreen(false), []);
 
-  if (isVideo) return <VideoViewer src={src} />;
+  if (isVideo) return <VideoViewer src={src} label={alt} />;
 
   return (
     <>
