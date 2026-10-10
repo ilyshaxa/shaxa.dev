@@ -1,16 +1,22 @@
 'use client';
 
-import { getProfile, getAllProjects, getAllExperiences } from '@/lib/data';
+import { useMessages, useTranslations } from 'next-intl';
+import { getAllExperiences, getAllProjects, getProfile, localizeExperiences, localizeProjects, stackRows } from '@/lib/data';
 import { useEffect } from 'react';
 
 export function StructuredData() {
+  const messages = useMessages();
+  const tProfile = useTranslations('profile');
+  const bio = tProfile('bio');
+
   useEffect(() => {
     // Wait for DOM to be ready
     if (typeof window === 'undefined') return;
     
     const profile = getProfile();
-    const projects = getAllProjects();
-    const experiences = getAllExperiences();
+    const projects = localizeProjects(getAllProjects(), messages);
+    const experiences = localizeExperiences(getAllExperiences(), messages);
+    const skills = stackRows.flatMap((row) => profile.stack[row]);
     
     // Get current domain
     const currentDomain = window.location.origin;
@@ -22,7 +28,7 @@ export function StructuredData() {
       "@type": "Person",
       "name": profile.name,
       "jobTitle": profile.title,
-      "description": profile.bio,
+      "description": bio,
       "url": primaryDomain,
       "image": `${primaryDomain}/images/profile.jpg`,
       "email": profile.email,
@@ -39,17 +45,11 @@ export function StructuredData() {
         profile.instagram
       ],
       "knowsAbout": [
-        ...profile.skills.cloud,
-        ...profile.skills.containers,
-        ...profile.skills.infrastructure,
-        ...profile.skills.cicd,
-        ...profile.skills.monitoring,
-        ...profile.skills.tools,
+        ...skills,
         "DevOps",
-        "Cloud Infrastructure",
-        "Automation",
+        "Cloud infrastructure",
         "CI/CD",
-        "Container Orchestration"
+        "Observability"
       ],
       "alumniOf": profile.education.map(edu => ({
         "@type": "EducationalOrganization",
@@ -70,14 +70,7 @@ export function StructuredData() {
           "@type": "City",
           "name": profile.location
         },
-        "skills": [
-          ...profile.skills.cloud,
-          ...profile.skills.containers,
-          ...profile.skills.infrastructure,
-          ...profile.skills.cicd,
-          ...profile.skills.monitoring,
-          ...profile.skills.tools
-        ]
+        "skills": skills
       }
     };
 
@@ -86,7 +79,7 @@ export function StructuredData() {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": `${profile.name} - ${profile.title}`,
-      "description": profile.bio,
+      "description": bio,
       "url": primaryDomain,
       "provider": {
         "@type": "Person",
@@ -103,7 +96,6 @@ export function StructuredData() {
         "Cloud Infrastructure",
         "CI/CD Pipeline Development",
         "Infrastructure Automation",
-        "Container Orchestration",
         "Cloud Migration",
         "System Monitoring & Observability"
       ],
@@ -172,10 +164,10 @@ export function StructuredData() {
     const portfolioItemsSchema = projects.map((project) => ({
       "@context": "https://schema.org",
       "@type": "CreativeWork",
-      "@id": `${primaryDomain}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
+      "@id": `${primaryDomain}/projects/${project.slug}`,
       "name": project.title,
-      "description": project.fullDescription || project.shortDescription,
-      "url": `${primaryDomain}/projects/${project.slug || project.title.toLowerCase().replace(/\s+/g, '-')}`,
+      "description": project.summary,
+      "url": `${primaryDomain}/projects/${project.slug}`,
       "creator": {
         "@type": "Person",
         "name": profile.name
@@ -213,7 +205,7 @@ export function StructuredData() {
       const scripts = document.querySelectorAll('script[type="application/ld+json"][data-portfolio="true"]');
       scripts.forEach(script => script.remove());
     };
-  }, []);
+  }, [messages, bio]);
 
   return null;
 }

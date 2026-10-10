@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Project detail pages for each locale
   for (const locale of locales) {
     for (const project of projects) {
-      const projectSlug = project.slug || project.title.toLowerCase().replace(/\s+/g, '-');
+      const projectSlug = project.slug;
       sitemapEntries.push({
         url: `${primaryDomain}/${locale}/projects/${projectSlug}`,
         lastModified: currentDate,
