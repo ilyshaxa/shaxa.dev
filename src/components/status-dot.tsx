@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-// Keyed by the untranslated status (Project.originalStatus); anything else reads as in progress.
+// Keyed by the untranslated status (Project.status); anything else reads as in progress.
 const dotColors: Record<string, string> = {
   Completed: 'bg-success',
   Discontinued: 'bg-muted-foreground',

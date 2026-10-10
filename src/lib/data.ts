@@ -1,24 +1,38 @@
 // import yaml from 'js-yaml'; // Not needed for static data
-import type { Locale } from '../types/i18n';
 
-export interface Experience {
-  company: string;
-  position: string;
-  duration: string;
-  description: string;
-  website?: string;
-  employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance' | 'Internship';
-  logo?: string;
+export const stackRows = ['cloud', 'containers', 'cicd', 'observability', 'systems', 'data', 'scripting'] as const;
+export type StackRow = (typeof stackRows)[number];
+
+/** Language-neutral experience facts. Copy lives in messages/*.json under data.experiences.<slug>. */
+export interface ExperienceBase {
   slug: string;
+  company: string;
+  website?: string;
+  logo?: string;
+  employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance' | 'Internship';
   startDate: string;
   endDate?: string;
   isCurrent: boolean;
+  technologies: string[];
+}
+
+/** English copy that pages not yet rebuilt still read. Deleted with those pages in the final prune task. */
+export interface ExperienceLegacyText {
+  position: string;
+  duration: string;
+  description: string;
   location?: string;
   responsibilities: string[];
   achievements: string[];
-  technologies: string[];
   teamSize?: string;
   industry?: string;
+}
+
+export type ExperienceSource = ExperienceBase & ExperienceLegacyText;
+
+export interface Experience extends ExperienceSource {
+  summary: string;
+  points: string[];
 }
 
 export interface Profile {
@@ -43,7 +57,8 @@ export interface Profile {
     database: string[];
     tools: string[];
   };
-  experience: Experience[];
+  stack: Record<StackRow, string[]>;
+  experience: ExperienceSource[];
   education: Array<{
     slug: string;
     institution: string;
@@ -72,11 +87,12 @@ export interface Profile {
   cvUrl: string;
 }
 
-export interface Project {
-  title: string;
-  shortDescription: string;
-  fullDescription: string;
+/** Language-neutral project facts. Copy lives in messages/*.json under data.projects.<slug>. */
+export interface ProjectBase {
+  slug: string;
   technologies: string[];
+  /** Four key technologies shown on the project tile. */
+  highlights: string[];
   coverImage: string;
   coverImageLight?: string;
   expandedImage?: string;
@@ -87,11 +103,25 @@ export interface Project {
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;
+  /** Untranslated key ('Completed'); the label comes from projects.status.* in messages. */
   status: string;
-  originalStatus?: string; // Preserves original status for color determination
   year: string;
+}
+
+/** English copy that pages not yet rebuilt still read. Deleted with those pages in the final prune task. */
+export interface ProjectLegacyText {
+  title: string;
+  shortDescription: string;
+  fullDescription: string;
   companyName?: string;
-  slug?: string;
+}
+
+export type ProjectSource = ProjectBase & ProjectLegacyText;
+
+export interface Project extends ProjectSource {
+  summary: string;
+  outcome?: string;
+  points: string[];
 }
 
 export function generateProjectSlug(title: string): string {
@@ -99,8 +129,8 @@ export function generateProjectSlug(title: string): string {
 }
 
 export interface ProjectsData {
-  featured: Project[];
-  all: Project[];
+  featured: ProjectSource[];
+  all: ProjectSource[];
 }
 
 // Static data - in production, you might want to load this from a CMS or API
@@ -113,7 +143,7 @@ const profileData: Profile = {
   website: "https://shaxa.dev",
   github: "https://github.com/ilyshaxa",
   linkedin: "https://linkedin.com/in/shaxriyor",
-  twitter: "https://twitter.com/ilyshaxa",
+  twitter: "https://x.com/ilyshaxa",
   instagram: "https://instagram.com/ilyshaxa",
   bio: "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps technology stack.",
   shortBio: "DevOps engineer focused on building scalable infrastructure and creating reliable automation solutions.",
@@ -125,6 +155,15 @@ const profileData: Profile = {
     monitoring: ["Prometheus", "Grafana", "Loki", "Promtail", "ELK Stack", "Datadog"],
     database: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch", "DynamoDB"],
     tools: ["Git", "Linux", "Bash", "Python", "YAML", "JSON"]
+  },
+  stack: {
+    cloud: ['AWS', 'GCP'],
+    containers: ['Docker'],
+    cicd: ['Jenkins', 'GitLab CI', 'GitHub Actions'],
+    observability: ['Prometheus', 'Grafana', 'Loki', 'Alertmanager', 'ELK', 'Datadog', 'Sentry'],
+    systems: ['Linux', 'Nginx', 'Tomcat', 'Vault', 'Networking', 'Load balancing', 'DNS'],
+    data: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Kafka', 'RabbitMQ', 'Solr'],
+    scripting: ['Python', 'Bash'],
   },
   experience: [
     {
@@ -320,6 +359,7 @@ const projectsData: ProjectsData = {
         "Node Exporter",
         "Ant"
       ],
+      highlights: ["Jenkins", "AWS CodeDeploy", "S3", "Prometheus"],
       coverImage: "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
       coverImageLight: "/projects/praaktisgo-jenkins-ci-cd-light.svg",
       expandedImage: "/projects/praaktisgo-jenkins-ci-cd-dark.svg",
@@ -354,15 +394,15 @@ const projectsData: ProjectsData = {
         "REST API",
         "JSON",
         "API Tokens & Authentication",
-        "TLS Encryption",
         "Google Cloud Platform (GCP)",
         "Compute Engine",
         "Linux Server"
       ],
+      highlights: ["ISUP 5.0", "HikGateway", "ISAPI", "TLS"],
       coverImage: "/projects/hikcentral-remote-device-integration.svg",
       coverImageLight: "/projects/hikcentral-remote-device-integration.svg",
       expandedImage: "/projects/hikcentral-remote-device-integration.svg",
-      expandedImageLight: "/projects/hikcentral-remote-device-integrationsvg",
+      expandedImageLight: "/projects/hikcentral-remote-device-integration.svg",
       liveUrl: "",
       githubUrl: "",
       featured: true,
@@ -388,13 +428,9 @@ const projectsData: ProjectsData = {
         "Telegram API",
         "PostgreSQL",
         "Docker",
-        "Linux",
-        "Monitoring",
-        "Observability",
-        "Log Aggregation",
-        "Alerting",
-        "Metrics Collection"
+        "Linux"
       ],
+      highlights: ["Prometheus", "Grafana", "Loki", "Alertmanager"],
       coverImage: "/projects/kpi-monitoring-stack-dark.svg",
       coverImageLight: "/projects/kpi-monitoring-stack-light.svg",
       expandedImage: "/projects/kpi-monitoring-stack-dark.svg",
@@ -424,6 +460,7 @@ const projectsData: ProjectsData = {
         "Linux",
         "Git"
       ],
+      highlights: ["Python", "FastAPI", "PostgreSQL", "Docker"],
       coverImage: "/projects/ST4M-Transparent-Logo.svg",
       coverImageLight: "/projects/ST4M-Transparent-Logo.svg",
       expandedImage: "/projects/ST4M-Transparent-Logo.svg",
@@ -451,20 +488,20 @@ export function getProjects(): ProjectsData {
   return projectsData;
 }
 
-export function getFeaturedProjects(): Project[] {
+export function getFeaturedProjects(): ProjectSource[] {
   return projectsData.featured;
 }
 
-export function getAllProjects(): Project[] {
+export function getAllProjects(): ProjectSource[] {
   return [...projectsData.featured, ...projectsData.all];
 }
 
-export function getExperienceBySlug(slug: string): Experience | null {
+export function getExperienceBySlug(slug: string): ExperienceSource | null {
   const profile = getProfile();
   return profile.experience.find(exp => exp.slug === slug) || null;
 }
 
-export function getAllExperiences(): Experience[] {
+export function getAllExperiences(): ExperienceSource[] {
   const profile = getProfile();
   return profile.experience;
 }
@@ -479,118 +516,44 @@ export function getExperienceSlugByCompany(companyName: string): string | null {
   return experience?.slug || null;
 }
 
-// Localized data functions
-export async function getLocalizedProjects(locale: Locale = 'en'): Promise<Project[]> {
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-  const projectsData = messages.data?.projects || {};
-  
-  return getAllProjects().map(project => {
-    const translatedData = projectsData[project.slug || ''];
-    if (!translatedData) return { ...project, originalStatus: project.status };
-    
+// Synchronous localization functions (usable from server and client components)
+const text = (value: unknown, fallback = ''): string => (typeof value === 'string' && value ? value : fallback);
+const list = (value: unknown): string[] => (Array.isArray(value) ? (value as string[]) : []);
+
+export function localizeProjects(projects: ProjectSource[], translations: Record<string, unknown>): Project[] {
+  const projectsData = ((translations?.data as Record<string, unknown>)?.projects as Record<string, unknown>) || {};
+  return projects.map((project) => {
+    const copy = (projectsData[project.slug] ?? {}) as Record<string, unknown>;
     return {
       ...project,
-      title: translatedData.title || project.title,
-      shortDescription: translatedData.shortDescription || project.shortDescription,
-      fullDescription: translatedData.fullDescription || project.fullDescription,
-      status: translatedData.status || project.status,
-      originalStatus: project.status, // Preserve original status for color determination
-      companyName: translatedData.companyName || project.companyName,
+      title: text(copy.title, project.title),
+      shortDescription: text(copy.shortDescription, project.shortDescription),
+      fullDescription: text(copy.fullDescription, project.fullDescription),
+      companyName: text(copy.companyName, project.companyName) || undefined,
+      summary: text(copy.summary),
+      outcome: text(copy.outcome) || undefined,
+      points: list(copy.points),
     };
   });
 }
 
-export async function getLocalizedFeaturedProjects(locale: Locale = 'en'): Promise<Project[]> {
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-  const projectsData = messages.data?.projects || {};
-  
-  return getFeaturedProjects().map(project => {
-    const translatedData = projectsData[project.slug || ''];
-    if (!translatedData) return { ...project, originalStatus: project.status };
-    
-    return {
-      ...project,
-      title: translatedData.title || project.title,
-      shortDescription: translatedData.shortDescription || project.shortDescription,
-      fullDescription: translatedData.fullDescription || project.fullDescription,
-      status: translatedData.status || project.status,
-      originalStatus: project.status, // Preserve original status for color determination
-      companyName: translatedData.companyName || project.companyName,
-    };
-  });
-}
-
-export async function getLocalizedProjectBySlug(slug: string, locale: Locale = 'en'): Promise<Project | null> {
-  const projects = await getLocalizedProjects(locale);
-  return projects.find(p => p.slug === slug) || null;
-}
-
-export async function getLocalizedExperiences(locale: Locale = 'en'): Promise<Experience[]> {
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-  const experiencesData = messages.data?.experiences || {};
-  
-  return getAllExperiences().map(experience => {
-    const translatedData = experiencesData[experience.slug];
-    if (!translatedData) return experience;
-    
+export function localizeExperiences(experiences: ExperienceSource[], translations: Record<string, unknown>): Experience[] {
+  const experiencesData = ((translations?.data as Record<string, unknown>)?.experiences as Record<string, unknown>) || {};
+  return experiences.map((experience) => {
+    const copy = (experiencesData[experience.slug] ?? {}) as Record<string, unknown>;
     return {
       ...experience,
-      company: translatedData.company || experience.company,
-      position: translatedData.position || experience.position,
-      duration: translatedData.duration || experience.duration,
-      description: translatedData.description || experience.description,
-      location: translatedData.location || experience.location,
-      responsibilities: translatedData.responsibilities || experience.responsibilities,
-      achievements: translatedData.achievements || experience.achievements,
-      teamSize: translatedData.teamSize || experience.teamSize,
-      industry: translatedData.industry || experience.industry,
-    };
-  });
-}
-
-export async function getLocalizedExperienceBySlug(slug: string, locale: Locale = 'en'): Promise<Experience | null> {
-  const experiences = await getLocalizedExperiences(locale);
-  return experiences.find(exp => exp.slug === slug) || null;
-}
-
-// Synchronous localization functions for client components
-export function localizeProjects(projects: Project[], translations: Record<string, unknown>): Project[] {
-  const projectsData = (translations?.data as Record<string, unknown>)?.projects as Record<string, unknown> || {};
-  
-  return projects.map(project => {
-    const translatedData = projectsData[project.slug || ''] as Record<string, string> | undefined;
-    if (!translatedData) return { ...project, originalStatus: project.status };
-    
-    return {
-      ...project,
-      title: translatedData.title || project.title,
-      shortDescription: translatedData.shortDescription || project.shortDescription,
-      fullDescription: translatedData.fullDescription || project.fullDescription,
-      status: translatedData.status || project.status,
-      originalStatus: project.status, // Preserve original status for color determination
-      companyName: translatedData.companyName || project.companyName,
-    };
-  });
-}
-
-export function localizeExperiences(experiences: Experience[], translations: Record<string, unknown>): Experience[] {
-  const experiencesData = (translations?.data as Record<string, unknown>)?.experiences as Record<string, unknown> || {};
-  
-  return experiences.map(experience => {
-    const translatedData = experiencesData[experience.slug] as Record<string, string | string[]> | undefined;
-    if (!translatedData) return experience;
-    
-    return {
-      ...experience,
-      company: (translatedData.company as string) || experience.company,
-      position: (translatedData.position as string) || experience.position,
-      duration: (translatedData.duration as string) || experience.duration,
-      description: (translatedData.description as string) || experience.description,
-      location: (translatedData.location as string) || experience.location,
-      responsibilities: (translatedData.responsibilities as string[]) || experience.responsibilities,
-      achievements: (translatedData.achievements as string[]) || experience.achievements,
-      teamSize: (translatedData.teamSize as string) || experience.teamSize,
-      industry: (translatedData.industry as string) || experience.industry,
+      company: text(copy.company, experience.company),
+      position: text(copy.position, experience.position),
+      duration: text(copy.duration, experience.duration),
+      description: text(copy.description, experience.description),
+      location: text(copy.location, experience.location) || undefined,
+      responsibilities: list(copy.responsibilities).length ? list(copy.responsibilities) : experience.responsibilities,
+      achievements: list(copy.achievements).length ? list(copy.achievements) : experience.achievements,
+      teamSize: text(copy.teamSize, experience.teamSize) || undefined,
+      industry: text(copy.industry, experience.industry) || undefined,
+      summary: text(copy.summary),
+      points: list(copy.points),
     };
   });
 }

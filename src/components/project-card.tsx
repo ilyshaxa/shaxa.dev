@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { StatusDot } from '@/components/status-dot';
 import { ThemedImage } from '@/components/themed-image';
 import { generateProjectSlug, type Project } from '@/lib/data';
@@ -20,6 +20,8 @@ interface ProjectCardProps {
 
 export const ProjectCard = React.memo(function ProjectCard({ project }: ProjectCardProps) {
   const locale = useLocale();
+  const t = useTranslations('projects');
+  const statusLabel = t(project.status === 'Completed' ? 'status.completed' : 'status.inProgress');
   const slug = project.slug || generateProjectSlug(project.title);
   const shownTech = project.technologies.slice(0, 5);
   const extraTech = project.technologies.length - shownTech.length;
@@ -48,7 +50,7 @@ export const ProjectCard = React.memo(function ProjectCard({ project }: ProjectC
         </motion.div>
       </div>
       <div className="flex flex-1 flex-col gap-2 px-6 pb-6">
-        <StatusDot status={project.originalStatus ?? project.status} label={`${project.status} · ${project.year}`} />
+        <StatusDot status={project.status} label={`${statusLabel} · ${project.year}`} />
         <h3 className="text-headline">{project.title}</h3>
         <p className="line-clamp-3 text-body text-muted-foreground">{project.shortDescription}</p>
         {project.companyName && <p className="text-caption text-muted-foreground">{project.companyName}</p>}

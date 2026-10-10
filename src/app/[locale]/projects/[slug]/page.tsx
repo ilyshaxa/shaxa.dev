@@ -37,7 +37,8 @@ export default function ProjectPage() {
     notFound();
   }
 
-  const status = project.originalStatus ?? project.status;
+  const status = project.status;
+  const statusLabel = t(status === 'Completed' ? 'status.completed' : 'status.inProgress');
   const companySlug = project.companyName ? getExperienceSlugByCompany(project.companyName) : null;
   const companyHref = companySlug ? `/${locale}/about/${companySlug}` : `/${locale}/about`;
 
@@ -54,7 +55,7 @@ export default function ProjectPage() {
         <ScrollReveal className="mt-8 max-w-[800px]">
           <h1 className="text-title-1 text-balance">{project.title}</h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <StatusDot status={status} label={project.status} />
+            <StatusDot status={status} label={statusLabel} />
             <span className="text-caption text-muted-foreground">{project.year}</span>
             {project.companyName && <span className="text-caption text-muted-foreground">{project.companyName}</span>}
           </div>
@@ -84,7 +85,7 @@ export default function ProjectPage() {
 
           <aside>
             <GroupedList>
-              <GroupedListItem title={t('status.title')} trailing={<StatusDot status={status} label={project.status} />} />
+              <GroupedListItem title={t('status.title')} trailing={<StatusDot status={status} label={statusLabel} />} />
               <GroupedListItem title={t('year')} trailing={project.year} />
               {project.companyName && (
                 <GroupedListItem leading={<Building2 className={rowIconClass} />} title={project.companyName} href={companyHref} />
