@@ -15,7 +15,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
 import { StructuredData } from "@/components/structured-data";
-import { getBaseUrl, getPrimaryDomain } from "@/lib/seo";
+import { TITLE_TEMPLATE, buildPageMetadata, getBaseUrl, getPrimaryDomain } from "@/lib/seo";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { fontVariables } from "@/lib/fonts";
 import { themeScript } from "@/lib/theme-script";
@@ -32,17 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata.home' });
   const baseUrl = await getBaseUrl();
-  const siteName = baseUrl.includes('shaxriyor.com') ? 'shaxriyor.com' : 'shaxa.dev';
-  
-  const localeMap: Record<string, string> = {
-    en: 'en_US',
-    uz: 'uz_UZ',
-    ru: 'ru_RU'
-  };
-  
+  const title = t('title', { name: profile.name, title: profile.title });
+
   return {
-    title: t('title', { name: profile.name, title: profile.title }),
-    description: t('description'),
+    // Canonical, hreflang, Open Graph and Twitter come from the shared builder; every child page builds its own the same way.
+    ...buildPageMetadata({ baseUrl, locale, title, description: t('description') }),
+    // The home title stands alone; pages that return a bare string get "<string> - Shaxriyor Jabborov".
+    title: { default: title, template: TITLE_TEMPLATE },
     keywords: [
       "Shaxriyor Jabborov",
       "DevOps engineer",
@@ -63,28 +59,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     authors: [{ name: profile.name, url: getPrimaryDomain() }],
     creator: profile.name,
     metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `${baseUrl}/${locale}`,
-      languages: {
-        'en': `${baseUrl}/en`,
-        'uz': `${baseUrl}/uz`,
-        'ru': `${baseUrl}/ru`,
-      },
-    },
-    openGraph: {
-      type: "website",
-      locale: localeMap[locale] || 'en_US',
-      url: `${baseUrl}/${locale}`,
-      title: t('title', { name: profile.name, title: profile.title }),
-      description: t('description'),
-      siteName: siteName,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: t('title', { name: profile.name, title: profile.title }),
-      description: t('description'),
-      creator: "@shaxa_dev",
-    },
     robots: {
       index: true,
       follow: true,
@@ -95,9 +69,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         "max-image-preview": "large",
         "max-snippet": -1,
       },
-    },
-    verification: {
-      google: "your-google-verification-code",
     },
   };
 }

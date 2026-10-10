@@ -9,7 +9,11 @@ export default createMiddleware({
   defaultLocale,
 
   // Always use locale prefix for routes
-  localePrefix: 'always'
+  localePrefix: 'always',
+
+  // The pages already declare hreflang in their <head> (src/lib/seo.ts). The middleware's Link header would repeat
+  // them with a conflicting x-default (the unprefixed path, which only redirects), so it is switched off.
+  alternateLinks: false
 });
 
 export const config = {
