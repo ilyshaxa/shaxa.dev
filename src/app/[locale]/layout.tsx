@@ -31,8 +31,10 @@ const profile = getProfile();
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata.home' });
+  const tHero = await getTranslations({ locale, namespace: 'home.hero' });
   const baseUrl = await getBaseUrl();
-  const title = t('title', { name: profile.name, title: profile.title });
+  // The role comes from the localized hero text, so each language's home page has its own title.
+  const title = t('title', { name: profile.name, title: tHero('role') });
 
   return {
     // Canonical, hreflang, Open Graph and Twitter come from the shared builder; every child page builds its own the same way.

@@ -5,20 +5,24 @@ import { getAllExperiences, getAllProjects, getProfile, localizeExperiences, loc
 import { buildAlternates, buildPageMetadata, getTwitterHandle, OG_IMAGE, TITLE_TEMPLATE, withSiteName } from './seo.ts';
 
 const locales = ['en', 'ru', 'uz'] as const;
-type Messages = Record<string, unknown> & { metadata: Record<string, { title: string; description: string }> };
+type Messages = Record<string, unknown> & {
+  metadata: Record<string, { title: string; description: string }>;
+  home: { hero: { role: string } };
+};
 const messages = Object.fromEntries(
   locales.map((locale) => [locale, JSON.parse(readFileSync(new URL(`../../messages/${locale}.json`, import.meta.url), 'utf8'))])
 ) as Record<(typeof locales)[number], Messages>;
 
 const base = 'https://shaxa.dev';
 const { name, title: role } = getProfile();
-const fill = (text: string) => text.replaceAll('{name}', name).replaceAll('{title}', role);
+const fill = (text: string, localizedRole = role) => text.replaceAll('{name}', name).replaceAll('{title}', localizedRole);
 
 /** Every indexable page of one locale with the title and description its metadata produces. */
 function pagesOf(locale: (typeof locales)[number]) {
   const m = messages[locale];
   const pages = [
-    { path: '', title: fill(m.metadata.home.title), description: fill(m.metadata.home.description) },
+    // The home title takes its role from the hero text (see src/app/[locale]/layout.tsx), so it differs per language.
+    { path: '', title: fill(m.metadata.home.title, m.home.hero.role), description: fill(m.metadata.home.description) },
     ...(['about', 'projects', 'contact'] as const).map((section) => ({
       path: `/${section}`,
       title: fill(m.metadata[section].title),
@@ -94,6 +98,12 @@ test('titles are unique per page, carry the name once and stay short', () => {
       assert.ok(title.length <= 70, `${locale}: "${title}" is ${title.length} characters`);
     }
   }
+});
+
+test('no two pages share a title, in any language', () => {
+  const titles = locales.flatMap((locale) => pagesOf(locale).map((page) => page.title));
+  assert.equal(titles.length, 33);
+  assert.equal(new Set(titles).size, titles.length);
 });
 
 test('descriptions are present, snippet-sized and localized', () => {
