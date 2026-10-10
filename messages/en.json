@@ -38,7 +38,10 @@
         "aiEnthusiast": "AI & Machine Learning Enthusiast",
         "cloudEngineer": "Cloud Engineer"
       },
-      "downloadCV": "Download CV"
+      "downloadCV": "Download CV",
+      "role": "DevOps engineer",
+      "lead": "I build cloud infrastructure, CI/CD pipelines and monitoring on AWS and GCP.",
+      "getInTouch": "Get in touch"
     },
     "skills": {
       "title": "Skills & Technologies",
@@ -59,7 +62,8 @@
       "viewDetails": "View Details",
       "showAll": "Show All ({count} more)",
       "showLess": "Show Less",
-      "visit": "Visit"
+      "visit": "Visit",
+      "more": "More about me"
     },
     "projects": {
       "title": "Featured Projects",
@@ -73,10 +77,31 @@
       "subtitle": "I'm always interested in new opportunities and exciting projects. Let's discuss how we can collaborate!",
       "getInTouch": "Get In Touch",
       "viewFullProfile": "View Full Profile"
+    },
+    "work": {
+      "title": "Selected work",
+      "all": "All projects"
+    },
+    "stack": {
+      "title": "Stack",
+      "rows": {
+        "cloud": "Cloud",
+        "containers": "Containers",
+        "cicd": "CI/CD",
+        "observability": "Observability",
+        "systems": "Systems",
+        "data": "Data",
+        "scripting": "Scripting"
+      }
+    },
+    "contact": {
+      "title": "Get in touch",
+      "body": "For work, projects or questions, write to <mail>{address}</mail>.",
+      "cta": "Get in touch"
     }
   },
   "about": {
-    "title": "About Me",
+    "title": "About",
     "subtitle": "Get to know more about my journey, values, and what drives me as a DevOps engineer",
     "sections": {
       "bio": {
@@ -155,6 +180,23 @@
       "contract": "Contract",
       "freelance": "Freelance",
       "internship": "Internship"
+    },
+    "intro": {
+      "p1": "I'm a DevOps engineer based in Tashkent. I build and run cloud infrastructure on AWS and GCP, automate delivery with Jenkins and Docker, and set up the monitoring that tells a team when something is wrong.",
+      "p2": "I started in frontend development as an intern at DataSite Technology, then moved into DevOps at KPI in 2023. I'm also studying economics at Tashkent State University of Economics.",
+      "p3": "Outside work I use Linux, go to the gym and play Clash Royale."
+    },
+    "headings": {
+      "experience": "Experience",
+      "education": "Education",
+      "languages": "Languages"
+    },
+    "languages": {
+      "level": {
+        "native": "Native",
+        "advanced": "Advanced (C1)",
+        "basic": "Basic (A1)"
+      }
     }
   },
   "projects": {
@@ -170,19 +212,20 @@
     "backToProjects": "Back to Projects",
     "aboutProject": "About This Project",
     "projectLinks": "Project Links",
-    "exitFullscreen": "Exit Fullscreen",
+    "exitFullscreen": "Exit full screen",
     "fullscreenNotAvailable": "Fullscreen not available for video projects",
     "status": {
       "title": "Status",
       "completed": "Completed",
-      "inProgress": "In Progress",
-      "planned": "Planned"
+      "inProgress": "In progress",
+      "planned": "Planned",
+      "label": "Status"
     },
-    "technologies": "Technologies Used",
+    "technologies": "Technologies",
     "year": "Year",
     "empty": {
-      "title": "No projects available yet",
-      "description": "Check back soon for exciting new projects!"
+      "title": "No projects yet",
+      "description": "Check back soon."
     },
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
@@ -191,11 +234,15 @@
     "play": "Play",
     "pause": "Pause",
     "mute": "Mute",
-    "unmute": "Unmute"
+    "unmute": "Unmute",
+    "back": "Projects",
+    "whatIBuilt": "What I built",
+    "company": "Company",
+    "openInTelegram": "Open in Telegram"
   },
   "contact": {
     "header": {
-      "title": "Get In Touch",
+      "title": "Get in touch",
       "subtitle": "Have a question or want to work together? Feel free to reach out!"
     },
     "form": {
@@ -206,17 +253,17 @@
       "namePlaceholder": "Your name",
       "email": "Email",
       "emailLabel": "Email",
-      "emailPlaceholder": "your.email@example.com",
+      "emailPlaceholder": "you@example.com",
       "subjectLabel": "Subject",
-      "subjectPlaceholder": "What's this about?",
+      "subjectPlaceholder": "What is it about?",
       "message": "Message",
       "messageLabel": "Message",
-      "messagePlaceholder": "Your message here...",
-      "send": "Send Message",
-      "sending": "Sending...",
-      "success": "Message sent successfully!",
-      "error": "Failed to send message. Please try again.",
-      "charLimitWarning": "Message is getting close to the character limit",
+      "messagePlaceholder": "Your message",
+      "send": "Send message",
+      "sending": "Sending…",
+      "success": "Message sent. I'll reply by email.",
+      "error": "Your message wasn't sent. Please try again.",
+      "charLimitWarning": "You're close to the character limit.",
       "sendAnother": "Send another message",
       "invalidEmail": "Enter a valid email address."
     },
@@ -239,25 +286,26 @@
     }
   },
   "footer": {
-    "copyright": "© {year} {name}. Made with Next.js, TypeScript & Claude ☕",
+    "copyright": "© {year} {name}",
     "template": "Feel free to use this template from my",
-    "github": "GitHub"
+    "github": "GitHub",
+    "email": "Email"
   },
   "chatbot": {
-    "welcome": "Hi! I'm Shaxriyor's AI assistant. Ask me anything about his work, experience, or projects!",
+    "welcome": "Hi, I'm Shaxriyor's AI assistant. Ask me about his work, experience or projects.",
     "title": "Shaxriyor's AI",
     "status": "Online",
     "placeholder": "Ask about Shaxriyor's work...",
     "errors": {
-      "generic": "Sorry, I encountered an error. Please try again.",
+      "generic": "Something went wrong. Please try again.",
       "tooManyOffTopic": "You've asked too many off-topic questions. Please ask about Shaxriyor Jabborov.",
       "offTopicNote": "Note: You have {remaining} off-topic question{plural} remaining before rate limiting."
     },
     "popup": {
-      "title": "Hi! I'm Shaxriyor's AI Assistant",
-      "subtitle": "Ask me anything about his work, experience, or projects!",
-      "startChat": "Start Chat",
-      "maybeLater": "Maybe Later"
+      "title": "Hi, I'm Shaxriyor's AI assistant",
+      "subtitle": "Ask me about his work, experience or projects.",
+      "startChat": "Start chat",
+      "maybeLater": "Maybe later"
     },
     "aria": {
       "openChat": "Open chat assistant",
@@ -283,7 +331,13 @@
       "teamSize": "Team Size: {size}"
     },
     "skillsAndTech": "Skills & Technologies",
-    "backToAbout": "Back to About"
+    "backToAbout": "Back to About",
+    "back": "About",
+    "whatIDid": "What I did",
+    "company": "Company",
+    "dates": "Dates",
+    "type": "Type",
+    "website": "Visit website"
   },
   "ariaLabels": {
     "scrollToTop": "Scroll to top of page",
@@ -300,7 +354,7 @@
     "notFound": "Page not found",
     "backToHome": "Back to Home",
     "readMore": "Read More",
-    "learnMore": "Learn More",
+    "learnMore": "Learn more",
     "viewAll": "View All",
     "showMore": "Show More",
     "showLess": "Show Less",
@@ -316,7 +370,7 @@
   "profile": {
     "location": "Tashkent, Uzbekistan",
     "lastUpdated": "Last updated: {time}",
-    "bio": "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps lifecycle.",
+    "bio": "DevOps engineer in Tashkent building cloud infrastructure, CI/CD pipelines and monitoring on AWS and GCP.",
     "shortBio": "DevOps engineer specializing in cloud infrastructure, automation, and scalable system design. Expert in solving infrastructure challenges and building reliable deployment pipelines across the full DevOps technology stack.",
     "languages": {
       "English": "English",
@@ -339,56 +393,90 @@
   "metadata": {
     "home": {
       "title": "{name} - {title}",
-      "description": "{bio}"
+      "description": "DevOps engineer in Tashkent building cloud infrastructure, CI/CD pipelines and monitoring on AWS and GCP."
     },
     "about": {
       "title": "About - {name}",
-      "description": "Learn about {name}, DevOps Engineer and Cloud Infrastructure Specialist"
+      "description": "About {name}, a DevOps engineer in Tashkent working with AWS and GCP."
     },
     "projects": {
       "title": "Projects - {name}",
-      "description": "View my DevOps and cloud infrastructure projects"
+      "description": "Projects by {name}: CI/CD, observability and secure device integration."
     },
     "contact": {
       "title": "Contact - {name}",
-      "description": "Get in touch with {name} for collaboration or opportunities"
+      "description": "Contact {name} about DevOps and cloud work."
     }
   },
   "data": {
     "projects": {
       "jenkins-cicd-pipeline": {
-        "title": "Jenkins CI/CD Pipeline",
+        "title": "Jenkins CI/CD pipeline",
         "shortDescription": "A fully automated CI/CD and monitoring pipeline using Jenkins, AWS, and Prometheus for seamless deployments across environments.",
         "fullDescription": "Designed and implemented a production-grade CI/CD pipeline for Praaktisgo using Jenkins and AWS. The system automates builds, testing, and deployments across dev and prod environments with CodeDeploy integration. Custom AMIs were built for Jenkins agents with preinstalled tools (JDK, Ant, Git, AWS CLI), and the pipeline dynamically provisions build agents to compile and deploy applications. Build artifacts are uploaded to S3 and deployed via AWS CodeDeploy, while post-build scripts send changelogs and build status updates to a Telegram group. Prometheus monitors the Jenkins controller and agents through node_exporter, providing real-time visibility into resource usage and performance metrics.",
         "status": "Completed",
-        "companyName": "Praaktisgo"
+        "companyName": "PraaktisGo",
+        "summary": "An automated build, test and deploy pipeline on Jenkins and AWS, with Prometheus watching the build infrastructure.",
+        "outcome": "Deployment time down 50%.",
+        "points": [
+          "Automates builds, tests and deployments across dev and prod, with AWS CodeDeploy handling the rollout.",
+          "Jenkins agents run on custom AMIs with the build tools preinstalled (JDK, Ant, Git, AWS CLI), and the pipeline provisions agents on demand.",
+          "Build artifacts go to S3 and are deployed with CodeDeploy.",
+          "Post-build scripts send changelogs and build status to a Telegram group.",
+          "Prometheus and node_exporter track resource usage on the Jenkins controller and agents."
+        ]
       },
       "hikcentral-remote-device-integration": {
-        "title": "HikGateway Integration",
+        "title": "HikGateway integration",
         "shortDescription": "Developed a secure and scalable remote device integration platform using HikGateway (Device Gateway) to enable Hikvision devices to connect to cloud infrastructure via outbound ISUP communication. Devices deployed behind NAT and firewalls initiate persistent, encrypted ISUP connections over the public Internet to a cloud-hosted HikGateway instance, eliminating the need for static IP addresses or inbound network exposure at customer sites. HikGateway acts as the centralized control plane, managing device registration, session lifecycle, status monitoring, and event handling. All device operations and third-party integrations are performed through HikGateway’s ISAPI interfaces over HTTPS, allowing external backend services to securely manage devices, retrieve events, and perform control actions without direct device access. The architecture emphasizes outbound-only connectivity, TLS-encrypted transport, strict network isolation, and API-driven integration, making it suitable for large-scale, multi-tenant deployments of Hikvision ISUP-enabled devices.",
         "status": "Completed",
-        "companyName": "KPI"
+        "companyName": "KPI",
+        "summary": "A remote-device platform that lets Hikvision devices behind NAT and firewalls connect to the cloud, with no inbound exposure at customer sites.",
+        "points": [
+          "Devices open persistent, encrypted outbound ISUP connections to a cloud-hosted HikGateway, so customer sites need no static IP and no inbound ports.",
+          "HikGateway is the control plane: it handles device registration, session lifecycle, status monitoring and events.",
+          "Backend services manage devices, read events and send control commands through HikGateway's ISAPI interfaces over HTTPS, without touching the devices directly.",
+          "The design is outbound-only, TLS-encrypted, network-isolated and API-driven, which suits large multi-tenant deployments."
+        ]
       },
       "comprehensive-monitoring-stack": {
-        "title": "Comprehensive Monitoring Stack",
+        "title": "Monitoring stack",
         "shortDescription": "A complete observability solution with Grafana, Prometheus, Loki, and Alertmanager providing full-stack monitoring, logging, and alerting for infrastructure and applications.",
         "fullDescription": "Designed and implemented a production-grade monitoring and observability stack for KPI's infrastructure and applications. The solution provides comprehensive visibility across the entire technology stack through multiple specialized exporters and collectors. Prometheus serves as the central metrics collection and storage system, scraping metrics from node_exporter (system metrics), jmx_exporter (Java application metrics), cAdvisor (container metrics), and a custom exporter for application-specific metrics. Grafana provides rich visualization dashboards for infrastructure health, application performance, and business metrics. Loki aggregates logs from all services, with Promtail collecting and forwarding log data from various sources. Alertmanager handles alert routing and deduplication, sending critical notifications directly to Telegram for real-time incident response. The entire stack is containerized and orchestrated for high availability and scalability, ensuring reliable monitoring even during infrastructure incidents.",
         "status": "Completed",
-        "companyName": "KPI"
+        "companyName": "KPI",
+        "summary": "A central observability stack for metrics, logs and alerts across KPI's infrastructure and applications.",
+        "outcome": "Incident response time down 60%.",
+        "points": [
+          "Prometheus collects metrics from node_exporter (system), jmx_exporter (Java), cAdvisor (containers) and a custom exporter for application metrics.",
+          "Grafana dashboards cover infrastructure health, application performance and business metrics.",
+          "Loki aggregates logs from every service, with Promtail collecting and forwarding them.",
+          "Alertmanager routes and deduplicates alerts and sends critical ones to Telegram.",
+          "The whole stack runs in containers and is built for high availability."
+        ]
       },
       "savethis4me-telegram-bot": {
-        "title": "SaveThis4Me Telegram Bot",
+        "title": "SaveThis4Me Telegram bot",
         "shortDescription": "A Telegram bot that saves videos and posts from Instagram, YouTube, TikTok, X, Reddit and Pinterest straight into your chat. Paste a link, or share from Instagram, and the media arrives in seconds.",
         "fullDescription": "SaveThis4Me is a public Telegram bot that relays social media content into Telegram chats. It started as an invite-only hobby project for Instagram Reels and Stories and was later rebuilt from scratch as an open bot anyone can use. Users paste a link from Instagram, YouTube, TikTok, X, Reddit or Pinterest and get the media back as a native Telegram video, photo or album. Instagram users can also bind their account and share posts to the @savethis4me relay account right from the Instagram app, delivered to the bot through signed Meta webhooks. YouTube links open a quality picker with estimated file sizes and an audio-only option, and are processed by a background job queue with live progress and per-user limits. Built-in media tools recognize songs with Shazam, convert videos into round video notes and extract voice notes. The bot is written in Python with python-telegram-bot and FastAPI, uses yt-dlp, gallery-dl and FFmpeg to fetch and normalize media, stores users, cached media and engagement metrics in PostgreSQL, and runs in Docker with per-domain concurrency limits and rate limiting.",
         "status": "Completed",
-        "companyName": "Personal Project"
+        "companyName": "Personal project",
+        "summary": "A public Telegram bot that saves videos and posts from Instagram, YouTube, TikTok, X, Reddit and Pinterest into your chat.",
+        "points": [
+          "Paste a link and get the media back as a native Telegram video, photo or album.",
+          "Instagram users can bind their account and share posts to the @savethis4me relay account from the Instagram app, delivered through signed Meta webhooks.",
+          "YouTube links open a quality picker with estimated file sizes and an audio-only option, and downloads run in a background job queue with live progress and per-user limits.",
+          "Built-in tools recognize songs with Shazam, turn videos into round video notes and extract voice notes.",
+          "Written in Python with python-telegram-bot and FastAPI, using yt-dlp, gallery-dl and FFmpeg; users, cached media and metrics live in PostgreSQL, and everything runs in Docker with per-domain concurrency limits and rate limiting.",
+          "It began as an invite-only hobby project for Instagram Reels and Stories and was rebuilt from scratch as an open bot."
+        ]
       }
     },
     "experiences": {
       "kpi-com-devops-engineer": {
         "company": "KPI",
-        "position": "DevOps Engineer",
-        "duration": "May 2023 - Present",
+        "position": "DevOps engineer",
+        "duration": "May 2023 – present",
         "description": "Design, automate, and optimize systems to ensure performance and reliability.",
         "location": "On-site",
         "responsibilities": [
@@ -409,12 +497,23 @@
           "Improved incident response time by 60% through proactive alerting and centralized log aggregation"
         ],
         "teamSize": "50+",
-        "industry": "Software & IT Services"
+        "industry": "Software & IT Services",
+        "summary": "Observability, secure device-to-cloud integration and AWS cost optimization.",
+        "points": [
+          "Built a central observability stack with Prometheus, Grafana, Loki and Alertmanager, cutting incident response time by 60%.",
+          "Designed a secure attendance integration for Hikvision face-recognition devices over ISUP 5.0 with outbound TLS, so client sites need no inbound exposure and other systems integrate through an API.",
+          "Wrote a Python Prometheus exporter that exposes business KPIs for real-time monitoring.",
+          "Automated database schema synchronization across dev, stage and prod with a Python CLI tool, reducing manual errors.",
+          "Cut monthly AWS costs by 20% by optimizing EC2 and S3 usage and adopting Savings Plans.",
+          "Prevented production outages by finding Tomcat thread-exhaustion bottlenecks and adding automated recovery.",
+          "Upgraded the legacy GitLab Omnibus installation to the latest stable release, strengthening CI/CD security and performance.",
+          "Deployed and managed Docker-based applications across environments and automated builds with Jenkins."
+        ]
       },
       "praaktisgo-devops-engineer": {
         "company": "PraaktisGo",
-        "position": "DevOps Engineer",
-        "duration": "January 2025 - July 2026",
+        "position": "DevOps engineer",
+        "duration": "Jan 2025 – Jul 2026",
         "description": "Design, automate, and optimize cloud infrastructure and deployment workflows for scalable, reliable systems.",
         "location": "Remote",
         "responsibilities": [
@@ -435,12 +534,23 @@
           "Implemented cross-cloud cost tracking and performance monitoring to guide future hybrid-cloud strategy"
         ],
         "teamSize": "10+",
-        "industry": "Wellness & Fitness"
+        "industry": "Wellness & Fitness",
+        "summary": "Zero-downtime AWS migration, Jenkins CI/CD and 99.9% uptime.",
+        "points": [
+          "Led a zero-downtime migration of production AWS infrastructure to a new account and region, with no data loss.",
+          "Reached 99.9% uptime with proactive monitoring, alerting and incident prevention.",
+          "Cut deployment time by 50% with Jenkins CI/CD automation and Docker-based environment standardization.",
+          "Designed cross-cloud cost tracking and performance monitoring to support a hybrid-cloud strategy.",
+          "Secured $100K in Google Cloud credits (GFS Cloud Program 2024) and $10K in AWS Activate Portfolio credits.",
+          "Cut operational overhead by 15% through the Google Workspace Business Plan and cloud cost governance.",
+          "Enforced security best practices across AWS and GCP, including IAM hardening, network segmentation and controlled access policies.",
+          "Documented the architecture, deployment workflows and operating standards to help onboarding and continuity."
+        ]
       },
       "datasite-technology-frontend-developer": {
         "company": "Datasite",
-        "position": "Frontend Developer",
-        "duration": "October 2021 - April 2023",
+        "position": "Frontend engineer (intern)",
+        "duration": "Sep 2022 – May 2023",
         "description": "Developed modern, responsive web interfaces for client-facing applications.",
         "location": "On-site",
         "responsibilities": [
@@ -457,14 +567,25 @@
           "Mentored junior developers on frontend best practices and modern JavaScript frameworks"
         ],
         "teamSize": "20+",
-        "industry": "Technology"
+        "industry": "Technology",
+        "summary": "Responsive React interfaces built from Figma designs.",
+        "points": [
+          "Built responsive web interfaces with HTML5, CSS3, JavaScript and React.",
+          "Turned Figma designs into production-ready pages.",
+          "Worked with backend and DevOps teams and got early exposure to deployment workflows and version control."
+        ]
       }
     },
     "education": {
       "tsue-economics": {
         "institution": "Tashkent State University of Economics",
-        "degree": "Bachelor's in Economics"
+        "degree": "Bachelor's degree in economics"
       }
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page doesn't exist or has moved.",
+    "cta": "Back to home"
   }
 }
