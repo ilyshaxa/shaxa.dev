@@ -25,16 +25,19 @@ function flatten(value: unknown, prefix = ''): Map<string, string> {
 }
 
 const flat = Object.fromEntries(locales.map((locale) => [locale, flatten(load(locale))])) as Record<Locale, Map<string, string>>;
-const others = ['ru', 'uz'] as const;
+const others = locales.filter((locale) => locale !== 'en');
 
-// Legacy strings the pre-v2 pages still read, which Task 11 deletes. This one RU text spells "1-year" out as a word,
-// so its digits differ from the English. Delete this set (and its `continue`) in Task 11.
+// Legacy strings the pre-v2 pages still read, which the prune step deletes. This Russian text spells "1-year" out as a
+// word, so its digits differ from the English. Delete this set (and its `continue`) when the legacy copy is removed.
 const LEGACY_UNTIL_PRUNE = new Set(['data.experiences.praaktisgo-devops-engineer.achievements.3']);
 
 test('every locale has exactly the same keys', () => {
-  const reference = [...flat.en.keys()].sort();
+  const reference = new Set(flat.en.keys());
   for (const locale of others) {
-    assert.deepEqual([...flat[locale].keys()].sort(), reference, `${locale} keys differ from en`);
+    const keys = new Set(flat[locale].keys());
+    const missing = [...reference].filter((key) => !keys.has(key));
+    const extra = [...keys].filter((key) => !reference.has(key));
+    assert.deepEqual({ missing, extra }, { missing: [], extra: [] }, `${locale} keys differ from en`);
   }
 });
 
@@ -47,12 +50,22 @@ test('placeholders and tags match across locales', () => {
   }
 });
 
+test('no apostrophe quotes a placeholder or tag', () => {
+  // In ICU MessageFormat (next-intl), an apostrophe directly before { } < or > turns what follows into literal text,
+  // so the placeholder silently stops working. `o'zbek` or `Shaxriyor's {x}` (apostrophe, then a letter or a space) is fine.
+  for (const locale of locales) {
+    for (const [key, text] of flat[locale]) {
+      assert.ok(!/'[{}<>]/.test(text), `${locale} ${key} has an apostrophe before a brace or angle bracket`);
+    }
+  }
+});
+
 test('numbers match across locales', () => {
   // 99,9% and 99.9% are the same number.
   const numbers = (text: string) => (text.replace(/,/g, '.').match(/\$?\d+(?:\.\d+)?[%K]?/g) ?? []).sort();
   for (const [key, text] of flat.en) {
-    if (LEGACY_UNTIL_PRUNE.has(key)) continue;
     for (const locale of others) {
+      if (locale === 'ru' && LEGACY_UNTIL_PRUNE.has(key)) continue;
       assert.deepEqual(numbers(flat[locale].get(key) ?? ''), numbers(text), `${locale} ${key}`);
     }
   }

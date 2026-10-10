@@ -11,7 +11,7 @@
 **Spec:** `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` (approved).
 **Copy:** `docs/superpowers/specs/2026-10-10-apple-redesign-v2-copy.md` (approved; the three **[confirm]** items ship as written because the spec and deck were approved without changes. If any is wrong, edit `messages/*.json` and the deck, it is a one-line change).
 **Machine-readable copy:** `docs/superpowers/plans/2026-10-10-apple-redesign-v2-copy-patch/{en,ru,uz}.json`, generated from the deck's tables. Task 1 merges them by script, so no string is retyped by hand.
-**Validated before approval:** every whole-file code block in this plan was extracted into a throwaway copy of the repo in the scratchpad (outside the repo), the plan's partial edits and message migration were applied to it as written, and that final state passed `tsc --noEmit`, `npm test` (28/28), `npm run lint` (0 warnings), `npm run build`, the layout probe (68 checks across 14 pages, three locales, 1440 and 390) and the interaction checks (10). Screenshots of it showed two defects, both fixed in this plan: stray leading dots in wrapped lists, and the HikGateway light-theme image path. The intermediate state after Tasks 1–3 (the riskiest transitional step, the additive `data.ts` split) was validated the same way (`tsc`, 26/26 tests, lint, build). The states between Tasks 4–10 were *not* built separately; each task's own checks do that during execution.
+**Validated before approval:** every whole-file code block in this plan was extracted into a throwaway copy of the repo in the scratchpad (outside the repo), the plan's partial edits and message migration were applied to it as written, and that final state passed `tsc --noEmit`, `npm test` (29/29), `npm run lint` (0 warnings), `npm run build`, the layout probe (68 checks across 14 pages, three locales, 1440 and 390) and the interaction checks (10). Screenshots of it showed two defects, both fixed in this plan: stray leading dots in wrapped lists, and the HikGateway light-theme image path. The intermediate state after Tasks 1–3 (the riskiest transitional step, the additive `data.ts` split) was validated the same way (`tsc`, 26/26 tests, lint, build). The states between Tasks 4–10 were *not* built separately; each task's own checks do that during execution.
 **Tools:** `docs/superpowers/plans/2026-10-10-apple-redesign-v2-tools/` (`apply-copy.mjs`, `dead-keys.mjs`, `shoot.mjs`, `probe.mjs`, `interact.mjs`), all tested before this plan was written.
 
 **Baseline (verified 2026-10-10 on `apple-redesign` @ `160d806`, Node 22.22, after `npm ci`):** `npm test` 19/19, `npm run lint` 0 errors and 0 warnings, `npm run build` passes. Message files round-trip byte-identically through `JSON.stringify(obj, null, 2)` (no trailing newline) and are in key parity except one stray RU/UZ key that Task 1 removes. The layout probe fails on v1 as expected: left edges of 152/359/495/336px on four elements at 1440, and 0px between sections. All interaction checks pass on v1 and must keep passing.
@@ -141,7 +141,7 @@ Open the PNGs with the Read tool and look at them. `shoot.mjs` scrolls the page 
   node docs/superpowers/plans/2026-10-10-apple-redesign-v2-tools/apply-copy.mjs .
   git diff --stat messages/     # three files, additions plus a few replaced strings, one deletion in ru/uz
   ```
-  It prints `en: merged`, `ru: merged`, `uz: merged`. It merges 118 patch leaves per locale, replaces the strings the deck rewrote (`profile.bio`, `metadata.*.description`, `chatbot.*`, `contact.form.*`, `data.projects.*.title`, `data.experiences.*.position/duration`, `data.education.tsue-economics.degree`, and the sentence-case fixes: `projects.exitFullscreen` and, in ru/uz, `metadata.about.title`), and deletes the stray `fullDescription` under `data.projects.hikcentral-remote-device-integration` in ru/uz.
+  It prints `en: merged`, `ru: merged`, `uz: merged`. It merges 117 patch entries per locale (arrays counted as one), replaces the strings the deck rewrote (`profile.bio`, `metadata.*.description`, `chatbot.*`, `contact.form.*`, `data.projects.*.title`, `data.experiences.*.position/duration`, `data.education.tsue-economics.degree`, and the sentence-case fixes: `projects.exitFullscreen` and, in ru/uz, `metadata.about.title`), and deletes the stray `fullDescription` under `data.projects.hikcentral-remote-device-integration` in ru/uz.
 
 - [ ] **Step 3: Write `src/lib/messages.test.ts`**
   ```ts
@@ -172,16 +172,19 @@ Open the PNGs with the Read tool and look at them. `shoot.mjs` scrolls the page 
   }
 
   const flat = Object.fromEntries(locales.map((locale) => [locale, flatten(load(locale))])) as Record<Locale, Map<string, string>>;
-  const others = ['ru', 'uz'] as const;
+  const others = locales.filter((locale) => locale !== 'en');
 
-  // Legacy strings the pre-v2 pages still read, which Task 11 deletes. This one RU text spells "1-year" out as a word,
-  // so its digits differ from the English. Delete this set (and its `continue`) in Task 11.
+  // Legacy strings the pre-v2 pages still read, which the prune step deletes. This Russian text spells "1-year" out as a
+  // word, so its digits differ from the English. Delete this set (and its `continue`) when the legacy copy is removed.
   const LEGACY_UNTIL_PRUNE = new Set(['data.experiences.praaktisgo-devops-engineer.achievements.3']);
 
   test('every locale has exactly the same keys', () => {
-    const reference = [...flat.en.keys()].sort();
+    const reference = new Set(flat.en.keys());
     for (const locale of others) {
-      assert.deepEqual([...flat[locale].keys()].sort(), reference, `${locale} keys differ from en`);
+      const keys = new Set(flat[locale].keys());
+      const missing = [...reference].filter((key) => !keys.has(key));
+      const extra = [...keys].filter((key) => !reference.has(key));
+      assert.deepEqual({ missing, extra }, { missing: [], extra: [] }, `${locale} keys differ from en`);
     }
   });
 
@@ -194,12 +197,22 @@ Open the PNGs with the Read tool and look at them. `shoot.mjs` scrolls the page 
     }
   });
 
+  test('no apostrophe quotes a placeholder or tag', () => {
+    // In ICU MessageFormat (next-intl), an apostrophe directly before { } < or > turns what follows into literal text,
+    // so the placeholder silently stops working. `o'zbek` or `Shaxriyor's {x}` (apostrophe, then a letter or a space) is fine.
+    for (const locale of locales) {
+      for (const [key, text] of flat[locale]) {
+        assert.ok(!/'[{}<>]/.test(text), `${locale} ${key} has an apostrophe before a brace or angle bracket`);
+      }
+    }
+  });
+
   test('numbers match across locales', () => {
     // 99,9% and 99.9% are the same number.
     const numbers = (text: string) => (text.replace(/,/g, '.').match(/\$?\d+(?:\.\d+)?[%K]?/g) ?? []).sort();
     for (const [key, text] of flat.en) {
-      if (LEGACY_UNTIL_PRUNE.has(key)) continue;
       for (const locale of others) {
+        if (locale === 'ru' && LEGACY_UNTIL_PRUNE.has(key)) continue;
         assert.deepEqual(numbers(flat[locale].get(key) ?? ''), numbers(text), `${locale} ${key}`);
       }
     }
@@ -208,7 +221,7 @@ Open the PNGs with the Read tool and look at them. `shoot.mjs` scrolls the page 
 
 - [ ] **Step 4: Verify**
   ```bash
-  npm test 2>&1 | tail -12     # 22 pass (19 + 3)
+  npm test 2>&1 | tail -12     # 23 pass (19 + 4)
   npm run lint && npm run build
   ```
   Also watch the parity test fail once: `cp messages/ru.json "$SCRATCH/ru.bak"`, delete one leaf from `messages/ru.json`, run `npm test`, confirm the parity test fails and names that key, then restore with `cp "$SCRATCH/ru.bak" messages/ru.json` and re-run `npm test` (back to all pass).
@@ -2560,7 +2573,7 @@ Everything that read the legacy fields is rebuilt now. This task deletes the leg
     Also change the structure line `lib/ — Utilities (seo, data, link-parser, chat-*)` only if it mentions anything deleted (it doesn't), and add one line under **Key conventions**: `- New copy goes through all three message files; `npm test` fails on mismatched keys, placeholders or numbers`.
   - `README.md`: update the line mentioning `profileData` ("Personal info, skills, experience, education, certifications") to match reality (`profileData`: links, stack, experience and education structure; copy lives in `messages/`), and `grep -n -i "yaml\|certif\|skills" README.md` for any other claim of YAML content or certifications; fix or delete those lines.
 
-- [ ] **Step 8: Verify.** `npm test` (28 pass: the original 19 minus the 4 scroll-edges tests, plus 4 messages, 5 data and 4 prompt tests), `npm run lint`, `npm run build`, `npx tsc --noEmit` (no output). Then the legacy grep, which must print nothing:
+- [ ] **Step 8: Verify.** `npm test` (29 pass: the original 19 minus the 4 scroll-edges tests, plus 5 messages, 5 data and 4 prompt tests), `npm run lint`, `npm run build`, `npx tsc --noEmit` (no output). Then the legacy grep, which must print nothing:
   ```bash
   grep -rniE "awsCertified|AWS Certified|ProjectCarousel|SkillsBento|LastUpdated|ScrollReveal|shortDescription|fullDescription|originalStatus|ProjectLegacyText|ExperienceLegacyText|shortBio|\.certifications|skills-bento|project-card|flagcdn|languageFlags" src messages next.config.ts .claude/CLAUDE.md README.md
   ```
