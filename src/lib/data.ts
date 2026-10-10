@@ -125,7 +125,7 @@ const profileData: Profile = {
       company: 'PraaktisGo',
       website: 'https://praaktisgo.com',
       logo: '/images/companies/praaktisgo-logo.png',
-      employmentType: 'Freelance',
+      employmentType: 'Part-time',
       startDate: '2025-01-01',
       endDate: '2026-07-01',
       isCurrent: false,

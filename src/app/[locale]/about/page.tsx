@@ -8,6 +8,7 @@ import { CvMenu } from '@/components/cv-menu';
 import { ExperienceList } from '@/components/experience-list';
 import { GroupedList, GroupedListItem } from '@/components/grouped-list';
 import { SectionHeader } from '@/components/section-header';
+import { StackList } from '@/components/stack-list';
 import { ThemedImage } from '@/components/themed-image';
 import { getAllExperiences, getProfile, localizeEducation, localizeExperiences } from '@/lib/data';
 
@@ -49,6 +50,11 @@ export default function AboutPage() {
       <section className="page-container">
         <SectionHeader title={t('headings.experience')} />
         <ExperienceList experiences={experiences} showSummary />
+      </section>
+
+      <section className="page-container">
+        <SectionHeader title={t('headings.stack')} />
+        <StackList stack={profile.stack} />
       </section>
 
       <section className="page-container">
