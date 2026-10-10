@@ -76,7 +76,7 @@ export default function AboutPage() {
             <SectionHeader title={t('sections.experience.title')} />
           </ScrollReveal>
           <ScrollReveal>
-            <ExperienceList experiences={experiences} variant="detailed" />
+            <ExperienceList experiences={experiences} />
           </ScrollReveal>
         </section>
 
