@@ -1,11 +1,12 @@
 'use client';
 
-import { useMessages, useTranslations } from 'next-intl';
+import { useLocale, useMessages, useTranslations } from 'next-intl';
 import { getAllExperiences, getAllProjects, getProfile, localizeExperiences, localizeProjects, stackRows } from '@/lib/data';
 import { useEffect } from 'react';
 
 export function StructuredData() {
   const messages = useMessages();
+  const locale = useLocale();
   const tProfile = useTranslations('profile');
   const bio = tProfile('bio');
 
@@ -21,6 +22,8 @@ export function StructuredData() {
     // Get current domain
     const currentDomain = window.location.origin;
     const primaryDomain = process.env.NEXT_PUBLIC_PRIMARY_DOMAIN || 'https://shaxa.dev';
+    // Page URLs match the sitemap: every page lives under its locale.
+    const localeUrl = `${primaryDomain}/${locale}`;
 
     // Person Schema - Main profile information
     const personSchema = {
@@ -29,7 +32,7 @@ export function StructuredData() {
       "name": profile.name,
       "jobTitle": profile.title,
       "description": bio,
-      "url": primaryDomain,
+      "url": localeUrl,
       "image": `${primaryDomain}/images/profile.jpg`,
       "email": profile.email,
       "telephone": profile.phone,
@@ -80,7 +83,7 @@ export function StructuredData() {
       "@type": "ProfessionalService",
       "name": `${profile.name} - ${profile.title}`,
       "description": bio,
-      "url": primaryDomain,
+      "url": localeUrl,
       "provider": {
         "@type": "Person",
         "name": profile.name,
@@ -112,19 +115,12 @@ export function StructuredData() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": siteName,
-      "url": primaryDomain,
+      "url": localeUrl,
+      "inLanguage": locale,
       "description": `Portfolio website of ${profile.name}, ${profile.title}`,
       "author": {
         "@type": "Person",
         "name": profile.name
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": `${primaryDomain}/?q={search_term_string}`
-        },
-        "query-input": "required name=search_term_string"
       }
     };
 
@@ -137,25 +133,25 @@ export function StructuredData() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": primaryDomain
+          "item": localeUrl
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "About",
-          "item": `${primaryDomain}/about`
+          "item": `${localeUrl}/about`
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "Projects",
-          "item": `${primaryDomain}/projects`
+          "item": `${localeUrl}/projects`
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "Contact",
-          "item": `${primaryDomain}/contact`
+          "item": `${localeUrl}/contact`
         }
       ]
     };
@@ -164,10 +160,11 @@ export function StructuredData() {
     const portfolioItemsSchema = projects.map((project) => ({
       "@context": "https://schema.org",
       "@type": "CreativeWork",
-      "@id": `${primaryDomain}/projects/${project.slug}`,
+      "@id": `${localeUrl}/projects/${project.slug}`,
       "name": project.title,
       "description": project.summary,
-      "url": `${primaryDomain}/projects/${project.slug}`,
+      "url": `${localeUrl}/projects/${project.slug}`,
+      "inLanguage": locale,
       "creator": {
         "@type": "Person",
         "name": profile.name
@@ -205,7 +202,7 @@ export function StructuredData() {
       const scripts = document.querySelectorAll('script[type="application/ld+json"][data-portfolio="true"]');
       scripts.forEach(script => script.remove());
     };
-  }, [messages, bio]);
+  }, [messages, bio, locale]);
 
   return null;
 }
