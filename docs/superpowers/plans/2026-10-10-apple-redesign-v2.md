@@ -1660,7 +1660,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
     return (
       <article className="page-container pb-24 pt-10 md:pb-32 md:pt-16">
-        <Button asChild variant="plain" size="sm">
+        <Button asChild variant="plain" size="sm" className="min-h-11">
           <Link href={`/${locale}/about`}>
             <ChevronLeft className="size-4" />
             {t('back')}
