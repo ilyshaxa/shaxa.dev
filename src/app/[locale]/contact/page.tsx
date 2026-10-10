@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { CheckCircle2, Loader2, Mail, MapPin, Phone, type LucideIcon } from 'lucide-react';
+import { CheckCircle2, CircleAlert, Loader2, Mail, MapPin, Phone, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,7 @@ import { isValidEmail } from '@/lib/validation';
 const MAX_MESSAGE_LENGTH = 3000; // Telegram has a 4096 character limit, leaving some buffer
 const emptyForm = { name: '', email: '', subject: '', message: '' };
 
-type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'sent' } | { kind: 'error'; detail?: string };
+type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'sent' } | { kind: 'error' };
 
 function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
@@ -47,6 +47,12 @@ export default function ContactPage() {
   const [formData, setFormData] = useState(emptyForm);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [emailError, setEmailError] = useState(false);
+  const sentRef = useRef<HTMLDivElement>(null);
+
+  // The form unmounts on success; move focus to the confirmation so keyboard and screen-reader users land on it.
+  useEffect(() => {
+    if (status.kind === 'sent') sentRef.current?.focus();
+  }, [status.kind]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -61,6 +67,8 @@ export default function ContactPage() {
     e.preventDefault();
     if (!isValidEmail(formData.email)) {
       setEmailError(true);
+      // Native validation lets things like "a@b" through; bring the visitor to the field with its error.
+      document.getElementById('email')?.focus();
       return;
     }
     setStatus({ kind: 'submitting' });
@@ -70,13 +78,12 @@ export default function ContactPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const result = await response.json().catch(() => ({}));
       if (response.ok) {
         setFormData(emptyForm);
         setStatus({ kind: 'sent' });
       } else {
-        // Typed text is kept so the visitor can retry.
-        setStatus({ kind: 'error', detail: result.error });
+        // Typed text is kept so the visitor can retry. The API's error text is English-only, so it isn't shown.
+        setStatus({ kind: 'error' });
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -94,16 +101,27 @@ export default function ContactPage() {
             {status.kind === 'sent' ? (
               <motion.div
                 key="sent"
-                role="status"
+                ref={sentRef}
+                tabIndex={-1}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={spring.default}
-                className="flex min-h-[24rem] flex-col items-center justify-center text-center"
+                className="flex min-h-[24rem] flex-col items-center justify-center text-center outline-none"
               >
                 <CheckCircle2 className="size-14 text-success" strokeWidth={1.5} aria-hidden />
-                <p className="mt-6 text-title-2 text-balance">{t('form.success')}</p>
-                <Button variant="plain" className="mt-4" onClick={() => setStatus({ kind: 'idle' })}>
+                <p role="status" className="mt-6 text-title-2 text-balance">
+                  {t('form.success')}
+                </p>
+                <Button
+                  variant="plain"
+                  className="mt-4 min-h-11"
+                  onClick={() => {
+                    setStatus({ kind: 'idle' });
+                    // The button unmounts with the confirmation; hand focus to the first field of the fresh form.
+                    requestAnimationFrame(() => document.getElementById('name')?.focus());
+                  }}
+                >
                   {t('form.sendAnother')}
                 </Button>
               </motion.div>
@@ -188,9 +206,9 @@ export default function ContactPage() {
                 </div>
 
                 {status.kind === 'error' && (
-                  <p role="alert" className="rounded-chip bg-destructive/10 px-4 py-3 text-caption text-destructive">
+                  <p role="alert" className="flex items-start gap-2 rounded-chip bg-destructive/10 px-4 py-3 text-caption text-foreground">
+                    <CircleAlert className="mt-0.5 size-4 shrink-0 text-destructive" aria-hidden />
                     {t('form.error')}
-                    {status.detail ? ` (${status.detail})` : ''}
                   </p>
                 )}
 

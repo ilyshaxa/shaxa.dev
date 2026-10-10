@@ -29,6 +29,7 @@
 9. **`metadata.about/projects/contact.*` stay** even though no code reads them today (those pages are client components and cannot export metadata). Wiring per-page metadata is out of scope.
 10. **Light-mode accent text is `#0066cc`** (Apple's link blue) instead of the spec's `#0071e3`, because `#0071e3` on the `#f5f5f7` tile surface is 4.31:1, below WCAG AA (4.5:1) for body-size link text such as "Learn more ›". `--primary-fill` (button backgrounds) stays `#0071e3`; dark mode is unchanged.
 11. **Three new test files** (`messages.test.ts`, `data.test.ts`, `chat-system-prompt.test.ts`) keep the content consistent so the contradictions this redesign removes cannot creep back.
+12. **Contact page departures from the first draft of Task 8** (the code block in Task 8 is the file as committed, not the originally validated block): the email row breaks after the `@` (`BreakableEmail`, so it fits at 320px); the phone number uses `text-balance`; the location row reads the localized `profile.location` message instead of the raw data string; the form no longer appends the API's English-only error text to the localized error; keyboard and screen-reader users get focus on the confirmation after sending, on the email field after a client-side rejection, and on the name field after "Send another message"; the error alert text uses the foreground colour with a destructive icon (red text on the tinted fill was 3.8:1).
 
 ## Global constraints
 
@@ -1745,10 +1746,10 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   ```tsx
   'use client';
 
-  import { useState } from 'react';
+  import { useEffect, useRef, useState } from 'react';
   import { AnimatePresence, motion } from 'framer-motion';
   import { useTranslations } from 'next-intl';
-  import { CheckCircle2, Loader2, Mail, MapPin, Phone, type LucideIcon } from 'lucide-react';
+  import { CheckCircle2, CircleAlert, Loader2, Mail, MapPin, Phone, type LucideIcon } from 'lucide-react';
   import { Button } from '@/components/ui/button';
   import { Card } from '@/components/ui/card';
   import { Input } from '@/components/ui/input';
@@ -1763,7 +1764,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   const MAX_MESSAGE_LENGTH = 3000; // Telegram has a 4096 character limit, leaving some buffer
   const emptyForm = { name: '', email: '', subject: '', message: '' };
 
-  type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'sent' } | { kind: 'error'; detail?: string };
+  type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'sent' } | { kind: 'error' };
 
   function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
     return (
@@ -1792,6 +1793,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     const [formData, setFormData] = useState(emptyForm);
     const [status, setStatus] = useState<Status>({ kind: 'idle' });
     const [emailError, setEmailError] = useState(false);
+    const sentRef = useRef<HTMLDivElement>(null);
+
+    // The form unmounts on success; move focus to the confirmation so keyboard and screen-reader users land on it.
+    useEffect(() => {
+      if (status.kind === 'sent') sentRef.current?.focus();
+    }, [status.kind]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
@@ -1806,6 +1813,8 @@ Everything here is additive or a type split, so the pages that haven't been rebu
       e.preventDefault();
       if (!isValidEmail(formData.email)) {
         setEmailError(true);
+        // Native validation lets things like "a@b" through; bring the visitor to the field with its error.
+        document.getElementById('email')?.focus();
         return;
       }
       setStatus({ kind: 'submitting' });
@@ -1815,13 +1824,12 @@ Everything here is additive or a type split, so the pages that haven't been rebu
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-        const result = await response.json().catch(() => ({}));
         if (response.ok) {
           setFormData(emptyForm);
           setStatus({ kind: 'sent' });
         } else {
-          // Typed text is kept so the visitor can retry.
-          setStatus({ kind: 'error', detail: result.error });
+          // Typed text is kept so the visitor can retry. The API's error text is English-only, so it isn't shown.
+          setStatus({ kind: 'error' });
         }
       } catch (error) {
         console.error('Form submission error:', error);
@@ -1839,16 +1847,27 @@ Everything here is additive or a type split, so the pages that haven't been rebu
               {status.kind === 'sent' ? (
                 <motion.div
                   key="sent"
-                  role="status"
+                  ref={sentRef}
+                  tabIndex={-1}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={spring.default}
-                  className="flex min-h-[24rem] flex-col items-center justify-center text-center"
+                  className="flex min-h-[24rem] flex-col items-center justify-center text-center outline-none"
                 >
                   <CheckCircle2 className="size-14 text-success" strokeWidth={1.5} aria-hidden />
-                  <p className="mt-6 text-title-2 text-balance">{t('form.success')}</p>
-                  <Button variant="plain" className="mt-4" onClick={() => setStatus({ kind: 'idle' })}>
+                  <p role="status" className="mt-6 text-title-2 text-balance">
+                    {t('form.success')}
+                  </p>
+                  <Button
+                    variant="plain"
+                    className="mt-4 min-h-11"
+                    onClick={() => {
+                      setStatus({ kind: 'idle' });
+                      // The button unmounts with the confirmation; hand focus to the first field of the fresh form.
+                      requestAnimationFrame(() => document.getElementById('name')?.focus());
+                    }}
+                  >
                     {t('form.sendAnother')}
                   </Button>
                 </motion.div>
@@ -1933,9 +1952,9 @@ Everything here is additive or a type split, so the pages that haven't been rebu
                   </div>
 
                   {status.kind === 'error' && (
-                    <p role="alert" className="rounded-chip bg-destructive/10 px-4 py-3 text-caption text-destructive">
+                    <p role="alert" className="flex items-start gap-2 rounded-chip bg-destructive/10 px-4 py-3 text-caption text-foreground">
+                      <CircleAlert className="mt-0.5 size-4 shrink-0 text-destructive" aria-hidden />
                       {t('form.error')}
-                      {status.detail ? ` (${status.detail})` : ''}
                     </p>
                   )}
 
