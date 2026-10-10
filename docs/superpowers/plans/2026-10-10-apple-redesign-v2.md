@@ -2004,6 +2004,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
 
 **Files:**
 - Rewrite: `src/app/[locale]/not-found.tsx`, `src/app/not-found.tsx`
+- Create: `src/app/[locale]/[...rest]/page.tsx` (found during verification: without it an unmatched `/ru/anything` renders the English root 404, because Next only renders `[locale]/not-found.tsx` when something inside the locale segment calls `notFound()`)
 
 - [ ] **Step 1: `src/app/[locale]/not-found.tsx`**
   ```tsx
@@ -2023,7 +2024,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <p className="text-title-2 text-muted-foreground">404</p>
         <h1 className="mt-2 text-title-1 text-balance">{t('title')}</h1>
         <p className="mt-4 max-w-[34rem] text-body-lg text-muted-foreground text-pretty">{t('body')}</p>
-        <Button asChild variant="plain" size="lg" className="mt-6 self-start">
+        <Button asChild variant="plain" size="lg" className="mt-6 min-h-11 self-start">
           <Link href={`/${locale}`}>
             {t('cta')}
             <ChevronRight className="size-4" />
@@ -2045,7 +2046,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
         <p className="text-title-2 text-muted-foreground">404</p>
         <h1 className="mt-2 text-title-1">Page not found</h1>
         <p className="mt-4 max-w-[34rem] text-body-lg text-muted-foreground">This page doesn&apos;t exist or has moved.</p>
-        <Button asChild variant="plain" size="lg" className="mt-6 self-start">
+        <Button asChild variant="plain" size="lg" className="mt-6 min-h-11 self-start">
           <Link href="/">Back to home</Link>
         </Button>
       </div>
@@ -2053,7 +2054,18 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   }
   ```
 
-- [ ] **Step 3: Verify.** lint, test, build. Visit `/en/definitely-missing`, `/ru/definitely-missing`, `/uz/definitely-missing` (translated, left-aligned, "404" in muted title-2) and a path outside any locale if the middleware lets it through (root version: English, no jokes).
+- [ ] **Step 2b: `src/app/[locale]/[...rest]/page.tsx`**
+  ```tsx
+  import { notFound } from 'next/navigation';
+
+  // Unmatched paths under a locale (e.g. /ru/anything) would otherwise fall through to the English root not-found page.
+  // Calling notFound() inside the locale segment renders [locale]/not-found.tsx with the site chrome and translated copy.
+  export default function CatchAll() {
+    notFound();
+  }
+  ```
+
+- [ ] **Step 3: Verify.** lint, test, build. Visit `/en/definitely-missing`, `/ru/definitely-missing`, `/uz/definitely-missing` (translated, left-aligned, "404" in muted title-2) and a path outside any locale (the middleware redirects `/definitely-missing` to `/<locale>/definitely-missing`; the English root version renders only for paths the middleware skips, such as `/foo.bar` and `/api/nothing`). Also check `/en/about/no-such-slug`.
 
 - [ ] **Step 4: Commit** `feat(404): translated, left-aligned not-found pages without the jokes`.
 

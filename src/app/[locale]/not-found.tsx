@@ -14,7 +14,7 @@ export default function NotFound() {
       <p className="text-title-2 text-muted-foreground">404</p>
       <h1 className="mt-2 text-title-1 text-balance">{t('title')}</h1>
       <p className="mt-4 max-w-[34rem] text-body-lg text-muted-foreground text-pretty">{t('body')}</p>
-      <Button asChild variant="plain" size="lg" className="mt-6 self-start">
+      <Button asChild variant="plain" size="lg" className="mt-6 min-h-11 self-start">
         <Link href={`/${locale}`}>
           {t('cta')}
           <ChevronRight className="size-4" />
