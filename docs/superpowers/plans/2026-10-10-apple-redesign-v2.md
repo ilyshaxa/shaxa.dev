@@ -1773,6 +1773,18 @@ Everything here is additive or a type split, so the pages that haven't been rebu
     );
   }
 
+  /** Gives the address one break opportunity, after the @, so the row wraps instead of overflowing at 320px. */
+  function BreakableEmail({ address }: { address: string }) {
+    const at = address.indexOf('@') + 1;
+    return (
+      <>
+        {address.slice(0, at)}
+        <wbr />
+        {address.slice(at)}
+      </>
+    );
+  }
+
   export default function ContactPage() {
     const profile = getProfile();
     const t = useTranslations('contact');
@@ -1944,13 +1956,13 @@ Everything here is additive or a type split, so the pages that haven't been rebu
           <GroupedList className="self-start">
             <GroupedListItem
               leading={<RowIcon icon={Mail} />}
-              title={profile.email}
+              title={<BreakableEmail address={profile.email} />}
               subtitle={t('info.email')}
               href={`mailto:${profile.email}`}
             />
             <GroupedListItem
               leading={<RowIcon icon={Phone} />}
-              title={profile.phone}
+              title={<span className="block text-balance">{profile.phone}</span>}
               subtitle={t('info.phone')}
               href={`tel:${profile.phone.replace(/\s/g, '')}`}
             />
@@ -1962,7 +1974,7 @@ Everything here is additive or a type split, so the pages that haven't been rebu
   }
   ```
 
-- [ ] **Step 2: Verify.** lint, test, build. Visual on `/en/contact`, `/ru/contact`, `/uz/contact`: no subtitle, form left and three rows right, no "Response times". Interaction (throwaway Playwright script or by hand): blur an invalid email → inline message; submit with the `/api/contact` route intercepted to return 200 → the confirmation replaces the form and "Send another message" restores it; intercepted to return 500 → the inline error shows and typed text stays. (Do not send a real message: intercept with `page.route('**/api/contact', …)`.) No horizontal scroll at 390 in all three locales.
+- [ ] **Step 2: Verify.** lint, test, build. Visual on `/en/contact`, `/ru/contact`, `/uz/contact`: no subtitle, form left and three rows right, no "Response times". Interaction (throwaway Playwright script or by hand): blur an invalid email → inline message; submit with the `/api/contact` route intercepted to return 200 → the confirmation replaces the form and "Send another message" restores it; intercepted to return 500 → the inline error shows and typed text stays. (Do not send a real message: intercept with `page.route('**/api/contact', …)`.) No horizontal scroll at 390 in all three locales, and no contact row overflows at 320 (the email row was 1px over before `BreakableEmail`; the phone row wraps with `text-balance` so it never leaves a lone "10" on its own line).
 
 - [ ] **Step 3: Commit** `feat(contact): form and three contact rows; remove duplicate info and response-time blocks`.
 
