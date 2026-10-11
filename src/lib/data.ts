@@ -107,7 +107,7 @@ const profileData: Profile = {
   name: 'Shaxriyor Jabborov',
   title: 'DevOps Engineer',
   location: 'Tashkent, Uzbekistan',
-  email: 'shaxriyor@shaxa.dev',
+  email: 'ilyshaxa@gmail.com',
   phone: '+998 93 766 50 10',
   website: 'https://shaxa.dev',
   github: 'https://github.com/ilyshaxa',

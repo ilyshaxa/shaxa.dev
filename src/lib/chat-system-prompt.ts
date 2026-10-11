@@ -9,7 +9,7 @@ PROFILE:
 - Location: Tashkent, Uzbekistan
 - Origin: Originally from Namangan, Uzbekistan
 - Phone: +998 93 766 50 10
-- Email: shaxriyor@shaxa.dev
+- Email: ilyshaxa@gmail.com
 - Website: https://shaxa.dev
 - GitHub: https://github.com/ilyshaxa
 - LinkedIn: https://linkedin.com/in/shaxriyor

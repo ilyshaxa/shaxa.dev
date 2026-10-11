@@ -136,7 +136,7 @@ Deployed on Vercel from `main`. Set the environment variables above in the proje
 
 ## Contact
 
-- Email: [shaxriyor@shaxa.dev](mailto:shaxriyor@shaxa.dev)
+- Email: [ilyshaxa@gmail.com](mailto:ilyshaxa@gmail.com)
 - GitHub: [@ilyshaxa](https://github.com/ilyshaxa)
 - LinkedIn: [Shaxriyor Jabborov](https://linkedin.com/in/shaxriyor)
 - Telegram: [@shaxadev](https://t.me/shaxadev)
