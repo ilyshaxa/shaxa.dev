@@ -65,7 +65,8 @@ src/
   app/
     layout.tsx            Pass-through root layout (icons, manifest)
     not-found.tsx         English 404 for paths outside any locale
-    sitemap.ts, robots.ts Served at /sitemap.xml and /robots.txt
+    sitemap.ts            Served at /sitemap.xml
+    robots.txt/route.ts   Served at /robots.txt (body built in src/lib/robots.ts)
     [locale]/
       layout.tsx          <html lang>, theme script, nav, footer, chat, metadata
       page.tsx            Home
@@ -122,6 +123,7 @@ Locales are defined in `i18n.ts`; `src/middleware.ts` always prefixes the locale
 - `public/og.png` is the shared 1200x630 link preview.
 - Structured data (Person, ProfessionalService, WebSite, projects and certificates) is added by `src/components/structured-data.tsx`.
 - `sitemap.xml` lists every page in every language with alternates; `robots.txt` blocks `/api/`.
+- `robots.txt` also declares [Content Signals](https://contentsignals.org): search and AI answers may use the pages, model training may not.
 - The site is also served on `shaxriyor.com`; its pages still canonicalise to `shaxa.dev`.
 
 ## AI assistant

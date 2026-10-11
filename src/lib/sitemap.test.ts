@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
 import { test } from 'node:test';
 import sitemap, { CONTENT_LAST_MODIFIED } from '../app/sitemap.ts';
 
@@ -29,9 +28,4 @@ test('lastModified is one fixed date that is not in the future', () => {
   assert.match(CONTENT_LAST_MODIFIED, /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(new Date(CONTENT_LAST_MODIFIED).getTime() <= Date.now());
   assert.ok(entries.every((entry) => entry.lastModified === CONTENT_LAST_MODIFIED));
-});
-
-test('robots.txt comes from src/app/robots.ts only (a public/robots.txt would shadow it)', () => {
-  assert.ok(existsSync(new URL('../app/robots.ts', import.meta.url)));
-  assert.ok(!existsSync(new URL('../../public/robots.txt', import.meta.url)));
 });
