@@ -80,7 +80,8 @@
         "advanced": "Advanced (C1)",
         "basic": "Basic (A1)"
       }
-    }
+    },
+    "certificationExpired": "Expired {year}"
   },
   "projects": {
     "title": "Projects",

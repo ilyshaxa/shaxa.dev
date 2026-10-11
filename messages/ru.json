@@ -80,7 +80,8 @@
         "advanced": "Продвинутый (C1)",
         "basic": "Базовый (A1)"
       }
-    }
+    },
+    "certificationExpired": "Срок действия истёк в {year}"
   },
   "projects": {
     "title": "Проекты",

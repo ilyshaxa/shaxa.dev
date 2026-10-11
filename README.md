@@ -106,7 +106,7 @@ Facts and copy are separate, and the CV and the site must agree.
 
 ### Adding a certification
 
-Add an entry to `profileData.certifications` in `data.ts` (title and issuer are proper names and stay untranslated) and the same line to the `CERTIFICATIONS` block in `src/lib/chat-system-prompt.ts`. `npm test` fails if the two differ.
+Add an entry to `profileData.certifications` in `data.ts` (title and issuer are proper names and stay untranslated; `url`, `expires` and `result` are optional) and the same line to the `CERTIFICATIONS` block in `src/lib/chat-system-prompt.ts`. `npm test` fails if the two differ.
 
 ### Tests that guard the content
 

@@ -62,7 +62,8 @@ export function StructuredData() {
       "hasCredential": profile.certifications.map(certification => ({
         "@type": "EducationalOccupationalCredential",
         "name": certification.title,
-        "url": certification.url,
+        ...(certification.url && { "url": certification.url }),
+        ...(certification.credentialId && { "identifier": certification.credentialId }),
         "credentialCategory": "certificate",
         "recognizedBy": {
           "@type": "Organization",

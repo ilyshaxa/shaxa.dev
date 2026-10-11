@@ -43,7 +43,12 @@ export interface Certification {
   issuer: string;
   /** 'YYYY-MM' or 'YYYY-MM-DD', as printed on the certificate. */
   issued: string;
-  url: string;
+  /** Same format as `issued`; set when the certificate has lapsed or will. */
+  expires?: string;
+  /** A score or grade printed on it, such as 'Band 6.5'. */
+  result?: string;
+  /** Public verification page, when there is one. */
+  url?: string;
   credentialId?: string;
 }
 
@@ -194,6 +199,15 @@ const profileData: Profile = {
       issued: '2026-04-27',
       url: 'https://learn.kodekloud.com/learn/certificate/93c76b1a-d5c4-43a5-91c6-6759f1ddb6e3',
       credentialId: '93c76b1a-d5c4-43a5-91c6-6759f1ddb6e3',
+    },
+    {
+      slug: 'ielts-british-council',
+      title: 'IELTS',
+      issuer: 'British Council',
+      issued: '2022-03',
+      expires: '2024-03',
+      result: 'Band 6.5',
+      credentialId: '21UZ013544JABS025A',
     },
   ],
   languages: [

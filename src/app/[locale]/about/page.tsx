@@ -28,6 +28,8 @@ export default function AboutPage() {
   const t = useTranslations('about');
   const tHero = useTranslations('home.hero');
   const tProfile = useTranslations('profile');
+  // 'YYYY-MM', the same shape as a certificate's `expires`.
+  const today = new Date().toISOString().slice(0, 7);
 
   return (
     <div className="section-stack pb-24 md:pb-32">
@@ -104,7 +106,14 @@ export default function AboutPage() {
               }
               title={certification.title}
               // Year only: Chromium has no Uzbek month names, so a month-and-year date renders as "2026 M09" in uz.
-              subtitle={`${certification.issuer} · ${certification.issued.slice(0, 4)}`}
+              subtitle={[
+                certification.issuer,
+                certification.result,
+                certification.issued.slice(0, 4),
+                certification.expires && certification.expires <= today && t('certificationExpired', { year: certification.expires.slice(0, 4) }),
+              ]
+                .filter(Boolean)
+                .join(' · ')}
               href={certification.url}
             />
           ))}

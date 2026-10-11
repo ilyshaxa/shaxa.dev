@@ -53,7 +53,10 @@ test('the prompt never claims an AWS certification', () => {
 test('the CERTIFICATIONS block is exactly the certificates on the site', () => {
   const block = blockAfter(/^CERTIFICATIONS\b/);
   const listed = block.filter((line) => line.search(NOT_AWS_CERTIFIED) < 0);
-  const expected = getProfile().certifications.map(({ title, issuer, issued }) => `- ${title} (${issuer}, ${issuedLabel(issued)})`);
+  const expected = getProfile().certifications.map(
+    ({ title, issuer, issued, expires, result }) =>
+      `- ${title}${result ? ` ${result}` : ''} (${issuer}, ${issuedLabel(issued)}${expires ? `, expired ${issuedLabel(expires)}` : ''})`
+  );
   assert.deepEqual(listed, expected);
   const elsewhere = lines.filter((line) => !block.includes(line.trim())).join('\n');
   assert.ok(!/certified|certificate|IELTS|British Council/i.test(elsewhere), 'prompt names a certificate outside the CERTIFICATIONS block');

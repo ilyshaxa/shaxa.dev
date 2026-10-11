@@ -80,7 +80,8 @@
         "advanced": "Ilg'or (C1)",
         "basic": "Boshlang'ich (A1)"
       }
-    }
+    },
+    "certificationExpired": "Amal qilish muddati {year}-yilda tugagan"
   },
   "projects": {
     "title": "Loyihalar",

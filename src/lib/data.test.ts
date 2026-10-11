@@ -82,18 +82,29 @@ test('the static education fallback matches the English messages', () => {
   }
 });
 
-test('certifications have unique slugs, titles, KodeKloud URLs and issue dates that are real and not in the future', () => {
+test('certifications have unique slugs, a way to verify each, and issue and expiry dates that are real and not in the future', () => {
   const { certifications } = getProfile();
   assert.ok(certifications.length > 0, 'no certifications');
   assert.equal(new Set(certifications.map((certification) => certification.slug)).size, certifications.length, 'duplicate slug');
-  assert.equal(new Set(certifications.map((certification) => certification.url)).size, certifications.length, 'duplicate url');
+  const urls = certifications.map((certification) => certification.url).filter(Boolean);
+  assert.equal(new Set(urls).size, urls.length, 'duplicate url');
+  const ids = certifications.map((certification) => certification.credentialId).filter(Boolean);
+  assert.equal(new Set(ids).size, ids.length, 'duplicate credential id');
   const today = new Date().toISOString().slice(0, 10);
-  for (const { slug, title, issuer, issued, url, credentialId } of certifications) {
+  for (const { slug, title, issuer, issued, expires, url, credentialId } of certifications) {
     assert.ok(slug && title.trim() && issuer.trim(), `${slug} needs a slug, a title and an issuer`);
-    const { protocol, hostname } = new URL(url);
-    assert.deepEqual({ protocol, hostname }, { protocol: 'https:', hostname: 'learn.kodekloud.com' }, `${slug} url`);
+    assert.ok(url || credentialId, `${slug} needs a verification url or a credential id`);
+    if (url) {
+      const { protocol, hostname } = new URL(url);
+      assert.equal(protocol, 'https:', `${slug} url`);
+      if (issuer === 'KodeKloud') assert.equal(hostname, 'learn.kodekloud.com', `${slug} url`);
+    }
+    if (expires) {
+      assert.match(expires, /^\d{4}-\d{2}$/, `${slug} expires must be YYYY-MM`);
+      assert.ok(expires > issued.slice(0, 7), `${slug} expires before it was issued`);
+    }
     // KodeKloud uses the credential ID as the last path segment, so a mismatch means two entries were mixed up.
-    if (credentialId) assert.ok(url.endsWith(`/${credentialId}`), `${slug} url does not point at its credential`);
+    if (credentialId && url) assert.ok(url.endsWith(`/${credentialId}`), `${slug} url does not point at its credential`);
     assert.match(issued, /^\d{4}-\d{2}(-\d{2})?$/, `${slug} issued must be YYYY-MM or YYYY-MM-DD`);
     // Round-tripping rejects dates such as 2026-13 or 2026-02-30, which Date either refuses or rolls over.
     const parsed = new Date(`${issued.length === 7 ? `${issued}-01` : issued}T00:00:00Z`);

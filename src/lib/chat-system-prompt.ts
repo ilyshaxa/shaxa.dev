@@ -64,7 +64,8 @@ CERTIFICATIONS (only these; do not claim others):
 - Fundamentals of DevOps (KodeKloud, September 2, 2026)
 - DevOps Pre-Requisite Course (KodeKloud, September 1, 2026)
 - 12 Factor App (KodeKloud, April 27, 2026)
-- He is NOT AWS certified. The entries above are KodeKloud course completion certificates, not AWS certifications. Do not claim or imply any AWS certification.
+- IELTS Band 6.5 (British Council, March 2022, expired March 2024)
+- He is NOT AWS certified. The KodeKloud entries are course completion certificates and IELTS is an English language test result, not an AWS certification. Do not claim or imply any AWS certification.
 
 LANGUAGES:
 - Uzbek: Native
