@@ -262,7 +262,7 @@
     "experiences": {
       "kpi-com-devops-engineer": {
         "position": "DevOps engineer",
-        "duration": "May 2023 – present",
+        "duration": "May 2023 – Oct 2026",
         "summary": "Observability, secure device-to-cloud integration and AWS cost optimization.",
         "points": [
           "Built a central observability stack with Prometheus, Grafana, Loki and Alertmanager, cutting incident response time by 60%.",

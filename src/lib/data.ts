@@ -131,7 +131,8 @@ const profileData: Profile = {
       logo: '/images/companies/kpi-logo.png',
       employmentType: 'Full-time',
       startDate: '2023-05-01',
-      isCurrent: true,
+      endDate: '2026-10-01',
+      isCurrent: false,
       technologies: [
         'AWS', 'GCP', 'Docker', 'Linux', 'Jenkins', 'GitLab CI', 'Git', 'Python', 'Bash', 'Sentry', 'Prometheus', 'Grafana',
         'Loki', 'Alertmanager', 'Tomcat', 'Nginx', 'Solr', 'Kafka', 'RabbitMQ', 'Redis', 'MongoDB', 'PostgreSQL',
