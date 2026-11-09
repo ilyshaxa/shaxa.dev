@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getClientIP, checkRateLimit, incrementRateLimit } from '@/lib/chat-rate-limit';
 import { SYSTEM_PROMPT } from '@/lib/chat-system-prompt';
 import { logChatInteraction } from '@/lib/chat-logger';
+import { CHAT_ENABLED } from '@/lib/chat-config';
 
 export const runtime = 'edge';
 
@@ -40,6 +41,10 @@ function parseAIResponse(rawResponse: string): AIResponse {
 }
 
 export async function POST(request: NextRequest) {
+  if (!CHAT_ENABLED) {
+    return NextResponse.json({ error: 'The chat is temporarily unavailable.' }, { status: 503 });
+  }
+
   let userMessage = '';
   let userIP = 'Unknown';
 

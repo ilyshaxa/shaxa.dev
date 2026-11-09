@@ -14,6 +14,7 @@ import { ScrollToTop } from "@/components/scroll-to-top";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getProfile } from "@/lib/data";
+import { CHAT_ENABLED } from "@/lib/chat-config";
 import { StructuredData } from "@/components/structured-data";
 import { TITLE_TEMPLATE, buildPageMetadata, getBaseUrl, getPrimaryDomain } from "@/lib/seo";
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -120,7 +121,7 @@ export default async function LocaleLayout({
                   </ErrorBoundary>
                 </main>
                 <Footer />
-                <Chatbot />
+                {CHAT_ENABLED && <Chatbot />}
                 <ScrollToTop />
                 <Toaster />
                 <Analytics />
