@@ -1,0 +1,296 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot,
+    top=2 cm,
+    bottom=2 cm,
+    left=2 cm,
+    right=2 cm,
+    footskip=1.0 cm
+]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0, 0, 0}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage[
+    pdftitle={Shaxriyor Jabborov rezyumesi},
+    pdfauthor={Shaxriyor Jabborov},
+    pdfcreator={LaTeX},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref}
+\usepackage[pscoord]{eso-pic}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage{iftex}
+
+% Ensure that generated PDF is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.15cm}
+\pagenumbering{gobble}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    -1pt
+}{
+    0.3 cm
+}{
+    0.2 cm
+}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+}
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+}
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0 cm + 0.00001 cm}{0 cm + 0.00001 cm}
+}{
+    \end{adjustwidth}
+}
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+}
+
+% "Last updated" watermark (optional; not printed unless you place it)
+\newcommand{\placelastupdatedtext}{%
+  \AddToShipoutPictureFG*{%
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{%
+        \small\color{gray}\textit{Oxirgi yangilanish: 2025-yil oktabr}\hspace{\widthof{Oxirgi yangilanish: 2025-yil oktabr}}%
+    }}}%
+  }%
+}
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$|$}
+
+    % ===== Header =====
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont Shaxriyor Jabborov
+
+        \vspace{5 pt}
+
+        \normalsize
+        \mbox{Toshkent}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{mailto:ilyshaxa@gmail.com}{ilyshaxa@gmail.com}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://shaxa.dev}{shaxa.dev}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{tel:+998-93-766-50-10}{+998 93 766 50 10}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/shaxriyor}{linkedin.com/in/shaxriyor}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://github.com/ilyshaxa}{github.com/ilyshaxa}}%
+    \end{header}
+
+    \section{Qisqacha ma'lumot}
+    \begin{onecolentry}
+        Xavfsiz taqsimlangan tizimlar, bulut infratuzilmasini optimallashtirish va production darajadagi CI/CD avtomatlashtirishga ixtisoslashgan Cloud va DevOps muhandisi. AWS va GCP muhitlarida ishlash, observability asosidagi ishonchlilik muhandisligi hamda qurilmadan bulutga xavfsiz gibrid integratsiyalar bo'yicha tajribaga ega. Infratuzilma xarajatlarini kamaytirish, deploy jarayonlarini tezlashtirish va korporativ tizimlar xavfsizligini mustahkamlash bo'yicha tasdiqlangan natijalarga ega.
+    \end{onecolentry}
+
+    \vspace{5 pt - 0.3 cm}
+
+    % ===== Experience =====
+    \section{Ish tajribasi}
+
+    % KPI.com
+    \begin{twocolentry}{May 2023 -- Okt 2026}
+        \textbf{DevOps Engineer}, kpi.com -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Markazlashtirilgan observability stack'ni (Prometheus, Grafana, Loki, Alertmanager) arxitektura qilib joriy etdi, tizim ko'rinishini oshirdi va incident'ga javob berish vaqtini 60\% ga qisqartirdi
+            \item Hikvision yuzni aniqlash qurilmalari orqali ISUP 5.0 (outbound TLS) asosida xavfsiz bulutli davomat integratsiyasini ishlab chiqdi va joriy etdi, mijoz saytlarida inbound ochiqlikni bartaraf etib, xavfsiz API integratsiyalarni ta'minladi
+            \item Real vaqt monitoringi va ma'lumotga asoslangan qarorlar uchun biznes KPI'larni chiqaruvchi custom Prometheus exporter'ni Python'da yaratdi
+            \item Python CLI vositasi orqali dev/stage/prod muhitlari orasida ma'lumotlar bazasi sxemalarini sinxronlashtirishni avtomatlashtirdi, qo'lda xatolar va operatsion yukni kamaytirdi
+            \item AWS infratuzilmasini (EC2, S3) optimallashtirib, Savings Plans'ni joriy qildi va oylik bulut xarajatlarini 20\% ga tushirdi
+            \item Tomcat thread exhaustion bottleneck'larini aniqlab, avtomatik tiklash mexanizmlarini joriy etish orqali production uzilishlarining oldini oldi
+            \item Eskirgan GitLab Omnibus'ni eng so'nggi barqaror versiyaga yangilab, CI/CD xavfsizligi va unumdorligini kuchaytirdi
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.20 cm}
+    
+    \begin{twocolentry}{Yan 2025 -- Iyul 2026}
+        \textbf{DevOps Engineer}, PraaktisGo -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+        \item Production AWS infratuzilmasini yangi AWS akkaunt va regionga nol downtime bilan migratsiya qilishga rahbarlik qildi, to'liq ma'lumot yaxlitligi va xizmatlarning uzluksiz ishlashini ta'minladi
+        \item Proaktiv monitoring, alerting va incident oldini olish mexanizmlarini joriy etib, tizimning 99.9\% uptime ko'rsatkichiga erishdi
+        \item Jenkins bilan CI/CD avtomatlashtirish va Docker yordamida muhitlarni standartlashtirish orqali deploy vaqtini 50\% ga qisqartirdi
+        \item Gibrid bulutning uzoq muddatli masshtablanuvchanligini qo'llab-quvvatlash uchun cross-cloud xarajatlar hisobi va unumdorlik monitoringi strategiyasini ishlab chiqdi va joriy etdi
+        \item Infratuzilmani kengaytirish va tajribalarni tezlashtirish uchun Google Cloud kreditlaridan \$100K (GFS Cloud Program 2024) va AWS Activate Portfolio kreditlaridan \$10K jalb qildi
+        \item Google Workspace Business Plan va bulut xarajatlarini boshqarish amaliyotlari orqali infratuzilma xarajatlarini optimallashtirib, operatsion yukni 15\% ga kamaytirdi
+        \item AWS va GCP muhitlarida xavfsizlikning eng yaxshi amaliyotlarini joriy etdi, jumladan IAM hardening, tarmoq segmentatsiyasi va nazoratli kirish siyosatlari
+        \item Jamoaga onboarding jarayonini yaxshilash va tizim uzluksizligini ta'minlash uchun bulut arxitekturasi, deploy workflow'lari va operatsion standartlarni hujjatlashtirdi
+\end{highlights}
+\end{onecolentry}
+    \vspace{0.20 cm}
+    
+    % DataSite Technology
+    \begin{twocolentry}{Sen 2022 -- May 2023}
+        \textbf{Frontend Engineer (Intern)}, DataSite Technology -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item HTML5, CSS3, JavaScript va React yordamida moslashuvchan veb interfeyslar ishlab chiqdi
+            \item Figma dizaynlarini funksional, production'ga tayyor sahifalarga aylantirdi
+            \item Backend va DevOps jamoalari bilan hamkorlik qilib, deploy workflow'lari va versiya nazorati amaliyotlari bo'yicha dastlabki tajriba oldi
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.90 cm}
+    
+    % ===== Education =====
+    \section{Ta'lim}
+    \begin{twocolentry}{2022 -- 2027}
+        \textbf{Tashkent State University of Economics}, \textbf{Iqtisodiyot} yo'nalishi bo'yicha bakalavr
+    \end{twocolentry}
+    
+\section{Texnologiyalar}
+
+\begin{onecolentry}
+\textbf{Cloud:} AWS, GCP
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Konteynerlar va orkestratsiya:} Docker
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{CI/CD:} Jenkins, GitLab CI, GitHub Actions
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Observability:} Prometheus, Grafana, Loki, Alertmanager, ELK, Datadog
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Infratuzilma va xavfsizlik:} Linux, Nginx, Apache Tomcat, Vault, Networking, Load Balancing, DNS
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Ma'lumotlar bazalari:} PostgreSQL, MySQL, MongoDB, Redis
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Dasturlash tillari:} Python, Bash
+\end{onecolentry}
+
+    % ===== Languages =====
+    \section{Tillar}
+    \begin{onecolentry}
+        O'zbek (Native) \ \AND\ Ingliz (C1 - Advanced) \ \AND\ Rus (A1 - Basic)
+    \end{onecolentry}
+
+\end{document}

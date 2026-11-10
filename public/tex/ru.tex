@@ -1,0 +1,292 @@
+\documentclass[10pt, letterpaper]{article}
+
+% ------------------------------------------------------------------------
+% Cyrillic and font support for pdfLaTeX
+% ------------------------------------------------------------------------
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian,english]{babel}
+\usepackage{mathptmx} % Times New Roman-like serif font with Cyrillic support
+
+% Packages:
+\usepackage[
+    ignoreheadfoot,
+    top=2 cm,
+    bottom=2 cm,
+    left=2 cm,
+    right=2 cm,
+    footskip=1.0 cm
+]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0, 0, 0}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage[
+    pdftitle={Резюме Шахриёра Джабборова},
+    pdfauthor={Shaxriyor Jabborov},
+    pdfcreator={LaTeX},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref}
+\usepackage[pscoord]{eso-pic}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.15cm}
+\pagenumbering{gobble}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    -1pt
+}{
+    0.3 cm
+}{
+    0.2 cm
+}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+}
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+}
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0 cm + 0.00001 cm}{0 cm + 0.00001 cm}
+}{
+    \end{adjustwidth}
+}
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+}
+
+% "Last updated" watermark (optional; not printed unless you place it)
+\newcommand{\placelastupdatedtext}{%
+  \AddToShipoutPictureFG*{%
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{%
+        \small\color{gray}\textit{Последнее обновление: октябрь 2025}\hspace{\widthof{Последнее обновление: октябрь 2025}}%
+    }}}%
+  }%
+}
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$|$}
+
+    % ===== Header =====
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont Shaxriyor Jabborov
+
+        \vspace{5 pt}
+
+        \normalsize
+        \mbox{Ташкент}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{mailto:ilyshaxa@gmail.com}{ilyshaxa@gmail.com}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://shaxa.dev}{shaxa.dev}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{tel:+998-93-766-50-10}{+998 93 766 50 10}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/shaxriyor}{linkedin.com/in/shaxriyor}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://github.com/ilyshaxa}{github.com/ilyshaxa}}%
+    \end{header}
+
+    \section{О себе}
+    \begin{onecolentry}
+        Cloud и DevOps инженер, специализирующийся на безопасных распределенных системах, оптимизации облачной инфраструктуры и автоматизации CI/CD промышленного уровня. Имеет опыт работы в средах AWS и GCP, в инженерии надежности на основе наблюдаемости, а также в безопасных гибридных интеграциях устройств с облаком. Подтвержденный опыт снижения инфраструктурных расходов, ускорения деплоев и усиления безопасности корпоративных систем.
+    \end{onecolentry}
+
+    \vspace{5 pt - 0.3 cm}
+
+    % ===== Experience =====
+    \section{Опыт работы}
+
+    % KPI.com
+    \begin{twocolentry}{May 2023 -- Oct 2026}
+        \textbf{DevOps Engineer}, kpi.com -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Спроектировал и внедрил централизованный стек наблюдаемости (Prometheus, Grafana, Loki, Alertmanager), повысив прозрачность системы и сократив время реакции на инциденты на 60\%
+            \item Разработал и реализовал безопасную облачную интеграцию системы учета посещаемости с использованием устройств распознавания лиц Hikvision по ISUP 5.0 (исходящий TLS), устранив входящую экспозицию на площадках клиентов и обеспечив безопасные API-интеграции
+            \item Создал кастомный экспортер Prometheus на Python для публикации бизнес-KPI в режиме реального времени и принятия решений на основе данных
+            \item Автоматизировал синхронизацию схем баз данных между dev/stage/prod через CLI-инструмент на Python, снизив количество ручных ошибок и операционные затраты
+            \item Оптимизировал AWS-инфраструктуру (EC2, S3) и внедрил Savings Plans, сократив ежемесячные облачные расходы на 20\%
+            \item Предотвратил сбои в продакшене, выявив узкие места из-за исчерпания потоков Tomcat и внедрив механизмы автоматического восстановления
+            \item Усилил безопасность и производительность CI/CD, обновив устаревший GitLab Omnibus до последнего стабильного релиза
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.20 cm}
+    
+    \begin{twocolentry}{Jan 2025 -- July 2026}
+        \textbf{DevOps Engineer}, PraaktisGo -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+        \item Руководил миграцией production AWS-инфраструктуры в новый AWS-аккаунт и регион без простоя, обеспечив полную целостность данных и непрерывную доступность сервисов
+        \item Достиг 99.9\% доступности системы за счет внедрения проактивного мониторинга, алертинга и механизмов предотвращения инцидентов
+        \item Сократил время деплоя на 50\% благодаря автоматизации CI/CD с Jenkins и стандартизации окружений с помощью Docker
+        \item Спроектировал и внедрил стратегию кросс-облачного учета затрат и мониторинга производительности для долгосрочной масштабируемости гибридного облака
+        \item Привлек \$100K кредитов Google Cloud (программа GFS Cloud Program 2024) и \$10K кредитов AWS Activate Portfolio для ускорения расширения инфраструктуры и экспериментов
+        \item Оптимизировал инфраструктурные расходы и снизил операционные издержки на 15\% за счет стратегического использования Google Workspace Business Plan и практик управления облачными затратами
+        \item Внедрил лучшие практики безопасности в средах AWS и GCP, включая усиление IAM, сегментацию сети и политики контролируемого доступа
+        \item Задокументировал облачную архитектуру, процессы деплоя и операционные стандарты для ускорения онбординга команды и обеспечения непрерывности систем
+\end{highlights}
+\end{onecolentry}
+    \vspace{0.20 cm}
+    
+    % DataSite Technology
+    \begin{twocolentry}{Sep 2022 -- May 2023}
+        \textbf{Frontend Engineer (Intern)}, DataSite Technology -- Tashkent, UZ
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Разрабатывал адаптивные веб-интерфейсы с использованием HTML5, CSS3, JavaScript и React
+            \item Преобразовывал дизайн-макеты Figma в функциональные страницы, готовые к production
+            \item Сотрудничал с командами backend и DevOps, получив ранний практический опыт в процессах деплоя и практиках контроля версий
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.90 cm}
+    
+    % ===== Education =====
+    \section{Образование}
+    \begin{twocolentry}{2022 -- 2027}
+        \textbf{Tashkent State University of Economics}, Bachelor's Degree in \textbf{Economics}
+    \end{twocolentry}
+    
+\section{Технологии}
+
+\begin{onecolentry}
+\textbf{Cloud:} AWS, GCP
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Контейнеры и оркестрация:} Docker
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{CI/CD:} Jenkins, GitLab CI, GitHub Actions
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Наблюдаемость:} Prometheus, Grafana, Loki, Alertmanager, ELK, Datadog
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Инфраструктура и безопасность:} Linux, Nginx, Apache Tomcat, Vault, Networking, Load Balancing, DNS
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Базы данных:} PostgreSQL, MySQL, MongoDB, Redis
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{onecolentry}
+\textbf{Языки программирования:} Python, Bash
+\end{onecolentry}
+
+    % ===== Languages =====
+    \section{Языки}
+    \begin{onecolentry}
+        Узбекский (родной) \ \AND\ Английский (C1 - Продвинутый) \ \AND\ Русский (A1 - Базовый)
+    \end{onecolentry}
+
+\end{document}
