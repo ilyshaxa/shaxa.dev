@@ -1,7 +1,7 @@
 {
   "lang": "en",
   "name": "Shaxriyor Jabborov",
-  "titles": "DevOps / Cloud Engineer · System Administrator",
+  "titles": "DevOps / Cloud Engineer",
   "labels": {
     "summary": "Summary",
     "experience": "Experience",
@@ -22,7 +22,7 @@
     "github": "github.com/ilyshaxa",
     "site": "shaxa.dev"
   },
-  "summary": "DevOps / Cloud Engineer and System Administrator with over three years of experience running production infrastructure on AWS and GCP. I build CI/CD pipelines, observability stacks and Linux-based environments that stay up: 99.9% uptime, deployments 50% faster and cloud spend down 20%. Based in Tashkent; open to on-site, hybrid and remote roles.",
+  "summary": "DevOps / Cloud Engineer with over three years of experience running production infrastructure on AWS and GCP. I build CI/CD pipelines, observability stacks and Linux-based environments that stay up: 99.9% uptime, deployments 50% faster and cloud spend down 20%. Based in Tashkent; open to on-site, hybrid and remote roles.",
   "experience": [
     {
       "role": "DevOps Engineer",
@@ -62,18 +62,75 @@
     }
   ],
   "skills": [
-    { "label": "Cloud", "items": ["AWS", "GCP"] },
-    { "label": "CI/CD", "items": ["Jenkins", "GitLab CI", "GitHub Actions"] },
-    { "label": "Observability", "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK", "Datadog"] },
-    { "label": "Linux & infrastructure", "items": ["Linux", "Nginx", "Apache Tomcat", "Vault", "Networking", "Load Balancing", "DNS"] },
-    { "label": "Containers", "items": ["Docker"] },
-    { "label": "Databases", "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
-    { "label": "Scripting", "items": ["Python", "Bash"] }
+    {
+      "label": "Cloud",
+      "items": [
+        "AWS",
+        "GCP"
+      ]
+    },
+    {
+      "label": "CI/CD",
+      "items": [
+        "Jenkins",
+        "GitLab CI",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "label": "Observability",
+      "items": [
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "Alertmanager",
+        "ELK",
+        "Datadog"
+      ]
+    },
+    {
+      "label": "Linux & infrastructure",
+      "items": [
+        "Linux",
+        "Nginx",
+        "Apache Tomcat",
+        "Vault",
+        "Networking",
+        "Load Balancing",
+        "DNS"
+      ]
+    },
+    {
+      "label": "Containers",
+      "items": [
+        "Docker"
+      ]
+    },
+    {
+      "label": "Databases",
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Redis"
+      ]
+    },
+    {
+      "label": "Scripting",
+      "items": [
+        "Python",
+        "Bash"
+      ]
+    }
   ],
   "education": {
     "school": "Tashkent State University of Economics",
     "degree": "Bachelor's degree in Economics",
     "dates": "2022 – 2027"
   },
-  "languages": ["Uzbek (native)", "English (C1, advanced)", "Russian (A1, basic)"]
+  "languages": [
+    "Uzbek (native)",
+    "English (C1, advanced)",
+    "Russian (A1, basic)"
+  ]
 }

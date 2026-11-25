@@ -1,7 +1,7 @@
 {
   "lang": "uz",
   "name": "Shaxriyor Jabborov",
-  "titles": "DevOps / Cloud muhandisi · Tizim administratori",
+  "titles": "DevOps / Cloud muhandisi",
   "labels": {
     "summary": "Qisqacha ma'lumot",
     "experience": "Ish tajribasi",
@@ -22,7 +22,7 @@
     "github": "github.com/ilyshaxa",
     "site": "shaxa.dev"
   },
-  "summary": "AWS va GCP'da production infratuzilmasini boshqarish bo'yicha uch yildan ortiq tajribaga ega DevOps / Cloud muhandisi va tizim administratori. CI/CD, observability va Linux muhitlarini barqaror ishlaydigan qilib quraman: 99.9% uptime, deploy 50% tezroq, bulut xarajatlari 20% kam. Toshkentda yashayman; ofis, gibrid va masofaviy ishga ochiqman.",
+  "summary": "AWS va GCP'da production infratuzilmasini boshqarish bo'yicha uch yildan ortiq tajribaga ega DevOps / Cloud muhandisi. CI/CD, observability va Linux muhitlarini barqaror ishlaydigan qilib quraman: 99.9% uptime, deploy 50% tezroq, bulut xarajatlari 20% kam. Toshkentda yashayman; ofis, gibrid va masofaviy ishga ochiqman.",
   "experience": [
     {
       "role": "DevOps Engineer",
@@ -62,18 +62,75 @@
     }
   ],
   "skills": [
-    { "label": "Cloud", "items": ["AWS", "GCP"] },
-    { "label": "CI/CD", "items": ["Jenkins", "GitLab CI", "GitHub Actions"] },
-    { "label": "Observability", "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK", "Datadog"] },
-    { "label": "Linux va infratuzilma", "items": ["Linux", "Nginx", "Apache Tomcat", "Vault", "Networking", "Load Balancing", "DNS"] },
-    { "label": "Konteynerlar", "items": ["Docker"] },
-    { "label": "Ma'lumotlar bazalari", "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
-    { "label": "Skriptlar", "items": ["Python", "Bash"] }
+    {
+      "label": "Cloud",
+      "items": [
+        "AWS",
+        "GCP"
+      ]
+    },
+    {
+      "label": "CI/CD",
+      "items": [
+        "Jenkins",
+        "GitLab CI",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "label": "Observability",
+      "items": [
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "Alertmanager",
+        "ELK",
+        "Datadog"
+      ]
+    },
+    {
+      "label": "Linux va infratuzilma",
+      "items": [
+        "Linux",
+        "Nginx",
+        "Apache Tomcat",
+        "Vault",
+        "Networking",
+        "Load Balancing",
+        "DNS"
+      ]
+    },
+    {
+      "label": "Konteynerlar",
+      "items": [
+        "Docker"
+      ]
+    },
+    {
+      "label": "Ma'lumotlar bazalari",
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Redis"
+      ]
+    },
+    {
+      "label": "Skriptlar",
+      "items": [
+        "Python",
+        "Bash"
+      ]
+    }
   ],
   "education": {
     "school": "Tashkent State University of Economics",
     "degree": "Iqtisodiyot yo'nalishi bo'yicha bakalavr",
     "dates": "2022 – 2027"
   },
-  "languages": ["O'zbek tili (ona tili)", "Ingliz tili (C1, ilg'or)", "Rus tili (A1, boshlang'ich)"]
+  "languages": [
+    "O'zbek tili (ona tili)",
+    "Ingliz tili (C1, ilg'or)",
+    "Rus tili (A1, boshlang'ich)"
+  ]
 }

@@ -94,11 +94,10 @@ test('no site-only skills and no AWS certification claim', () => {
   }
 });
 
-test('the target-role keywords are in each header', () => {
-  const admin: Record<Locale, string> = { en: 'System Administrator', ru: 'Системный администратор', uz: 'Tizim administratori' };
+test('the header names the DevOps / Cloud role and no system administrator title', () => {
   for (const l of locales) {
-    assert.ok(cv[l].titles.includes('DevOps'), `${l} titles lack DevOps`);
-    assert.ok(cv[l].titles.includes(admin[l]), `${l} titles lack the system administrator term`);
+    assert.ok(cv[l].titles.includes('DevOps') && cv[l].titles.includes('Cloud'), `${l} titles`);
+    assert.ok(!/administrat|администратор/i.test(`${cv[l].titles} ${cv[l].summary}`), `${l} still names a system administrator role`);
   }
 });
 
