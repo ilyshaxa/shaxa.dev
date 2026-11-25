@@ -27,13 +27,14 @@ src/
     *.tsx               — Feature components (chatbot, navigation, footer, etc.)
   lib/                  — Utilities (seo, data, link-parser, chat-*)
   types/                — Shared TypeScript types
+cv/                     — CV source (content/*.json, template.html, cv.css, photo.jpg, build.mjs)
 ```
 
 ## Content pipeline
 - `src/lib/data.ts` — Language-neutral facts: links, stack, experience and project structure, media paths
 - `messages/{en,ru,uz}.json` — All copy, including `data.projects.<slug>` and `data.experiences.<slug>` (title, summary, points) and `data.education.<slug>`
 - `localizeProjects` / `localizeExperiences` / `localizeEducation` in `src/lib/data.ts` merge the two
-- Facts rule: the CV and the site must agree. A claim that only one of them makes stays off the site (see `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` §9). Tests in `src/lib/*.test.ts` enforce key parity, the stack list and the chatbot prompt
+- Facts rule: the CV and the site must agree. A claim that only one of them makes stays off the site (see `docs/superpowers/specs/2026-10-10-apple-redesign-v2-design.md` §9). The CV text lives in `cv/content/{en,ru,uz}.json`; `npm run cv:build` prints the one-page PDFs to `public/cv/` (Chrome headless). Tests in `src/lib/*.test.ts` enforce key parity, the stack list, the chatbot prompt and the CV's facts (`cv.test.ts`)
 
 ## Key conventions
 - No barrel exports — import components directly

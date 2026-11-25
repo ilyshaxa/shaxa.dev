@@ -86,7 +86,8 @@ src/
     chat-system-prompt.ts System prompt for the assistant
     *.test.ts             Tests (copy parity, facts, SEO, motion math, ...)
 messages/                 en.json, ru.json, uz.json: all user-facing copy
-public/                   Images, project media, CV PDFs (public/cv), icons, og.png
+cv/                       CV source: content/{en,ru,uz}.json, template.html, cv.css, photo.jpg, build.mjs
+public/                   Images, project media, CV PDFs (public/cv, built from cv/), icons, og.png
 docs/superpowers/         Design specs, plans and handoff notes for the redesign
 ```
 
@@ -115,7 +116,7 @@ Add an entry to `profileData.certifications` in `data.ts` (title and issuer are 
 
 ## Internationalisation
 
-Locales are defined in `i18n.ts`; `src/middleware.ts` always prefixes the locale and negotiates the default from the browser. Each language has its own CV in `public/cv/`. Language names in menus are shown in their own language (English, Русский, O'zbekcha).
+Locales are defined in `i18n.ts`; `src/middleware.ts` always prefixes the locale and negotiates the default from the browser. Each language has its own one-page CV in `public/cv/`. Edit the text in `cv/content/<locale>.json` and run `npm run cv:build` (needs Google Chrome; set `CHROME_BIN` if it is not at `/usr/bin/google-chrome`). The build fails, and keeps the old PDF, if a CV runs past one page. Language names in menus are shown in their own language (English, Русский, O'zbekcha).
 
 ## SEO
 
