@@ -1,0 +1,79 @@
+{
+  "lang": "en",
+  "name": "Shaxriyor Jabborov",
+  "titles": "DevOps / Cloud Engineer · System Administrator",
+  "labels": {
+    "summary": "Summary",
+    "experience": "Experience",
+    "skills": "Skills",
+    "education": "Education",
+    "languages": "Languages",
+    "full": "Full-time",
+    "part": "Part-time",
+    "intern": "Internship",
+    "cv": "CV"
+  },
+  "contact": {
+    "location": "Tashkent, Uzbekistan",
+    "email": "ilyshaxa@gmail.com",
+    "phone": "+998 93 766 50 10",
+    "telegram": "@shaxadev",
+    "linkedin": "linkedin.com/in/shaxriyor",
+    "github": "github.com/ilyshaxa",
+    "site": "shaxa.dev"
+  },
+  "summary": "DevOps / Cloud Engineer and System Administrator with over three years of experience running production infrastructure on AWS and GCP. I build CI/CD pipelines, observability stacks and Linux-based environments that stay up: 99.9% uptime, deployments 50% faster and cloud spend down 20%. Based in Tashkent; open to on-site, hybrid and remote roles.",
+  "experience": [
+    {
+      "role": "DevOps Engineer",
+      "company": "kpi.com",
+      "type": "full",
+      "dates": "May 2023 – Oct 2026",
+      "bullets": [
+        "Built a centralized observability stack (Prometheus, Grafana, Loki, Alertmanager), cutting incident response time by 60%.",
+        "Cut monthly AWS costs by 20% by optimizing EC2 and S3 usage and adopting Savings Plans.",
+        "Prevented production outages by finding Tomcat thread-exhaustion bottlenecks and adding automated recovery.",
+        "Designed a secure cloud attendance integration for Hikvision face-recognition devices over ISUP 5.0 (outbound TLS), removing inbound exposure at client sites.",
+        "Upgraded a legacy GitLab Omnibus installation to the latest stable release and automated database schema sync across dev, stage and prod with a Python CLI."
+      ]
+    },
+    {
+      "role": "DevOps Engineer",
+      "company": "PraaktisGo",
+      "type": "part",
+      "dates": "Jan 2025 – Jul 2026",
+      "bullets": [
+        "Led a zero-downtime migration of production AWS infrastructure to a new account and region, with full data integrity.",
+        "Reached 99.9% uptime with proactive monitoring, alerting and incident prevention.",
+        "Cut deployment time by 50% with Jenkins CI/CD automation and Docker-standardized environments.",
+        "Hardened IAM, segmented networks and enforced controlled access across AWS and GCP.",
+        "Secured $100K in Google Cloud credits (GFS Cloud Program 2024) and $10K in AWS Activate Portfolio credits; documented architecture and deployment workflows for onboarding."
+      ]
+    },
+    {
+      "role": "Frontend Engineer (Intern)",
+      "company": "DataSite Technology",
+      "type": "intern",
+      "dates": "Sep 2022 – May 2023",
+      "bullets": [
+        "Built responsive web interfaces with HTML5, CSS3, JavaScript and React, turning Figma designs into production-ready pages.",
+        "Worked with backend and DevOps teams, gaining early exposure to deployment workflows and version control."
+      ]
+    }
+  ],
+  "skills": [
+    { "label": "Cloud", "items": ["AWS", "GCP"] },
+    { "label": "CI/CD", "items": ["Jenkins", "GitLab CI", "GitHub Actions"] },
+    { "label": "Observability", "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK", "Datadog"] },
+    { "label": "Linux & infrastructure", "items": ["Linux", "Nginx", "Apache Tomcat", "Vault", "Networking", "Load Balancing", "DNS"] },
+    { "label": "Containers", "items": ["Docker"] },
+    { "label": "Databases", "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
+    { "label": "Scripting", "items": ["Python", "Bash"] }
+  ],
+  "education": {
+    "school": "Tashkent State University of Economics",
+    "degree": "Bachelor's degree in Economics",
+    "dates": "2022 – 2027"
+  },
+  "languages": ["Uzbek (native)", "English (C1, advanced)", "Russian (A1, basic)"]
+}

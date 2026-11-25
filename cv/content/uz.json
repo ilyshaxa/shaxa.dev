@@ -1,0 +1,79 @@
+{
+  "lang": "uz",
+  "name": "Shaxriyor Jabborov",
+  "titles": "DevOps / Cloud muhandisi · Tizim administratori",
+  "labels": {
+    "summary": "Qisqacha ma'lumot",
+    "experience": "Ish tajribasi",
+    "skills": "Ko'nikmalar",
+    "education": "Ta'lim",
+    "languages": "Tillar",
+    "full": "To'liq kunlik",
+    "part": "Yarim kunlik",
+    "intern": "Amaliyot",
+    "cv": "Rezyume"
+  },
+  "contact": {
+    "location": "Toshkent, O'zbekiston",
+    "email": "ilyshaxa@gmail.com",
+    "phone": "+998 93 766 50 10",
+    "telegram": "@shaxadev",
+    "linkedin": "linkedin.com/in/shaxriyor",
+    "github": "github.com/ilyshaxa",
+    "site": "shaxa.dev"
+  },
+  "summary": "AWS va GCP'da production infratuzilmasini boshqarish bo'yicha uch yildan ortiq tajribaga ega DevOps / Cloud muhandisi va tizim administratori. CI/CD, observability va Linux muhitlarini barqaror ishlaydigan qilib quraman: 99.9% uptime, deploy 50% tezroq, bulut xarajatlari 20% kam. Toshkentda yashayman; ofis, gibrid va masofaviy ishga ochiqman.",
+  "experience": [
+    {
+      "role": "DevOps Engineer",
+      "company": "kpi.com",
+      "type": "full",
+      "dates": "May 2023 – Okt 2026",
+      "bullets": [
+        "Markazlashtirilgan observability stack'ni (Prometheus, Grafana, Loki, Alertmanager) qurib, incident'ga javob berish vaqtini 60% ga qisqartirdi.",
+        "EC2 va S3 sarfini optimallashtirib, Savings Plans'ni joriy qildi va oylik AWS xarajatlarini 20% ga tushirdi.",
+        "Tomcat thread exhaustion bottleneck'larini aniqlab, avtomatik tiklashni joriy etib, production uzilishlarining oldini oldi.",
+        "Hikvision yuzni aniqlash qurilmalari uchun ISUP 5.0 (outbound TLS) asosida xavfsiz bulutli davomat integratsiyasini ishlab chiqdi, mijoz saytlarida inbound ochiqlikni bartaraf etdi.",
+        "Eskirgan GitLab Omnibus'ni so'nggi barqaror versiyaga yangiladi va Python CLI orqali dev, stage va prod orasida ma'lumotlar bazasi sxemalarini sinxronlashni avtomatlashtirdi."
+      ]
+    },
+    {
+      "role": "DevOps Engineer",
+      "company": "PraaktisGo",
+      "type": "part",
+      "dates": "Yan 2025 – Iyul 2026",
+      "bullets": [
+        "Production AWS infratuzilmasini yangi akkaunt va regionga nol downtime bilan migratsiya qilishga rahbarlik qildi, ma'lumotlar yaxlitligini saqladi.",
+        "Proaktiv monitoring, alerting va incident oldini olish orqali 99.9% uptime'ga erishdi.",
+        "Jenkins bilan CI/CD avtomatlashtirish va Docker'da muhitlarni standartlashtirish orqali deploy vaqtini 50% ga qisqartirdi.",
+        "AWS va GCP'da IAM hardening, tarmoq segmentatsiyasi va nazoratli kirishni joriy etdi.",
+        "Google Cloud kreditlaridan $100K (GFS Cloud Program 2024) va AWS Activate Portfolio kreditlaridan $10K jalb qildi; onboarding uchun arxitektura va deploy jarayonlarini hujjatlashtirdi."
+      ]
+    },
+    {
+      "role": "Frontend Engineer (Intern)",
+      "company": "DataSite Technology",
+      "type": "intern",
+      "dates": "Sen 2022 – May 2023",
+      "bullets": [
+        "HTML5, CSS3, JavaScript va React bilan moslashuvchan veb interfeyslar yaratdi, Figma dizaynlarini production'ga tayyor sahifalarga aylantirdi.",
+        "Backend va DevOps jamoalari bilan ishlab, deploy jarayonlari va versiya nazorati bo'yicha dastlabki tajriba oldi."
+      ]
+    }
+  ],
+  "skills": [
+    { "label": "Cloud", "items": ["AWS", "GCP"] },
+    { "label": "CI/CD", "items": ["Jenkins", "GitLab CI", "GitHub Actions"] },
+    { "label": "Observability", "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK", "Datadog"] },
+    { "label": "Linux va infratuzilma", "items": ["Linux", "Nginx", "Apache Tomcat", "Vault", "Networking", "Load Balancing", "DNS"] },
+    { "label": "Konteynerlar", "items": ["Docker"] },
+    { "label": "Ma'lumotlar bazalari", "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
+    { "label": "Skriptlar", "items": ["Python", "Bash"] }
+  ],
+  "education": {
+    "school": "Tashkent State University of Economics",
+    "degree": "Iqtisodiyot yo'nalishi bo'yicha bakalavr",
+    "dates": "2022 – 2027"
+  },
+  "languages": ["O'zbek tili (ona tili)", "Ingliz tili (C1, ilg'or)", "Rus tili (A1, boshlang'ich)"]
+}
