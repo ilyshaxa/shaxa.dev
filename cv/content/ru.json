@@ -33,8 +33,8 @@
         "Построил централизованный стек наблюдаемости (Prometheus, Grafana, Loki, Alertmanager) и сократил время реакции на инциденты на 60%.",
         "Сократил ежемесячные расходы на AWS на 20%: оптимизировал использование EC2 и S3 и внедрил Savings Plans.",
         "Предотвратил сбои в продакшене: выявил узкие места из-за исчерпания потоков Tomcat и добавил автоматическое восстановление.",
-        "Спроектировал безопасную облачную интеграцию учёта посещаемости с устройствами распознавания лиц Hikvision по ISUP 5.0 (исходящий TLS), убрав входящую экспозицию на площадках клиентов.",
-        "Обновил устаревший GitLab Omnibus до последнего стабильного релиза и автоматизировал синхронизацию схем БД между dev, stage и prod через Python CLI."
+        "Спроектировал безопасную интеграцию учёта посещаемости с устройствами распознавания лиц Hikvision по ISUP 5.0 (исходящий TLS), убрав входящий доступ на площадках клиентов.",
+        "Обновил устаревший GitLab Omnibus до последнего стабильного релиза; автоматизировал синхронизацию схем БД между dev, stage и prod через Python CLI."
       ]
     },
     {
@@ -47,7 +47,7 @@
         "Достиг 99.9% доступности за счёт проактивного мониторинга, алертинга и предотвращения инцидентов.",
         "Сократил время деплоя на 50% с помощью автоматизации CI/CD на Jenkins и стандартизации окружений в Docker.",
         "Усилил IAM, сегментировал сети и настроил контролируемый доступ в AWS и GCP.",
-        "Привлёк $100K кредитов Google Cloud (GFS Cloud Program 2024) и $10K кредитов AWS Activate Portfolio; задокументировал архитектуру и процессы деплоя для онбординга."
+        "Привлёк $100K кредитов Google Cloud (GFS Cloud Program 2024) и $10K AWS Activate Portfolio; задокументировал архитектуру и деплой для онбординга."
       ]
     },
     {
@@ -56,24 +56,81 @@
       "type": "intern",
       "dates": "сен 2022 – май 2023",
       "bullets": [
-        "Разрабатывал адаптивные веб-интерфейсы на HTML5, CSS3, JavaScript и React, превращая макеты Figma в готовые страницы.",
+        "Разрабатывал адаптивные интерфейсы на HTML5, CSS3, JavaScript и React по макетам Figma.",
         "Работал с командами backend и DevOps, получил ранний опыт в процессах деплоя и контроля версий."
       ]
     }
   ],
   "skills": [
-    { "label": "Cloud", "items": ["AWS", "GCP"] },
-    { "label": "CI/CD", "items": ["Jenkins", "GitLab CI", "GitHub Actions"] },
-    { "label": "Наблюдаемость", "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK", "Datadog"] },
-    { "label": "Linux и инфраструктура", "items": ["Linux", "Nginx", "Apache Tomcat", "Vault", "Networking", "Load Balancing", "DNS"] },
-    { "label": "Контейнеры", "items": ["Docker"] },
-    { "label": "Базы данных", "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
-    { "label": "Скрипты", "items": ["Python", "Bash"] }
+    {
+      "label": "Cloud",
+      "items": [
+        "AWS",
+        "GCP"
+      ]
+    },
+    {
+      "label": "CI/CD",
+      "items": [
+        "Jenkins",
+        "GitLab CI",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "label": "Наблюдаемость",
+      "items": [
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "Alertmanager",
+        "ELK",
+        "Datadog"
+      ]
+    },
+    {
+      "label": "Linux и инфраструктура",
+      "items": [
+        "Linux",
+        "Nginx",
+        "Apache Tomcat",
+        "Vault",
+        "Networking",
+        "Load Balancing",
+        "DNS"
+      ]
+    },
+    {
+      "label": "Контейнеры",
+      "items": [
+        "Docker"
+      ]
+    },
+    {
+      "label": "Базы данных",
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Redis"
+      ]
+    },
+    {
+      "label": "Скрипты",
+      "items": [
+        "Python",
+        "Bash"
+      ]
+    }
   ],
   "education": {
     "school": "Tashkent State University of Economics",
     "degree": "Бакалавр, экономика",
     "dates": "2022 – 2027"
   },
-  "languages": ["Узбекский (родной)", "Английский (C1, продвинутый)", "Русский (A1, базовый)"]
+  "languages": [
+    "Узбекский (родной)",
+    "Английский (C1, продвинутый)",
+    "Русский (A1, базовый)"
+  ]
 }

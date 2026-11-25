@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { countPages, renderHtml } from '../../cv/build.mjs';
 import { getProfile } from './data.ts';
 
 const locales = ['en', 'ru', 'uz'] as const;
@@ -99,4 +100,28 @@ test('the target-role keywords are in each header', () => {
     assert.ok(cv[l].titles.includes('DevOps'), `${l} titles lack DevOps`);
     assert.ok(cv[l].titles.includes(admin[l]), `${l} titles lack the system administrator term`);
   }
+});
+
+test('the rendered CV has working links, one h1, ordered sections and one part-time badge', () => {
+  for (const l of locales) {
+    const html = renderHtml(cv[l]);
+    assert.ok(html.includes('href="mailto:ilyshaxa@gmail.com"'));
+    assert.ok(html.includes('href="tel:+998937665010"'));
+    assert.ok(html.includes('href="https://t.me/shaxadev"'));
+    assert.equal(html.match(/<h1>/g)?.length, 1);
+    const { summary, experience, skills, education, languages } = cv[l].labels;
+    const at = [summary, experience, skills, education, languages].map((label) => html.indexOf(`<h2>${label}</h2>`));
+    assert.ok(at.every((i) => i > 0) && [...at].sort((a, b) => a - b).join() === at.join(), `${l} section order`);
+    assert.equal(html.split(`<span class="badge">${cv[l].labels.part}</span>`).length - 1, 1, `${l} part-time badge`);
+    assert.equal(html.split(`<span class="badge">${cv[l].labels.full}</span>`).length - 1, 1, `${l} full-time badge`);
+  }
+});
+
+test('renderHtml escapes markup in content and countPages counts page objects', () => {
+  const evil = { ...cv.en, summary: '<b>"x" & y</b>' };
+  const html = renderHtml(evil);
+  assert.ok(html.includes('&lt;b&gt;&quot;x&quot; &amp; y&lt;/b&gt;'));
+  assert.ok(!html.includes('<b>"x"'));
+  const pdf = Buffer.from('<< /Type /Pages /Count 2 >> << /Type /Page >> << /Type /Page >>');
+  assert.equal(countPages(pdf), 2);
 });
